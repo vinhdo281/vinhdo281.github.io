@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài Viết Kỹ Thuật | Blog · Cyber-Tech Portfolio</title>
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-lang="vi">
+
+  <!-- TOP MASTHEAD -->
+  <header class="masthead">
+    <div class="masthead__container">
+      <div class="masthead__brand">
+        <svg class="brand-icon" viewBox="0 0 32 32" fill="none">
+          <circle cx="16" cy="16" r="11" stroke="#00f2fe" stroke-width="2" stroke-dasharray="4 2"/>
+          <polygon points="16,8 23,20 9,20" stroke="#38bdf8" stroke-width="1.5" fill="rgba(56, 189, 248, 0.2)"/>
+          <circle cx="16" cy="16" r="2.5" fill="#00f2fe"/>
+        </svg>
+        <span class="lang-vi">BÀI VIẾT KỸ THUẬT</span>
+        <span class="lang-en">TECHNICAL ARTICLES</span>
+        <span class="brand-badge">BLOG</span>
+      </div>
+
+      <nav class="masthead__nav">
+        <ul class="nav-links">
+          <li><a href="index.html"><span class="lang-vi">Trang chủ</span><span class="lang-en">Home</span></a></li>
+          <li><a href="research.html"><span class="lang-vi">Nghiên cứu</span><span class="lang-en">Research</span></a></li>
+          <li><a href="publications.html"><span class="lang-vi">Bài báo</span><span class="lang-en">Publications</span></a></li>
+          <li><a href="portfolio.html"><span class="lang-vi">Dự án</span><span class="lang-en">Projects</span></a></li>
+          <li><a href="blog.html" class="active"><span class="lang-vi">Bài viết</span><span class="lang-en">Blog</span></a></li>
+          <li><a href="cv.html"><span>CV</span></a></li>
+        </ul>
+
+        <div class="masthead__tools">
+          <button id="site-search-btn" class="tool-btn" title="Tìm kiếm (Ctrl+K)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span class="kbd-shortcut">Ctrl K</span>
+          </button>
+          <button id="lang-toggle-btn" class="tool-btn" title="Đổi ngôn ngữ">VI</button>
+          <button id="theme-toggle-btn" class="tool-btn" title="Chuyển chế độ sáng/tối">
+            <span id="theme-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            </span>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- APP CONTAINER -->
+  <div class="app-container">
+    
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="profile-card">
+        <div class="avatar-wrapper">
+          <div class="avatar-pulse-ring"></div>
+          <img src="assets/images/avatar.svg" alt="Avatar" class="avatar-img">
+        </div>
+        <div class="author-info">
+          <h2 class="author-name">
+            <span class="lang-vi">Kỹ Sư Cơ Điện Tử</span>
+            <span class="lang-en">Robotics Engineer</span>
+          </h2>
+          <div class="author-handle">@vinhdo281 · HUST</div>
+          <div class="author-status">
+            <span class="status-dot"></span>
+            <span class="lang-vi">POSTS: 3 ARTICLES</span>
+            <span class="lang-en">POSTS: 3 ARTICLES</span>
+          </div>
+        </div>
+        <div class="sidebar-divider"></div>
+        <div class="social-pills">
+          <a href="https://github.com" target="_blank" class="social-pill">[ GitHub ]</a>
+          <a href="mailto:contact@example.com" class="social-pill">[ RSS Feed ]</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <section class="hero-card">
+        <div class="hero-header">
+          <span class="terminal-badge">DEV_LOGS // INSIGHTS</span>
+        </div>
+        <h1 class="hero-title">
+          <span class="lang-vi">Bài Viết & Ghi Chép Kỹ Thuật</span>
+          <span class="lang-en">Technical Articles & Engineering Notes</span>
+        </h1>
+        <p class="hero-desc lang-vi">
+          Chia sẻ kinh nghiệm thực tế về tối ưu thuật toán điều khiển, sửa lỗi phần cứng nhúng, và các phương pháp mô phỏng robot tiên tiến.
+        </p>
+        <p class="hero-desc lang-en">
+          Hands-on technical notes, control theory tuning tricks, embedded debugging insights, and cutting-edge robotics simulation pipelines.
+        </p>
+      </section>
+
+      <!-- POSTS LIST -->
+      <div class="pub-list">
+        
+        <!-- Post 1 -->
+        <article class="pub-item" id="post-1">
+          <div class="card-top">
+            <span class="card-type">CONTROL THEORY</span>
+            <span class="card-date font-mono">2026-09-18</span>
+          </div>
+          <h3 class="pub-title">
+            <span class="lang-vi">Hướng Dẫn Thiết Kế & Tinh Chỉnh Ma Trận Trọng Số Q, R Cho Bộ Điều Khiển LQR</span>
+            <span class="lang-en">Practical Guide to Tuning Q and R Weight Matrices in LQR Controllers</span>
+          </h3>
+          <p class="card-desc lang-vi">
+            Phương pháp chọn ma trận Bryson để chuẩn hóa các biến trạng thái, phân tích đánh đổi giữa năng lượng điều khiển actuator và tốc độ đáp ứng triệt tiêu sai số.
+          </p>
+          <p class="card-desc lang-en">
+            Using Bryson's rule for state normalization, evaluating actuator control effort versus tracking convergence speed in physical dynamic systems.
+          </p>
+          <div class="card-tags">
+            <span class="tag-badge">LQR</span>
+            <span class="tag-badge">Optimal Control</span>
+            <span class="tag-badge">MATLAB</span>
+          </div>
+          <div class="pub-actions">
+            <a href="#" class="btn-tech">
+              <span class="lang-vi">Đọc bài viết &rarr;</span>
+              <span class="lang-en">Read Article &rarr;</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- Post 2 -->
+        <article class="pub-item" id="post-2">
+          <div class="card-top">
+            <span class="card-type">EMBEDDED RTOS</span>
+            <span class="card-date font-mono">2026-07-05</span>
+          </div>
+          <h3 class="pub-title">
+            <span class="lang-vi">Tối Ưu Vòng Điều Khiển FOC 10kHz Trên STM32 Với DMA & Timer Ngắt</span>
+            <span class="lang-en">Optimizing a 10kHz FOC Control Loop on STM32 via DMA & Advanced Timers</span>
+          </h3>
+          <p class="card-desc lang-vi">
+            Kỹ thuật cấu hình ADC Trigger tự động từ PWM Timer, sử dụng DMA kép để giảm thiểu tối đa overhead của CPU, đảm bảo thời gian tính toán thuật toán Park/Clarke dưới 12 microgiây.
+          </p>
+          <p class="card-desc lang-en">
+            Configuring hardware timer triggers for ADC, utilizing DMA dual-buffering to free CPU overhead, keeping Clarke/Park transformations under 12 microseconds.
+          </p>
+          <div class="card-tags">
+            <span class="tag-badge">STM32</span>
+            <span class="tag-badge">FOC</span>
+            <span class="tag-badge">DMA</span>
+            <span class="tag-badge">Bare-metal</span>
+          </div>
+          <div class="pub-actions">
+            <a href="#" class="btn-tech">
+              <span class="lang-vi">Đọc bài viết &rarr;</span>
+              <span class="lang-en">Read Article &rarr;</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- Post 3 -->
+        <article class="pub-item" id="post-3">
+          <div class="card-top">
+            <span class="card-type">SIMULATION</span>
+            <span class="card-date font-mono">2026-05-12</span>
+          </div>
+          <h3 class="pub-title">
+            <span class="lang-vi">Nhập Mô Hình URDF Vào NVIDIA Isaac Lab: Các Lỗi Thường Gặp & Cách Khắc Phục</span>
+            <span class="lang-en">Importing URDF Models into NVIDIA Isaac Lab: Common Pitfalls and Solutions</span>
+          </h3>
+          <p class="card-desc lang-vi">
+            Xử lý lỗi ma trận quán tính (inertia tensor), khớp liên kết va chạm lồi (convex collision hulls), và điều chỉnh hệ số ma sát tiếp xúc để mô phỏng chính xác với thực tế.
+          </p>
+          <p class="card-desc lang-en">
+            Resolving negative inertia tensors, tuning convex collision geometries, and setting realistic joint damping for high-fidelity physics replication.
+          </p>
+          <div class="card-tags">
+            <span class="tag-badge">Isaac Lab</span>
+            <span class="tag-badge">URDF</span>
+            <span class="tag-badge">PhysX</span>
+            <span class="tag-badge">Robotics</span>
+          </div>
+          <div class="pub-actions">
+            <a href="#" class="btn-tech">
+              <span class="lang-vi">Đọc bài viết &rarr;</span>
+              <span class="lang-en">Read Article &rarr;</span>
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- SEARCH MODAL -->
+  <div id="search-modal-backdrop" class="search-modal-backdrop">
+    <div class="search-modal">
+      <div class="search-input-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="search-input" class="search-input" placeholder="Tìm kiếm... / Search..." autocomplete="off">
+        <span class="kbd-shortcut">ESC</span>
+      </div>
+      <div id="search-results" class="search-results"></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div>&copy; 2026 · Powered by GitHub Pages · Cyber-Tech Portfolio</div>
+  </footer>
+
+  <script src="assets/js/search-data.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

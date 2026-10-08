@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nghiên Cứu | Research · Cyber-Tech Portfolio</title>
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-lang="vi">
+
+  <!-- TOP MASTHEAD -->
+  <header class="masthead">
+    <div class="masthead__container">
+      <div class="masthead__brand">
+        <svg class="brand-icon" viewBox="0 0 32 32" fill="none">
+          <circle cx="16" cy="16" r="11" stroke="#00f2fe" stroke-width="2" stroke-dasharray="4 2"/>
+          <polygon points="16,8 23,20 9,20" stroke="#38bdf8" stroke-width="1.5" fill="rgba(56, 189, 248, 0.2)"/>
+          <circle cx="16" cy="16" r="2.5" fill="#00f2fe"/>
+        </svg>
+        <span class="lang-vi">NGHIÊN CỨU & ROBOTICS</span>
+        <span class="lang-en">RESEARCH & ROBOTICS</span>
+        <span class="brand-badge">RESEARCH</span>
+      </div>
+
+      <nav class="masthead__nav">
+        <ul class="nav-links">
+          <li><a href="index.html"><span class="lang-vi">Trang chủ</span><span class="lang-en">Home</span></a></li>
+          <li><a href="research.html" class="active"><span class="lang-vi">Nghiên cứu</span><span class="lang-en">Research</span></a></li>
+          <li><a href="publications.html"><span class="lang-vi">Bài báo</span><span class="lang-en">Publications</span></a></li>
+          <li><a href="portfolio.html"><span class="lang-vi">Dự án</span><span class="lang-en">Projects</span></a></li>
+          <li><a href="blog.html"><span class="lang-vi">Bài viết</span><span class="lang-en">Blog</span></a></li>
+          <li><a href="cv.html"><span>CV</span></a></li>
+        </ul>
+
+        <div class="masthead__tools">
+          <button id="site-search-btn" class="tool-btn" title="Tìm kiếm (Ctrl+K)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span class="kbd-shortcut">Ctrl K</span>
+          </button>
+          <button id="lang-toggle-btn" class="tool-btn" title="Đổi ngôn ngữ">VI</button>
+          <button id="theme-toggle-btn" class="tool-btn" title="Chuyển chế độ sáng/tối">
+            <span id="theme-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            </span>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- APP CONTAINER -->
+  <div class="app-container">
+    
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="profile-card">
+        <div class="avatar-wrapper">
+          <div class="avatar-pulse-ring"></div>
+          <img src="assets/images/avatar.svg" alt="Avatar" class="avatar-img">
+        </div>
+        <div class="author-info">
+          <h2 class="author-name">
+            <span class="lang-vi">Kỹ Sư Cơ Điện Tử</span>
+            <span class="lang-en">Robotics Engineer</span>
+          </h2>
+          <div class="author-handle">@vinhdo281 · HUST</div>
+          <div class="author-status">
+            <span class="status-dot"></span>
+            <span class="lang-vi">HỆ THỐNG: SẴN SÀNG</span>
+            <span class="lang-en">SYSTEM: OPERATIONAL</span>
+          </div>
+          <p class="author-bio lang-vi">
+            Tập trung nghiên cứu lý thuyết điều khiển tự động, thuật toán tối ưu và tích hợp phần cứng cơ điện tử.
+          </p>
+          <p class="author-bio lang-en">
+            Focused on control theory, optimal control algorithms, and mechatronic hardware integration.
+          </p>
+        </div>
+        <div class="sidebar-divider"></div>
+        <div class="social-pills">
+          <a href="https://github.com" target="_blank" class="social-pill">[ GitHub ]</a>
+          <a href="https://linkedin.com" target="_blank" class="social-pill">[ LinkedIn ]</a>
+          <a href="https://scholar.google.com" target="_blank" class="social-pill">[ Scholar ]</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <section class="hero-card">
+        <div class="hero-header">
+          <span class="terminal-badge">DOMAINS // RESEARCH_VECTOR</span>
+        </div>
+        <h1 class="hero-title">
+          <span class="lang-vi">Hướng Nghiên Cứu Chính</span>
+          <span class="lang-en">Core Research Directions</span>
+        </h1>
+        <p class="hero-desc lang-vi">
+          Nghiên cứu tập trung vào sự giao thoa giữa lý thuyết điều khiển hiện đại, động lực học nhiều vật (Multibody Dynamics) và mô phỏng tăng tốc bởi GPU.
+        </p>
+        <p class="hero-desc lang-en">
+          Research sits at the intersection of modern control theory, multibody dynamics, and GPU-accelerated simulation.
+        </p>
+      </section>
+
+      <!-- RESEARCH PILLARS -->
+      <div class="cards-grid">
+        
+        <!-- Pillar 1 -->
+        <div class="tech-card">
+          <div class="card-top">
+            <span class="card-type">THEORY & ALGO</span>
+            <span class="card-date font-mono">01</span>
+          </div>
+          <h3 class="card-title">
+            <span class="lang-vi">Điều Khiển Tối Ưu & Phi Tuyến (LQR, MPC, Sliding Mode)</span>
+            <span class="lang-en">Optimal & Non-linear Control (LQR, MPC, SMC)</span>
+          </h3>
+          <p class="card-desc lang-vi">
+            Thiết kế bộ điều khiển phản hồi trạng thái toàn phương (LQR) và điều khiển dự báo mô hình (Model Predictive Control) nhằm đảm bảo robot giữ thăng bằng tối ưu năng lượng và kháng nhiễu tải trọng ngoại lực.
+          </p>
+          <p class="card-desc lang-en">
+            Synthesizing Linear Quadratic Regulators (LQR) and Model Predictive Control (MPC) formulations for disturbance rejection and energy-efficient balancing.
+          </p>
+          <div class="card-tags">
+            <span class="tag-badge">LQR</span>
+            <span class="tag-badge">MPC</span>
+            <span class="tag-badge">Lyapunov Stability</span>
+          </div>
+        </div>
+
+        <!-- Pillar 2 -->
+        <div class="tech-card">
+          <div class="card-top">
+            <span class="card-type">ESTIMATION</span>
+            <span class="card-date font-mono">02</span>
+          </div>
+          <h3 class="card-title">
+            <span class="lang-vi">Ước Lượng Trạng Thái & Hợp Nhất Cảm Biến</span>
+            <span class="lang-en">State Estimation & Sensor Fusion</span>
+          </h3>
+          <p class="card-desc lang-vi">
+            Ứng dụng thuật toán Extended Kalman Filter (EKF) và Unscented Kalman Filter (UKF) để khử nhiễu cảm biến gia tốc, con quay hồi chuyển 6-DoF/9-DoF và bánh xe từ encoder thời gian thực.
+          </p>
+          <p class="card-desc lang-en">
+            Implementing Extended Kalman Filter (EKF) to fuse 6-DoF IMU data with wheel odometry, reconstructing true tilt angles with minimal lag.
+          </p>
+          <div class="card-tags">
+            <span class="tag-badge">EKF</span>
+            <span class="tag-badge">IMU Fusion</span>
+            <span class="tag-badge">Madgwick</span>
+          </div>
+        </div>
+
+        <!-- Pillar 3 -->
+        <div class="tech-card">
+          <div class="card-top">
+            <span class="card-type">SIMULATION</span>
+            <span class="card-date font-mono">03</span>
+          </div>
+          <h3 class="card-title">
+            <span class="lang-vi">Mô Phỏng Vật Lý Isaac Lab & Sim-to-Real</span>
+            <span class="lang-en">Isaac Lab Physics & Sim-to-Real Transfer</span>
+          </h3>
+          <p class="card-desc lang-vi">
+            Mô phỏng động lực học vật rắn và tiếp xúc đa điểm trên nền tảng NVIDIA PhysX / Isaac Sim song song trên hàng nghìn môi trường để kiểm nghiệm thuật toán trước khi nạp vào phần cứng thật.
+          </p>
+          <p class="card-desc lang-en">
+            High-throughput multibody dynamics and collision simulation on NVIDIA Isaac Sim, accelerating policy training and zero-shot Sim-to-Real transfer.
+          </p>
+          <div class="card-tags">
+            <span class="tag-badge">Isaac Sim</span>
+            <span class="tag-badge">Isaac Lab</span>
+            <span class="tag-badge">PhysX</span>
+          </div>
+        </div>
+
+        <!-- Pillar 4 -->
+        <div class="tech-card">
+          <div class="card-top">
+            <span class="card-type">EMBEDDED HW</span>
+            <span class="card-date font-mono">04</span>
+          </div>
+          <h3 class="card-title">
+            <span class="lang-vi">Hệ Thống Nhúng & Điều Khiển Động Cơ BLDC FOC</span>
+            <span class="lang-en">Real-Time Embedded & Field Oriented Control (FOC)</span>
+          </h3>
+          <p class="card-desc lang-vi">
+            Lập trình điều khiển định hướng từ trường (FOC) cho động cơ không chổi than BLDC trên vi điều khiển STM32 chạy hệ điều hành thời gian thực FreeRTOS với tần số điều khiển 10kHz.
+          </p>
+          <p class="card-desc lang-en">
+            Writing custom FOC current loop drivers on STM32 MCU running FreeRTOS at 10kHz loop frequency for high-bandwidth torque control.
+          </p>
+          <div class="card-tags">
+            <span class="tag-badge">STM32H7</span>
+            <span class="tag-badge">FOC</span>
+            <span class="tag-badge">CAN Bus</span>
+            <span class="tag-badge">FreeRTOS</span>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- SEARCH MODAL -->
+  <div id="search-modal-backdrop" class="search-modal-backdrop">
+    <div class="search-modal">
+      <div class="search-input-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="search-input" class="search-input" placeholder="Tìm kiếm... / Search..." autocomplete="off">
+        <span class="kbd-shortcut">ESC</span>
+      </div>
+      <div id="search-results" class="search-results"></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div>&copy; 2026 · Powered by GitHub Pages · Cyber-Tech Portfolio</div>
+  </footer>
+
+  <script src="assets/js/search-data.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

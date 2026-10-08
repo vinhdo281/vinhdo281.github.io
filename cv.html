@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Curriculum Vitae (CV) · Cyber-Tech Portfolio</title>
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .cv-timeline {
+      position: relative;
+      padding-left: 1.5rem;
+      border-left: 2px solid var(--border-color);
+      margin-bottom: 2rem;
+    }
+    .cv-node {
+      position: relative;
+      margin-bottom: 1.75rem;
+    }
+    .cv-node::before {
+      content: "";
+      position: absolute;
+      left: calc(-1.5rem - 6px);
+      top: 4px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      box-shadow: 0 0 8px var(--accent-cyan);
+    }
+    .cv-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .cv-sub {
+      font-size: 0.88rem;
+      color: var(--accent-blue);
+      font-family: var(--font-mono);
+      margin-bottom: 0.35rem;
+    }
+    .skills-category {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .skills-cat-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      font-family: var(--font-mono);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  </style>
+</head>
+<body data-lang="vi">
+
+  <!-- TOP MASTHEAD -->
+  <header class="masthead">
+    <div class="masthead__container">
+      <div class="masthead__brand">
+        <svg class="brand-icon" viewBox="0 0 32 32" fill="none">
+          <circle cx="16" cy="16" r="11" stroke="#00f2fe" stroke-width="2" stroke-dasharray="4 2"/>
+          <polygon points="16,8 23,20 9,20" stroke="#38bdf8" stroke-width="1.5" fill="rgba(56, 189, 248, 0.2)"/>
+          <circle cx="16" cy="16" r="2.5" fill="#00f2fe"/>
+        </svg>
+        <span>CURRICULUM VITAE</span>
+        <span class="brand-badge">RESUME</span>
+      </div>
+
+      <nav class="masthead__nav">
+        <ul class="nav-links">
+          <li><a href="index.html"><span class="lang-vi">Trang chủ</span><span class="lang-en">Home</span></a></li>
+          <li><a href="research.html"><span class="lang-vi">Nghiên cứu</span><span class="lang-en">Research</span></a></li>
+          <li><a href="publications.html"><span class="lang-vi">Bài báo</span><span class="lang-en">Publications</span></a></li>
+          <li><a href="portfolio.html"><span class="lang-vi">Dự án</span><span class="lang-en">Projects</span></a></li>
+          <li><a href="blog.html"><span class="lang-vi">Bài viết</span><span class="lang-en">Blog</span></a></li>
+          <li><a href="cv.html" class="active"><span>CV</span></a></li>
+        </ul>
+
+        <div class="masthead__tools">
+          <button id="site-search-btn" class="tool-btn" title="Tìm kiếm (Ctrl+K)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span class="kbd-shortcut">Ctrl K</span>
+          </button>
+          <button id="lang-toggle-btn" class="tool-btn" title="Đổi ngôn ngữ">VI</button>
+          <button id="theme-toggle-btn" class="tool-btn" title="Chuyển chế độ sáng/tối">
+            <span id="theme-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            </span>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- APP CONTAINER -->
+  <div class="app-container">
+    
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="profile-card">
+        <div class="avatar-wrapper">
+          <div class="avatar-pulse-ring"></div>
+          <img src="assets/images/avatar.svg" alt="Avatar" class="avatar-img">
+        </div>
+        <div class="author-info">
+          <h2 class="author-name">
+            <span class="lang-vi">Hồ Sơ Năng Lực</span>
+            <span class="lang-en">Resume Profile</span>
+          </h2>
+          <div class="author-handle">@vinhdo281 · HUST</div>
+        </div>
+        <div class="sidebar-divider"></div>
+        <div class="contact-list">
+          <a href="#" class="btn-tech btn-tech-primary" style="justify-content: center; width: 100%;">
+            <span>[ Download PDF CV ]</span>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <section class="hero-card">
+        <div class="hero-header">
+          <span class="terminal-badge">IDENTITY // CREDENTIALS</span>
+        </div>
+        <h1 class="hero-title">
+          <span class="lang-vi">Hồ Sơ Cá Nhân & Kỹ Năng</span>
+          <span class="lang-en">Curriculum Vitae & Skill Matrix</span>
+        </h1>
+        <p class="hero-desc lang-vi">
+          Tóm tắt quá trình học tập, các giải thưởng khoa học công nghệ và bộ kỹ năng kỹ thuật chuyên sâu về Cơ điện tử & Robotics.
+        </p>
+        <p class="hero-desc lang-en">
+          Overview of academic background, research awards, and specialized mechatronics & robotics engineering competencies.
+        </p>
+      </section>
+
+      <!-- EDUCATION -->
+      <section>
+        <div class="section-title-wrap">
+          <h2 class="section-title">
+            <span class="section-prefix">&gt;</span>
+            <span class="lang-vi">Học Vấn</span>
+            <span class="lang-en">Education</span>
+          </h2>
+        </div>
+
+        <div class="cv-timeline">
+          <div class="cv-node">
+            <div class="cv-title">Đại học Bách Khoa Hà Nội (HUST)</div>
+            <div class="cv-sub">2021 — 2026 · Kỹ Sư Cơ Điện Tử (Mechatronics Engineering)</div>
+            <p class="card-desc lang-vi">
+              Chuyên ngành Robot và Hệ thống Cơ điện tử. Điểm trung bình xuất sắc. Hướng nghiên cứu: Điều khiển hệ thống robot hai bánh tự cân bằng, thuật toán ước lượng trạng thái.
+            </p>
+            <p class="card-desc lang-en">
+              Major in Robotics and Mechatronic Systems. Excellent academic standing. Research: Wheeled-bipedal robot balance control and state estimation algorithms.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- HONORS & AWARDS -->
+      <section>
+        <div class="section-title-wrap">
+          <h2 class="section-title">
+            <span class="section-prefix">&gt;</span>
+            <span class="lang-vi">Giải Thưởng & Thành Tích</span>
+            <span class="lang-en">Honors & Awards</span>
+          </h2>
+        </div>
+
+        <div class="cv-timeline">
+          <div class="cv-node">
+            <div class="cv-title lang-vi">Giải Nhất — Hội nghị Nghiên cứu Khoa học Sinh viên ĐH Bách Khoa Hà Nội</div>
+            <div class="cv-title lang-en">First Prize — HUST Student Scientific Research Conference</div>
+            <div class="cv-sub font-mono">2026 · Phân ban Cơ khí - Cơ điện tử</div>
+          </div>
+          <div class="cv-node">
+            <div class="cv-title lang-vi">Giải Khuyến Khích — Giải thưởng Khoa học và Công nghệ dành cho Sinh viên Bộ GD&ĐT</div>
+            <div class="cv-title lang-en">Consolation Prize — National S&T Awards for University Students</div>
+            <div class="cv-sub font-mono">2026 · Cấp Bộ Giáo Dục & Đào Tạo</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SKILLS MATRIX -->
+      <section>
+        <div class="section-title-wrap">
+          <h2 class="section-title">
+            <span class="section-prefix">&gt;</span>
+            <span class="lang-vi">Bộ Kỹ Năng Kỹ Thuật (Skill Matrix)</span>
+            <span class="lang-en">Technical Skill Matrix</span>
+          </h2>
+        </div>
+
+        <div class="skills-category">
+          <div class="skills-cat-title">
+            <span>[ 01 ] CONTROL & MATHEMATICS</span>
+          </div>
+          <div class="card-tags">
+            <span class="tag-badge">LQR (Linear Quadratic Regulator)</span>
+            <span class="tag-badge">Model Predictive Control (MPC)</span>
+            <span class="tag-badge">Extended Kalman Filter (EKF)</span>
+            <span class="tag-badge">PID & Cascade Tuning</span>
+            <span class="tag-badge">Lyapunov Stability</span>
+            <span class="tag-badge">Lagrange Dynamics</span>
+          </div>
+        </div>
+
+        <div class="skills-category">
+          <div class="skills-cat-title">
+            <span>[ 02 ] EMBEDDED & HARDWARE</span>
+          </div>
+          <div class="card-tags">
+            <span class="tag-badge">STM32 (Cortex-M4/M7/G4)</span>
+            <span class="tag-badge">C / C++ Bare-Metal & HAL</span>
+            <span class="tag-badge">FreeRTOS</span>
+            <span class="tag-badge">Field Oriented Control (FOC)</span>
+            <span class="tag-badge">CAN Bus / CAN FD</span>
+            <span class="tag-badge">UART / SPI / I2C / DMA</span>
+            <span class="tag-badge">Altium Designer (PCB Design)</span>
+          </div>
+        </div>
+
+        <div class="skills-category">
+          <div class="skills-cat-title">
+            <span>[ 03 ] SIMULATION & SOFTWARE</span>
+          </div>
+          <div class="card-tags">
+            <span class="tag-badge">MATLAB / Simulink / Simscape</span>
+            <span class="tag-badge">NVIDIA Isaac Sim / Isaac Lab</span>
+            <span class="tag-badge">ROS 2 (Robot Operating System)</span>
+            <span class="tag-badge">Python / PyTorch</span>
+            <span class="tag-badge">SolidWorks / Fusion 360</span>
+            <span class="tag-badge">Git / GitHub Actions CI/CD</span>
+            <span class="tag-badge">Linux (Ubuntu)</span>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- SEARCH MODAL -->
+  <div id="search-modal-backdrop" class="search-modal-backdrop">
+    <div class="search-modal">
+      <div class="search-input-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="search-input" class="search-input" placeholder="Tìm kiếm... / Search..." autocomplete="off">
+        <span class="kbd-shortcut">ESC</span>
+      </div>
+      <div id="search-results" class="search-results"></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div>&copy; 2026 · Powered by GitHub Pages · Cyber-Tech Portfolio</div>
+  </footer>
+
+  <script src="assets/js/search-data.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

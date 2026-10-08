@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dự Án Kỹ Thuật | Portfolio · Cyber-Tech Portfolio</title>
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-lang="vi">
+
+  <!-- TOP MASTHEAD -->
+  <header class="masthead">
+    <div class="masthead__container">
+      <div class="masthead__brand">
+        <svg class="brand-icon" viewBox="0 0 32 32" fill="none">
+          <circle cx="16" cy="16" r="11" stroke="#00f2fe" stroke-width="2" stroke-dasharray="4 2"/>
+          <polygon points="16,8 23,20 9,20" stroke="#38bdf8" stroke-width="1.5" fill="rgba(56, 189, 248, 0.2)"/>
+          <circle cx="16" cy="16" r="2.5" fill="#00f2fe"/>
+        </svg>
+        <span class="lang-vi">DỰ ÁN KỸ THUẬT</span>
+        <span class="lang-en">PROJECT PORTFOLIO</span>
+        <span class="brand-badge">SYSTEMS</span>
+      </div>
+
+      <nav class="masthead__nav">
+        <ul class="nav-links">
+          <li><a href="index.html"><span class="lang-vi">Trang chủ</span><span class="lang-en">Home</span></a></li>
+          <li><a href="research.html"><span class="lang-vi">Nghiên cứu</span><span class="lang-en">Research</span></a></li>
+          <li><a href="publications.html"><span class="lang-vi">Bài báo</span><span class="lang-en">Publications</span></a></li>
+          <li><a href="portfolio.html" class="active"><span class="lang-vi">Dự án</span><span class="lang-en">Projects</span></a></li>
+          <li><a href="blog.html"><span class="lang-vi">Bài viết</span><span class="lang-en">Blog</span></a></li>
+          <li><a href="cv.html"><span>CV</span></a></li>
+        </ul>
+
+        <div class="masthead__tools">
+          <button id="site-search-btn" class="tool-btn" title="Tìm kiếm (Ctrl+K)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span class="kbd-shortcut">Ctrl K</span>
+          </button>
+          <button id="lang-toggle-btn" class="tool-btn" title="Đổi ngôn ngữ">VI</button>
+          <button id="theme-toggle-btn" class="tool-btn" title="Chuyển chế độ sáng/tối">
+            <span id="theme-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            </span>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- APP CONTAINER -->
+  <div class="app-container">
+    
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="profile-card">
+        <div class="avatar-wrapper">
+          <div class="avatar-pulse-ring"></div>
+          <img src="assets/images/avatar.svg" alt="Avatar" class="avatar-img">
+        </div>
+        <div class="author-info">
+          <h2 class="author-name">
+            <span class="lang-vi">Kỹ Sư Cơ Điện Tử</span>
+            <span class="lang-en">Robotics Engineer</span>
+          </h2>
+          <div class="author-handle">@vinhdo281 · HUST</div>
+          <div class="author-status">
+            <span class="status-dot"></span>
+            <span class="lang-vi">REPOSITORIES: ACTIVE</span>
+            <span class="lang-en">REPOSITORIES: ACTIVE</span>
+          </div>
+        </div>
+        <div class="sidebar-divider"></div>
+        <div class="social-pills">
+          <a href="https://github.com" target="_blank" class="social-pill">[ GitHub Repos ]</a>
+          <a href="mailto:contact@example.com" class="social-pill">[ Contact ]</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <section class="hero-card">
+        <div class="hero-header">
+          <span class="terminal-badge">PROJECT_MATRIX // HARDWARE & SOFTWARE</span>
+        </div>
+        <h1 class="hero-title">
+          <span class="lang-vi">Hệ Thống & Dự Án Kỹ Thuật</span>
+          <span class="lang-en">Engineering Projects & Systems</span>
+        </h1>
+        <p class="hero-desc lang-vi">
+          Các dự án tích hợp từ thiết kế cơ khí CAD, mạch điện tử công suất, thuật toán điều khiển và phần mềm nhúng. Bạn có thể chọn danh mục để lọc dự án.
+        </p>
+        <p class="hero-desc lang-en">
+          Integrated systems spanning CAD mechanical design, custom power electronics, control algorithms, and embedded firmware. Use category filters to browse.
+        </p>
+      </section>
+
+      <!-- FILTER TABS -->
+      <div class="filter-tabs">
+        <button class="filter-tab active" data-filter="all">[ ALL PROJECTS ]</button>
+        <button class="filter-tab" data-filter="robotics">[ ROBOTICS & CONTROL ]</button>
+        <button class="filter-tab" data-filter="simulation">[ AI & SIMULATION ]</button>
+        <button class="filter-tab" data-filter="embedded">[ EMBEDDED & IOT ]</button>
+      </div>
+
+      <!-- CARDS GRID -->
+      <div class="cards-grid">
+        
+        <!-- Project 1 -->
+        <div class="tech-card" data-category="robotics embedded" id="proj-1">
+          <div class="card-top">
+            <span class="card-type">ROBOTICS</span>
+            <span class="card-date font-mono">2026</span>
+          </div>
+          <h3 class="card-title">
+            <span class="lang-vi">Hệ Thống Robot Hai Bánh Cân Bằng (Wheeled Biped)</span>
+            <span class="lang-en">Wheeled-Bipedal Balance Robot Platform</span>
+          </h3>
+          <p class="card-desc lang-vi">
+            Thiết kế hoàn chỉnh robot 2 chân có bánh xe: động cơ không chổi than điều khiển FOC qua CAN Bus, thuật toán cân bằng LQR kết hợp bù tải quán tính, chạy vi điều khiển STM32H7.
+          </p>
+          <p class="card-desc lang-en">
+            Custom wheeled-biped platform with direct-drive BLDC actuators, high-speed CAN bus communication, LQR balance controller with inertia compensation running on STM32H7.
+          </p>
+          <div class="card-tags">
+            <span class="tag-badge">STM32H7</span>
+            <span class="tag-badge">FOC</span>
+            <span class="tag-badge">LQR</span>
+            <span class="tag-badge">SolidWorks</span>
+          </div>
+          <div class="card-actions">
+            <a href="https://github.com" target="_blank" class="btn-tech">[ Source Code ]</a>
+            <a href="#" class="btn-tech">[ Video Demo ]</a>
+          </div>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="tech-card" data-category="simulation robotics" id="proj-2">
+          <div class="card-top">
+            <span class="card-type">SIMULATION & AI</span>
+            <span class="card-date font-mono">2026</span>
+          </div>
+          <h3 class="card-title">
+            <span class="lang-vi">Mô Phỏng Isaac Lab & Huấn Luyện RL Biped</span>
+            <span class="lang-en">Isaac Lab Physics & Biped RL Training</span>
+          </h3>
+          <p class="card-desc lang-vi">
+            Xây dựng pipeline huấn luyện chính sách di chuyển (locomotion policy) bằng thuật toán PPO trên hàng nghìn môi trường song song với NVIDIA Isaac Lab và triển khai Zero-shot Sim-to-Real.
+          </p>
+          <p class="card-desc lang-en">
+            End-to-end locomotion training pipeline using PPO across thousands of parallel environments on NVIDIA Isaac Lab, targeting zero-shot Sim-to-Real deployment.
+          </p>
+          <div class="card-tags">
+            <span class="tag-badge">NVIDIA Omniverse</span>
+            <span class="tag-badge">Isaac Lab</span>
+            <span class="tag-badge">PyTorch</span>
+            <span class="tag-badge">PPO</span>
+          </div>
+          <div class="card-actions">
+            <a href="https://github.com" target="_blank" class="btn-tech">[ Model Weights ]</a>
+            <a href="https://github.com" target="_blank" class="btn-tech">[ GitHub ]</a>
+          </div>
+        </div>
+
+        <!-- Project 3 -->
+        <div class="tech-card" data-category="robotics embedded" id="proj-3">
+          <div class="card-top">
+            <span class="card-type">CONTROL BENCH</span>
+            <span class="card-date font-mono">2025</span>
+          </div>
+          <h3 class="card-title">
+            <span class="lang-vi">Hệ Bàn Thí Nghiệm Ball and Beam Cân Bằng Tối Ưu</span>
+            <span class="lang-en">Ball and Beam Optimal Control Bench</span>
+          </h3>
+          <p class="card-desc lang-vi">
+            Mô hình thực nghiệm kiểm chứng lý thuyết điều khiển tự động: đo vị trí bóng bằng cảm biến Time-of-Flight laser, điều khiển vị trí bóng bằng Servo độ phân giải cao và thuật toán LQR có bù ma sát.
+          </p>
+          <p class="card-desc lang-en">
+            Experimental benchmark testbed for control theory verification: ToF laser ball measurement, high-precision servo positioning, and friction-compensated LQR regulator.
+          </p>
+          <div class="card-tags">
+            <span class="tag-badge">MATLAB</span>
+            <span class="tag-badge">Simulink</span>
+            <span class="tag-badge">Laser ToF</span>
+            <span class="tag-badge">LQR</span>
+          </div>
+          <div class="card-actions">
+            <a href="https://github.com" target="_blank" class="btn-tech">[ MATLAB Code ]</a>
+            <a href="#" class="btn-tech">[ Report PDF ]</a>
+          </div>
+        </div>
+
+        <!-- Project 4 -->
+        <div class="tech-card" data-category="embedded" id="proj-4">
+          <div class="card-top">
+            <span class="card-type">EMBEDDED HW</span>
+            <span class="card-date font-mono">2025</span>
+          </div>
+          <h3 class="card-title">
+            <span class="lang-vi">Bo Mạch Điều Khiển Động Cơ 4 Kênh FOC Driver</span>
+            <span class="lang-en">4-Channel BLDC Field-Oriented Controller Board</span>
+          </h3>
+          <p class="card-desc lang-vi">
+            Thiết kế PCB mạch công suất MOSFET 4 lớp chịu dòng 30A, tích hợp mạch khuếch đại đo dòng 3 pha (shunt current sensing) và giao tiếp CAN FD.
+          </p>
+          <p class="card-desc lang-en">
+            Custom 4-layer 30A power PCB with MOSFET half-bridges, inline shunt phase current sensing, and CAN-FD interface.
+          </p>
+          <div class="card-tags">
+            <span class="tag-badge">Altium</span>
+            <span class="tag-badge">CAN FD</span>
+            <span class="tag-badge">Power Electronics</span>
+            <span class="tag-badge">STM32G4</span>
+          </div>
+          <div class="card-actions">
+            <a href="https://github.com" target="_blank" class="btn-tech">[ Altium PCB ]</a>
+            <a href="https://github.com" target="_blank" class="btn-tech">[ Firmware ]</a>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- SEARCH MODAL -->
+  <div id="search-modal-backdrop" class="search-modal-backdrop">
+    <div class="search-modal">
+      <div class="search-input-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="search-input" class="search-input" placeholder="Tìm kiếm... / Search..." autocomplete="off">
+        <span class="kbd-shortcut">ESC</span>
+      </div>
+      <div id="search-results" class="search-results"></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div>&copy; 2026 · Powered by GitHub Pages · Cyber-Tech Portfolio</div>
+  </footer>
+
+  <script src="assets/js/search-data.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Engineering & Robotics Portfolio | Tech Cyber Theme</title>
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-lang="vi">
+
+  <!-- TOP MASTHEAD -->
+  <header class="masthead">
+    <div class="masthead__container">
+      <div class="masthead__brand">
+        <svg class="brand-icon" viewBox="0 0 32 32" fill="none">
+          <circle cx="16" cy="16" r="11" stroke="#00f2fe" stroke-width="2" stroke-dasharray="4 2"/>
+          <polygon points="16,8 23,20 9,20" stroke="#38bdf8" stroke-width="1.5" fill="rgba(56, 189, 248, 0.2)"/>
+          <circle cx="16" cy="16" r="2.5" fill="#00f2fe"/>
+        </svg>
+        <span class="lang-vi">KỸ THƯƠNG & ROBOTICS</span>
+        <span class="lang-en">ROBOTICS & CONTROL</span>
+        <span class="brand-badge">v2.4.0</span>
+      </div>
+
+      <nav class="masthead__nav">
+        <ul class="nav-links">
+          <li><a href="index.html" class="active"><span class="lang-vi">Trang chủ</span><span class="lang-en">Home</span></a></li>
+          <li><a href="research.html"><span class="lang-vi">Nghiên cứu</span><span class="lang-en">Research</span></a></li>
+          <li><a href="publications.html"><span class="lang-vi">Bài báo</span><span class="lang-en">Publications</span></a></li>
+          <li><a href="portfolio.html"><span class="lang-vi">Dự án</span><span class="lang-en">Projects</span></a></li>
+          <li><a href="blog.html"><span class="lang-vi">Bài viết</span><span class="lang-en">Blog</span></a></li>
+          <li><a href="cv.html"><span>CV</span></a></li>
+        </ul>
+
+        <div class="masthead__tools">
+          <!-- Search trigger -->
+          <button id="site-search-btn" class="tool-btn" title="Tìm kiếm (Ctrl+K)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span class="kbd-shortcut">Ctrl K</span>
+          </button>
+
+          <!-- Language toggle -->
+          <button id="lang-toggle-btn" class="tool-btn" title="Đổi ngôn ngữ">VI</button>
+
+          <!-- Theme toggle -->
+          <button id="theme-toggle-btn" class="tool-btn" title="Chuyển chế độ sáng/tối">
+            <span id="theme-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            </span>
+          </button>
+
+          <!-- Mobile hamburger -->
+          <button id="mobile-menu-btn" class="tool-btn mobile-menu-btn" aria-label="Menu">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <div class="app-container">
+    
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+      <div class="profile-card">
+        <div class="avatar-wrapper">
+          <div class="avatar-pulse-ring"></div>
+          <img src="assets/images/avatar.svg" alt="Avatar" class="avatar-img">
+        </div>
+
+        <div class="author-info">
+          <h2 class="author-name">
+            <span class="lang-vi">Kỹ Sư Cơ Điện Tử</span>
+            <span class="lang-en">Robotics Engineer</span>
+          </h2>
+          <div class="author-handle">@vinhdo281 · HUST</div>
+
+          <div class="author-status">
+            <span class="status-dot"></span>
+            <span class="lang-vi">HỆ THỐNG: SẴN SÀNG</span>
+            <span class="lang-en">SYSTEM: OPERATIONAL</span>
+          </div>
+
+          <p class="author-bio lang-vi">
+            Kỹ sư Cơ điện tử & Điều khiển tự động. Tập trung vào Robot hai bánh cân bằng, mô phỏng động lực học trên Isaac Sim, thuật toán LQR / MPC và hệ thống nhúng STM32.
+          </p>
+          <p class="author-bio lang-en">
+            Mechatronics & Control Systems Engineer. Focusing on Wheeled-Bipedal Robotics, Isaac Sim physics simulation, LQR / MPC optimal control, and STM32 embedded systems.
+          </p>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <ul class="contact-list">
+          <li class="contact-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>Hà Nội, Việt Nam</span>
+          </li>
+          <li class="contact-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <a href="mailto:your-email@example.com">engineer@example.com</a>
+          </li>
+          <li class="contact-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            <a href="https://github.com" target="_blank" rel="noopener">github.com/vinhdo281</a>
+          </li>
+        </ul>
+
+        <div class="social-pills">
+          <a href="https://github.com" target="_blank" class="social-pill">[ GitHub ]</a>
+          <a href="https://linkedin.com" target="_blank" class="social-pill">[ LinkedIn ]</a>
+          <a href="https://scholar.google.com" target="_blank" class="social-pill">[ Scholar ]</a>
+          <a href="mailto:contact@example.com" class="social-pill">[ Email ]</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- RIGHT MAIN CONTENT -->
+    <main class="main-content">
+      
+      <!-- HERO TECH SECTION -->
+      <section class="hero-card">
+        <div class="hero-header">
+          <span class="terminal-badge">KERNEL v5.19 // SYS_ACTIVE</span>
+          <span class="card-date font-mono">2026.10</span>
+        </div>
+
+        <h1 class="hero-title">
+          <span class="lang-vi">Khoa Học Robot & Hệ Thống Điều Khiển</span>
+          <span class="lang-en">Robotics Science & Control Systems</span>
+        </h1>
+
+        <div class="hero-subtitle font-mono">
+          <span class="lang-vi">&gt; Điều khiển phân tầng · Nhúng thời gian thực · Mô phỏng AI</span>
+          <span class="lang-en">&gt; Hierarchical Control · Real-time Embedded · AI Simulation</span>
+        </div>
+
+        <p class="hero-desc lang-vi">
+          Chào mừng bạn đến với không gian nghiên cứu kỹ thuật số của tôi. Tôi chuyên nghiên cứu thiết kế thuật toán điều khiển phi tuyến và tối ưu (LQR, MPC, PID thích nghi), ước lượng trạng thái với Extended Kalman Filter, và xây dựng các hệ robot hai bánh tự cân bằng, cánh tay máy và hệ AGV dẫn đường thị giác.
+        </p>
+        <p class="hero-desc lang-en">
+          Welcome to my digital research space. I specialize in designing non-linear and optimal control algorithms (LQR, MPC, Adaptive PID), state estimation via Extended Kalman Filter, and developing wheeled-bipedal robots, manipulators, and vision-guided AGVs.
+        </p>
+
+        <!-- INTERACTIVE HUD TERMINAL -->
+        <div class="tech-terminal">
+          <div class="terminal-bar">
+            <span class="term-dot red"></span>
+            <span class="term-dot yellow"></span>
+            <span class="term-dot green"></span>
+            <span class="term-title">telemetry@node-01: ~/environment</span>
+          </div>
+          <div class="term-line"><span class="term-prompt">$</span> status --diagnostics</div>
+          <div class="term-line">&gt; Core: <span class="term-val">STM32H7 / NVIDIA Jetson / ESP32</span></div>
+          <div class="term-line">&gt; Control Theory: <span class="term-val">LQR, MPC, Non-linear Observers, EKF</span></div>
+          <div class="term-line">&gt; Sim Engines: <span class="term-val">Isaac Lab, MATLAB/Simulink, Webots, ROS 2</span></div>
+          <div class="term-line">&gt; Status: <span class="term-val" style="color: var(--accent-emerald);">System Stable (100% nominal)</span></div>
+        </div>
+      </section>
+
+      <!-- FEATURED PUBLICATIONS -->
+      <section>
+        <div class="section-title-wrap">
+          <h2 class="section-title">
+            <span class="section-prefix">#01</span>
+            <span class="lang-vi">Bài Báo Khoa Học Tiêu Biểu</span>
+            <span class="lang-en">Featured Publications</span>
+          </h2>
+          <a href="publications.html" class="section-link">
+            <span class="lang-vi">Xem tất cả &rarr;</span>
+            <span class="lang-en">View all &rarr;</span>
+          </a>
+        </div>
+
+        <div class="pub-list">
+          <article class="pub-item" id="paper-1">
+            <h3 class="pub-title">
+              <span class="lang-vi">Điều khiển phân tầng LQR / PID cho Robot hai bánh tự cân bằng có khớp co gập</span>
+              <span class="lang-en">Hierarchical LQR / PID Control for a Wheeled-Bipedal Robot with Articulated Legs</span>
+            </h3>
+            <div class="pub-authors">
+              <strong>Your Name</strong>, Co-Author A, Co-Author B
+            </div>
+            <div class="pub-venue">Journal of Science and Technology · 2026</div>
+            <p class="card-desc lang-vi">
+              Đề xuất kiến trúc điều khiển phân tầng kết hợp LQR cho vòng thăng bằng thân xe và bộ PID phản hồi bù lực cho góc co gập của hai chân, giúp robot giữ thăng bằng ổn định trên địa hình dốc.
+            </p>
+            <p class="card-desc lang-en">
+              Proposed a hierarchical control framework integrating LQR for chassis pitch stabilization and PID for leg articulators, achieving robust balance on uneven terrain.
+            </p>
+            <div class="pub-actions">
+              <a href="#" class="btn-tech">[ PDF ]</a>
+              <a href="#" class="btn-tech">[ DOI ]</a>
+              <a href="#" class="btn-tech">[ Code ]</a>
+              <button class="btn-tech btn-copy-bibtex" data-bibtex="@article{yourname2026lqr, title={Hierarchical LQR/PID Control for Wheeled-Bipedal Robot}, author={Your Name}, journal={JST}, year={2026}}">[ BibTeX ]</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- FEATURED PROJECTS -->
+      <section>
+        <div class="section-title-wrap">
+          <h2 class="section-title">
+            <span class="section-prefix">#02</span>
+            <span class="lang-vi">Dự Án Kỹ Thuật Nổi Bật</span>
+            <span class="lang-en">Featured Engineering Projects</span>
+          </h2>
+          <a href="portfolio.html" class="section-link">
+            <span class="lang-vi">Xem tất cả &rarr;</span>
+            <span class="lang-en">View all &rarr;</span>
+          </a>
+        </div>
+
+        <div class="cards-grid">
+          <!-- Card 1 -->
+          <div class="tech-card" data-category="robotics control">
+            <div class="card-top">
+              <span class="card-type">HARDWARE + ALGO</span>
+              <span class="card-date">2026</span>
+            </div>
+            <h3 class="card-title">
+              <span class="lang-vi">Robot Hai Bánh Tự Cân Bằng (Wheeled Biped)</span>
+              <span class="lang-en">Wheeled-Bipedal Balancing Robot</span>
+            </h3>
+            <p class="card-desc lang-vi">
+              Thiết kế từ cơ khí CAD, mạch công suất động cơ BLDC, thuật toán lọc Kalman IMU và điều khiển cân bằng vòng kín trên vi điều khiển STM32.
+            </p>
+            <p class="card-desc lang-en">
+              End-to-end design from CAD mechanics, BLDC driver electronics, IMU Kalman filtering, and closed-loop control on STM32 MCU.
+            </p>
+            <div class="card-tags">
+              <span class="tag-badge">STM32</span>
+              <span class="tag-badge">LQR</span>
+              <span class="tag-badge">FreeRTOS</span>
+              <span class="tag-badge">BLDC</span>
+            </div>
+            <div class="card-actions">
+              <a href="portfolio.html#proj-1" class="btn-tech btn-tech-primary">
+                <span class="lang-vi">Chi tiết</span>
+                <span class="lang-en">Details</span>
+              </a>
+              <a href="https://github.com" target="_blank" class="btn-tech">[ GitHub ]</a>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="tech-card" data-category="simulation ai">
+            <div class="card-top">
+              <span class="card-type">SIMULATION & RL</span>
+              <span class="card-date">2026</span>
+            </div>
+            <h3 class="card-title">
+              <span class="lang-vi">Mô Phỏng Isaac Lab & Học Tăng Cường</span>
+              <span class="lang-en">Isaac Lab Physics & RL Training</span>
+            </h3>
+            <p class="card-desc lang-vi">
+              Huấn luyện mô hình học sâu tăng cường (PPO) cho robot thích nghi với chướng ngại vật ngẫu nhiên trên nền tảng NVIDIA Omniverse Isaac Lab.
+            </p>
+            <p class="card-desc lang-en">
+              Trained deep reinforcement learning (PPO) policies for dynamic terrain adaptation using NVIDIA Omniverse Isaac Lab framework.
+            </p>
+            <div class="card-tags">
+              <span class="tag-badge">Isaac Lab</span>
+              <span class="tag-badge">PyTorch</span>
+              <span class="tag-badge">PPO</span>
+              <span class="tag-badge">Omniverse</span>
+            </div>
+            <div class="card-actions">
+              <a href="portfolio.html#proj-2" class="btn-tech btn-tech-primary">
+                <span class="lang-vi">Chi tiết</span>
+                <span class="lang-en">Details</span>
+              </a>
+              <a href="https://github.com" target="_blank" class="btn-tech">[ GitHub ]</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- SEARCH MODAL (Ctrl + K) -->
+  <div id="search-modal-backdrop" class="search-modal-backdrop">
+    <div class="search-modal">
+      <div class="search-input-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="search-input" class="search-input" placeholder="Gõ từ khóa tìm kiếm (Ctrl+K)... / Type to search..." autocomplete="off">
+        <span class="kbd-shortcut">ESC</span>
+      </div>
+      <div id="search-results" class="search-results"></div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast-notice" class="toast-notice"></div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div>&copy; 2026 · Powered by GitHub Pages · Crafted with Cyber-Tech Aesthetic</div>
+    <div class="footer-quote font-mono">&gt; "Engineering the future through feedback & control."</div>
+  </footer>
+
+  <script src="assets/js/search-data.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
