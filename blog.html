@@ -67,8 +67,8 @@
           <div class="author-handle">@vinhdo281 · HUST</div>
           <div class="author-status">
             <span class="status-dot"></span>
-            <span class="lang-vi">POSTS: 0</span>
-            <span class="lang-en">POSTS: 0</span>
+            <span class="lang-vi">POSTS: 1</span>
+            <span class="lang-en">POSTS: 1</span>
           </div>
         </div>
         <div class="sidebar-divider"></div>
@@ -114,17 +114,48 @@
         </p>
       </section>
 
-      <!-- EMPTY STATE -->
-      <div style="text-align: center; padding: 3.5rem 1.5rem; background: var(--bg-card); border: 1px dashed var(--border-color); border-radius: 12px; margin-top: 1.5rem;">
-        <div style="font-family: var(--font-mono); color: var(--accent-cyan); font-size: 1rem; margin-bottom: 0.75rem;">
-          [ SYSTEM: NO_POSTS_FOUND ]
-        </div>
-        <p class="lang-vi" style="color: var(--text-muted); font-size: 0.92rem; max-width: 480px; margin: 0 auto;">
-          Chưa có bài viết nào. Các bài viết và ghi chép kỹ thuật sẽ được cập nhật trong thời gian tới.
-        </p>
-        <p class="lang-en" style="color: var(--text-muted); font-size: 0.92rem; max-width: 480px; margin: 0 auto;">
-          No articles published yet. Technical notes and write-ups will be updated soon.
-        </p>
+      <!-- POSTS GRID -->
+      <div class="cards-grid" style="margin-top: 1.5rem;">
+        
+        <!-- FEATURED POST: FUZZY INVERTED PENDULUM -->
+        <article class="tech-card" data-category="control simulation" style="grid-column: 1 / -1;">
+          <div class="card-top">
+            <span class="card-type">TUTORIAL // SIMSCAPE MULTIBODY</span>
+            <span class="card-date">08/10/2026</span>
+          </div>
+          <h2 class="card-title">
+            <a href="blog-fuzzy-inverted-pendulum.html" style="color: inherit; text-decoration: none;">
+              <span class="lang-vi">Hướng Dẫn Từ A–Z: Thiết Kế Bộ Điều Khiển Mờ (Fuzzy Logic) Cho Con Lắc Ngược Trên Simscape Multibody & Simulink</span>
+              <span class="lang-en">A-to-Z Guide: Design a Fuzzy Logic Controller for Inverted Pendulum on Simscape Multibody & Simulink</span>
+            </a>
+          </h2>
+          <p class="card-desc">
+            <span class="lang-vi">
+              Hướng dẫn toàn diện từ cách import mô hình CAD qua lệnh <code>smimport</code> với file <code>full_pendulum_assem.xml</code> và database <code>full_pendulum_assem_DataFile3.m</code>, phân tích chi tiết từng khối khớp cơ quan, lập trình Single Unified Mamdani FIS 16 luật trong MATLAB (<code>Fuzzy_moi.mlx</code>), đấu nối sơ đồ Simulink (<code>full_pendulum_assem.slx</code>) với khối chuẩn hóa góc <code>Norm Theta</code>, giải cứu con lắc ở góc nghiêng lớn 20° và triệt tiêu trôi xe (Zero Cart Drift).
+            </span>
+            <span class="lang-en">
+              Step-by-step tutorial on importing CAD assemblies via <code>smimport</code> with XML & data files, detailing physical joint subsystems, synthesizing a 16-rule Mamdani FIS in MATLAB, wiring the root Simulink model, and stabilizing large-angle deviations (20°) with zero cart drift.
+            </span>
+          </p>
+          <div class="card-tags">
+            <span class="tag-badge">Simscape Multibody</span>
+            <span class="tag-badge">Fuzzy Logic</span>
+            <span class="tag-badge">Mamdani FIS</span>
+            <span class="tag-badge">Inverted Pendulum</span>
+            <span class="tag-badge">CAD Import (smimport)</span>
+            <span class="tag-badge">Simulink</span>
+          </div>
+          <div class="card-actions">
+            <a href="blog-fuzzy-inverted-pendulum.html" class="btn-tech btn-tech-primary">
+              <span class="lang-vi">Đọc bài viết chi tiết →</span>
+              <span class="lang-en">Read Full Tutorial →</span>
+            </a>
+            <a href="https://github.com/vinhdo281" target="_blank" rel="noopener" class="btn-tech">
+              <span>GitHub Code</span>
+            </a>
+          </div>
+        </article>
+
       </div>
     </main>
   </div>
