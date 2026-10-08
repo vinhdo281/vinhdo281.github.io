@@ -67,8 +67,8 @@
           <div class="author-handle">@vinhdo281 · HUST</div>
           <div class="author-status">
             <span class="status-dot"></span>
-            <span class="lang-vi">REPOSITORIES: ACTIVE</span>
-            <span class="lang-en">REPOSITORIES: ACTIVE</span>
+            <span class="lang-vi">PROJECTS: 0</span>
+            <span class="lang-en">PROJECTS: 0</span>
           </div>
         </div>
         <div class="sidebar-divider"></div>
@@ -114,129 +114,17 @@
         </p>
       </section>
 
-      <!-- FILTER TABS -->
-      <div class="filter-tabs">
-        <button class="filter-tab active" data-filter="all">[ ALL PROJECTS ]</button>
-        <button class="filter-tab" data-filter="robotics">[ ROBOTICS & CONTROL ]</button>
-        <button class="filter-tab" data-filter="simulation">[ AI & SIMULATION ]</button>
-        <button class="filter-tab" data-filter="embedded">[ EMBEDDED & IOT ]</button>
-      </div>
-
-      <!-- CARDS GRID -->
-      <div class="cards-grid">
-        
-        <!-- Project 1 -->
-        <div class="tech-card" data-category="robotics embedded" id="proj-1">
-          <div class="card-top">
-            <span class="card-type">ROBOTICS</span>
-            <span class="card-date font-mono">2026</span>
-          </div>
-          <h3 class="card-title">
-            <span class="lang-vi">Hệ Thống Robot Hai Bánh Cân Bằng (Wheeled Biped)</span>
-            <span class="lang-en">Wheeled-Bipedal Balance Robot Platform</span>
-          </h3>
-          <p class="card-desc lang-vi">
-            Thiết kế hoàn chỉnh robot 2 chân có bánh xe: động cơ không chổi than điều khiển FOC qua CAN Bus, thuật toán cân bằng LQR kết hợp bù tải quán tính, chạy vi điều khiển STM32H7.
-          </p>
-          <p class="card-desc lang-en">
-            Custom wheeled-biped platform with direct-drive BLDC actuators, high-speed CAN bus communication, LQR balance controller with inertia compensation running on STM32H7.
-          </p>
-          <div class="card-tags">
-            <span class="tag-badge">STM32H7</span>
-            <span class="tag-badge">FOC</span>
-            <span class="tag-badge">LQR</span>
-            <span class="tag-badge">SolidWorks</span>
-          </div>
-          <div class="card-actions">
-            <a href="https://github.com" target="_blank" class="btn-tech">[ Source Code ]</a>
-            <a href="#" class="btn-tech">[ Video Demo ]</a>
-          </div>
+      <!-- EMPTY STATE -->
+      <div style="text-align: center; padding: 3.5rem 1.5rem; background: var(--bg-card); border: 1px dashed var(--border-color); border-radius: 12px; margin-top: 1.5rem;">
+        <div style="font-family: var(--font-mono); color: var(--accent-cyan); font-size: 1rem; margin-bottom: 0.75rem;">
+          [ PROJECT_MATRIX: IN_PROGRESS // DANG_CAP_NHAT ]
         </div>
-
-        <!-- Project 2 -->
-        <div class="tech-card" data-category="simulation robotics" id="proj-2">
-          <div class="card-top">
-            <span class="card-type">SIMULATION & AI</span>
-            <span class="card-date font-mono">2026</span>
-          </div>
-          <h3 class="card-title">
-            <span class="lang-vi">Mô Phỏng Isaac Lab & Huấn Luyện RL Biped</span>
-            <span class="lang-en">Isaac Lab Physics & Biped RL Training</span>
-          </h3>
-          <p class="card-desc lang-vi">
-            Xây dựng pipeline huấn luyện chính sách di chuyển (locomotion policy) bằng thuật toán PPO trên hàng nghìn môi trường song song với NVIDIA Isaac Lab và triển khai Zero-shot Sim-to-Real.
-          </p>
-          <p class="card-desc lang-en">
-            End-to-end locomotion training pipeline using PPO across thousands of parallel environments on NVIDIA Isaac Lab, targeting zero-shot Sim-to-Real deployment.
-          </p>
-          <div class="card-tags">
-            <span class="tag-badge">NVIDIA Omniverse</span>
-            <span class="tag-badge">Isaac Lab</span>
-            <span class="tag-badge">PyTorch</span>
-            <span class="tag-badge">PPO</span>
-          </div>
-          <div class="card-actions">
-            <a href="https://github.com" target="_blank" class="btn-tech">[ Model Weights ]</a>
-            <a href="https://github.com" target="_blank" class="btn-tech">[ GitHub ]</a>
-          </div>
-        </div>
-
-        <!-- Project 3 -->
-        <div class="tech-card" data-category="robotics embedded" id="proj-3">
-          <div class="card-top">
-            <span class="card-type">CONTROL BENCH</span>
-            <span class="card-date font-mono">2025</span>
-          </div>
-          <h3 class="card-title">
-            <span class="lang-vi">Hệ Bàn Thí Nghiệm Ball and Beam Cân Bằng Tối Ưu</span>
-            <span class="lang-en">Ball and Beam Optimal Control Bench</span>
-          </h3>
-          <p class="card-desc lang-vi">
-            Mô hình thực nghiệm kiểm chứng lý thuyết điều khiển tự động: đo vị trí bóng bằng cảm biến Time-of-Flight laser, điều khiển vị trí bóng bằng Servo độ phân giải cao và thuật toán LQR có bù ma sát.
-          </p>
-          <p class="card-desc lang-en">
-            Experimental benchmark testbed for control theory verification: ToF laser ball measurement, high-precision servo positioning, and friction-compensated LQR regulator.
-          </p>
-          <div class="card-tags">
-            <span class="tag-badge">MATLAB</span>
-            <span class="tag-badge">Simulink</span>
-            <span class="tag-badge">Laser ToF</span>
-            <span class="tag-badge">LQR</span>
-          </div>
-          <div class="card-actions">
-            <a href="https://github.com" target="_blank" class="btn-tech">[ MATLAB Code ]</a>
-            <a href="#" class="btn-tech">[ Report PDF ]</a>
-          </div>
-        </div>
-
-        <!-- Project 4 -->
-        <div class="tech-card" data-category="embedded" id="proj-4">
-          <div class="card-top">
-            <span class="card-type">EMBEDDED HW</span>
-            <span class="card-date font-mono">2025</span>
-          </div>
-          <h3 class="card-title">
-            <span class="lang-vi">Bo Mạch Điều Khiển Động Cơ 4 Kênh FOC Driver</span>
-            <span class="lang-en">4-Channel BLDC Field-Oriented Controller Board</span>
-          </h3>
-          <p class="card-desc lang-vi">
-            Thiết kế PCB mạch công suất MOSFET 4 lớp chịu dòng 30A, tích hợp mạch khuếch đại đo dòng 3 pha (shunt current sensing) và giao tiếp CAN FD.
-          </p>
-          <p class="card-desc lang-en">
-            Custom 4-layer 30A power PCB with MOSFET half-bridges, inline shunt phase current sensing, and CAN-FD interface.
-          </p>
-          <div class="card-tags">
-            <span class="tag-badge">Altium</span>
-            <span class="tag-badge">CAN FD</span>
-            <span class="tag-badge">Power Electronics</span>
-            <span class="tag-badge">STM32G4</span>
-          </div>
-          <div class="card-actions">
-            <a href="https://github.com" target="_blank" class="btn-tech">[ Altium PCB ]</a>
-            <a href="https://github.com" target="_blank" class="btn-tech">[ Firmware ]</a>
-          </div>
-        </div>
-
+        <p class="lang-vi" style="color: var(--text-muted); font-size: 0.92rem; max-width: 480px; margin: 0 auto;">
+          Chưa có dự án kỹ thuật nào được hiển thị. Các dự án phần cứng & thuật toán sẽ sớm được cập nhật.
+        </p>
+        <p class="lang-en" style="color: var(--text-muted); font-size: 0.92rem; max-width: 480px; margin: 0 auto;">
+          No engineering projects listed yet. Hardware & algorithm repositories will be updated soon.
+        </p>
       </div>
     </main>
   </div>

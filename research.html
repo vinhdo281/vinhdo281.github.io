@@ -120,102 +120,17 @@
         </p>
       </section>
 
-      <!-- RESEARCH PILLARS -->
-      <div class="cards-grid">
-        
-        <!-- Pillar 1 -->
-        <div class="tech-card">
-          <div class="card-top">
-            <span class="card-type">THEORY & ALGO</span>
-            <span class="card-date font-mono">01</span>
-          </div>
-          <h3 class="card-title">
-            <span class="lang-vi">Điều Khiển Tối Ưu & Phi Tuyến (LQR, MPC, Sliding Mode)</span>
-            <span class="lang-en">Optimal & Non-linear Control (LQR, MPC, SMC)</span>
-          </h3>
-          <p class="card-desc lang-vi">
-            Thiết kế bộ điều khiển phản hồi trạng thái toàn phương (LQR) và điều khiển dự báo mô hình (Model Predictive Control) nhằm đảm bảo robot giữ thăng bằng tối ưu năng lượng và kháng nhiễu tải trọng ngoại lực.
-          </p>
-          <p class="card-desc lang-en">
-            Synthesizing Linear Quadratic Regulators (LQR) and Model Predictive Control (MPC) formulations for disturbance rejection and energy-efficient balancing.
-          </p>
-          <div class="card-tags">
-            <span class="tag-badge">LQR</span>
-            <span class="tag-badge">MPC</span>
-            <span class="tag-badge">Lyapunov Stability</span>
-          </div>
+      <!-- EMPTY STATE -->
+      <div style="text-align: center; padding: 3.5rem 1.5rem; background: var(--bg-card); border: 1px dashed var(--border-color); border-radius: 12px; margin-top: 1.5rem;">
+        <div style="font-family: var(--font-mono); color: var(--accent-cyan); font-size: 1rem; margin-bottom: 0.75rem;">
+          [ RESEARCH_VECTOR: IN_PROGRESS // DANG_CAP_NHAT ]
         </div>
-
-        <!-- Pillar 2 -->
-        <div class="tech-card">
-          <div class="card-top">
-            <span class="card-type">ESTIMATION</span>
-            <span class="card-date font-mono">02</span>
-          </div>
-          <h3 class="card-title">
-            <span class="lang-vi">Ước Lượng Trạng Thái & Hợp Nhất Cảm Biến</span>
-            <span class="lang-en">State Estimation & Sensor Fusion</span>
-          </h3>
-          <p class="card-desc lang-vi">
-            Ứng dụng thuật toán Extended Kalman Filter (EKF) và Unscented Kalman Filter (UKF) để khử nhiễu cảm biến gia tốc, con quay hồi chuyển 6-DoF/9-DoF và bánh xe từ encoder thời gian thực.
-          </p>
-          <p class="card-desc lang-en">
-            Implementing Extended Kalman Filter (EKF) to fuse 6-DoF IMU data with wheel odometry, reconstructing true tilt angles with minimal lag.
-          </p>
-          <div class="card-tags">
-            <span class="tag-badge">EKF</span>
-            <span class="tag-badge">IMU Fusion</span>
-            <span class="tag-badge">Madgwick</span>
-          </div>
-        </div>
-
-        <!-- Pillar 3 -->
-        <div class="tech-card">
-          <div class="card-top">
-            <span class="card-type">SIMULATION</span>
-            <span class="card-date font-mono">03</span>
-          </div>
-          <h3 class="card-title">
-            <span class="lang-vi">Mô Phỏng Vật Lý Isaac Lab & Sim-to-Real</span>
-            <span class="lang-en">Isaac Lab Physics & Sim-to-Real Transfer</span>
-          </h3>
-          <p class="card-desc lang-vi">
-            Mô phỏng động lực học vật rắn và tiếp xúc đa điểm trên nền tảng NVIDIA PhysX / Isaac Sim song song trên hàng nghìn môi trường để kiểm nghiệm thuật toán trước khi nạp vào phần cứng thật.
-          </p>
-          <p class="card-desc lang-en">
-            High-throughput multibody dynamics and collision simulation on NVIDIA Isaac Sim, accelerating policy training and zero-shot Sim-to-Real transfer.
-          </p>
-          <div class="card-tags">
-            <span class="tag-badge">Isaac Sim</span>
-            <span class="tag-badge">Isaac Lab</span>
-            <span class="tag-badge">PhysX</span>
-          </div>
-        </div>
-
-        <!-- Pillar 4 -->
-        <div class="tech-card">
-          <div class="card-top">
-            <span class="card-type">EMBEDDED HW</span>
-            <span class="card-date font-mono">04</span>
-          </div>
-          <h3 class="card-title">
-            <span class="lang-vi">Hệ Thống Nhúng & Điều Khiển Động Cơ BLDC FOC</span>
-            <span class="lang-en">Real-Time Embedded & Field Oriented Control (FOC)</span>
-          </h3>
-          <p class="card-desc lang-vi">
-            Lập trình điều khiển định hướng từ trường (FOC) cho động cơ không chổi than BLDC trên vi điều khiển STM32 chạy hệ điều hành thời gian thực FreeRTOS với tần số điều khiển 10kHz.
-          </p>
-          <p class="card-desc lang-en">
-            Writing custom FOC current loop drivers on STM32 MCU running FreeRTOS at 10kHz loop frequency for high-bandwidth torque control.
-          </p>
-          <div class="card-tags">
-            <span class="tag-badge">STM32H7</span>
-            <span class="tag-badge">FOC</span>
-            <span class="tag-badge">CAN Bus</span>
-            <span class="tag-badge">FreeRTOS</span>
-          </div>
-        </div>
-
+        <p class="lang-vi" style="color: var(--text-muted); font-size: 0.92rem; max-width: 480px; margin: 0 auto;">
+          Các hướng nghiên cứu và chủ đề khoa học đang được cập nhật.
+        </p>
+        <p class="lang-en" style="color: var(--text-muted); font-size: 0.92rem; max-width: 480px; margin: 0 auto;">
+          Research themes and focus areas are currently being updated.
+        </p>
       </div>
     </main>
   </div>
