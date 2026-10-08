@@ -67,8 +67,8 @@
           <div class="author-handle">@vinhdo281 · HUST</div>
           <div class="author-status">
             <span class="status-dot"></span>
-            <span class="lang-vi">POSTS: 3 ARTICLES</span>
-            <span class="lang-en">POSTS: 3 ARTICLES</span>
+            <span class="lang-vi">POSTS: 0</span>
+            <span class="lang-en">POSTS: 0</span>
           </div>
         </div>
         <div class="sidebar-divider"></div>
@@ -89,7 +89,7 @@
           <a href="https://www.facebook.com/AlexDo281" target="_blank" rel="noopener" class="tech-icon-btn" data-tooltip="Facebook" aria-label="Facebook">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
           </a>
-          <a href="mailto:vinhdo281@gmail.com" class="tech-icon-btn" data-tooltip="Email" aria-label="Email">
+          <a href="mailto:dohieuvinh@gmail.com" class="tech-icon-btn" data-tooltip="Email" aria-label="Email">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           </a>
         </div>
@@ -114,98 +114,17 @@
         </p>
       </section>
 
-      <!-- POSTS LIST -->
-      <div class="pub-list">
-        
-        <!-- Post 1 -->
-        <article class="pub-item" id="post-1">
-          <div class="card-top">
-            <span class="card-type">CONTROL THEORY</span>
-            <span class="card-date font-mono">2026-09-18</span>
-          </div>
-          <h3 class="pub-title">
-            <span class="lang-vi">Hướng Dẫn Thiết Kế & Tinh Chỉnh Ma Trận Trọng Số Q, R Cho Bộ Điều Khiển LQR</span>
-            <span class="lang-en">Practical Guide to Tuning Q and R Weight Matrices in LQR Controllers</span>
-          </h3>
-          <p class="card-desc lang-vi">
-            Phương pháp chọn ma trận Bryson để chuẩn hóa các biến trạng thái, phân tích đánh đổi giữa năng lượng điều khiển actuator và tốc độ đáp ứng triệt tiêu sai số.
-          </p>
-          <p class="card-desc lang-en">
-            Using Bryson's rule for state normalization, evaluating actuator control effort versus tracking convergence speed in physical dynamic systems.
-          </p>
-          <div class="card-tags">
-            <span class="tag-badge">LQR</span>
-            <span class="tag-badge">Optimal Control</span>
-            <span class="tag-badge">MATLAB</span>
-          </div>
-          <div class="pub-actions">
-            <a href="#" class="btn-tech">
-              <span class="lang-vi">Đọc bài viết &rarr;</span>
-              <span class="lang-en">Read Article &rarr;</span>
-            </a>
-          </div>
-        </article>
-
-        <!-- Post 2 -->
-        <article class="pub-item" id="post-2">
-          <div class="card-top">
-            <span class="card-type">EMBEDDED RTOS</span>
-            <span class="card-date font-mono">2026-07-05</span>
-          </div>
-          <h3 class="pub-title">
-            <span class="lang-vi">Tối Ưu Vòng Điều Khiển FOC 10kHz Trên STM32 Với DMA & Timer Ngắt</span>
-            <span class="lang-en">Optimizing a 10kHz FOC Control Loop on STM32 via DMA & Advanced Timers</span>
-          </h3>
-          <p class="card-desc lang-vi">
-            Kỹ thuật cấu hình ADC Trigger tự động từ PWM Timer, sử dụng DMA kép để giảm thiểu tối đa overhead của CPU, đảm bảo thời gian tính toán thuật toán Park/Clarke dưới 12 microgiây.
-          </p>
-          <p class="card-desc lang-en">
-            Configuring hardware timer triggers for ADC, utilizing DMA dual-buffering to free CPU overhead, keeping Clarke/Park transformations under 12 microseconds.
-          </p>
-          <div class="card-tags">
-            <span class="tag-badge">STM32</span>
-            <span class="tag-badge">FOC</span>
-            <span class="tag-badge">DMA</span>
-            <span class="tag-badge">Bare-metal</span>
-          </div>
-          <div class="pub-actions">
-            <a href="#" class="btn-tech">
-              <span class="lang-vi">Đọc bài viết &rarr;</span>
-              <span class="lang-en">Read Article &rarr;</span>
-            </a>
-          </div>
-        </article>
-
-        <!-- Post 3 -->
-        <article class="pub-item" id="post-3">
-          <div class="card-top">
-            <span class="card-type">SIMULATION</span>
-            <span class="card-date font-mono">2026-05-12</span>
-          </div>
-          <h3 class="pub-title">
-            <span class="lang-vi">Nhập Mô Hình URDF Vào NVIDIA Isaac Lab: Các Lỗi Thường Gặp & Cách Khắc Phục</span>
-            <span class="lang-en">Importing URDF Models into NVIDIA Isaac Lab: Common Pitfalls and Solutions</span>
-          </h3>
-          <p class="card-desc lang-vi">
-            Xử lý lỗi ma trận quán tính (inertia tensor), khớp liên kết va chạm lồi (convex collision hulls), và điều chỉnh hệ số ma sát tiếp xúc để mô phỏng chính xác với thực tế.
-          </p>
-          <p class="card-desc lang-en">
-            Resolving negative inertia tensors, tuning convex collision geometries, and setting realistic joint damping for high-fidelity physics replication.
-          </p>
-          <div class="card-tags">
-            <span class="tag-badge">Isaac Lab</span>
-            <span class="tag-badge">URDF</span>
-            <span class="tag-badge">PhysX</span>
-            <span class="tag-badge">Robotics</span>
-          </div>
-          <div class="pub-actions">
-            <a href="#" class="btn-tech">
-              <span class="lang-vi">Đọc bài viết &rarr;</span>
-              <span class="lang-en">Read Article &rarr;</span>
-            </a>
-          </div>
-        </article>
-
+      <!-- EMPTY STATE -->
+      <div style="text-align: center; padding: 3.5rem 1.5rem; background: var(--bg-card); border: 1px dashed var(--border-color); border-radius: 12px; margin-top: 1.5rem;">
+        <div style="font-family: var(--font-mono); color: var(--accent-cyan); font-size: 1rem; margin-bottom: 0.75rem;">
+          [ SYSTEM: NO_POSTS_FOUND ]
+        </div>
+        <p class="lang-vi" style="color: var(--text-muted); font-size: 0.92rem; max-width: 480px; margin: 0 auto;">
+          Chưa có bài viết nào. Các bài viết và ghi chép kỹ thuật sẽ được cập nhật trong thời gian tới.
+        </p>
+        <p class="lang-en" style="color: var(--text-muted); font-size: 0.92rem; max-width: 480px; margin: 0 auto;">
+          No articles published yet. Technical notes and write-ups will be updated soon.
+        </p>
       </div>
     </main>
   </div>

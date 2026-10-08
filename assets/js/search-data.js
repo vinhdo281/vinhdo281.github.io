@@ -36,13 +36,6 @@ const SEARCH_DATA = [
     keywords: "isaac sim isaaclab nvidia omniverse reinforcement learning mo phong"
   },
   {
-    title_vi: "Hướng dẫn tối ưu thuật toán LQR cho hệ phi tuyến",
-    title_en: "Guide: Tuning LQR Controllers for Non-linear Systems",
-    category: "Blog / Bài viết",
-    url: "blog.html#post-1",
-    keywords: "lqr optimal control huong dan phi tuyen lyapunov"
-  },
-  {
     title_vi: "Hồ sơ cá nhân & Kỹ năng kỹ thuật (CV)",
     title_en: "Curriculum Vitae & Technical Skills",
     category: "CV / Hồ sơ",
