@@ -378,41 +378,10 @@ disp('=== IMPORT THÀNH CÔNG! BIẾN smiData ĐÃ SẴN SÀNG TRONG WORKSPACE =
               <li><strong>PL (Positive Large — Dương Lớn):</strong> Tâm $c = +10\text{ N}$, độ rộng $a = 3.0\text{ N}$, độ dốc $b = 2$.</li>
             </ul>
 
-            <h3>4.3 Phân Tích Chuyên Sâu: Tư Duy Xây Dựng 16 Luật Từ Bản Năng Cơ Học</h3>
+            <h3>4.3 Bảng 16 Luật Mamdani Toàn Vẹn ($2^4 = 16$ Tổ Hợp)</h3>
             <p>
-              Đối với người mới học, câu hỏi lớn nhất là: <em>"Tại sao lại là 16 luật này? Làm sao để tự nghĩ ra bảng luật mà không cần học vẹt?"</em><br>
-              Bí quyết nằm ở chỗ phân rã bài toán thành <strong>4 nhóm tình huống cơ học thực tế</strong>:
+              Với 4 ngõ vào $\times$ 2 trạng thái mờ, không gian tổ hợp có đúng $2^4 = 16$ luật, hoàn toàn không có điểm mù trong toàn bộ không gian trạng thái:
             </p>
-
-            <div class="callout callout-info">
-              <span class="callout-icon">🧠</span>
-              <div>
-                <strong>Quy tắc ngón tay cái (Rule of Thumb) của người thăng bằng cây chổi:</strong><br>
-                1. <strong>Góc $\theta$</strong> quyết định <em>CHIỀU</em> của lực: Nghiêng trái ($\theta < 0$) thì bắt buộc phải đẩy xe sang trái ($F < 0$); nghiêng phải ($\theta > 0$) thì phải đẩy sang phải ($F > 0$).<br>
-                2. <strong>Vận tốc góc $\dot{\theta}$</strong> quyết định <em>CƯỜNG ĐỘ</em> của lực: Nếu con lắc đang ngã nhanh cùng chiều góc $\rightarrow$ Bơm hết ga (<strong>NL / PL: $\pm 10\text{N}$</strong>). Nếu con lắc đang có trớn tự vung về cân bằng $\rightarrow$ Chỉ cần lực vừa (<strong>NM / PM: $\pm 7\text{N}$</strong>) để đỡ êm.<br>
-                3. <strong>Vị trí $x$ và vận tốc xe $\dot{x}$</strong> đóng vai trò <em>HIỆU CHỈNH BIÊN ĐỘ</em>: Giúp xe không lao ra khỏi mép ray và tự động kéo xe lùi về tâm $x = 0$.
-              </div>
-            </div>
-
-            <h4>Bốn Nhóm Luật Chi Tiết:</h4>
-            <ul>
-              <li>
-                <strong>Nhóm 1: Cứu góc khẩn cấp — Đạp hết ga ($R01, R02, R03$ và $R13, R14, R15, R16$):</strong><br>
-                Khi $\theta$ và $\dot{\theta}$ cùng dấu (ví dụ: $\theta = N, \dot{\theta} = N$ tức ngã trái và đang văng mạnh sang trái), con lắc có nguy cơ rơi tự do không thể cứu vãn. Bất kể xe đang ở đâu trên ray, <strong>sự sống còn của con lắc được đặt lên ưu tiên số 1</strong>. Bộ mờ xuất lực cực đại <code>NL (-10N)</code> hoặc <code>PL (+10N)</code> để phóng xe luồn xuống dưới hứng trọng tâm.
-              </li>
-              <li>
-                <strong>Nhóm 2: Tự hồi hương — Hãm êm ái ($R05 \to R08$ và $R09 \to R12$):</strong><br>
-                Khi $\theta$ và $\dot{\theta}$ ngược dấu (ví dụ $\theta = N$ nhưng $\dot{\theta} = P$, con lắc đang tự quay về bên phải), động năng tự nhiên đang kéo con lắc về trục thẳng đứng. Nếu lúc này vẫn đạp hết ga (NL) thì xe sẽ giật mạnh và làm con lắc vọt lố (overshoot) đổ ngược sang phải. Vì vậy, lực được giảm xuống mức vừa <code>NM (-7N)</code> hoặc <code>PM (+7N)</code> để đón đầu êm dịu.
-              </li>
-              <li>
-                <strong>Nhóm 3: Tình huống đặc biệt có dư địa khoảng cách ($R04$):</strong><br>
-                Xét luật $R04$: $\theta=N, \dot{\theta}=N$ (đang ngã trái) nhưng $x=P, \dot{x}=P$ (xe đang ở tít bên phải và đang chạy sang phải). Vì xe đang ở rất xa bên phải, khoảng cách từ vị trí hiện tại đến mép trái của ray là cực kỳ rộng rãi. Ta hạ mức lực từ $NL \to NM$ để tránh hiện tượng đổi chiều gia tốc quá gắt làm xóc gãy cơ cấu cơ khí.
-              </li>
-              <li>
-                <strong>Nhóm 4: Cơ chế triệt tiêu trôi xe (Zero Cart Drift):</strong><br>
-                Khi con lắc đã gần đứng thẳng ($\theta \approx 0, \dot{\theta} \approx 0$), nếu xe đang lệch phải ($x = P$), các luật $R07, R08, R11, R12$ có xu hướng xuất lực âm nhẹ để kéo thân xe lùi dần về điểm $x = 0$ mà không làm con lắc bị mất thăng bằng.
-              </li>
-            </ul>
 
             <div class="table-wrap">
               <table class="tech-table">
@@ -424,26 +393,26 @@ disp('=== IMPORT THÀNH CÔNG! BIẾN smiData ĐÃ SẴN SÀNG TRONG WORKSPACE =
                     <th>$x$</th>
                     <th>$\dot{x}$</th>
                     <th>Lực $F$</th>
-                    <th>Nhóm luật & Hành vi cơ học</th>
+                    <th>Luận giải cơ học chi tiết</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr><td><strong>R01</strong></td><td>N</td><td>N</td><td>N</td><td>N</td><td><strong>NL (-10N)</strong></td><td>Cực kỳ nguy cấp: Góc âm, văng âm, dạt trái $\rightarrow$ Xuất lực âm cực đại.</td></tr>
-                  <tr><td><strong>R02</strong></td><td>N</td><td>N</td><td>N</td><td>P</td><td><strong>NL (-10N)</strong></td><td>Cứu góc nghiêng trái: Góc âm + văng âm $\rightarrow$ Xuất lực NL.</td></tr>
-                  <tr><td><strong>R03</strong></td><td>N</td><td>N</td><td>P</td><td>N</td><td><strong>NL (-10N)</strong></td><td>Cứu góc nghiêng trái: Xe lệch phải nhưng góc nguy cấp $\rightarrow$ Xuất lực NL.</td></tr>
-                  <tr><td><strong>R04</strong></td><td>N</td><td>N</td><td>P</td><td>P</td><td><strong>NM (-7N)</strong></td><td>Dư địa lớn: Xe ở xa bên phải và chạy phải $\rightarrow$ Giảm xuống NM để êm ái.</td></tr>
-                  <tr><td><strong>R05</strong></td><td>N</td><td>P</td><td>N</td><td>N</td><td><strong>NM (-7N)</strong></td><td>Tự hồi: Con lắc đang quay về $\rightarrow$ Hãm êm bằng lực âm vừa NM.</td></tr>
-                  <tr><td><strong>R06</strong></td><td>N</td><td>P</td><td>N</td><td>P</td><td><strong>NM (-7N)</strong></td><td>Tự hồi: Xe đang tiến về tâm ray $\rightarrow$ NM.</td></tr>
-                  <tr><td><strong>R07</strong></td><td>N</td><td>P</td><td>P</td><td>N</td><td><strong>NM (-7N)</strong></td><td>Tự hồi + Hồi vị trí: Xe lệch phải $\rightarrow$ Giữ NM để kéo xe về tâm.</td></tr>
-                  <tr><td><strong>R08</strong></td><td>N</td><td>P</td><td>P</td><td>P</td><td><strong>NM (-7N)</strong></td><td>Tự hồi + Cân bằng: Lực âm vừa đủ triệt tiêu dao động cả hai.</td></tr>
-                  <tr><td><strong>R09</strong></td><td>P</td><td>N</td><td>N</td><td>N</td><td><strong>PM (+7N)</strong></td><td>Tự hồi: Con lắc lệch phải nhưng đang quay về trái $\rightarrow$ Lực dương vừa PM.</td></tr>
-                  <tr><td><strong>R10</strong></td><td>P</td><td>N</td><td>N</td><td>P</td><td><strong>PM (+7N)</strong></td><td>Tự hồi + Hồi vị trí: Xe lệch trái $\rightarrow$ Giữ PM để đẩy xe về tâm.</td></tr>
-                  <tr><td><strong>R11</strong></td><td>P</td><td>N</td><td>P</td><td>N</td><td><strong>PM (+7N)</strong></td><td>Tự hồi: Đón con lắc rơi về điểm 0 bằng PM.</td></tr>
-                  <tr><td><strong>R12</strong></td><td>P</td><td>N</td><td>P</td><td>P</td><td><strong>PM (+7N)</strong></td><td>Tự hồi: Lực dương vừa giúp con lắc đứng thẳng không bị giật.</td></tr>
-                  <tr><td><strong>R13</strong></td><td>P</td><td>P</td><td>N</td><td>N</td><td><strong>PL (+10N)</strong></td><td>Cứu góc nghiêng phải: Góc dương + văng dương $\rightarrow$ Xuất lực PL.</td></tr>
-                  <tr><td><strong>R14</strong></td><td>P</td><td>P</td><td>N</td><td>P</td><td><strong>PL (+10N)</strong></td><td>Cứu góc nghiêng phải: Đuổi theo tốc độ đổ của con lắc bằng PL.</td></tr>
-                  <tr><td><strong>R15</strong></td><td>P</td><td>P</td><td>P</td><td>N</td><td><strong>PL (+10N)</strong></td><td>Cứu góc nghiêng phải: Ưu tiên cứu góc trước khi chạm chốt ray.</td></tr>
-                  <tr><td><strong>R16</strong></td><td>P</td><td>P</td><td>P</td><td>P</td><td><strong>PL (+10N)</strong></td><td>Cực kỳ nguy cấp: Cả 4 biến đều dương $\rightarrow$ Xuất lực dương cực đại.</td></tr>
+                  <tr><td><strong>R01</strong></td><td>N</td><td>N</td><td>N</td><td>N</td><td><strong>NL</strong></td><td>Khẩn cấp cực đại: Nghiêng trái, văng trái, xe lệch trái $\rightarrow$ Đạp hết ga trái ($-10\text{N}$).</td></tr>
+                  <tr><td><strong>R02</strong></td><td>N</td><td>N</td><td>N</td><td>P</td><td><strong>NL</strong></td><td>Nghiêng trái + văng trái $\rightarrow$ Ưu tiên sống còn là cứu góc nghiêng, xuất lực NL.</td></tr>
+                  <tr><td><strong>R03</strong></td><td>N</td><td>N</td><td>P</td><td>N</td><td><strong>NL</strong></td><td>Dù xe lệch phải, góc lắc vẫn đang ngã trái $\rightarrow$ Xuất lực NL để hứng trọng tâm.</td></tr>
+                  <tr><td><strong>R04</strong></td><td>N</td><td>N</td><td>P</td><td>P</td><td><strong>NM</strong></td><td>Xe đang ở bên phải và trôi sang phải $\rightarrow$ Xe còn dư địa, dùng lực âm vừa ($-7\text{N}$) để chống xốc.</td></tr>
+                  <tr><td><strong>R05</strong></td><td>N</td><td>P</td><td>N</td><td>N</td><td><strong>NM</strong></td><td>Lệch trái nhưng <em>đang tự vung về bên phải</em> ($\dot{\theta} > 0$) $\rightarrow$ Giảm xuống NM để hãm êm.</td></tr>
+                  <tr><td><strong>R06</strong></td><td>N</td><td>P</td><td>N</td><td>P</td><td><strong>NM</strong></td><td>Con lắc tự hồi về, xe hướng về tâm ray $\rightarrow$ Dùng lực vừa NM.</td></tr>
+                  <tr><td><strong>R07</strong></td><td>N</td><td>P</td><td>P</td><td>N</td><td><strong>NM</strong></td><td>Con lắc tự hồi về, xe bên phải $\rightarrow$ Duy trì lực âm nhẹ để triệt dao động.</td></tr>
+                  <tr><td><strong>R08</strong></td><td>N</td><td>P</td><td>P</td><td>P</td><td><strong>NM</strong></td><td>Con lắc tự hồi về, xe lệch phải $\rightarrow$ Lực âm vừa đủ cân bằng cả hai.</td></tr>
+                  <tr><td><strong>R09</strong></td><td>P</td><td>N</td><td>N</td><td>N</td><td><strong>PM</strong></td><td>Lệch phải nhưng <em>đang tự vung về bên trái</em> ($\dot{\theta} < 0$) $\rightarrow$ Dùng lực dương vừa ($+7\text{N}$) đón đầu.</td></tr>
+                  <tr><td><strong>R10</strong></td><td>P</td><td>N</td><td>N</td><td>P</td><td><strong>PM</strong></td><td>Con lắc tự quay về, xe chạy phải $\rightarrow$ Đón nhẹ bằng PM.</td></tr>
+                  <tr><td><strong>R11</strong></td><td>P</td><td>N</td><td>P</td><td>N</td><td><strong>PM</strong></td><td>Con lắc tự quay về $\rightarrow$ PM.</td></tr>
+                  <tr><td><strong>R12</strong></td><td>P</td><td>N</td><td>P</td><td>P</td><td><strong>PM</strong></td><td>Con lắc tự quay về, xe lệch phải $\rightarrow$ Lực dương vừa giúp con lắc đứng thẳng không bị giật.</td></tr>
+                  <tr><td><strong>R13</strong></td><td>P</td><td>P</td><td>N</td><td>N</td><td><strong>PL</strong></td><td>Nghiêng phải + văng mạnh sang phải $\rightarrow$ Bơm hết ga dương ($+10\text{N}$) để luồn xe đỡ lấy.</td></tr>
+                  <tr><td><strong>R14</strong></td><td>P</td><td>P</td><td>N</td><td>P</td><td><strong>PL</strong></td><td>Ngã phải + văng phải $\rightarrow$ Xuất lực dương cực đại PL để đuổi kịp tốc độ đổ.</td></tr>
+                  <tr><td><strong>R15</strong></td><td>P</td><td>P</td><td>P</td><td>N</td><td><strong>PL</strong></td><td>Ngã phải + văng phải, dù xe gần biên phải vẫn ưu tiên cứu góc nghiêng trước.</td></tr>
+                  <tr><td><strong>R16</strong></td><td>P</td><td>P</td><td>P</td><td>P</td><td><strong>PL</strong></td><td>Khẩn cấp cực đại bên phải: Cả 4 trạng thái đều dương $\rightarrow$ Đạp hết ga dương ($+10\text{N}$).</td></tr>
                 </tbody>
               </table>
             </div>
@@ -520,319 +489,53 @@ disp('=== ĐÃ XÂY DỰNG VÀ LƯU THÀNH CÔNG cartpole_16rules.fis! ===');</c
 
           <!-- SECTION 5 -->
           <section id="sec-simulink-wiring">
-            <h2><span class="h2-badge">PHẦN 5</span> Hướng Dẫn Xây Dựng Mô Hình Từ Đầu Trong Simulink (BOM & Cấu Hình & Nối Dây)</h2>
+            <h2><span class="h2-badge">PHẦN 5</span> Đấu Nối Sơ Đồ Hoàn Chỉnh Trong Simulink (full_pendulum_assem.slx)</h2>
 
             <p>
-              Đây là phần trọng tâm giúp bạn tự tay dựng nên toàn bộ mô hình mà không cần mò mẫm. Chúng ta sẽ trả lời chính xác 4 câu hỏi:
-              <strong>1. Lấy những khối nào ra? (BOM)</strong>, 
-              <strong>2. Khối đó nằm ở thư viện nào?</strong>, 
-              <strong>3. Cần cấu hình (config) thông số gì?</strong>, và 
-              <strong>4. Nối dây khối nào với khối nào?</strong>.
+              Sau khi đã có mô hình cơ học và tệp cấu hình mờ, chúng ta tiến hành đấu nối sơ đồ ở tầng Root như thể hiện trong <strong>Hình 5</strong>:
             </p>
 
             <!-- HÌNH 5 -->
             <div class="figure-card">
               <img src="assets/images/posts/fuzzy-pendulum/05_simulink_fuzzy_system_root.png" alt="Sơ đồ khối Simulink toàn cảnh với Fuzzy Controller" class="figure-img">
               <div class="figure-caption">
-                <strong>Hình 5:</strong> Bản đồ đấu nối hoàn chỉnh ở tầng Root của mô hình <code>full_pendulum_assem.slx</code>.
+                <strong>Hình 5:</strong> Sơ đồ đấu nối hoàn chỉnh ở tầng Root của mô hình <code>full_pendulum_assem.slx</code>.
               </div>
             </div>
 
-            <h3>5.1 Bảng Kê Toàn Bộ Khối Cần Lấy Ra (Simulink Bill of Materials - BOM)</h3>
-            <p>
-              <em>Mẹo nhanh:</em> Thay vì mở Library Browser, bạn chỉ cần <strong>nhấp đúp chuột trái vào bất kỳ vị trí trống nào trên Canvas của Simulink</strong>, gõ đúng tên khối dưới đây và nhấn Enter!
-            </p>
-
-            <div class="table-wrap">
-              <table class="tech-table">
-                <thead>
-                  <tr>
-                    <th>STT</th>
-                    <th>Tên khối hiển thị</th>
-                    <th>Đường dẫn Thư viện (Library Path)</th>
-                    <th>SL</th>
-                    <th>Mục đích sử dụng</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><strong>1</strong></td>
-                    <td><code>Subsystem</code> (Cơ hệ)</td>
-                    <td>Sinh ra từ lệnh <code>smimport('full_pendulum_assem.xml')</code></td>
-                    <td>1</td>
-                    <td>Chứa toàn bộ cơ cấu xe trượt, con lắc và ray Simscape Multibody.</td>
-                  </tr>
-                  <tr>
-                    <td><strong>2</strong></td>
-                    <td><code>MATLAB Function</code></td>
-                    <td><code>Simulink / User-Defined Functions</code></td>
-                    <td>1</td>
-                    <td>Đặt tên là <code>Norm Theta</code>: chuẩn hóa góc quay về $[-\pi, +\pi]$.</td>
-                  </tr>
-                  <tr>
-                    <td><strong>3</strong></td>
-                    <td><code>Mux</code></td>
-                    <td><code>Simulink / Signal Routing</code></td>
-                    <td>1</td>
-                    <td>Ghép 4 tín hiệu đơn lẻ $[\theta, \dot{\theta}, x, \dot{x}]$ thành 1 vector 4 chiều.</td>
-                  </tr>
-                  <tr>
-                    <td><strong>4</strong></td>
-                    <td><code>Fuzzy Logic Controller</code></td>
-                    <td><code>Fuzzy Logic Toolbox</code></td>
-                    <td>1</td>
-                    <td>Trái tim điều khiển: suy diễn mờ Mamdani và tính lực $F$.</td>
-                  </tr>
-                  <tr>
-                    <td><strong>5</strong></td>
-                    <td><code>Manual Switch</code></td>
-                    <td><code>Simulink / Signal Routing</code></td>
-                    <td>2</td>
-                    <td>Công tắc gạt bằng tay: 1 cái để đóng/ngắt lực $F$, 1 cái để kích hoạt nhiễu.</td>
-                  </tr>
-                  <tr>
-                    <td><strong>6</strong></td>
-                    <td><code>Constant</code></td>
-                    <td><code>Simulink / Sources</code></td>
-                    <td>2</td>
-                    <td>Tạo giá trị hằng số 0 (nối vào nhánh ngắt của 2 Manual Switch).</td>
-                  </tr>
-                  <tr>
-                    <td><strong>7</strong></td>
-                    <td><code>Step</code></td>
-                    <td><code>Simulink / Sources</code></td>
-                    <td>2</td>
-                    <td>Tạo bước nhảy thời gian (Step 1 và Step 2) để tạo xung nhiễu vuông.</td>
-                  </tr>
-                  <tr>
-                    <td><strong>8</strong></td>
-                    <td><code>Sum</code> (hoặc <code>Add</code>)</td>
-                    <td><code>Simulink / Math Operations</code></td>
-                    <td>1</td>
-                    <td>Trừ 2 xung Step (`+ -`) để tạo xung nhiễu lực có độ rộng hẹp.</td>
-                  </tr>
-                  <tr>
-                    <td><strong>9</strong></td>
-                    <td><code>Scope</code></td>
-                    <td><code>Simulink / Sinks</code></td>
-                    <td>3</td>
-                    <td>Hiển thị đồ thị: 1 cái cho góc Theta, 1 cái cho 4 trạng thái, 1 cái sau Mux.</td>
-                  </tr>
-                  <tr>
-                    <td><strong>10</strong></td>
-                    <td><code>Simulink-PS Converter</code></td>
-                    <td><code>Simscape / Utilities</code></td>
-                    <td>2</td>
-                    <td>Đặt bên trong Subsystem: Chuyển tín hiệu số Simulink sang biến vật lý Simscape.</td>
-                  </tr>
-                  <tr>
-                    <td><strong>11</strong></td>
-                    <td><code>PS-Simulink Converter</code></td>
-                    <td><code>Simscape / Utilities</code></td>
-                    <td>4</td>
-                    <td>Đặt bên trong Subsystem: Chuyển biến cảm biến Simscape sang tín hiệu Simulink.</td>
-                  </tr>
-                  <tr>
-                    <td><strong>12</strong></td>
-                    <td><code>Bias</code> (hoặc <code>Add</code>)</td>
-                    <td><code>Simulink / Math Operations</code></td>
-                    <td>1</td>
-                    <td>Đặt bên trong <code>pole_1_RIGID</code>: Cộng thêm $\pi$ ($+3.14159$) vào góc $q$.</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <h3>5.2 Hướng Dẫn Cấu Hình (Config) Chi Tiết Từng Khối — "Click Đúp Chỉnh Gì?"</h3>
-            <p>
-              Sau khi lôi các khối ra canvas, bạn <strong>bắt buộc phải nhấp đúp</strong> vào các khối sau để cài đặt đúng tham số hoạt động:
-            </p>
-
+            <h3>Chi tiết từng thành phần đấu nối:</h3>
             <ol>
               <li>
-                <strong>Cấu hình Khối <code>Mux</code>:</strong>
-                <ul>
-                  <li>Click đúp vào khối Mux.</li>
-                  <li>Tại ô <strong>Number of inputs</strong>: Sửa từ <code>2</code> thành <code>4</code>.</li>
-                  <li>Bấm <em>Apply $\rightarrow$ OK</em>. Khối Mux sẽ mở rộng ra 4 cổng đón tín hiệu.</li>
-                </ul>
-              </li>
-
-              <li>
-                <strong>Cấu hình Khối <code>Norm Theta</code> (MATLAB Function):</strong>
-                <ul>
-                  <li>Click đúp vào khối để mở cửa sổ soạn thảo code MATLAB.</li>
-                  <li>Xóa toàn bộ nội dung mặc định và dán đoạn mã sau:
-                    <div class="code-box">
-                      <div class="code-header">
-                        <span class="code-lang">MATLAB Function: Norm Theta</span>
-                      </div>
-                      <pre class="code-pre"><code>function theta_norm = fcn(theta)
-% Chuẩn hóa góc về [-pi, +pi] bằng hàm atan2(sin, cos)
+                <strong>Khối MATLAB Function "Norm Theta":</strong><br>
+                Tín hiệu góc lắc <code>&lt;angle&gt;</code> từ cơ hệ được dẫn qua một khối hàm MATLAB ngắn gọn:
+                <div class="code-box">
+                  <div class="code-header">
+                    <span class="code-lang">MATLAB Function: Norm Theta</span>
+                  </div>
+                  <pre class="code-pre"><code>function theta_norm = fcn(theta)
+% Chuẩn hóa góc về khoảng chính [-pi, +pi] tránh hiện tượng tích lũy góc quay
 theta_norm = atan2(sin(theta), cos(theta));</code></pre>
-                    </div>
-                  </li>
-                  <li>Nhấn <code>Ctrl + S</code> để lưu và đóng cửa sổ editor.</li>
-                </ul>
+                </div>
+                Hàm này bảo đảm góc luôn nằm chính xác trong miền $[-\pi, +\pi]\ \text{rad}$, giúp bộ Fuzzy hoạt động chính xác tuyệt đối mà không sợ tràn số khi con lắc xoay nhiều vòng.
               </li>
-
               <li>
-                <strong>Cấu hình Khối <code>Fuzzy Logic Controller</code>:</strong>
-                <ul>
-                  <li>Click đúp vào khối Fuzzy Logic Controller.</li>
-                  <li>Tại ô <strong>FIS name</strong>: Điền chính xác <code>'cartpole_16rules.fis'</code> (có cặp dấu nháy đơn, tệp này được sinh ra từ mục 4.4). Nếu biến <code>fis</code> đã có sẵn trong Workspace, bạn có thể gõ chữ <code>fis</code>.</li>
-                  <li>Mục <em>Defuzzification method</em>: Mặc định là <code>Centroid</code> (giữ nguyên).</li>
-                  <li>Bấm <em>Apply $\rightarrow$ OK</em>.</li>
-                </ul>
+                <strong>Khối ghép tín hiệu (Mux):</strong><br>
+                Ghép 4 tín hiệu trạng thái theo đúng thứ tự mà bộ Fuzzy đã thiết kế:
+                <code>Port 1: theta</code>, <code>Port 2: theta_dot (W)</code>, <code>Port 3: pos</code>, <code>Port 4: vel</code>.
               </li>
-
               <li>
-                <strong>Cấu hình Khớp Quay <code>Revolute Joint</code> (Bên trong <code>pole_1_RIGID</code>):</strong>
-                <ul>
-                  <li>Vào Subsystem $\rightarrow$ mở khối <code>pole_1_RIGID</code> $\rightarrow$ click đúp vào khối <strong>Revolute Joint</strong> (khớp màu xanh xám).</li>
-                  <li>Chuyển sang tab <strong>Actuation</strong>: Tại mục <em>Torque</em>, đổi từ <code>None</code> sang <code>Provided by Input</code> (để xuất hiện cổng nhận moment <code>t</code>).</li>
-                  <li>Chuyển sang tab <strong>Sensing</strong>: Tích chọn ô <code>Position</code> (sinh ra cổng góc <code>q</code>) và tích chọn ô <code>Velocity</code> (sinh ra cổng vận tốc góc <code>w</code>).</li>
-                  <li>Bấm <em>Apply $\rightarrow$ OK</em>.</li>
-                </ul>
+                <strong>Khối "Fuzzy Logic Controller":</strong><br>
+                Mở thư viện Simulink $\rightarrow$ <em>Fuzzy Logic Toolbox</em> $\rightarrow$ kéo khối <strong>Fuzzy Logic Controller</strong> vào. Click đúp vào khối và điền tên file FIS: <code>'cartpole_16rules.fis'</code> (hoặc điền tên biến workspace <code>fis</code>).
               </li>
-
               <li>
-                <strong>Cấu hình Khớp Trượt <code>Prismatic Joint</code> (Bên trong <code>cart_1_RIGID</code>):</strong>
-                <ul>
-                  <li>Mở khối <code>cart_1_RIGID</code> $\rightarrow$ click đúp vào khối <strong>Prismatic Joint</strong>.</li>
-                  <li>Tab <strong>Actuation</strong>: Tại mục <em>Force</em>, đổi từ <code>None</code> sang <code>Provided by Input</code> (sinh ra cổng nhận lực <code>f</code>).</li>
-                  <li>Tab <strong>Sensing</strong>: Tích chọn ô <code>Position</code> (sinh cổng vị trí <code>p</code>) và tích chọn ô <code>Velocity</code> (sinh cổng vận tốc <code>v</code>).</li>
-                  <li>Bấm <em>Apply $\rightarrow$ OK</em>.</li>
-                </ul>
+                <strong>Vòng phản hồi lực & Công tắc chuyển đổi (Manual Switch):</strong><br>
+                Ngõ ra lực <code>Force</code> được nối qua một khối <em>Manual Switch</em> trước khi đưa vào cổng <code>F in</code>. Điều này cho phép bạn dễ dàng bật/tắt bộ điều khiển bằng một cú click chuột khi đang chạy mô phỏng để kiểm tra ứng xử tự do của hệ.
               </li>
-
               <li>
-                <strong>Cấu hình Cụm Tạo Xung Nhiễu (<code>Step 1</code>, <code>Step 2</code> & <code>Sum</code>):</strong>
-                <ul>
-                  <li>Khối <code>Step 1</code>: Đặt <em>Step time</em> = <code>2.0</code>, <em>Initial value</em> = <code>0</code>, <em>Final value</em> = <code>2.0</code>.</li>
-                  <li>Khối <code>Step 2</code>: Đặt <em>Step time</em> = <code>2.2</code>, <em>Initial value</em> = <code>0</code>, <em>Final value</em> = <code>2.0</code>.</li>
-                  <li>Khối <code>Sum</code>: Tại ô <em>List of signs</em>, sửa thành <code>+-</code> (lấy Step 1 trừ Step 2 để tạo xung lực 2N kéo dài đúng 0.2 giây từ $t=2.0\text{s}$ đến $t=2.2\text{s}$).</li>
-                </ul>
-              </li>
-
-              <li>
-                <strong>Cấu hình Bộ Giải Toàn Mô Hình (Model Configuration Parameters):</strong>
-                <ul>
-                  <li>Trên thanh công cụ Simulink, nhấn <code>Ctrl + E</code> (hoặc bấm biểu tượng bánh răng <em>Model Settings</em>).</li>
-                  <li>Mục <strong>Solver selection</strong>:
-                    <ul>
-                      <li>Type: Chọn <code>Variable-step</code>.</li>
-                      <li>Solver: Chọn <code>ode23t (mod.stiff/Trapezoidal)</code> hoặc <code>ode15s</code> (bắt buộc đối với hệ cơ học Simscape stiff).</li>
-                    </ul>
-                  </li>
-                  <li>Mục <strong>Solver details</strong>:
-                    <ul>
-                      <li>Max step size: Đặt <code>1e-3</code> (hoặc <code>0.001</code>).</li>
-                      <li>Relative tolerance: Đặt <code>1e-4</code>.</li>
-                    </ul>
-                  </li>
-                  <li>Stop time: Đặt <code>10</code> giây. Bấm <em>Apply $\rightarrow$ OK</em>.</li>
-                </ul>
+                <strong>Cụm sinh nhiễu ngoại cảnh (Disturb Generator):</strong><br>
+                Sử dụng 2 khối <em>Step</em> trừ nhau qua khối <em>Sum (+ -)</em> để tạo ra xung lực va chạm (Pulse disturbance), sau đó đưa vào cổng <code>Disturb</code> để kiểm tra độ bền vững (robustness) của hệ thống.
               </li>
             </ol>
-
-            <h3>5.3 Bản Đồ Đấu Nối Dây Chi Tiết (Wiring Map: Cổng Nguồn $\rightarrow$ Cổng Đích)</h3>
-            <p>
-              Thực hiện nối các đường dây tín hiệu theo bảng ánh xạ sau. Hãy chắc chắn rằng bạn nối đúng thứ tự từng chân:
-            </p>
-
-            <div class="table-wrap">
-              <table class="tech-table">
-                <thead>
-                  <tr>
-                    <th>Tín hiệu</th>
-                    <th>Từ Khối Nguồn (Source Block & Port)</th>
-                    <th>Đến Khối Đích (Destination Block & Port)</th>
-                    <th>Ý nghĩa luồng dữ liệu</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><strong>Góc thô</strong></td>
-                    <td>Subsystem cơ hệ $\rightarrow$ Port <code>&lt;angle&gt;</code></td>
-                    <td>Khối <code>Norm Theta</code> $\rightarrow$ Port vào duy nhất</td>
-                    <td>Đưa góc xoay thô vào khối chuẩn hóa radian.</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Góc $\theta$</strong></td>
-                    <td>Khối <code>Norm Theta</code> $\rightarrow$ Port ra <code>theta_norm</code></td>
-                    <td>Khối <code>Mux</code> $\rightarrow$ <strong>Port vào 1 (Trên cùng)</strong></td>
-                    <td>Đưa góc lệch thực tế vào kênh 1 của bộ Fuzzy.</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Vận tốc góc $\dot{\theta}$</strong></td>
-                    <td>Subsystem cơ hệ $\rightarrow$ Port <code>&lt;W&gt;</code></td>
-                    <td>Khối <code>Mux</code> $\rightarrow$ <strong>Port vào 2</strong></td>
-                    <td>Đưa vận tốc quay con lắc vào kênh 2.</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Vị trí xe $x$</strong></td>
-                    <td>Subsystem cơ hệ $\rightarrow$ Port <code>&lt;pos&gt;</code></td>
-                    <td>Khối <code>Mux</code> $\rightarrow$ <strong>Port vào 3</strong></td>
-                    <td>Đưa tọa độ xe trên ray vào kênh 3.</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Vận tốc xe $\dot{x}$</strong></td>
-                    <td>Subsystem cơ hệ $\rightarrow$ Port <code>&lt;vel&gt;</code></td>
-                    <td>Khối <code>Mux</code> $\rightarrow$ <strong>Port vào 4 (Dưới cùng)</strong></td>
-                    <td>Đưa vận tốc trượt của xe vào kênh 4.</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Vector 4 chiều</strong></td>
-                    <td>Khối <code>Mux</code> $\rightarrow$ Port ngõ ra duy nhất</td>
-                    <td>Khối <code>Fuzzy Logic Controller</code> $\rightarrow$ Port ngõ vào</td>
-                    <td>Bơm vector $[\theta, \dot{\theta}, x, \dot{x}]$ vào bộ suy diễn mờ.</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Lực tính toán</strong></td>
-                    <td>Khối <code>Fuzzy Logic Controller</code> $\rightarrow$ Port ra</td>
-                    <td>Khối <code>Manual Switch 1</code> $\rightarrow$ Cổng nhánh trên</td>
-                    <td>Tín hiệu lực điều khiển sẵn sàng đưa về cơ hệ.</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Lực 0 (Ngắt)</strong></td>
-                    <td>Khối <code>Constant 1</code> (Value = 0)</td>
-                    <td>Khối <code>Manual Switch 1</code> $\rightarrow$ Cổng nhánh dưới</td>
-                    <td>Cho phép ngắt lực điều khiển khi muốn xem dao động tự do.</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Lực điều khiển $F$</strong></td>
-                    <td>Khối <code>Manual Switch 1</code> $\rightarrow$ Port ngõ ra</td>
-                    <td>Subsystem cơ hệ $\rightarrow$ Port <code>F in</code></td>
-                    <td>Đẩy lực $F$ vào động cơ chấp hành của xe trượt.</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Xung nhiễu</strong></td>
-                    <td>Khối <code>Sum</code> (`+-` từ Step 1 & Step 2)</td>
-                    <td>Khối <code>Manual Switch 2</code> $\rightarrow$ Cổng nhánh trên</td>
-                    <td>Tín hiệu xung va đập mô phỏng ngoại lực cản.</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Nhiễu 0</strong></td>
-                    <td>Khối <code>Constant 2</code> (Value = 0)</td>
-                    <td>Khối <code>Manual Switch 2</code> $\rightarrow$ Cổng nhánh dưới</td>
-                    <td>Trạng thái chạy bình thường không có nhiễu.</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Ngoại lực nhiễu</strong></td>
-                    <td>Khối <code>Manual Switch 2</code> $\rightarrow$ Port ngõ ra</td>
-                    <td>Subsystem cơ hệ $\rightarrow$ Port <code>Disturb</code></td>
-                    <td>Tác động xung nhiễu vào chốt xoay con lắc.</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Giám sát đồ thị</strong></td>
-                    <td>Các cổng <code>theta</code>, <code>W</code>, <code>pos</code>, <code>vel</code></td>
-                    <td>Các khối <code>Scope</code> tương ứng</td>
-                    <td>Theo dõi trực quan thời gian thực các đáp ứng động học.</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
           </section>
 
           <!-- SECTION 6 -->
@@ -938,4 +641,3 @@ theta_norm = atan2(sin(theta), cos(theta));</code></pre>
   <script src="assets/js/main.js"></script>
 </body>
 </html>
-
