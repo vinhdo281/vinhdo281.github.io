@@ -145,10 +145,14 @@
         return;
       }
 
+      const isInPosts = window.location.pathname.includes('/posts/') || !!document.querySelector('link[href*="../../assets"]');
+      const urlPrefix = isInPosts ? '../../' : '';
+
       searchResults.innerHTML = filtered.map(item => {
         const title = lang === 'vi' ? item.title_vi : item.title_en;
+        const targetUrl = (item.url.startsWith('http') || item.url.startsWith('/')) ? item.url : (urlPrefix + item.url);
         return `
-          <a class="search-result-item" href="${item.url}">
+          <a class="search-result-item" href="${targetUrl}">
             <div class="search-result-title">${title}</div>
             <div class="search-result-meta">${item.category}</div>
           </a>

@@ -1,0 +1,643 @@
+﻿<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hướng Dẫn Từ A-Z: Điều Khiển Mờ (Fuzzy Logic) Cho Con Lắc Ngược Trên Simscape Multibody | Cyber-Tech Blog</title>
+  <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <!-- KaTeX CSS & JS for Math Equations -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+</head>
+<body data-lang="vi">
+
+  <!-- TOP MASTHEAD -->
+  <header class="masthead">
+    <div class="masthead__container">
+      <div class="masthead__brand">
+        <svg class="brand-icon" viewBox="0 0 32 32" fill="none">
+          <circle cx="16" cy="16" r="11" stroke="#00f2fe" stroke-width="2" stroke-dasharray="4 2"/>
+          <polygon points="16,8 23,20 9,20" stroke="#38bdf8" stroke-width="1.5" fill="rgba(56, 189, 248, 0.2)"/>
+          <circle cx="16" cy="16" r="2.5" fill="#00f2fe"/>
+        </svg>
+        <span class="lang-vi">BÀI VIẾT KỸ THUẬT</span>
+        <span class="lang-en">TECHNICAL ARTICLES</span>
+        <span class="brand-badge">BLOG</span>
+      </div>
+
+      <nav class="masthead__nav">
+        <ul class="nav-links">
+          <li><a href="../../index.html"><span class="lang-vi">Trang chủ</span><span class="lang-en">Home</span></a></li>
+          <li><a href="../../research.html"><span class="lang-vi">Nghiên cứu</span><span class="lang-en">Research</span></a></li>
+          <li><a href="../../publications.html"><span class="lang-vi">Bài báo</span><span class="lang-en">Publications</span></a></li>
+          <li><a href="../../portfolio.html"><span class="lang-vi">Dự án</span><span class="lang-en">Projects</span></a></li>
+          <li><a href="../../blog.html" class="active"><span class="lang-vi">Bài viết</span><span class="lang-en">Blog</span></a></li>
+          <li><a href="../../cv.html"><span>CV</span></a></li>
+        </ul>
+
+        <div class="masthead__tools">
+          <button id="site-search-btn" class="tool-btn" title="Tìm kiếm (Ctrl+K)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span class="kbd-shortcut">Ctrl K</span>
+          </button>
+          <button id="lang-toggle-btn" class="tool-btn" title="Đổi ngôn ngữ">VI</button>
+          <button id="theme-toggle-btn" class="tool-btn" title="Chuyển chế độ sáng/tối">
+            <span id="theme-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            </span>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- APP CONTAINER -->
+  <div class="app-container">
+    
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="profile-card">
+        <div class="avatar-wrapper">
+          <div class="avatar-pulse-ring"></div>
+          <img src="../../assets/images/1.jpg" alt="Avatar" class="avatar-img">
+        </div>
+        <div class="author-info">
+          <h2 class="author-name">
+            <span class="lang-vi">Kỹ Sư Cơ Điện Tử</span>
+            <span class="lang-en">Robotics Engineer</span>
+          </h2>
+          <div class="author-handle">@vinhdo281 · HUST</div>
+          <div class="author-status">
+            <span class="status-dot"></span>
+            <span class="lang-vi">POSTS: 1</span>
+            <span class="lang-en">POSTS: 1</span>
+          </div>
+          <p class="author-bio lang-vi">
+            Tập trung nghiên cứu lý thuyết điều khiển tự động, thuật toán mờ thông minh, Simscape Multibody và MuJoCo physics.
+          </p>
+          <p class="author-bio lang-en">
+            Specializing in intelligent control, fuzzy logic systems, Simscape Multibody robotics and MuJoCo physics.
+          </p>
+        </div>
+        <div class="sidebar-divider"></div>
+
+        <div class="contact-location">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>Hà Nội, Việt Nam</span>
+        </div>
+
+        <!-- Tech Social Icons Dock -->
+        <div class="social-icons-dock">
+          <a href="https://github.com/vinhdo281" target="_blank" rel="noopener" class="tech-icon-btn" data-tooltip="GitHub" aria-label="GitHub">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/in/vinhdo281" target="_blank" rel="noopener" class="tech-icon-btn" data-tooltip="LinkedIn" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="https://www.facebook.com/AlexDo281" target="_blank" rel="noopener" class="tech-icon-btn" data-tooltip="Facebook" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="mailto:dohieuvinh@gmail.com" class="tech-icon-btn" data-tooltip="Email" aria-label="Email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN ARTICLE CONTENT -->
+    <main class="main-content">
+      <div class="article-container">
+
+        <!-- ARTICLE HERO -->
+        <article class="article-hero">
+          <nav class="article-breadcrumb">
+            <a href="../../index.html">Home</a>
+            <span>/</span>
+            <a href="../../blog.html">Blog</a>
+            <span>/</span>
+            <span>Simscape & Fuzzy Control</span>
+          </nav>
+          
+          <h1 class="article-title">
+            Hướng Dẫn Từ A–Z: Thiết Kế Bộ Điều Khiển Mờ (Fuzzy Logic) Cho Con Lắc Ngược Trên Simscape Multibody & Simulink
+          </h1>
+          
+          <div class="article-meta">
+            <span class="article-meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              08 Tháng 10, 2026
+            </span>
+            <span class="article-meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Nhóm Cơ Điện Tử · HUST
+            </span>
+            <span class="article-meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              18 Phút Đọc · Thực Hành Toàn Diện
+            </span>
+            <span class="card-type">SIMSCAPE // FUZZY MAMDANI</span>
+          </div>
+        </article>
+
+        <!-- TABLE OF CONTENTS -->
+        <div class="article-toc">
+          <div class="article-toc-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            NỘI DUNG BÀI HƯỚNG DẪN (TOC)
+          </div>
+          <ul class="article-toc-list">
+            <li><a href="#sec-intro">1. Đặt Vấn Đề: Tại Sao Chọn Fuzzy Cho Con Lắc Ngược?</a></li>
+            <li><a href="#sec-simscape-import">2. Hướng Dẫn Add File CAD (.xml) & Database (.m) Bằng Lệnh Simscape</a></li>
+            <li><a href="#sec-block-analysis">3. Mổ Xẻ Chi Tiết Từng Khối Cơ Quan (Tham Chiếu Ảnh Thực Tế)</a></li>
+            <li><a href="#sec-fuzzy-design">4. Thiết Kế Bộ Mờ 16 Luật Từ A-Z Với MATLAB (Dựa Trên Fuzzy_moi.mlx)</a></li>
+            <li><a href="#sec-simulink-wiring">5. Đấu Nối Sơ Đồ Hoàn Chỉnh Trong Simulink (full_pendulum_assem.slx)</a></li>
+            <li><a href="#sec-results">6. Mô Phỏng & Đánh Giá Đáp Ứng Tại Góc Lớn 20° (Zero Cart Drift)</a></li>
+            <li><a href="#sec-troubleshooting">7. Checklist Gỡ Lỗi & Kinh Nghiệm Thực Tế Cho Người Mới</a></li>
+          </ul>
+        </div>
+
+        <!-- ARTICLE BODY -->
+        <div class="article-content">
+
+          <!-- SECTION 1 -->
+          <section id="sec-intro">
+            <h2><span class="h2-badge">PHẦN 1</span> Đặt Vấn Đề: Tại Sao Chọn Fuzzy Cho Con Lắc Ngược?</h2>
+            
+            <p>
+              Hệ thống con lắc ngược trên xe trượt (<strong>Inverted Pendulum on a Cart</strong>) là bài toán kinh điển trong ngành Điều khiển Tự động & Cơ điện tử. Đây là một <strong>hệ thống thiếu cơ cấu chấp hành (Underactuated System)</strong> tiêu biểu:
+            </p>
+            <ul>
+              <li><strong>2 Bậc tự do (2-DOF):</strong> Tọa độ tịnh tiến của thân xe $x(t)$ và góc nghiêng của thanh lắc $\theta(t)$.</li>
+              <li><strong>1 Ngõ vào điều khiển duy nhất:</strong> Lực đẩy ngang $F(t)$ tác dụng trực tiếp lên thân xe. Khớp quay con lắc hoàn toàn tự do (passive joint, không có động cơ).</li>
+            </ul>
+
+            <div class="callout callout-warning">
+              <span class="callout-icon">⚠️</span>
+              <div>
+                <strong>Cái bẫy của các bộ điều khiển tuyến tính (PID / LQR):</strong><br>
+                Khi thiết kế PID hoặc LQR, chúng ta bắt buộc phải tuyến tính hóa hệ phương trình động lực quanh điểm cân bằng đứng thẳng $\theta \approx 0$ dựa trên giả thiết góc nhỏ: $\sin\theta \approx \theta$, $\cos\theta \approx 1$ và $\dot{\theta}^2 \approx 0$.<br>
+                Tuy nhiên, trong thực tế khi góc lệch ban đầu lớn ($\theta_0 \ge 15^\circ - 20^\circ$) hoặc khi hệ thống chịu lực va chạm mạnh, các đại lượng phi tuyến bùng nổ, ma trận Jacobi cố định mất hiệu lực khiến con lắc bị "văng" ra ngoài vùng thu hút (*basin of attraction*) và đổ gục hoàn toàn!
+              </div>
+            </div>
+
+            <p>
+              <strong>Fuzzy Logic Controller (Bộ điều khiển mờ Mamdani)</strong> giải quyết triệt để rào cản này bằng cách mô phỏng trực giác phản xạ của con người:
+            </p>
+            <ul>
+              <li>Không cần giải phương trình vi phân phi tuyến phức tạp hay xấp xỉ tuyến tính hóa.</li>
+              <li>Tự động tăng cường lực cực đại khi góc ngã nguy cấp, đồng thời nhẹ nhàng giảm ga khi con lắc đang tự đà hồi hương.</li>
+              <li>Kết hợp khéo léo cả 4 biến trạng thái $(\theta, \dot{\theta}, x, \dot{x})$ để con lắc đứng thẳng chuẩn xác và xe quay về đúng tâm ray, triệt tiêu hiện tượng trôi tự do (<strong>Zero Cart Drift</strong>).</li>
+            </ul>
+          </section>
+
+          <!-- SECTION 2 -->
+          <section id="sec-simscape-import">
+            <h2><span class="h2-badge">PHẦN 2</span> Hướng Dẫn Add File CAD (.xml) & Database (.m) Bằng Lệnh Simscape</h2>
+
+            <p>
+              Thay vì phải ghép từng khối hình học thô sơ bằng tay, trong các dự án thực tế tại HUST, mô hình cơ khí được thiết kế chuẩn xác từng milimet từ SolidWorks/Autodesk Inventor, sau đó xuất ra thông qua công cụ <strong>Simscape Multibody Link</strong> để thu được 2 tệp tin cốt lõi:
+            </p>
+            <ol>
+              <li><code>full_pendulum_assem.xml</code>: Chứa toàn bộ cây cấu trúc hình học, các cụm khớp nối (Prismatic Joint, Revolute Joint) và các phép biến đổi không gian (RigidTransform).</li>
+              <li><code>full_pendulum_assem_DataFile3.m</code>: Database chứa các giá trị số thực nghiệm gồm khối lượng ($M, m$), tọa độ khối tâm ($CoM$), và ma trận mô-men quán tính ($MoI$) được lưu trữ trong biến cấu trúc <code>smiData</code>.</li>
+            </ol>
+
+            <div class="callout callout-info">
+              <span class="callout-icon">💡</span>
+              <div>
+                <strong>Làm sao để Add 2 file này vào MATLAB/Simulink?</strong><br>
+                Bạn không cần mở từng file bằng tay, hãy sử dụng trực tiếp lệnh chuyên dụng của Simscape Multibody trong Command Window của MATLAB như hướng dẫn bên dưới.
+              </div>
+            </div>
+
+            <h3>Quy trình 2 bước thực hiện từ Command Window của MATLAB:</h3>
+
+            <div class="code-box">
+              <div class="code-header">
+                <span class="code-lang">MATLAB Command Window</span>
+                <button class="code-copy-btn" onclick="navigator.clipboard.writeText(this.closest('.code-box').querySelector('pre').innerText); alert('Đã sao chép lệnh MATLAB!');">Copy Code</button>
+              </div>
+              <pre class="code-pre"><code>%% BƯỚC 1: Đặt đường dẫn làm việc chứa file .xml và .m
+cd('d:\HUST\Site'); % Thay bằng thư mục chứa file của bạn
+
+%% BƯỚC 2: Dùng lệnh smimport để tự động sinh Model Simulink từ XML
+% Lệnh này sẽ phân tích tệp assembly XML và tạo ra một sơ đồ khối Simscape hoàn chỉnh
+smimport('full_pendulum_assem.xml');
+
+%% BƯỚC 3: Nạp toàn bộ dữ liệu vật lý (khối lượng, tâm khối, quán tính) vào Workspace
+% RẤT QUAN TRỌNG: Nếu không chạy file này, các khối Solid sẽ báo lỗi 'Undefined variable smiData'!
+run('full_pendulum_assem_DataFile3.m');
+
+disp('=== IMPORT THÀNH CÔNG! BIẾN smiData ĐÃ SẴN SÀNG TRONG WORKSPACE ===');</code></pre>
+            </div>
+
+            <p>
+              Khi lệnh <code>smimport</code> thực thi xong, Simulink sẽ tự động bật lên một cửa sổ mô hình mới chứa một hệ thống con (Subsystem) mang cấu trúc vật lý thực tế của cụm cơ hệ con lắc.
+            </p>
+          </section>
+
+          <!-- SECTION 3 -->
+          <section id="sec-block-analysis">
+            <h2><span class="h2-badge">PHẦN 3</span> Mổ Xẻ Chi Tiết Từng Khối Cơ Quan (Tham Chiếu Ảnh Thực Tế)</h2>
+
+            <p>
+              Để người mới bắt đầu dễ dàng hình dung kiến trúc phân lớp, chúng ta sẽ lần lượt bóc tách từng khối bên trong mô hình đã được trích xuất từ <code>full_pendulum_assem.slx</code>:
+            </p>
+
+            <!-- HÌNH 1 -->
+            <div class="figure-card">
+              <img src="../../assets/images/posts/fuzzy-pendulum/01_cad_subsystem_overview.png" alt="Tổng quan Subsystem cơ quan Simscape" class="figure-img">
+              <div class="figure-caption">
+                <strong>Hình 1:</strong> Tổng quan Subsystem cơ quan con lắc sau khi nhập khẩu bằng lệnh <code>smimport</code>.
+              </div>
+            </div>
+
+            <p>
+              Nhìn vào <strong>Hình 1</strong>, Subsystem trung tâm bao gồm:
+            </p>
+            <ul>
+              <li><strong>Cổng vào (Inputs):</strong> Cổng <code>F in</code> nhận lực tác động từ bộ điều khiển; cổng <code>Disturb</code> nhận lực/mô-men nhiễu tác động lên cơ hệ.</li>
+              <li><strong>Cổng ra (Outputs):</strong> Xuất ra 4 trạng thái cảm biến: <code>angle</code> (góc lắc thô), <code>&lt;W&gt;</code> (vận tốc góc), <code>&lt;pos&gt;</code> (vị trí xe), <code>&lt;vel&gt;</code> (vận tốc xe).</li>
+              <li><strong>Khối nền tảng:</strong> Khối <code>World</code> (hệ quy chiếu tĩnh vũ trụ), khối <code>Solver Configuration</code> (cấu hình giải số Simscape), và khối <code>Transform</code> nối giữa ray và thân xe.</li>
+            </ul>
+
+            <!-- HÌNH 2 -->
+            <div class="figure-card">
+              <img src="../../assets/images/posts/fuzzy-pendulum/02_pole_rigid_joint.png" alt="Chi tiết khối con lắc pole_1_RIGID" class="figure-img">
+              <div class="figure-caption">
+                <strong>Hình 2:</strong> Chi tiết bên trong khối thanh lắc <code>pole_1_RIGID</code> với khớp quay Revolute Joint.
+              </div>
+            </div>
+
+            <p>
+              Trong <strong>Hình 2 (pole_1_RIGID)</strong>, đây là nơi định nghĩa chuyển động quay của thanh lắc:
+            </p>
+            <ul>
+              <li><strong>Khối Solid:</strong> Đại diện cho thanh lắc vật lý, nhận tham số quán tính từ <code>smiData.Solid(1)</code> ($m = 0.01963\text{ kg}$, $I_{\text{com}} = 1.9733 \times 10^{-4}\text{ kg}\cdot\text{m}^2$).</li>
+              <li><strong>Khớp Revolute Joint:</strong> Nối giữa thân xe (Base) và thanh lắc (Follower). Cổng <code>q</code> đo góc quay, cổng <code>w</code> đo vận tốc góc. Cổng điều khiển mô-men <code>t</code> nhận tín hiệu nhiễu từ cổng <code>Disturb</code> qua khối <em>Simulink-PS Converter</em>.</li>
+              <li><strong>Khối cộng <code>+pi</code>:</strong> Điểm đặc biệt quan trọng! Mặc định trong CAD, con lắc được vẽ ở tư thế buông thõng tự nhiên hướng xuống đất ($-\pi$). Khối cộng <code>+pi</code> này có nhiệm vụ tịnh tiến hệ tọa độ để vị trí <strong>thẳng đứng hướng lên trời</strong> trở thành điểm gốc $0\text{ rad}$.</li>
+            </ul>
+
+            <!-- HÌNH 3 -->
+            <div class="figure-card">
+              <img src="../../assets/images/posts/fuzzy-pendulum/03_cart_prismatic_joint.png" alt="Chi tiết khối xe trượt cart_1_RIGID" class="figure-img">
+              <div class="figure-caption">
+                <strong>Hình 3:</strong> Chi tiết bên trong khối xe trượt <code>cart_1_RIGID</code> với khớp tịnh tiến Prismatic Joint.
+              </div>
+            </div>
+
+            <p>
+              Trong <strong>Hình 3 (cart_1_RIGID)</strong>:
+            </p>
+            <ul>
+              <li><strong>Khối Solid:</strong> Thân xe nhôm trượt, tham số từ <code>smiData.Solid(2)</code> ($M = 0.05912\text{ kg}$).</li>
+              <li><strong>Khớp Prismatic Joint:</strong> Giới hạn chuyển động tịnh tiến dọc trục ray. Cổng lực đẩy <code>f</code> nhận lực $F$ từ bộ điều khiển. Các cổng cảm biến <code>p</code> và <code>v</code> lần lượt đo tọa độ vị trí xe ($pos$) và vận tốc xe ($vel$) rồi chuyển đổi qua khối <em>PS-Simulink Converter</em> để đưa ra ngoài.</li>
+            </ul>
+
+            <!-- HÌNH 4 -->
+            <div class="figure-card">
+              <img src="../../assets/images/posts/fuzzy-pendulum/04_worldframe_rail.png" alt="Chi tiết giá ray worldframe_1_RIGID" class="figure-img">
+              <div class="figure-caption">
+                <strong>Hình 4:</strong> Chi tiết khối giá đỡ / ray trượt tĩnh <code>worldframe_1_RIGID</code> gắn cố định với hệ quy chiếu thế giới.
+              </div>
+            </div>
+          </section>
+
+          <!-- SECTION 4 -->
+          <section id="sec-fuzzy-design">
+            <h2><span class="h2-badge">PHẦN 4</span> Thiết Kế Bộ Mờ 16 Luật Từ A-Z Với MATLAB (Dựa Trên Fuzzy_moi.mlx)</h2>
+
+            <p>
+              Dựa trên file thuật toán <code>Fuzzy_moi.mlx</code>, chúng ta sử dụng kiến trúc **Single Unified Mamdani FIS** với 4 ngõ vào và 1 ngõ ra lực.
+            </p>
+
+            <h3>4.1 Cấu hình 4 Biến Ngõ Vào (Inputs)</h3>
+            <p>
+              Mỗi biến vào được mờ hóa thành 2 tập ngôn ngữ cơ bản: <strong>N (Negative - Âm)</strong> và <strong>P (Positive - Dương)</strong>. Nhằm tạo bề mặt điều khiển mượt mà, không bị giật cục hay gãy khúc, hàm dạng chữ Z (<code>zmf</code>) và chữ S (<code>smf</code>) được áp dụng:
+            </p>
+
+            <div class="table-wrap">
+              <table class="tech-table">
+                <thead>
+                  <tr>
+                    <th>Biến ngõ vào</th>
+                    <th>Ký hiệu</th>
+                    <th>Miền Universe</th>
+                    <th>Vùng chuyển tiếp $[-L, +L]$</th>
+                    <th>Loại MF</th>
+                    <th>Ý nghĩa phản xạ</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Góc nghiêng</strong></td>
+                    <td><code>Theta</code></td>
+                    <td>$[-\pi, +\pi]\ \text{rad}$</td>
+                    <td>$[-0.20, +0.20]\ \text{rad}\ (\approx \pm 11.5^\circ)$</td>
+                    <td><span class="tech-badge-inline">zmf / smf</span></td>
+                    <td>Ưu tiên số 1: Con lắc nghiêng bên nào phải đẩy xe bên đó</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Vận tốc góc</strong></td>
+                    <td><code>Theta_dot</code></td>
+                    <td>$[-15, +15]\ \text{rad/s}$</td>
+                    <td>$[-3.50, +3.50]\ \text{rad/s}$</td>
+                    <td><span class="tech-badge-inline">zmf / smf</span></td>
+                    <td>Bắt xu hướng: Đang ngã nhanh hay đang tự vung về cân bằng</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Vị trí xe</strong></td>
+                    <td><code>X</code></td>
+                    <td>$[-0.50, +0.50]\ \text{m}$</td>
+                    <td>$[-0.25, +0.25]\ \text{m}$</td>
+                    <td><span class="tech-badge-inline">zmf / smf</span></td>
+                    <td>Nhận biết xe đang dạt sang trái hay phải so với tâm ray</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Vận tốc xe</strong></td>
+                    <td><code>X_dot</code></td>
+                    <td>$[-2.0, +2.0]\ \text{m/s}$</td>
+                    <td>$[-0.50, +0.50]\ \text{m/s}$</td>
+                    <td><span class="tech-badge-inline">zmf / smf</span></td>
+                    <td>Khống chế trôi trượt tự do (Cart Drift)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>4.2 Cấu hình Biến Ngõ Ra (Output — Lực $F$)</h3>
+            <p>
+              Ngõ ra là lực $F$ tác dụng vào thân xe trên dải $[-12, +12]\ \text{N}$, được định nghĩa bằng 4 hàm chuông <strong>`gbellmf`</strong>:
+            </p>
+            <ul>
+              <li><strong>NL (Negative Large — Âm Lớn):</strong> Tâm $c = -10\text{ N}$, độ rộng $a = 3.0\text{ N}$, độ dốc $b = 2$.</li>
+              <li><strong>NM (Negative Medium — Âm Vừa):</strong> Tâm $c = -7\text{ N}$, độ rộng $a = 2.5\text{ N}$, độ dốc $b = 2$.</li>
+              <li><strong>PM (Positive Medium — Dương Vừa):</strong> Tâm $c = +7\text{ N}$, độ rộng $a = 2.5\text{ N}$, độ dốc $b = 2$.</li>
+              <li><strong>PL (Positive Large — Dương Lớn):</strong> Tâm $c = +10\text{ N}$, độ rộng $a = 3.0\text{ N}$, độ dốc $b = 2$.</li>
+            </ul>
+
+            <h3>4.3 Bảng 16 Luật Mamdani Toàn Vẹn ($2^4 = 16$ Tổ Hợp)</h3>
+            <p>
+              Với 4 ngõ vào $\times$ 2 trạng thái mờ, không gian tổ hợp có đúng $2^4 = 16$ luật, hoàn toàn không có điểm mù trong toàn bộ không gian trạng thái:
+            </p>
+
+            <div class="table-wrap">
+              <table class="tech-table">
+                <thead>
+                  <tr>
+                    <th>STT</th>
+                    <th>$\theta$</th>
+                    <th>$\dot{\theta}$</th>
+                    <th>$x$</th>
+                    <th>$\dot{x}$</th>
+                    <th>Lực $F$</th>
+                    <th>Luận giải cơ học chi tiết</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td><strong>R01</strong></td><td>N</td><td>N</td><td>N</td><td>N</td><td><strong>NL</strong></td><td>Khẩn cấp cực đại: Nghiêng trái, văng trái, xe lệch trái $\rightarrow$ Đạp hết ga trái ($-10\text{N}$).</td></tr>
+                  <tr><td><strong>R02</strong></td><td>N</td><td>N</td><td>N</td><td>P</td><td><strong>NL</strong></td><td>Nghiêng trái + văng trái $\rightarrow$ Ưu tiên sống còn là cứu góc nghiêng, xuất lực NL.</td></tr>
+                  <tr><td><strong>R03</strong></td><td>N</td><td>N</td><td>P</td><td>N</td><td><strong>NL</strong></td><td>Dù xe lệch phải, góc lắc vẫn đang ngã trái $\rightarrow$ Xuất lực NL để hứng trọng tâm.</td></tr>
+                  <tr><td><strong>R04</strong></td><td>N</td><td>N</td><td>P</td><td>P</td><td><strong>NM</strong></td><td>Xe đang ở bên phải và trôi sang phải $\rightarrow$ Xe còn dư địa, dùng lực âm vừa ($-7\text{N}$) để chống xốc.</td></tr>
+                  <tr><td><strong>R05</strong></td><td>N</td><td>P</td><td>N</td><td>N</td><td><strong>NM</strong></td><td>Lệch trái nhưng <em>đang tự vung về bên phải</em> ($\dot{\theta} > 0$) $\rightarrow$ Giảm xuống NM để hãm êm.</td></tr>
+                  <tr><td><strong>R06</strong></td><td>N</td><td>P</td><td>N</td><td>P</td><td><strong>NM</strong></td><td>Con lắc tự hồi về, xe hướng về tâm ray $\rightarrow$ Dùng lực vừa NM.</td></tr>
+                  <tr><td><strong>R07</strong></td><td>N</td><td>P</td><td>P</td><td>N</td><td><strong>NM</strong></td><td>Con lắc tự hồi về, xe bên phải $\rightarrow$ Duy trì lực âm nhẹ để triệt dao động.</td></tr>
+                  <tr><td><strong>R08</strong></td><td>N</td><td>P</td><td>P</td><td>P</td><td><strong>NM</strong></td><td>Con lắc tự hồi về, xe lệch phải $\rightarrow$ Lực âm vừa đủ cân bằng cả hai.</td></tr>
+                  <tr><td><strong>R09</strong></td><td>P</td><td>N</td><td>N</td><td>N</td><td><strong>PM</strong></td><td>Lệch phải nhưng <em>đang tự vung về bên trái</em> ($\dot{\theta} < 0$) $\rightarrow$ Dùng lực dương vừa ($+7\text{N}$) đón đầu.</td></tr>
+                  <tr><td><strong>R10</strong></td><td>P</td><td>N</td><td>N</td><td>P</td><td><strong>PM</strong></td><td>Con lắc tự quay về, xe chạy phải $\rightarrow$ Đón nhẹ bằng PM.</td></tr>
+                  <tr><td><strong>R11</strong></td><td>P</td><td>N</td><td>P</td><td>N</td><td><strong>PM</strong></td><td>Con lắc tự quay về $\rightarrow$ PM.</td></tr>
+                  <tr><td><strong>R12</strong></td><td>P</td><td>N</td><td>P</td><td>P</td><td><strong>PM</strong></td><td>Con lắc tự quay về, xe lệch phải $\rightarrow$ Lực dương vừa giúp con lắc đứng thẳng không bị giật.</td></tr>
+                  <tr><td><strong>R13</strong></td><td>P</td><td>P</td><td>N</td><td>N</td><td><strong>PL</strong></td><td>Nghiêng phải + văng mạnh sang phải $\rightarrow$ Bơm hết ga dương ($+10\text{N}$) để luồn xe đỡ lấy.</td></tr>
+                  <tr><td><strong>R14</strong></td><td>P</td><td>P</td><td>N</td><td>P</td><td><strong>PL</strong></td><td>Ngã phải + văng phải $\rightarrow$ Xuất lực dương cực đại PL để đuổi kịp tốc độ đổ.</td></tr>
+                  <tr><td><strong>R15</strong></td><td>P</td><td>P</td><td>P</td><td>N</td><td><strong>PL</strong></td><td>Ngã phải + văng phải, dù xe gần biên phải vẫn ưu tiên cứu góc nghiêng trước.</td></tr>
+                  <tr><td><strong>R16</strong></td><td>P</td><td>P</td><td>P</td><td>P</td><td><strong>PL</strong></td><td>Khẩn cấp cực đại bên phải: Cả 4 trạng thái đều dương $\rightarrow$ Đạp hết ga dương ($+10\text{N}$).</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>4.4 Mã Nguồn Tự Động Khởi Tạo & Lưu File FIS (`cartpole_16rules.fis`)</h3>
+
+            <div class="code-box">
+              <div class="code-header">
+                <span class="code-lang">MATLAB Live Script / Script (.m)</span>
+                <button class="code-copy-btn" onclick="navigator.clipboard.writeText(this.closest('.code-box').querySelector('pre').innerText); alert('Đã sao chép mã nguồn tạo FIS!');">Copy Code</button>
+              </div>
+              <pre class="code-pre"><code>%% ============================================================
+%%  FUZZY LOGIC CONTROLLER - CART-PENDULUM (HUST)
+%%  Single Unified Mamdani FIS | 4 Inputs x 2 MFs = 16 Rules
+%% ============================================================
+clc; clear; close all;
+
+% Khởi tạo cấu trúc Mamdani FIS
+fis = mamfis('NumInputs', 4, 'NumInputMFs', 2, ...
+             'NumOutputs', 1, 'NumOutputMFs', 4, ...
+             'AddRule', 'none');
+
+% 1. Thiết lập 4 biến vào
+fis.Inputs(1).Name = 'Theta';     fis.Inputs(1).Range = [-pi, pi];
+fis.Inputs(1).MembershipFunctions(1).Name = 'N'; fis.Inputs(1).MembershipFunctions(1).Type = 'zmf'; fis.Inputs(1).MembershipFunctions(1).Parameters = [-0.20, 0.20];
+fis.Inputs(1).MembershipFunctions(2).Name = 'P'; fis.Inputs(1).MembershipFunctions(2).Type = 'smf'; fis.Inputs(1).MembershipFunctions(2).Parameters = [-0.20, 0.20];
+
+fis.Inputs(2).Name = 'Theta_dot'; fis.Inputs(2).Range = [-15, 15];
+fis.Inputs(2).MembershipFunctions(1).Name = 'N'; fis.Inputs(2).MembershipFunctions(1).Type = 'zmf'; fis.Inputs(2).MembershipFunctions(1).Parameters = [-3.50, 3.50];
+fis.Inputs(2).MembershipFunctions(2).Name = 'P'; fis.Inputs(2).MembershipFunctions(2).Type = 'smf'; fis.Inputs(2).MembershipFunctions(2).Parameters = [-3.50, 3.50];
+
+fis.Inputs(3).Name = 'X';         fis.Inputs(3).Range = [-0.5, 0.5];
+fis.Inputs(3).MembershipFunctions(1).Name = 'N'; fis.Inputs(3).MembershipFunctions(1).Type = 'zmf'; fis.Inputs(3).MembershipFunctions(1).Parameters = [-0.25, 0.25];
+fis.Inputs(3).MembershipFunctions(2).Name = 'P'; fis.Inputs(3).MembershipFunctions(2).Type = 'smf'; fis.Inputs(3).MembershipFunctions(2).Parameters = [-0.25, 0.25];
+
+fis.Inputs(4).Name = 'X_dot';     fis.Inputs(4).Range = [-2, 2];
+fis.Inputs(4).MembershipFunctions(1).Name = 'N'; fis.Inputs(4).MembershipFunctions(1).Type = 'zmf'; fis.Inputs(4).MembershipFunctions(1).Parameters = [-0.50, 0.50];
+fis.Inputs(4).MembershipFunctions(2).Name = 'P'; fis.Inputs(4).MembershipFunctions(2).Type = 'smf'; fis.Inputs(4).MembershipFunctions(2).Parameters = [-0.50, 0.50];
+
+% 2. Thiết lập biến ra Force
+fis.Outputs(1).Name = 'Force';    fis.Outputs(1).Range = [-12, 12];
+fis.Outputs(1).MembershipFunctions(1).Name = 'NL'; fis.Outputs(1).MembershipFunctions(1).Type = 'gbellmf'; fis.Outputs(1).MembershipFunctions(1).Parameters = [3.0, 2, -10];
+fis.Outputs(1).MembershipFunctions(2).Name = 'NM'; fis.Outputs(1).MembershipFunctions(2).Type = 'gbellmf'; fis.Outputs(1).MembershipFunctions(2).Parameters = [2.5, 2, -7];
+fis.Outputs(1).MembershipFunctions(3).Name = 'PM'; fis.Outputs(1).MembershipFunctions(3).Type = 'gbellmf'; fis.Outputs(1).MembershipFunctions(3).Parameters = [2.5, 2,  7];
+fis.Outputs(1).MembershipFunctions(4).Name = 'PL'; fis.Outputs(1).MembershipFunctions(4).Type = 'gbellmf'; fis.Outputs(1).MembershipFunctions(4).Parameters = [3.0, 2,  10];
+
+% 3. Nạp 16 luật Mamdani
+rules = [
+    "If Theta is N and Theta_dot is N and X is N and X_dot is N then Force is NL"
+    "If Theta is N and Theta_dot is N and X is N and X_dot is P then Force is NL"
+    "If Theta is N and Theta_dot is N and X is P and X_dot is N then Force is NL"
+    "If Theta is N and Theta_dot is N and X is P and X_dot is P then Force is NM"
+    "If Theta is N and Theta_dot is P and X is N and X_dot is N then Force is NM"
+    "If Theta is N and Theta_dot is P and X is N and X_dot is P then Force is NM"
+    "If Theta is N and Theta_dot is P and X is P and X_dot is N then Force is NM"
+    "If Theta is N and Theta_dot is P and X is P and X_dot is P then Force is NM"
+    "If Theta is P and Theta_dot is N and X is N and X_dot is N then Force is PM"
+    "If Theta is P and Theta_dot is N and X is N and X_dot is P then Force is PM"
+    "If Theta is P and Theta_dot is N and X is P and X_dot is N then Force is PM"
+    "If Theta is P and Theta_dot is N and X is P and X_dot is P then Force is PM"
+    "If Theta is P and Theta_dot is P and X is N and X_dot is N then Force is PL"
+    "If Theta is P and Theta_dot is P and X is N and X_dot is P then Force is PL"
+    "If Theta is P and Theta_dot is P and X is P and X_dot is N then Force is PL"
+    "If Theta is P and Theta_dot is P and X is P and X_dot is P then Force is PL"
+];
+
+fis = addRule(fis, rules);
+
+% Lưu ra file để khối Simulink đọc trực tiếp
+writeFIS(fis, 'cartpole_16rules.fis');
+disp('=== ĐÃ XÂY DỰNG VÀ LƯU THÀNH CÔNG cartpole_16rules.fis! ===');</code></pre>
+            </div>
+          </section>
+
+          <!-- SECTION 5 -->
+          <section id="sec-simulink-wiring">
+            <h2><span class="h2-badge">PHẦN 5</span> Đấu Nối Sơ Đồ Hoàn Chỉnh Trong Simulink (full_pendulum_assem.slx)</h2>
+
+            <p>
+              Sau khi đã có mô hình cơ học và tệp cấu hình mờ, chúng ta tiến hành đấu nối sơ đồ ở tầng Root như thể hiện trong <strong>Hình 5</strong>:
+            </p>
+
+            <!-- HÌNH 5 -->
+            <div class="figure-card">
+              <img src="../../assets/images/posts/fuzzy-pendulum/05_simulink_fuzzy_system_root.png" alt="Sơ đồ khối Simulink toàn cảnh với Fuzzy Controller" class="figure-img">
+              <div class="figure-caption">
+                <strong>Hình 5:</strong> Sơ đồ đấu nối hoàn chỉnh ở tầng Root của mô hình <code>full_pendulum_assem.slx</code>.
+              </div>
+            </div>
+
+            <h3>Chi tiết từng thành phần đấu nối:</h3>
+            <ol>
+              <li>
+                <strong>Khối MATLAB Function "Norm Theta":</strong><br>
+                Tín hiệu góc lắc <code>&lt;angle&gt;</code> từ cơ hệ được dẫn qua một khối hàm MATLAB ngắn gọn:
+                <div class="code-box">
+                  <div class="code-header">
+                    <span class="code-lang">MATLAB Function: Norm Theta</span>
+                  </div>
+                  <pre class="code-pre"><code>function theta_norm = fcn(theta)
+% Chuẩn hóa góc về khoảng chính [-pi, +pi] tránh hiện tượng tích lũy góc quay
+theta_norm = atan2(sin(theta), cos(theta));</code></pre>
+                </div>
+                Hàm này bảo đảm góc luôn nằm chính xác trong miền $[-\pi, +\pi]\ \text{rad}$, giúp bộ Fuzzy hoạt động chính xác tuyệt đối mà không sợ tràn số khi con lắc xoay nhiều vòng.
+              </li>
+              <li>
+                <strong>Khối ghép tín hiệu (Mux):</strong><br>
+                Ghép 4 tín hiệu trạng thái theo đúng thứ tự mà bộ Fuzzy đã thiết kế:
+                <code>Port 1: theta</code>, <code>Port 2: theta_dot (W)</code>, <code>Port 3: pos</code>, <code>Port 4: vel</code>.
+              </li>
+              <li>
+                <strong>Khối "Fuzzy Logic Controller":</strong><br>
+                Mở thư viện Simulink $\rightarrow$ <em>Fuzzy Logic Toolbox</em> $\rightarrow$ kéo khối <strong>Fuzzy Logic Controller</strong> vào. Click đúp vào khối và điền tên file FIS: <code>'cartpole_16rules.fis'</code> (hoặc điền tên biến workspace <code>fis</code>).
+              </li>
+              <li>
+                <strong>Vòng phản hồi lực & Công tắc chuyển đổi (Manual Switch):</strong><br>
+                Ngõ ra lực <code>Force</code> được nối qua một khối <em>Manual Switch</em> trước khi đưa vào cổng <code>F in</code>. Điều này cho phép bạn dễ dàng bật/tắt bộ điều khiển bằng một cú click chuột khi đang chạy mô phỏng để kiểm tra ứng xử tự do của hệ.
+              </li>
+              <li>
+                <strong>Cụm sinh nhiễu ngoại cảnh (Disturb Generator):</strong><br>
+                Sử dụng 2 khối <em>Step</em> trừ nhau qua khối <em>Sum (+ -)</em> để tạo ra xung lực va chạm (Pulse disturbance), sau đó đưa vào cổng <code>Disturb</code> để kiểm tra độ bền vững (robustness) của hệ thống.
+              </li>
+            </ol>
+          </section>
+
+          <!-- SECTION 6 -->
+          <section id="sec-results">
+            <h2><span class="h2-badge">PHẦN 6</span> Mô Phỏng & Đánh Giá Đáp Ứng Tại Góc Lớn 20° (Zero Cart Drift)</h2>
+
+            <p>
+              Để kiểm chứng sức mạnh vượt trội của bộ điều khiển mờ, chúng ta thiết lập điều kiện ban đầu cho con lắc lệch hẳn <strong>$20^\circ$ ($0.349\text{ rad}$)</strong> — một góc lệch mà hầu hết các bộ điều khiển tuyến tính như LQR và PID thông thường đều bị mất ổn định và làm rơi con lắc.
+            </p>
+
+            <!-- HÌNH 6 -->
+            <div class="figure-card">
+              <img src="../../assets/images/posts/fuzzy-pendulum/06_simulation_response_20deg.png" alt="Kết quả mô phỏng Fuzzy Logic tại góc lệch ban đầu 20 độ" class="figure-img">
+              <div class="figure-caption">
+                <strong>Hình 6:</strong> Đồ thị 6 kênh đáp ứng động học khi giải cứu con lắc ở góc nghiêng lớn $20^\circ$.
+              </div>
+            </div>
+
+            <h3>Phân tích ứng xử động học:</h3>
+            <ul>
+              <li>
+                <strong>Khử góc lệch tức thời (Kênh 1 & Kênh 2):</strong> Trong $0.4\text{s}$ đầu tiên, lực điều khiển chạm ngưỡng bão hòa $+10\text{N}$, phóng xe sang phải để "chui xuống dưới" đón lấy trọng tâm con lắc. Góc $\theta$ dốc ngược về $0^\circ$ chỉ sau $1.2\text{s}$ và triệt tiêu hoàn toàn dao động sau $1.82\text{s}$ (sai số dư $< 0.15^\circ$).
+              </li>
+              <li>
+                <strong>Khử hiện tượng trôi xe (Zero Cart Drift - Kênh 3 & Kênh 4):</strong> Đây là điểm sáng lớn nhất của kiến trúc 16 luật hợp nhất. Nhờ có các luật $R04, R08, R09, R12$, ngay khi con lắc đã đứng thẳng, bộ mờ lập tức nhận biết vị trí xe đang lệch và kích hoạt lực hãm êm ái, kéo xe hồi hương chuẩn xác về gốc tọa độ $x \approx 0.001\text{m}$ ($0.1\text{cm}$).
+              </li>
+              <li>
+                <strong>Quỹ đạo pha khép kín (Phase Portrait - Kênh 6):</strong> Quỹ đạo pha giữa $\theta$ và $x$ xoắn ốc hội tụ mượt mà về gốc $(0, 0)$, khẳng định hệ thống đạt tính ổn định tiệm cận toàn cục trong toàn bộ miền làm việc.
+              </li>
+            </ul>
+          </section>
+
+          <!-- SECTION 7 -->
+          <section id="sec-troubleshooting">
+            <h2><span class="h2-badge">PHẦN 7</span> Checklist Gỡ Lỗi & Kinh Nghiệm Thực Tế Cho Người Mới</h2>
+
+            <p>
+              Dành riêng cho các bạn sinh viên và kỹ sư mới bắt đầu làm quen với Simscape Multibody và Fuzzy Logic, đây là danh sách những lỗi phổ biến nhất và cách khắc phục:
+            </p>
+
+            <div class="callout callout-warning">
+              <span class="callout-icon">❌</span>
+              <div>
+                <strong>Lỗi 1: "Undefined variable smiData" khi bấm Run Simulink</strong><br>
+                <em>Nguyên nhân:</em> Bạn vừa mở Simulink nhưng chưa nạp dữ liệu hình học từ file DataFile vào Workspace.<br>
+                <em>Khắc phục:</em> Chạy lệnh <code>run('full_pendulum_assem_DataFile3.m')</code> trong Command Window trước khi bấm nút Run, hoặc gõ tên script này vào mục <strong>Model Properties $\rightarrow$ Callbacks $\rightarrow$ InitFcn</strong> để Simulink tự động nạp mỗi khi khởi động.
+              </div>
+            </div>
+
+            <div class="callout callout-warning">
+              <span class="callout-icon">❌</span>
+              <div>
+                <strong>Lỗi 2: Con lắc vừa thả ra đã ngã lộn nhào, lực đẩy đi sai hướng</strong><br>
+                <em>Nguyên nhân:</em> Đảo lộn thứ tự dây tín hiệu cắm vào khối Mux, hoặc nhầm dấu trục toạ độ của khớp Revolute Joint.<br>
+                <em>Khắc phục:</em> Kiểm tra kỹ thứ tự 4 dây cắm vào Mux: <code>[1: Theta, 2: Theta_dot, 3: Pos, 4: Vel]</code>. Đồng thời kiểm tra khối cộng <code>+pi</code> bên trong khối <code>pole_1_RIGID</code>.
+              </div>
+            </div>
+
+            <div class="callout callout-tip">
+              <span class="callout-icon">✅</span>
+              <div>
+                <strong>Kinh nghiệm chọn Solver cho Simscape Multibody:</strong><br>
+                Hệ cơ học nhiều vật thể tiếp xúc có tính phi tuyến và độ cứng toán học (stiff system) rất cao. Bạn nên chọn Solver <strong>Variable-step</strong> với giải thuật <code>ode23t (mod.stiff/Trapezoidal)</code> hoặc <code>ode15s</code>, đặt <em>Max step size</em> là <code>0.001</code> để mô phỏng chạy êm và không bị gián đoạn.
+              </div>
+            </div>
+
+            <div class="sidebar-divider" style="margin: 3rem 0;"></div>
+
+            <div style="text-align: center; padding: 1.5rem; background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border-color);">
+              <h3 style="margin-top: 0; color: var(--accent-cyan);">Bạn đã sẵn sàng làm chủ Simscape & Điều Khiển Mờ?</h3>
+              <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.25rem;">
+                Toàn bộ mã nguồn <code>full_pendulum_assem.slx</code>, <code>Fuzzy_moi.mlx</code>, <code>full_pendulum_assem.xml</code> và database <code>full_pendulum_assem_DataFile3.m</code> đã được đồng bộ trực tiếp trong dự án của nhóm nghiên cứu.
+              </p>
+              <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                <a href="../../blog.html" class="btn-tech btn-tech-primary">← Quay Lại Trang Danh Sách Blog</a>
+                <a href="https://github.com/vinhdo281" target="_blank" rel="noopener" class="btn-tech">Ghé Thăm GitHub Repository</a>
+              </div>
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- SEARCH MODAL -->
+  <div id="search-modal-backdrop" class="search-modal-backdrop">
+    <div class="search-modal">
+      <div class="search-input-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="search-input" class="search-input" placeholder="Tìm kiếm... / Search..." autocomplete="off">
+        <span class="kbd-shortcut">ESC</span>
+      </div>
+      <div id="search-results" class="search-results"></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div>&copy; 2026 · Powered by GitHub Pages · Cyber-Tech Portfolio · Vinh Do (HUST)</div>
+  </footer>
+
+  <script src="../../assets/js/search-data.js"></script>
+  <script src="../../assets/js/main.js"></script>
+</body>
+</html>
