@@ -218,6 +218,80 @@
     }
   }
 
+  // --- 7. INTERACTIVE OS TABS (WINDOWS vs LINUX) ---
+  const OS_STORAGE_KEY = 'preferred_os';
+
+  function initOSTabs() {
+    let savedOS = localStorage.getItem(OS_STORAGE_KEY);
+    if (!savedOS || (savedOS !== 'windows' && savedOS !== 'linux')) {
+      // Default to windows, or detect from navigator.userAgent if Linux/Mac
+      savedOS = (navigator.userAgent && /linux/i.test(navigator.userAgent) && !/android/i.test(navigator.userAgent)) ? 'linux' : 'windows';
+    }
+
+    applyOS(savedOS);
+
+    // Global switcher buttons
+    document.querySelectorAll('.os-toggle-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const os = btn.getAttribute('data-os');
+        if (os) {
+          applyOS(os);
+          localStorage.setItem(OS_STORAGE_KEY, os);
+        }
+      });
+    });
+
+    // Local code box tab buttons
+    document.querySelectorAll('.os-code-box').forEach(box => {
+      const tabBtns = box.querySelectorAll('.os-tab-btn');
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const os = btn.getAttribute('data-os');
+          if (os) {
+            switchBoxOS(box, os);
+          }
+        });
+      });
+    });
+  }
+
+  function applyOS(os) {
+    // 1. Update global toggle buttons
+    document.querySelectorAll('.os-toggle-btn').forEach(btn => {
+      if (btn.getAttribute('data-os') === os) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    // 2. Update all local os code boxes
+    document.querySelectorAll('.os-code-box').forEach(box => {
+      switchBoxOS(box, os);
+    });
+  }
+
+  function switchBoxOS(box, os) {
+    const tabBtns = box.querySelectorAll('.os-tab-btn');
+    const panes = box.querySelectorAll('.os-tab-pane');
+
+    tabBtns.forEach(btn => {
+      if (btn.getAttribute('data-os') === os) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    panes.forEach(pane => {
+      if (pane.getAttribute('data-os') === os) {
+        pane.classList.add('active');
+      } else {
+        pane.classList.remove('active');
+      }
+    });
+  }
+
   // --- INITIALIZE ALL MODULES ---
   document.addEventListener('DOMContentLoaded', () => {
     initTheme();
@@ -226,5 +300,7 @@
     initBibtexCopy();
     initFilterTabs();
     initMobileMenu();
+    initOSTabs();
   });
 })();
+

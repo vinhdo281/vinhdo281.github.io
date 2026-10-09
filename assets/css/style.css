@@ -1474,3 +1474,190 @@ body[data-lang="en"] .lang-vi {
   border: 1px solid rgba(0, 242, 254, 0.2);
 }
 
+/* ==========================================================================
+   INTERACTIVE OS SWITCHER (WINDOWS vs LINUX)
+   ========================================================================== */
+.os-selector-banner {
+  background: linear-gradient(135deg, rgba(13, 20, 36, 0.95), rgba(20, 32, 60, 0.9));
+  border: 1px solid var(--accent-cyan);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  margin: 2rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  box-shadow: var(--glow-cyan);
+  position: relative;
+  overflow: hidden;
+}
+
+.os-selector-banner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--accent-cyan), var(--accent-blue));
+}
+
+.os-selector-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.os-selector-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: rgba(0, 242, 254, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-cyan);
+  flex-shrink: 0;
+}
+
+.os-selector-text h4 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.os-selector-text p {
+  margin: 0.2rem 0 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.os-toggle-group {
+  display: inline-flex;
+  background: rgba(7, 11, 19, 0.85);
+  padding: 4px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  gap: 4px;
+}
+
+.os-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.os-toggle-btn:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.os-toggle-btn.active {
+  color: var(--accent-cyan);
+  background: rgba(0, 242, 254, 0.15);
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 12px rgba(0, 242, 254, 0.3);
+}
+
+.os-toggle-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Local Tabbed Code Box */
+.os-code-box {
+  background: #080d1a;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  margin: 1.6rem 0;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  transition: var(--transition);
+}
+
+.os-code-box:hover {
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+.os-tabs-header {
+  background: rgba(17, 26, 46, 0.95);
+  padding: 0.4rem 0.8rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.os-tabs-nav {
+  display: flex;
+  gap: 4px;
+}
+
+.os-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.os-tab-btn:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.os-tab-btn.active {
+  color: var(--accent-cyan);
+  background: rgba(0, 242, 254, 0.12);
+  border-color: rgba(0, 242, 254, 0.4);
+}
+
+.os-tab-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.os-tab-pane {
+  display: none;
+}
+
+.os-tab-pane.active {
+  display: block;
+}
+
+.os-pane-summary {
+  background: rgba(20, 32, 60, 0.4);
+  padding: 0.6rem 1.25rem;
+  font-size: 0.85rem;
+  color: var(--accent-blue);
+  border-bottom: 1px solid rgba(56, 189, 248, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+
