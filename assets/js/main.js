@@ -142,6 +142,9 @@
     if (searchInput) {
       searchInput.setAttribute('placeholder', meta.searchPlaceholder);
     }
+
+    // Broadcast language change to other components
+    window.dispatchEvent(new CustomEvent('siteLanguageChange', { detail: { lang } }));
   }
 
   // --- 2. THEME SWITCHER (Dark / Light) ---

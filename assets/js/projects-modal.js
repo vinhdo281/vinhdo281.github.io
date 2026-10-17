@@ -42,10 +42,25 @@
       });
 
       if (hudCounter) {
-        const isVi = getLang() === 'vi';
-        hudCounter.innerHTML = isVi
-          ? `<span class="status-dot"></span> ĐANG HIỂN THỊ: <strong>${visibleCount}/${totalCount}</strong> DỰ ÁN`
-          : `<span class="status-dot"></span> DISPLAYING: <strong>${visibleCount}/${totalCount}</strong> PROJECTS`;
+        const lang = getLang();
+        if (lang === 'vi') {
+          hudCounter.innerHTML = `<span class="status-dot"></span> ĐANG HIỂN THỊ: <strong>${visibleCount}/${totalCount}</strong> DỰ ÁN`;
+        } else if (lang === 'de') {
+          hudCounter.innerHTML = `<span class="status-dot"></span> ANGEZEIGT: <strong>${visibleCount}/${totalCount}</strong> PROJEKTE`;
+        } else {
+          hudCounter.innerHTML = `<span class="status-dot"></span> DISPLAYING: <strong>${visibleCount}/${totalCount}</strong> PROJECTS`;
+        }
+      }
+
+      if (searchInput) {
+        const lang = getLang();
+        if (lang === 'vi') {
+          searchInput.placeholder = 'Lọc theo tên, thuật toán, công nghệ...';
+        } else if (lang === 'de') {
+          searchInput.placeholder = 'Nach Name, Algorithmus, Technologie filtern...';
+        } else {
+          searchInput.placeholder = 'Filter by name, algorithm, technology...';
+        }
       }
     }
 
@@ -66,15 +81,12 @@
     }
 
     // Update counter on language change
-    const langBtn = document.getElementById('lang-toggle-btn');
-    if (langBtn) {
-      langBtn.addEventListener('click', () => {
-        setTimeout(updateCards, 50);
-        if (currentProjectId) {
-          renderModalContent(currentProjectId, currentActiveTab);
-        }
-      });
-    }
+    window.addEventListener('siteLanguageChange', () => {
+      updateCards();
+      if (currentProjectId) {
+        renderModalContent(currentProjectId, currentActiveTab);
+      }
+    });
 
     updateCards();
   }
