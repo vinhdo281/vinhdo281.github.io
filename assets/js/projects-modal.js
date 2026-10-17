@@ -13,6 +13,19 @@
     return document.body.getAttribute('data-lang') || 'vi';
   }
 
+  function getProjectsData() {
+    if (typeof PROJECTS_DATA !== 'undefined' && Array.isArray(PROJECTS_DATA)) {
+      return PROJECTS_DATA;
+    }
+    if (typeof window !== 'undefined' && Array.isArray(window.PROJECTS_DATA)) {
+      return window.PROJECTS_DATA;
+    }
+    if (typeof globalThis !== 'undefined' && Array.isArray(globalThis.PROJECTS_DATA)) {
+      return globalThis.PROJECTS_DATA;
+    }
+    return [];
+  }
+
   // --- 1. FILTERING & SEARCH ---
   function initProjectToolbar() {
     const filterBtns = document.querySelectorAll('.project-filter-btn');
@@ -92,16 +105,27 @@
   }
 
   // --- 2. MODAL RENDERING ---
-  function openProjectModal(projectId, defaultTab = 'overview') {
-    if (!window.PROJECTS_DATA) return;
-    const project = window.PROJECTS_DATA.find(p => p.id === projectId);
-    if (!project) return;
+  function openProjectModal(projectId, defaultTab) {
+    defaultTab = defaultTab || 'overview';
+    const data = getProjectsData();
+    if (!data || data.length === 0) {
+      console.warn('Projects data not available yet');
+      return;
+    }
+    const project = data.find(p => p.id === projectId);
+    if (!project) {
+      console.warn('Project not found for id:', projectId);
+      return;
+    }
 
     currentProjectId = projectId;
     currentActiveTab = defaultTab;
 
     const modalBackdrop = document.getElementById('project-modal-backdrop');
-    if (!modalBackdrop) return;
+    if (!modalBackdrop) {
+      console.warn('Modal backdrop element not found');
+      return;
+    }
 
     renderModalContent(projectId, defaultTab);
     modalBackdrop.classList.add('open');
@@ -109,10 +133,14 @@
   }
 
   function renderModalContent(projectId, activeTab) {
-    const project = window.PROJECTS_DATA.find(p => p.id === projectId);
+    const data = getProjectsData();
+    const project = data.find(p => p.id === projectId);
     if (!project) return;
 
-    const isVi = getLang() === 'vi';
+    const lang = getLang();
+    const isVi = lang === 'vi';
+    const isDe = lang === 'de';
+
     const badgeEl = document.getElementById('project-modal-badge');
     const titleEl = document.getElementById('project-modal-title');
     const githubLinkEl = document.getElementById('project-modal-github-link');
@@ -121,10 +149,18 @@
     const tabBtns = document.querySelectorAll('.project-modal-tab-btn');
 
     if (badgeEl) badgeEl.textContent = project.badge;
-    if (titleEl) titleEl.textContent = isVi ? project.title_vi : project.title_en;
+    if (titleEl) {
+      if (isVi) {
+        titleEl.textContent = project.title_vi;
+      } else if (isDe && project.title_de) {
+        titleEl.textContent = project.title_de;
+      } else {
+        titleEl.textContent = project.title_en;
+      }
+    }
 
     if (githubLinkEl) {
-      githubLinkEl.href = project.github_url;
+      githubLinkEl.href = project.github_url || '#';
       githubLinkEl.style.display = project.github_url ? 'inline-flex' : 'none';
     }
 
@@ -150,33 +186,36 @@
     let contentHtml = '';
     switch (activeTab) {
       case 'overview':
-        contentHtml = isVi ? project.overview_vi : project.overview_en;
+        contentHtml = isVi ? project.overview_vi : (isDe && project.overview_de ? project.overview_de : project.overview_en);
         // Prepend metrics grid if available
         if (project.metrics && project.metrics.length > 0) {
           const metricsGridHtml = `
             <div class="metrics-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem;">
-              ${project.metrics.map(m => `
-                <div style="background: rgba(0,242,254,0.06); border: 1px solid rgba(0,242,254,0.25); border-radius: 8px; padding: 0.75rem; text-align: center;">
-                  <div style="font-family: var(--font-mono); font-size: 1.25rem; color: var(--accent-cyan); font-weight: bold;">${m.value}</div>
-                  <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">${isVi ? m.label_vi : m.label_en}</div>
-                </div>
-              `).join('')}
+              ${project.metrics.map(m => {
+                const label = isVi ? m.label_vi : (isDe && m.label_de ? m.label_de : m.label_en);
+                return `
+                  <div style="background: rgba(0,242,254,0.06); border: 1px solid rgba(0,242,254,0.25); border-radius: 8px; padding: 0.75rem; text-align: center;">
+                    <div style="font-family: var(--font-mono); font-size: 1.25rem; color: var(--accent-cyan); font-weight: bold;">${m.value}</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">${label}</div>
+                  </div>
+                `;
+              }).join('')}
             </div>
           `;
           contentHtml = metricsGridHtml + contentHtml;
         }
         break;
       case 'architecture':
-        contentHtml = isVi ? project.architecture_vi : project.architecture_en;
+        contentHtml = isVi ? project.architecture_vi : (isDe && project.architecture_de ? project.architecture_de : project.architecture_en);
         break;
       case 'guide':
-        contentHtml = isVi ? project.guide_vi : project.guide_en;
+        contentHtml = isVi ? project.guide_vi : (isDe && project.guide_de ? project.guide_de : project.guide_en);
         break;
       case 'results':
-        contentHtml = isVi ? project.results_vi : project.results_en;
+        contentHtml = isVi ? project.results_vi : (isDe && project.results_de ? project.results_de : project.results_en);
         break;
       case 'demo':
-        contentHtml = isVi ? project.demo_vi : project.demo_en;
+        contentHtml = isVi ? project.demo_vi : (isDe && project.demo_de ? project.demo_de : project.demo_en);
         break;
       default:
         contentHtml = isVi ? project.overview_vi : project.overview_en;
@@ -194,10 +233,10 @@
 
         const copyBtn = document.createElement('button');
         copyBtn.className = 'code-copy-btn';
-        copyBtn.setAttribute('title', isVi ? 'Sao chép đoạn mã' : 'Copy code');
+        copyBtn.setAttribute('title', isVi ? 'Sao chép đoạn mã' : (isDe ? 'Code kopieren' : 'Copy code'));
         copyBtn.innerHTML = `
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          <span>${isVi ? 'Sao chép' : 'Copy'}</span>
+          <span>${isVi ? 'Sao chép' : (isDe ? 'Kopieren' : 'Copy')}</span>
         `;
         copyBtn.style.cssText = 'position: absolute; top: 8px; right: 8px; padding: 0.2rem 0.55rem; font-size: 0.72rem; font-family: var(--font-mono); background: rgba(255,255,255,0.08); border: 1px solid var(--border-color); color: var(--text-secondary); border-radius: 4px; cursor: pointer; display: inline-flex; align-items: center; gap: 0.3rem; transition: var(--transition); z-index: 5;';
 
@@ -205,11 +244,11 @@
           e.stopPropagation();
           const codeText = preEl.textContent.trim();
           navigator.clipboard.writeText(codeText).then(() => {
-            copyBtn.innerHTML = `<span style="color:var(--accent-cyan); font-weight: 500;">${isVi ? 'Đã sao chép' : 'Copied'}</span>`;
+            copyBtn.innerHTML = `<span style="color:var(--accent-cyan); font-weight: 500;">${isVi ? 'Đã sao chép' : (isDe ? 'Kopiert' : 'Copied')}</span>`;
             setTimeout(() => {
               copyBtn.innerHTML = `
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                <span>${isVi ? 'Sao chép' : 'Copy'}</span>
+                <span>${isVi ? 'Sao chép' : (isDe ? 'Kopieren' : 'Copy')}</span>
               `;
             }, 2000);
           });
@@ -266,21 +305,50 @@
       }
     });
 
-    // Expose globally
-    window.openProjectModal = openProjectModal;
-    window.closeProjectModal = closeProjectModal;
+    // Wire up all buttons inside project cards directly
+    document.querySelectorAll('.project-card').forEach(card => {
+      const projectId = card.id;
+      const btns = card.querySelectorAll('.project-card-footer button, button[data-project-id]');
+      btns.forEach(btn => {
+        if (projectId) {
+          btn.setAttribute('data-project-id', projectId);
+        }
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetId = btn.getAttribute('data-project-id') || projectId;
+          if (targetId) {
+            openProjectModal(targetId);
+          }
+        });
+      });
+    });
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
+  // Expose immediately so onclick handlers can access them
+  window.openProjectModal = openProjectModal;
+  window.closeProjectModal = closeProjectModal;
+  if (typeof globalThis !== 'undefined') {
+    globalThis.openProjectModal = openProjectModal;
+    globalThis.closeProjectModal = closeProjectModal;
+  }
+
+  function init() {
     initProjectToolbar();
     initModalEvents();
 
     // Auto-open modal if URL hash matches a project ID
     if (window.location.hash) {
       const hashId = window.location.hash.substring(1);
-      if (window.PROJECTS_DATA && window.PROJECTS_DATA.some(p => p.id === hashId)) {
+      const data = getProjectsData();
+      if (data && data.some(p => p.id === hashId)) {
         setTimeout(() => openProjectModal(hashId), 200);
       }
     }
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();

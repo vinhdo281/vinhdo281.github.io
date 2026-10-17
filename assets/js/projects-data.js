@@ -612,3 +612,11 @@ const PROJECTS_DATA = [
     "demo_en": "\n      <h4>Cipher Implementation Snippet:</h4>\n      <div class=\"code-terminal\">\n        <pre><code>cipher = \"\".join(key[chars.index(c)] for c in plain_text)\nplain = \"\".join(chars[key.index(c)] for c in cipher)</code></pre>\n      </div>\n    "
   }
 ];
+
+// Explicitly bind to global/window object for universal access
+if (typeof window !== 'undefined') {
+  window.PROJECTS_DATA = PROJECTS_DATA;
+}
+if (typeof globalThis !== 'undefined') {
+  globalThis.PROJECTS_DATA = PROJECTS_DATA;
+}
