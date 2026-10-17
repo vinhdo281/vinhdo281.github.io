@@ -3,188 +3,84 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Curriculum Vitae (CV) · ĐỖ HIỂU VINH</title>
+  <title>Curriculum Vitae (CV) · Đỗ Hiểu Vinh</title>
   <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
   <link rel="stylesheet" href="assets/css/style.css">
   <style>
-    /* Full-width CV Container Layout */
-    .cv-wrapper {
-      max-width: 1050px;
-      margin: 2rem auto 4rem;
-      padding: 0 1.25rem;
+    .cv-timeline {
+      position: relative;
+      padding-left: 1.5rem;
+      border-left: 2px solid var(--border-color);
+      margin-bottom: 2rem;
     }
-
-    .cv-document {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 3rem;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+    .cv-node {
+      position: relative;
+      margin-bottom: 2rem;
     }
-
-    /* CV Header */
-    .cv-main-header {
-      text-align: center;
-      padding-bottom: 2rem;
-      border-bottom: 2px solid var(--border-color);
-      margin-bottom: 2.5rem;
-    }
-
-    .cv-role-title {
-      font-family: var(--font-mono);
-      font-size: 1rem;
-      font-weight: 700;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--accent-cyan);
+    .cv-node:last-child {
       margin-bottom: 0.5rem;
     }
-
-    .cv-candidate-name {
-      font-size: 2.5rem;
-      font-weight: 800;
-      color: var(--text-primary);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-bottom: 1.25rem;
+    .cv-node::before {
+      content: "";
+      position: absolute;
+      left: calc(-1.5rem - 6px);
+      top: 6px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      box-shadow: 0 0 8px var(--accent-cyan);
     }
-
-    .cv-contact-bar {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1.25rem 2.5rem;
-      font-size: 0.95rem;
-      color: var(--text-secondary);
-    }
-
-    .cv-contact-entry {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .cv-contact-entry svg {
-      width: 17px;
-      height: 17px;
-      stroke: var(--accent-cyan);
-      flex-shrink: 0;
-    }
-
-    .cv-contact-entry a {
-      color: var(--text-secondary);
-      text-decoration: none;
-      transition: var(--transition);
-    }
-
-    .cv-contact-entry a:hover {
-      color: var(--accent-cyan);
-    }
-
-    /* Two-column layout */
-    .cv-body-grid {
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 2.75rem;
-    }
-
-    @media (max-width: 860px) {
-      .cv-document {
-        padding: 2rem 1.25rem;
-      }
-      .cv-candidate-name {
-        font-size: 1.85rem;
-      }
-      .cv-body-grid {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-      }
-    }
-
-    /* Section Headings */
-    .cv-section-block {
-      margin-bottom: 2.25rem;
-    }
-
-    .cv-heading {
-      font-family: var(--font-mono);
-      font-size: 1.15rem;
-      font-weight: 800;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--accent-cyan);
-      padding-bottom: 0.5rem;
-      border-bottom: 2px solid var(--accent-cyan);
-      margin-bottom: 1.35rem;
-    }
-
-    /* Entry items */
-    .cv-entry {
-      margin-bottom: 1.75rem;
-    }
-
-    .cv-entry:last-child {
-      margin-bottom: 0.5rem;
-    }
-
-    .cv-entry-title {
+    .cv-title {
       font-size: 1.05rem;
       font-weight: 700;
       color: var(--text-primary);
       margin-bottom: 0.25rem;
     }
-
-    .cv-entry-meta {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 0.4rem 0.75rem;
-      font-size: 0.9rem;
+    .cv-sub {
+      font-size: 0.88rem;
       color: var(--accent-blue);
+      font-family: var(--font-mono);
       margin-bottom: 0.5rem;
     }
-
-    .cv-dot-sep {
-      color: var(--text-muted);
-    }
-
-    .cv-entry-timeline {
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-bottom: 0.45rem;
-    }
-
     .cv-cpa-badge {
       display: inline-block;
       font-family: var(--font-mono);
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 700;
       color: var(--accent-emerald);
-      background: rgba(16, 185, 129, 0.1);
+      background: rgba(16, 185, 129, 0.12);
       border: 1px solid rgba(16, 185, 129, 0.3);
       padding: 0.2rem 0.65rem;
       border-radius: 6px;
-      margin-top: 0.4rem;
+      margin-top: 0.25rem;
     }
-
+    .cv-award-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #fbbf24;
+      background: rgba(251, 191, 36, 0.1);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      padding: 0.3rem 0.75rem;
+      border-radius: 6px;
+      margin-bottom: 0.65rem;
+    }
     .cv-bullets {
       list-style: none;
       padding-left: 0;
-      margin: 0.5rem 0;
+      margin: 0.5rem 0 0.75rem 0;
     }
-
     .cv-bullets li {
       position: relative;
       padding-left: 1.25rem;
       margin-bottom: 0.45rem;
       font-size: 0.92rem;
-      line-height: 1.55;
+      line-height: 1.6;
       color: var(--text-secondary);
     }
-
     .cv-bullets li::before {
       content: "-";
       position: absolute;
@@ -192,52 +88,34 @@
       color: var(--accent-cyan);
       font-weight: 700;
     }
-
-    .cv-award-note {
-      color: #fbbf24;
-      font-weight: 600;
+    .skills-category {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
     }
-
-    /* Skills */
-    .cv-skill-item {
-      margin-bottom: 1.15rem;
+    .skills-cat-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      font-family: var(--font-mono);
+      margin-bottom: 0.5rem;
+    }
+    .cv-skill-text {
+      color: var(--text-secondary);
       font-size: 0.92rem;
       line-height: 1.6;
-      color: var(--text-secondary);
     }
-
-    .cv-skill-title {
-      font-weight: 700;
-      color: var(--text-primary);
-    }
-
-    /* Certificates */
-    .cv-cert-box {
-      margin-bottom: 0.85rem;
-      padding: 0.75rem 1rem;
-      background: rgba(56, 189, 248, 0.05);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .cv-cert-title {
-      font-weight: 700;
-      color: var(--text-primary);
-      font-size: 0.95rem;
-    }
-
-    .cv-cert-grade {
+    .cert-pill {
       font-family: var(--font-mono);
+      font-size: 0.85rem;
       font-weight: 700;
       color: var(--accent-cyan);
       background: rgba(0, 242, 254, 0.12);
       border: 1px solid var(--border-highlight);
-      padding: 0.2rem 0.65rem;
+      padding: 0.15rem 0.6rem;
       border-radius: 6px;
-      font-size: 0.9rem;
     }
   </style>
 </head>
@@ -309,171 +187,249 @@
     </div>
   </header>
 
-  <!-- MAIN CV WRAPPER -->
-  <main class="cv-wrapper">
-    <div class="cv-document">
-      
-      <!-- HEADER BLOCK -->
-      <header class="cv-main-header">
-        <div class="cv-role-title">MECHATRONICS ENGINEER</div>
-        <h1 class="cv-candidate-name">ĐỖ HIỂU VINH</h1>
-        <div class="cv-contact-bar">
-          <div class="cv-contact-entry">
+  <!-- APP CONTAINER -->
+  <div class="app-container">
+    
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="profile-card">
+        <div class="avatar-wrapper">
+          <div class="avatar-pulse-ring"></div>
+          <img src="assets/images/1.jpg" alt="Avatar" class="avatar-img">
+        </div>
+        <div class="author-info">
+          <h2 class="author-name">
+            <span class="lang-vi">Đỗ Hiểu Vinh</span>
+            <span class="lang-en">Do Hieu Vinh</span>
+            <span class="lang-de">Do Hieu Vinh</span>
+          </h2>
+          <div class="author-handle">@vinhdo281 · HUST</div>
+
+          <div class="author-status">
+            <span class="status-dot"></span>
+            <span class="lang-vi">MECHATRONICS ENGINEER</span>
+            <span class="lang-en">MECHATRONICS ENGINEER</span>
+            <span class="lang-de">MECHATRONIK-INGENIEUR</span>
+          </div>
+        </div>
+        <div class="sidebar-divider"></div>
+
+        <div class="contact-location">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>Long Biên, Hà Nội</span>
+        </div>
+
+        <ul class="contact-list" style="margin-bottom: 1.25rem;">
+          <li class="contact-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
             <a href="tel:0368675878">0368675878</a>
-          </div>
-          <div class="cv-contact-entry">
+          </li>
+          <li class="contact-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
             <a href="mailto:dohieuvinh@gmail.com">dohieuvinh@gmail.com</a>
-          </div>
-          <div class="cv-contact-entry">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            <span>Long Bien, Ha Noi</span>
-          </div>
+          </li>
+        </ul>
+
+        <!-- Tech Social Icons Dock -->
+        <div class="social-icons-dock">
+          <a href="https://github.com/vinhdo281" target="_blank" rel="noopener" class="tech-icon-btn" data-tooltip="GitHub" aria-label="GitHub">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/in/vinhdo281" target="_blank" rel="noopener" class="tech-icon-btn" data-tooltip="LinkedIn" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="https://www.facebook.com/AlexDo281" target="_blank" rel="noopener" class="tech-icon-btn" data-tooltip="Facebook" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="mailto:dohieuvinh@gmail.com" class="tech-icon-btn" data-tooltip="Email" aria-label="Email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </a>
         </div>
-      </header>
-
-      <!-- TWO-COLUMN CONTENT BODY -->
-      <div class="cv-body-grid">
-        
-        <!-- LEFT COLUMN: PROJECT & CERTIFICATE -->
-        <div class="cv-col-left">
-          
-          <!-- PROJECT -->
-          <section class="cv-section-block">
-            <h2 class="cv-heading">PROJECT</h2>
-
-            <!-- Project 1 -->
-            <div class="cv-entry">
-              <div class="cv-entry-title">PVGAS UAVCUP 2025</div>
-              <div class="cv-entry-meta">
-                <span>Mechanical Designer</span>
-              </div>
-              <div class="cv-entry-timeline">2025 -</div>
-              <ul class="cv-bullets">
-                <li>Developed a propeller protection ring structure to improve operational safety and impact resistance while minimizing aerodynamic drag on drone.</li>
-                <li>Designed and validated a servo-actuated gripping &amp; payload release landing gear mechanism, ensuring precise actuation, repeatability, and mechanical reliability under dynamic flight conditions.</li>
-                <li>Performed load analysis, material selection, tolerance design, and structural validation to ensure compliance with competition constraints.</li>
-              </ul>
-            </div>
-
-            <!-- Project 2 -->
-            <div class="cv-entry">
-              <div class="cv-entry-title">Robot Pickleball Competition 2024</div>
-              <div class="cv-entry-meta">
-                <span>Mechanical &amp; Electronics Designer</span>
-              </div>
-              <div class="cv-entry-timeline">2024 -</div>
-              <ul class="cv-bullets">
-                <li><span class="cv-award-note">Awarded “Outstanding Design Award” in the competition.</span></li>
-                <li>Took the lead in concept development and main mechanical design of the robot, ensuring functionality, robustness, and innovative structure.</li>
-                <li>Responsible for installation and integration of the electronic system, including wiring, circuit connections, and microcontroller setup for reliable control</li>
-              </ul>
-            </div>
-
-            <!-- Project 3 -->
-            <div class="cv-entry">
-              <div class="cv-entry-title">Self-Driving Car</div>
-              <div class="cv-entry-meta">
-                <span>Computer Vision &amp; ROS 2 Developer</span>
-              </div>
-              <div class="cv-entry-timeline">2025 -</div>
-              <ul class="cv-bullets">
-                <li>Designed and implemented an autonomous vehicle capable of navigation using computer vision techniques</li>
-                <li>Applied OpenCV (cv2) for real-time image processing, including lane detection, object recognition, and decision-making based on visual inputs.</li>
-                <li>Developed and integrated control algorithms on ROS 2 to manage vehicle motion, sensor fusion, and communication between subsystems</li>
-              </ul>
-            </div>
-          </section>
-
-          <!-- CERTIFICATE -->
-          <section class="cv-section-block">
-            <h2 class="cv-heading">CERTIFICATE</h2>
-            <div class="cv-cert-box">
-              <span class="cv-cert-title">ENGLISH (IELTS)</span>
-              <span class="cv-cert-grade">C1</span>
-            </div>
-            <div class="cv-cert-box">
-              <span class="cv-cert-title">GERMAN (Goethe-Zertifikat)</span>
-              <span class="cv-cert-grade">B1</span>
-            </div>
-          </section>
-
-        </div>
-
-        <!-- RIGHT COLUMN: EDUCATION, RESEARCH EXPERIENCE, SKILL -->
-        <div class="cv-col-right">
-          
-          <!-- EDUCATION -->
-          <section class="cv-section-block">
-            <h2 class="cv-heading">EDUCATION</h2>
-            <div class="cv-entry">
-              <div class="cv-entry-title">Hanoi University of Science and Technology</div>
-              <div class="cv-entry-meta">
-                <span>Mechatronics Engineering - 2027</span>
-              </div>
-              <div>
-                <span class="cv-cpa-badge">CPA: 3.01</span>
-              </div>
-            </div>
-          </section>
-
-          <!-- RESEARCH EXPERIENCE -->
-          <section class="cv-section-block">
-            <h2 class="cv-heading">RESEARCH EXPERIENCE</h2>
-
-            <!-- Experience 1 -->
-            <div class="cv-entry">
-              <div class="cv-entry-title">HUST ROBOTICS AND SMART EQUIPMENT CLUB</div>
-              <div class="cv-entry-timeline">2024 - 2025</div>
-              <div class="cv-entry-meta">
-                <span>Mechanical Designer &amp; Programmer</span>
-              </div>
-              <ul class="cv-bullets">
-                <li>Designed robotic mechanisms and structural components with focus on stiffness and durability</li>
-                <li>Integrated actuators, sensors, and control hardware (ESP32) into mechanical subsystems</li>
-              </ul>
-            </div>
-
-            <!-- Experience 2 -->
-            <div class="cv-entry">
-              <div class="cv-entry-title">Smart Mechatronics and Artificial Intelligence Lab</div>
-              <div class="cv-entry-timeline">2024 - 2025</div>
-              <div class="cv-entry-meta">
-                <span>Mechanical Robotics Designer</span>
-              </div>
-              <ul class="cv-bullets">
-                <li>Designed mechanical structures for robotic perception and navigation platforms</li>
-                <li>Collaborated in system integration between mechanical assemblies and ROS 2-based control systems</li>
-              </ul>
-            </div>
-          </section>
-
-          <!-- SKILL -->
-          <section class="cv-section-block">
-            <h2 class="cv-heading">SKILL</h2>
-            
-            <div class="cv-skill-item">
-              <div class="cv-skill-title">Programming:</div>
-              <div>Proficient in C ,Python and MATLAB.</div>
-            </div>
-
-            <div class="cv-skill-item">
-              <div class="cv-skill-title">Mechanical design (3D &amp; 2D CAD):</div>
-              <div>Fusion 360 (Advanced), Siemens NX (Advanced), AutoCAD.</div>
-            </div>
-
-            <div class="cv-skill-item">
-              <div class="cv-skill-title">Electronics and circuit design:</div>
-              <div>KiCad, Altium (Intermediate).</div>
-            </div>
-          </section>
-
-        </div>
-
       </div>
-    </div>
-  </main>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <section class="hero-card">
+        <div class="hero-header">
+          <span class="terminal-badge">IDENTITY // MECHATRONICS ENGINEER</span>
+        </div>
+        <h1 class="hero-title">
+          <span class="lang-vi">Hồ Sơ Năng Lực &amp; Lý Lịch Khoa Học</span>
+          <span class="lang-en">Curriculum Vitae &amp; Credentials</span>
+          <span class="lang-de">Lebenslauf &amp; Qualifikationen</span>
+        </h1>
+        <p class="hero-desc">
+          MECHATRONICS ENGINEER · HANOI UNIVERSITY OF SCIENCE AND TECHNOLOGY
+        </p>
+      </section>
+
+      <!-- EDUCATION -->
+      <section>
+        <div class="section-title-wrap">
+          <h2 class="section-title">
+            <span class="section-prefix">&gt;</span>
+            <span>EDUCATION</span>
+          </h2>
+        </div>
+
+        <div class="cv-timeline">
+          <div class="cv-node">
+            <div class="cv-title">Hanoi University of Science and Technology</div>
+            <div class="cv-sub">Mechatronics Engineering - 2027</div>
+            <div>
+              <span class="cv-cpa-badge font-mono">CPA: 3.01</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RESEARCH EXPERIENCE -->
+      <section>
+        <div class="section-title-wrap">
+          <h2 class="section-title">
+            <span class="section-prefix">&gt;</span>
+            <span>RESEARCH EXPERIENCE</span>
+          </h2>
+        </div>
+
+        <div class="cv-timeline">
+          <!-- Club -->
+          <div class="cv-node">
+            <div class="cv-title">HUST ROBOTICS AND SMART EQUIPMENT CLUB</div>
+            <div class="cv-sub">2024 - 2025 · Mechanical Designer &amp; Programmer</div>
+            <ul class="cv-bullets">
+              <li>Designed robotic mechanisms and structural components with focus on stiffness and durability</li>
+              <li>Integrated actuators, sensors, and control hardware (ESP32) into mechanical subsystems</li>
+            </ul>
+          </div>
+
+          <!-- Lab -->
+          <div class="cv-node">
+            <div class="cv-title">Smart Mechatronics and Artificial Intelligence Lab</div>
+            <div class="cv-sub">2024 - 2025 · Mechanical Robotics Designer</div>
+            <ul class="cv-bullets">
+              <li>Designed mechanical structures for robotic perception and navigation platforms</li>
+              <li>Collaborated in system integration between mechanical assemblies and ROS 2-based control systems</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROJECT -->
+      <section>
+        <div class="section-title-wrap">
+          <h2 class="section-title">
+            <span class="section-prefix">&gt;</span>
+            <span>PROJECT</span>
+          </h2>
+        </div>
+
+        <div class="cv-timeline">
+          <!-- Project 1 -->
+          <div class="cv-node">
+            <div class="cv-title">PVGAS UAVCUP 2025 · Mechanical Designer</div>
+            <div class="cv-sub">2025 -</div>
+            <ul class="cv-bullets">
+              <li>Developed a propeller protection ring structure to improve operational safety and impact resistance while minimizing aerodynamic drag on drone.</li>
+              <li>Designed and validated a servo-actuated gripping &amp; payload release landing gear mechanism, ensuring precise actuation, repeatability, and mechanical reliability under dynamic flight conditions.</li>
+              <li>Performed load analysis, material selection, tolerance design, and structural validation to ensure compliance with competition constraints.</li>
+            </ul>
+          </div>
+
+          <!-- Project 2 -->
+          <div class="cv-node">
+            <div class="cv-title">Robot Pickleball Competition 2024 · Mechanical &amp; Electronics Designer</div>
+            <div class="cv-sub">2024 -</div>
+            <div class="cv-award-badge">
+              <span>🏆 Awarded “Outstanding Design Award” in the competition.</span>
+            </div>
+            <ul class="cv-bullets">
+              <li>Took the lead in concept development and main mechanical design of the robot, ensuring functionality, robustness, and innovative structure.</li>
+              <li>Responsible for installation and integration of the electronic system, including wiring, circuit connections, and microcontroller setup for reliable control</li>
+            </ul>
+          </div>
+
+          <!-- Project 3 -->
+          <div class="cv-node">
+            <div class="cv-title">Self-Driving Car · Computer Vision &amp; ROS 2 Developer</div>
+            <div class="cv-sub">2025 -</div>
+            <ul class="cv-bullets">
+              <li>Designed and implemented an autonomous vehicle capable of navigation using computer vision techniques</li>
+              <li>Applied OpenCV (cv2) for real-time image processing, including lane detection, object recognition, and decision-making based on visual inputs.</li>
+              <li>Developed and integrated control algorithms on ROS 2 to manage vehicle motion, sensor fusion, and communication between subsystems</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- SKILL -->
+      <section>
+        <div class="section-title-wrap">
+          <h2 class="section-title">
+            <span class="section-prefix">&gt;</span>
+            <span>SKILL</span>
+          </h2>
+        </div>
+
+        <div class="skills-category">
+          <div class="skills-cat-title">
+            <span>[ 01 ] PROGRAMMING</span>
+          </div>
+          <div class="cv-skill-text">Proficient in C ,Python and MATLAB.</div>
+        </div>
+
+        <div class="skills-category">
+          <div class="skills-cat-title">
+            <span>[ 02 ] MECHANICAL DESIGN (3D &amp; 2D CAD)</span>
+          </div>
+          <div class="cv-skill-text">Fusion 360 (Advanced), Siemens NX (Advanced), AutoCAD.</div>
+        </div>
+
+        <div class="skills-category">
+          <div class="skills-cat-title">
+            <span>[ 03 ] ELECTRONICS AND CIRCUIT DESIGN</span>
+          </div>
+          <div class="cv-skill-text">KiCad, Altium (Intermediate).</div>
+        </div>
+      </section>
+
+      <!-- CERTIFICATE -->
+      <section>
+        <div class="section-title-wrap">
+          <h2 class="section-title">
+            <span class="section-prefix">&gt;</span>
+            <span>CERTIFICATE</span>
+          </h2>
+        </div>
+
+        <div class="cards-grid">
+          <div class="tech-card">
+            <div class="card-top">
+              <span class="card-type">LANGUAGE CERTIFICATE</span>
+              <span class="cert-pill">C1</span>
+            </div>
+            <h3 class="card-title" style="margin-bottom: 0.25rem;">ENGLISH (IELTS)</h3>
+            <p class="card-desc" style="color: var(--accent-cyan); font-family: var(--font-mono); font-weight: 600;">
+              Level: C1
+            </p>
+          </div>
+
+          <div class="tech-card">
+            <div class="card-top">
+              <span class="card-type">LANGUAGE CERTIFICATE</span>
+              <span class="cert-pill">B1</span>
+            </div>
+            <h3 class="card-title" style="margin-bottom: 0.25rem;">GERMAN (Goethe-Zertifikat)</h3>
+            <p class="card-desc" style="color: var(--accent-cyan); font-family: var(--font-mono); font-weight: 600;">
+              Level: B1
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
 
   <!-- SEARCH MODAL -->
   <div id="search-modal-backdrop" class="search-modal-backdrop">
