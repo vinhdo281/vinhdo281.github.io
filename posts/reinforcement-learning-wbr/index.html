@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hướng Dẫn Từ A–Z: Học Tăng Cường (Reinforcement Learning) Cho Robot Chân - Bánh Xe Trên MuJoCo Physics & Stable-Baselines3 | Cyber-Tech Blog</title>
+  <title>Reinforcement Learning for Wheeled-Bipedal Robot | MuJoCo Physics & Stable-Baselines3</title>
   <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
   <link rel="stylesheet" href="../../assets/css/style.css">
   <!-- KaTeX CSS & JS for Math Equations -->
@@ -145,29 +145,37 @@
         <!-- ARTICLE HERO -->
         <article class="article-hero">
           <nav class="article-breadcrumb">
-            <a href="../../index.html">Home</a>
+            <a href="../../index.html"><span class="lang-vi">Trang chủ</span><span class="lang-en">Home</span><span class="lang-de">Startseite</span></a>
             <span>/</span>
-            <a href="../../blog.html">Blog</a>
+            <a href="../../blog.html"><span class="lang-vi">Bài viết</span><span class="lang-en">Blog</span><span class="lang-de">Blog</span></a>
             <span>/</span>
-            <span>Reinforcement Learning</span>
+            <span><span class="lang-vi">Học Tăng Cường</span><span class="lang-en">Reinforcement Learning</span><span class="lang-de">Reinforcement Learning</span></span>
           </nav>
           
           <h1 class="article-title">
-            Hướng Dẫn Toàn Diện Từ A–Z: Học Tăng Cường (Reinforcement Learning) Cho Robot Chân - Bánh Xe Trên MuJoCo Physics & Stable-Baselines3
+            <span class="lang-vi">Hướng Dẫn Toàn Diện Từ A–Z: Học Tăng Cường (Reinforcement Learning) Cho Robot Chân - Bánh Xe Trên MuJoCo Physics & Stable-Baselines3</span>
+            <span class="lang-en">Comprehensive Guide: Reinforcement Learning for Wheeled-Bipedal Robots on MuJoCo Physics & Stable-Baselines3</span>
+            <span class="lang-de">Umfassender Leitfaden: Reinforcement Learning für Rad-Bein-Roboter auf MuJoCo Physics & Stable-Baselines3</span>
           </h1>
           
           <div class="article-meta">
             <span class="article-meta-item">
               <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-              09 Tháng 10, 2026
+              <span class="lang-vi">09 Tháng 10, 2026</span>
+              <span class="lang-en">October 09, 2026</span>
+              <span class="lang-de">09. Oktober 2026</span>
             </span>
             <span class="article-meta-item">
               <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              Vinh Do · HUST Robotics Team
+              <span class="lang-vi">Vinh Do · HUST Robotics Team</span>
+              <span class="lang-en">Vinh Do · HUST Robotics Team</span>
+              <span class="lang-de">Vinh Do · HUST Robotics Team</span>
             </span>
             <span class="article-meta-item">
               <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              25 Phút Đọc · Thực Chiến Cho Người Mới
+              <span class="lang-vi">25 Phút Đọc · Thực Chiến Cho Người Mới</span>
+              <span class="lang-en">25 Min Read · Hands-on Practical</span>
+              <span class="lang-de">25 Min Lesezeit · Umfassende Praxis</span>
             </span>
             <span class="card-type">RL // PPO // MUJOCO 3D // WBR</span>
           </div>
@@ -180,8 +188,16 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
             </div>
             <div class="os-selector-text">
-              <h4>Chọn Hệ Điều Hành Của Bạn (Interactive OS Switcher)</h4>
-              <p>Nhấp chuột để tự động chuyển đổi toàn bộ lệnh CMD/Batch/PowerShell (Windows) hoặc Bash/Terminal (Linux) trong bài viết.</p>
+              <h4>
+                <span class="lang-vi">Chọn Hệ Điều Hành Của Bạn (Interactive OS Switcher)</span>
+                <span class="lang-en">Select Your Operating System (Interactive OS Switcher)</span>
+                <span class="lang-de">Wählen Sie Ihr Betriebssystem (Interaktiver OS-Umschalter)</span>
+              </h4>
+              <p>
+                <span class="lang-vi">Nhấp chuột để tự động chuyển đổi toàn bộ lệnh CMD/Batch/PowerShell (Windows) hoặc Bash/Terminal (Linux) trong bài viết.</span>
+                <span class="lang-en">Click to automatically toggle all CMD/Batch/PowerShell (Windows) or Bash/Terminal (Linux) commands across this guide.</span>
+                <span class="lang-de">Klicken Sie hier, um automatisch alle CMD/Batch/PowerShell- (Windows) oder Bash/Terminal-Befehle (Linux) im Artikel umzuschalten.</span>
+              </p>
             </div>
           </div>
           <div class="os-toggle-group">
@@ -200,19 +216,21 @@
         <div class="article-toc">
           <div class="article-toc-title">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-            NỘI DUNG BÀI HƯỚNG DẪN (TOC)
+            <span class="lang-vi">NỘI DUNG BÀI HƯỚNG DẪN (TOC)</span>
+            <span class="lang-en">TABLE OF CONTENTS</span>
+            <span class="lang-de">INHALTSVERZEICHNIS</span>
           </div>
           <ul class="article-toc-list">
-            <li><a href="#sec-why-wbr">1. Đặt Vấn Đề: Tại Sao Chọn Robot Chân - Bánh Xe (WBR)?</a></li>
-            <li><a href="#sec-control-arch">2. Kiến Trúc Điều Khiển Kết Hợp: VMC (Virtual Model Control) & RL</a></li>
-            <li><a href="#sec-spaces">3. Thiết Kế Không Gian Trạng Thái (Observation) & Hành Động (Action)</a></li>
-            <li><a href="#sec-ppo-reward">4. Giải Thuật PPO & Nghệ Thuật Thiết Kế Hàm Thưởng (Reward Shaping)</a></li>
-            <li><a href="#sec-codebase">5. Mổ Xẻ Cấu Trúc Mã Nguồn: Thư Mục models/, eval/, và Các Kịch Bản</a></li>
-            <li><a href="#sec-setup">6. Thiết Lập Môi Trường Huấn Luyện (Windows vs Linux)</a></li>
-            <li><a href="#sec-training">7. Thực Chiến Huấn Luyện: Chạy Train & Xem 3D Viewer Song Song</a></li>
-            <li><a href="#sec-continuous">8. Cơ Chế Học Liên Tục (Continuous Learning / Resume Checkpoint)</a></li>
-            <li><a href="#sec-monitoring">9. Giám Sát Qua TensorBoard & Đánh Giá Chất Lượng Chính Sách (Eval)</a></li>
-            <li><a href="#sec-faq">10. Checklist Gỡ Lỗi & Câu Hỏi Thường Gặp (FAQ) Cho Người Mới</a></li>
+            <li><a href="#sec-why-wbr"><span class="lang-vi">1. Đặt Vấn Đề: Tại Sao Chọn Robot Chân - Bánh Xe (WBR)?</span><span class="lang-en">1. Problem Formulation: Why Choose Wheeled-Bipedal Robots (WBR)?</span><span class="lang-de">1. Problemstellung: Warum Rad-Bein-Roboter (WBR)?</span></a></li>
+            <li><a href="#sec-control-arch"><span class="lang-vi">2. Kiến Trúc Điều Khiển Kết Hợp: VMC (Virtual Model Control) & RL</span><span class="lang-en">2. Hybrid Control Hierarchy: VMC (Virtual Model Control) & RL</span><span class="lang-de">2. Hybride Regelungshierarchie: VMC & RL</span></a></li>
+            <li><a href="#sec-spaces"><span class="lang-vi">3. Thiết Kế Không Gian Trạng Thái (Observation) & Hành Động (Action)</span><span class="lang-en">3. State (Observation) & Action Space Design</span><span class="lang-de">3. Entwurf von Zustands- (Observation) & Aktionsraum (Action)</span></a></li>
+            <li><a href="#sec-ppo-reward"><span class="lang-vi">4. Giải Thuật PPO & Nghệ Thuật Thiết Kế Hàm Thưởng (Reward Shaping)</span><span class="lang-en">4. PPO Algorithm & Art of Reward Shaping</span><span class="lang-de">4. PPO-Algorithmus & Kunst des Reward-Shapings</span></a></li>
+            <li><a href="#sec-codebase"><span class="lang-vi">5. Mổ Xẻ Cấu Trúc Mã Nguồn: Thư Mục models/, eval/, và Các Kịch Bản</span><span class="lang-en">5. Codebase Architecture: models/, eval/ Directories & Scenarios</span><span class="lang-de">5. Codebasis-Architektur: models/, eval/ & Szenarien</span></a></li>
+            <li><a href="#sec-setup"><span class="lang-vi">6. Thiết Lập Môi Trường Huấn Luyện (Windows vs Linux)</span><span class="lang-en">6. Training Environment Setup (Windows vs Linux)</span><span class="lang-de">6. Einrichtung der Trainingsumgebung (Windows vs. Linux)</span></a></li>
+            <li><a href="#sec-training"><span class="lang-vi">7. Thực Chiến Huấn Luyện: Chạy Train & Xem 3D Viewer Song Song</span><span class="lang-en">7. Hands-on Training: Running Train & 3D Viewer Concurrently</span><span class="lang-de">7. Praxistraining: Training & 3D-Viewer parallel ausführen</span></a></li>
+            <li><a href="#sec-continuous"><span class="lang-vi">8. Cơ Chế Học Liên Tục (Continuous Learning / Resume Checkpoint)</span><span class="lang-en">8. Continuous Learning (Resume Checkpoint Mechanism)</span><span class="lang-de">8. Kontinuierliches Lernen (Resume-Checkpoint-Mechanismus)</span></a></li>
+            <li><a href="#sec-monitoring"><span class="lang-vi">9. Giám Sát Qua TensorBoard & Đánh Giá Chất Lượng Chính Sách (Eval)</span><span class="lang-en">9. Real-time Monitoring via TensorBoard & Policy Evaluation (Eval)</span><span class="lang-de">9. Echtzeit-Überwachung via TensorBoard & Policy-Evaluierung</span></a></li>
+            <li><a href="#sec-faq"><span class="lang-vi">10. Checklist Gỡ Lỗi & Câu Hỏi Thường Gặp (FAQ) Cho Người Mới</span><span class="lang-en">10. Troubleshooting Checklist & FAQ for Beginners</span><span class="lang-de">10. Fehlersuche & Häufig gestellte Fragen (FAQ)</span></a></li>
           </ul>
         </div>
 
@@ -221,167 +239,336 @@
 
           <!-- SECTION 1 -->
           <section id="sec-why-wbr">
-            <h2><span class="h2-badge">PHẦN 1</span> Đặt Vấn Đề: Tại Sao Chọn Robot Chân - Bánh Xe (WBR)?</h2>
+            <h2>
+              <span class="lang-vi"><span class="h2-badge">PHẦN 1</span> Đặt Vấn Đề: Tại Sao Chọn Robot Chân - Bánh Xe (WBR)?</span>
+              <span class="lang-en"><span class="h2-badge">PART 1</span> Problem Formulation: Why Choose Wheeled-Bipedal Robots (WBR)?</span>
+              <span class="lang-de"><span class="h2-badge">TEIL 1</span> Problemstellung: Warum Rad-Bein-Roboter (WBR)?</span>
+            </h2>
             
-            <p>
-              Trong thế giới Robotics hiện đại, các dòng robot di động thường phân tách thành 2 thái cực rõ rệt:
-            </p>
-            <ul>
+            <p class="lang-vi">Trong thế giới Robotics hiện đại, các dòng robot di động thường phân tách thành 2 thái cực rõ rệt:</p>
+            <p class="lang-en">In modern robotics, mobile robotic platforms have traditionally fallen into two distinct extremes:</p>
+            <p class="lang-de">In der modernen Robotik teilen sich mobile Plattformen traditionell in zwei gegensätzliche Extreme:</p>
+
+            <ul class="lang-vi">
               <li><strong>Robot bánh xe truyền thống (Wheeled Mobile Robots - WMR / AGV):</strong> Tốc độ cao, tiết kiệm năng lượng, điều khiển đơn giản nhưng hoàn toàn bất lực trước bậc thang, gờ cao, hay địa hình mấp mô.</li>
               <li><strong>Robot 2 chân / 4 chân (Bipedal / Quadruped Robots - như Boston Dynamics Atlas / Spot):</strong> Vượt địa hình hiểm trở xuất sắc, nhưng tiêu tốn lượng năng lượng cơ học khổng lồ do phải liên tục nhấc chân tạo chu kỳ bước đi (gait cycles), tốc độ di chuyển trên mặt phẳng bị giới hạn.</li>
             </ul>
+            <ul class="lang-en">
+              <li><strong>Traditional Wheeled Robots (WMR / AGV):</strong> High velocity, energy efficiency, and simple kinematics, yet utterly helpless against stairs, obstacles, or rugged terrain.</li>
+              <li><strong>Bipedal / Quadruped Legged Robots (e.g., Boston Dynamics Atlas / Spot):</strong> Superb terrain traversability, yet consume enormous mechanical energy to constantly cycle leg gait steps, with constrained velocity on flat surfaces.</li>
+            </ul>
+            <ul class="lang-de">
+              <li><strong>Klassische Radroboter (WMR / AGV):</strong> Hohe Geschwindigkeit, energieeffizient und einfach zu regeln, scheitern jedoch völlig an Treppenstufen, Schwellen oder unebenem Gelände.</li>
+              <li><strong>Zwei- und Vierbeiner (wie Boston Dynamics Atlas / Spot):</strong> Hervorragende Geländegängigkeit, benötigen jedoch enorm viel mechanische Energie für kontinuierliche Schrittzyklen bei limitierter Fahrgeschwindigkeit auf ebenen Böden.</li>
+            </ul>
 
-            <p>
+            <p class="lang-vi">
               <strong>Robot chân - bánh xe (Wheeled-Bipedal Robot - WBR)</strong> ra đời như một điểm giao thoa hoàn hảo: thay thế bàn chân tiếp đất bằng cụm bánh xe chủ động được gắn ở đầu mút của cơ cấu chân đa khâu (thường là cơ cấu 5 khâu kín - <em>Five-bar closed kinematic chain</em>).
+            </p>
+            <p class="lang-en">
+              The <strong>Wheeled-Bipedal Robot (WBR)</strong> emerges as the optimal hybrid synthesis: replacing conventional footpads with active driven wheels mounted at the distal tips of multi-bar leg mechanisms (typically a <em>Five-bar closed kinematic chain</em>).
+            </p>
+            <p class="lang-de">
+              Der <strong>Rad-Bein-Roboter (Wheeled-Bipedal Robot - WBR)</strong> vereint das Beste beider Welten: Er ersetzt starre Fußelemente durch aktiv angetriebene Räder an den Endpunkten von Mehrgelenk-Beinmechanismen (meist eine <em>geschlossene 5-Gelenk-Kette</em>).
             </p>
 
             <div class="callout callout-info">
               <span class="callout-icon">💡</span>
               <div>
-                <strong>Tại sao bài toán điều khiển WBR lại phi tuyến và siêu phức tạp?</strong><br>
-                Robot chân bánh xe thực chất là một hệ <strong>con lắc ngược di động đa vật thể (Mobile Inverted Pendulum with Variable Height)</strong>. Chiều cao trọng tâm thay đổi liên tục khi co/duỗi chân, ma sát tiếp xúc giữa bánh xe và mặt đất biến thiên phi tuyến, đồng thời tồn tại sự ghép kênh động lực học mạnh mẽ giữa mô-men quay bánh xe và mô-men khớp háng/khớp gối.
+                <div class="lang-vi">
+                  <strong>Tại sao bài toán điều khiển WBR lại phi tuyến và siêu phức tạp?</strong><br>
+                  Robot chân bánh xe thực chất là một hệ <strong>con lắc ngược di động đa vật thể (Mobile Inverted Pendulum with Variable Height)</strong>. Chiều cao trọng tâm thay đổi liên tục khi co/duỗi chân, ma sát tiếp xúc giữa bánh xe và mặt đất biến thiên phi tuyến, đồng thời tồn tại sự ghép kênh động lực học mạnh mẽ giữa mô-men quay bánh xe và mô-men khớp háng/khớp gối.
+                </div>
+                <div class="lang-en">
+                  <strong>Why is WBR control non-linear and ultra-complex?</strong><br>
+                  A wheeled-bipedal robot is inherently a <strong>Mobile Inverted Pendulum with Variable Height</strong>. Center of mass height fluctuates dynamically during leg flexing/extension, wheel-ground contact friction varies nonlinearly, and profound dynamic cross-coupling exists between wheel torques and hip/knee joint torques.
+                </div>
+                <div class="lang-de">
+                  <strong>Warum ist die WBR-Regelung hochgradig nichtlinear und komplex?</strong><br>
+                  Ein Rad-Bein-Roboter ist im Kern ein <strong>mobiles inverses Pendel mit variabler Schwerpunkthöhe (Mobile Inverted Pendulum with Variable Height)</strong>. Beim Beugen/Strecken variiert die Schwerpunkthöhe, der Rad-Boden-Reibkontakt verhält sich nichtlinear, und es besteht eine starke dynamische Kopplung zwischen Rad- und Gelenkmomenten.
+                </div>
               </div>
             </div>
 
-            <p>
+            <p class="lang-vi">
               Nếu sử dụng các giải pháp cổ điển như LQR hay MPC tuyến tính hóa, ta phải liên tục tính lại ma trận động học phi tuyến tại từng điểm làm việc. <strong>Học tăng cường không mô hình (Model-Free Deep Reinforcement Learning - DRL)</strong> kết hợp bộ điều khiển ảo <strong>VMC-PD</strong> cho phép mạng nơ-ron tự động khám phá và học được chiến lược giữ thăng bằng thích nghi cao chỉ sau vài giờ mô phỏng vật lý!
+            </p>
+            <p class="lang-en">
+              Classical linear LQR or MPC requires continuous re-linearization around transient operating points. <strong>Model-Free Deep Reinforcement Learning (DRL)</strong> paired with <strong>Virtual Model Control (VMC-PD)</strong> empowers neural networks to autonomously discover highly adaptive balancing strategies in just a few hours of physical simulation!
+            </p>
+            <p class="lang-de">
+              Klassische lineare LQR- oder MPC-Verfahren erfordern ständige Linearisierungen um Arbeitspunkte. <strong>Modellfreies Deep Reinforcement Learning (DRL)</strong> kombiniert mit <strong>Virtual Model Control (VMC-PD)</strong> ermöglicht es dem neuronalen Netz, in wenigen Stunden hochadaptive Balancierstrategien in der Simulation selbstständig zu erlernen!
             </p>
           </section>
 
           <!-- SECTION 2 -->
           <section id="sec-control-arch">
-            <h2><span class="h2-badge">PHẦN 2</span> Kiến Trúc Điều Khiển Kết Hợp: VMC (Virtual Model Control) & RL</h2>
+            <h2>
+              <span class="lang-vi"><span class="h2-badge">PHẦN 2</span> Kiến Trúc Điều Khiển Kết Hợp: VMC (Virtual Model Control) & RL</span>
+              <span class="lang-en"><span class="h2-badge">PART 2</span> Hybrid Control Hierarchy: VMC (Virtual Model Control) & RL</span>
+              <span class="lang-de"><span class="h2-badge">TEIL 2</span> Hybride Regelungshierarchie: VMC & RL</span>
+            </h2>
 
-            <p>
-              Để một mạng nơ-ron học trực tiếp mô-men xoắn $\tau$ cấp thẳng cho từng động cơ BLDC là cực kỳ nguy hiểm và mất hàng chục triệu bước học để hội tụ. Trong dự án này, chúng ta áp dụng kiến trúc phân tầng <strong>Hybrid Control Hierarchy</strong>:
+            <p class="lang-vi">
+              Để một mạng nơ-ron học trực tiếp mô-men xoắn $	au$ cấp thẳng cho từng động cơ BLDC là cực kỳ nguy hiểm và mất hàng chục triệu bước học để hội tụ. Trong dự án này, chúng ta áp dụng kiến trúc phân tầng <strong>Hybrid Control Hierarchy</strong>:
+            </p>
+            <p class="lang-en">
+              Having a neural network directly output raw joint torques $	au$ for each BLDC motor is dangerous and takes tens of millions of steps to converge. In this project, we employ a <strong>Hybrid Control Hierarchy</strong>:
+            </p>
+            <p class="lang-de">
+              Das direkte Lernen von Rohmomenten $	au$ für jeden BLDC-Motor ist instabil und erfordert Millionen Trainingsschritte. Wir verwenden daher eine mehrstufige <strong>hybride Regelungshierarchie (Hybrid Control Hierarchy)</strong>:
             </p>
 
             <div class="table-wrap">
               <table class="tech-table">
                 <thead>
                   <tr>
-                    <th>Tầng Điều Khiển</th>
-                    <th>Cơ Quan Phụ Trách</th>
-                    <th>Nhiệm Vụ Cụ Thể</th>
-                    <th>Tần Số Lấy Mẫu</th>
+                    <th><span class="lang-vi">Tầng Điều Khiển</span><span class="lang-en">Control Level</span><span class="lang-de">Regelebene</span></th>
+                    <th><span class="lang-vi">Cơ Quan Phụ Trách</span><span class="lang-en">Component</span><span class="lang-de">Modul</span></th>
+                    <th><span class="lang-vi">Nhiệm Vụ Cụ Thể</span><span class="lang-en">Specific Task</span><span class="lang-de">Aufgabe</span></th>
+                    <th><span class="lang-vi">Tần Số Lấy Mẫu</span><span class="lang-en">Frequency</span><span class="lang-de">Abtastrate</span></th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td><span class="tech-badge-inline">High-Level (RL Policy)</span></td>
                     <td>PPO Neural Network (Actor-Critic)</td>
-                    <td>Ra quyết định chiến lược: Chiều dài chân mong muốn $L_0^*$, góc nghiêng chân ảo $\theta_0^*$, và mô-men kéo/hãm bánh xe $T_w$</td>
-                    <td>$50\,\text{Hz} - 100\,\text{Hz}$</td>
+                    <td>
+                      <span class="lang-vi">Ra quyết định chiến lược: Chiều dài chân mong muốn $L_0^*$, góc nghiêng chân ảo $	heta_0^*$, và mô-men kéo/hãm bánh xe $T_w$</span>
+                      <span class="lang-en">Strategic policy: Target leg length $L_0^*$, virtual leg angle $	heta_0^*$, and wheel drive/brake torque $T_w$</span>
+                      <span class="lang-de">Strategische Sollwertvorgabe: Beinlänge $L_0^*$, virtueller Beinwinkel $	heta_0^*$ und Radmoment $T_w$</span>
+                    </td>
+                    <td>$50\,	ext{Hz} - 100\,	ext{Hz}$</td>
                   </tr>
                   <tr>
                     <td><span class="tech-badge-inline">Mid-Level (Kinematics / VMC)</span></td>
                     <td>Virtual Model Controller & Jacobian</td>
-                    <td>Chuyển đổi lực ảo đầu mút chân $(\Delta F, \Delta \tau)$ thành góc đặt các khớp cơ cấu 5 khâu qua ma trận Jacobi $J^T$</td>
-                    <td>$200\,\text{Hz} - 500\,\text{Hz}$</td>
+                    <td>
+                      <span class="lang-vi">Chuyển đổi lực ảo đầu mút chân $(\Delta F, \Delta 	au)$ thành góc đặt các khớp cơ cấu 5 khâu qua ma trận Jacobi $J^T$</span>
+                      <span class="lang-en">Maps virtual foot forces $(\Delta F, \Delta 	au)$ to 5-bar linkage joint commands via Jacobian transpose $J^T$</span>
+                      <span class="lang-de">Transformiert virtuelle Fußkräfte $(\Delta F, \Delta 	au)$ über die transponierte Jacobi-Matrix $J^T$ in Gelenkwinkel</span>
+                    </td>
+                    <td>$200\,	ext{Hz} - 500\,	ext{Hz}$</td>
                   </tr>
                   <tr>
                     <td><span class="tech-badge-inline">Low-Level (Actuator PD)</span></td>
                     <td>MuJoCo Joint Actuators / Hardware FOC</td>
-                    <td>Thực thi vòng lặp dòng điện và kiểm soát mô-men xoắn thực tế đến từng khớp động cơ</td>
-                    <td>$1000\,\text{Hz}$ ($1\,\text{kHz}$)</td>
+                    <td>
+                      <span class="lang-vi">Thực thi vòng lặp dòng điện và kiểm soát mô-men xoắn thực tế đến từng khớp động cơ</span>
+                      <span class="lang-en">Executes high-frequency torque tracking and FOC current loops on actuator joints</span>
+                      <span class="lang-de">Führt hochfrequente Strom- und Drehmoment-Regelkreise (FOC) an den Antriebsmotoren aus</span>
+                    </td>
+                    <td>$1000\,	ext{Hz}$ ($1\,	ext{kHz}$)</td>
                   </tr>
                 </tbody>
               </table>
             </div>
 
-            <h3>Mô hình chân ảo (Virtual Leg Model):</h3>
-            <p>
-              Chân robot được trừu tượng hóa thành một con lắc co giãn có chiều dài tức thời $L$ và góc nghiêng $\theta_{leg}$:
+            <h3>
+              <span class="lang-vi">Mô hình chân ảo (Virtual Leg Model):</span>
+              <span class="lang-en">Virtual Leg Model Formulation:</span>
+              <span class="lang-de">Virtuelles Beinmodell (Virtual Leg Model):</span>
+            </h3>
+            <p class="lang-vi">
+              Chân robot được trừu tượng hóa thành một con lắc co giãn có chiều dài tức thời $L$ và góc nghiêng $	heta_{leg}$:
             </p>
-            $$L = \sqrt{x_{wheel}^2 + z_{wheel}^2}, \quad \theta_{leg} = \arctan\left(\frac{x_{wheel}}{-z_{wheel}}\right)$$
-            <p>
+            <p class="lang-en">
+              The robot leg mechanism is abstracted into an extensible pendulum with instantaneous length $L$ and inclination $	heta_{leg}$:
+            </p>
+            <p class="lang-de">
+              Das Roboterbein wird als teleskopierbares Pendel mit Momentanlänge $L$ und Neigungswinkel $	heta_{leg}$ abstrahiert:
+            </p>
+            $$L = \sqrt{x_{wheel}^2 + z_{wheel}^2}, \quad 	heta_{leg} = rctan\left(rac{x_{wheel}}{-z_{wheel}}ight)$$
+            <p class="lang-vi">
               Mạng nơ-ron không cần quan tâm đến chuyển động phức tạp của từng thanh liên kết trong cụm 5 khâu, mà chỉ cần điều chỉnh độ cao hông robot và lực kéo đẩy của bánh xe!
+            </p>
+            <p class="lang-en">
+              The neural policy does not need to learn the intricate internal closed kinematics of each 5-bar linkage; it merely regulates hip height and wheel propulsion forces!
+            </p>
+            <p class="lang-de">
+              Das neuronale Netz muss sich nicht mit den komplexen internen 5-Gelenk-Zwangsbedingungen befassen, sondern regelt intuitiv Hüfthöhe und Radantriebskräfte!
             </p>
           </section>
 
           <!-- SECTION 3 -->
           <section id="sec-spaces">
-            <h2><span class="h2-badge">PHẦN 3</span> Thiết Kế Không Gian Trạng Thái (Observation) & Hành Động (Action)</h2>
+            <h2>
+              <span class="lang-vi"><span class="h2-badge">PHẦN 3</span> Thiết Kế Không Gian Trạng Thái (Observation) & Hành Động (Action)</span>
+              <span class="lang-en"><span class="h2-badge">PART 3</span> State (Observation) & Action Space Design</span>
+              <span class="lang-de"><span class="h2-badge">TEIL 3</span> Entwurf von Zustands- (Observation) & Aktionsraum (Action)</span>
+            </h2>
 
-            <p>
+            <p class="lang-vi">
               Thành công của bất kỳ mô hình RL nào phụ thuộc 70% vào cách bạn định nghĩa <strong>Observation Space</strong> và <strong>Action Space</strong>. Nếu thiếu thông tin quan trọng, Agent sẽ bị "mù động học" (Partially Observable MDP); ngược lại nếu thừa thông tin rác, không gian khám phá sẽ bùng nổ hàm mũ.
             </p>
+            <p class="lang-en">
+              The success of any RL formulation hinges significantly on crafting the <strong>Observation Space</strong> and <strong>Action Space</strong>. Missing critical states induces a Partially Observable MDP; while unnormalized redundant inputs explode exploratory complexity.
+            </p>
+            <p class="lang-de">
+              Der Erfolg jedes RL-Modells steht und fällt mit dem Design von <strong>Observation Space</strong> und <strong>Action Space</strong>. Fehlende Zustände führen zu partieller Beobachtbarkeit (POMDP), während redundante Dimensionen den Suchraum unnötig aufblähen.
+            </p>
 
-            <h3>1. Không Gian Quan Sát (Observation Space - 18 chiều):</h3>
-            <p>Mỗi bước thời gian $t$, mạng nơ-ron nhận vào vector trạng thái $s_t \in \mathbb{R}^{18}$ gồm:</p>
-            <ul>
-              <li><strong>Tư thế thân xe (Base Orientation):</strong> Góc nghiêng dọc $\text{Pitch} \ (\theta)$, góc nghiêng ngang $\text{Roll} \ (\phi)$ lấy từ bộ lọc IMU.</li>
+            <h3>
+              <span class="lang-vi">1. Không Gian Quan Sát (Observation Space - 18 chiều):</span>
+              <span class="lang-en">1. Observation Space (18 Dimensions):</span>
+              <span class="lang-de">1. Beobachtungsraum (Observation Space - 18 Dimensionen):</span>
+            </h3>
+            <p class="lang-vi">Mỗi bước thời gian $t$, mạng nơ-ron nhận vào vector trạng thái $s_t \in \mathbb{R}^{18}$ gồm:</p>
+            <p class="lang-en">At each timestep $t$, the neural policy consumes the state vector $s_t \in \mathbb{R}^{18}$ comprising:</p>
+            <p class="lang-de">Bei jedem Zeitschritt $t$ erhält das Netzwerk den Zustandsvektor $s_t \in \mathbb{R}^{18}$:</p>
+
+            <ul class="lang-vi">
+              <li><strong>Tư thế thân xe (Base Orientation):</strong> Góc nghiêng dọc $	ext{Pitch} \ (	heta)$, góc nghiêng ngang $	ext{Roll} \ (\phi)$ lấy từ bộ lọc IMU.</li>
               <li><strong>Vận tốc góc thân xe (Angular Velocities):</strong> Tốc độ xoay $\omega_{pitch}, \omega_{roll}, \omega_{yaw}$ từ con quay hồi chuyển Gyroscope.</li>
               <li><strong>Vận tốc dài thân xe (Linear Velocity):</strong> Vận tốc tiến/lùi $v_x$, vận tốc trôi ngang $v_y$.</li>
-              <li><strong>Trạng thái bánh xe (Wheel Odometry):</strong> Vận tốc góc bánh trái $\dot{\theta}_{w,L}$ và bánh phải $\dot{\theta}_{w,R}$.</li>
+              <li><strong>Trạng thái bánh xe (Wheel Odometry):</strong> Vận tốc góc bánh trái $\dot{	heta}_{w,L}$ và bánh phải $\dot{	heta}_{w,R}$.</li>
               <li><strong>Động học chân (Leg States):</strong> Chiều dài chân tức thời $L_L, L_R$ và đạo hàm vận tốc co duỗi $\dot{L}_L, \dot{L}_R$.</li>
               <li><strong>Lệnh điều khiển mong muốn (Target Commands):</strong> Vận tốc tiến mục tiêu $v_x^*$, tốc độ quay vòng mục tiêu $\omega_z^*$, và chiều cao thân xe mục tiêu $h^*$.</li>
               <li><strong>Lịch sử hành động bước trước ($a_{t-1}$):</strong> Giúp mạng học tính mượt mà (Smoothness) và triệt tiêu dao động giật cục.</li>
             </ul>
+            <ul class="lang-en">
+              <li><strong>Base Orientation:</strong> Pitch tilt $(	heta)$ and roll tilt $(\phi)$ fused from IMU filter.</li>
+              <li><strong>Body Angular Velocities:</strong> Rotation rates $\omega_{pitch}, \omega_{roll}, \omega_{yaw}$ from 3-axis gyroscope.</li>
+              <li><strong>Body Linear Velocities:</strong> Forward velocity $v_x$ and lateral velocity $v_y$.</li>
+              <li><strong>Wheel Odometry:</strong> Left wheel velocity $\dot{	heta}_{w,L}$ and right wheel velocity $\dot{	heta}_{w,R}$.</li>
+              <li><strong>Leg Kinematic States:</strong> Instantaneous leg lengths $L_L, L_R$ and expansion rates $\dot{L}_L, \dot{L}_R$.</li>
+              <li><strong>User Target Commands:</strong> Commanded forward velocity $v_x^*$, yaw rate $\omega_z^*$, and target height $h^*$.</li>
+              <li><strong>Previous Action History ($a_{t-1}$):</strong> Empowers the policy to cultivate action smoothness and suppress jerky chattering.</li>
+            </ul>
+            <ul class="lang-de">
+              <li><strong>Körperorientierung:</strong> Nickwinkel $(	ext{Pitch } 	heta)$ und Wankwinkel $(	ext{Roll } \phi)$ aus der IMU-Fusion.</li>
+              <li><strong>Winkelgeschwindigkeiten:</strong> Drehraten $\omega_{pitch}, \omega_{roll}, \omega_{yaw}$ aus dem 3-Achs-Gyroskop.</li>
+              <li><strong>Translationsgeschwindigkeiten:</strong> Vorwärtsgeschwindigkeit $v_x$ und Quergeschwindigkeit $v_y$.</li>
+              <li><strong>Radodometrie:</strong> Winkelgeschwindigkeit linkes Rad $\dot{	heta}_{w,L}$ und rechtes Rad $\dot{	heta}_{w,R}$.</li>
+              <li><strong>Beinzustände:</strong> Momentane Beinlängen $L_L, L_R$ sowie Streckgeschwindigkeiten $\dot{L}_L, \dot{L}_R$.</li>
+              <li><strong>Solltrajektorien:</strong> Soll-Vorwärtsgeschwindigkeit $v_x^*$, Soll-Gierrate $\omega_z^*$ und Soll-Körperhöhe $h^*$.</li>
+              <li><strong>Vorherige Aktion ($a_{t-1}$):</strong> Dient dem Erlernen stetiger, ruckfreier Stellgrößenverläufe.</li>
+            </ul>
 
-            <h3>2. Không Gian Hành Động (Action Space - 6 chiều):</h3>
-            <p>Mạng nơ-ron xuất ra vector liên tục $a_t \in [-1, 1]^6$, sau đó được scale tuyến tính về dải vật lý:</p>
-            <ul>
-              <li>$a_0, a_1$: Mô-men xoắn điều khiển 2 bánh xe chủ động $T_{w,L}, T_{w,R} \in [-5.0, 5.0]\,\text{Nm}$.</li>
-              <li>$a_2, a_3$: Chiều dài mục tiêu chân trái & chân phải $L_{L}^*, L_{R}^* \in [0.15, 0.32]\,\text{m}$.</li>
-              <li>$a_4, a_5$: Góc lệch chân ảo bổ trợ $\Delta \theta_{L}, \Delta \theta_{R} \in [-10^\circ, +10^\circ]$.</li>
+            <h3>
+              <span class="lang-vi">2. Không Gian Hành Động (Action Space - 6 chiều):</span>
+              <span class="lang-en">2. Action Space (6 Dimensions):</span>
+              <span class="lang-de">2. Aktionsraum (Action Space - 6 Dimensionen):</span>
+            </h3>
+            <p class="lang-vi">Mạng nơ-ron xuất ra vector liên tục $a_t \in [-1, 1]^6$, sau đó được scale tuyến tính về dải vật lý:</p>
+            <p class="lang-en">The policy outputs continuous actions $a_t \in [-1, 1]^6$, mapped linearly to physical actuator domains:</p>
+            <p class="lang-de">Das neuronale Netz liefert einen kontinuierlichen Aktionsvektor $a_t \in [-1, 1]^6$, skaliert auf physische Einheiten:</p>
+
+            <ul class="lang-vi">
+              <li>$a_0, a_1$: Mô-men xoắn điều khiển 2 bánh xe chủ động $T_{w,L}, T_{w,R} \in [-5.0, 5.0]\,	ext{Nm}$.</li>
+              <li>$a_2, a_3$: Chiều dài mục tiêu chân trái & chân phải $L_{L}^*, L_{R}^* \in [0.15, 0.32]\,	ext{m}$.</li>
+              <li>$a_4, a_5$: Góc lệch chân ảo bổ trợ $\Delta 	heta_{L}, \Delta 	heta_{R} \in [-10^\circ, +10^\circ]$.</li>
+            </ul>
+            <ul class="lang-en">
+              <li>$a_0, a_1$: Drive torques for left & right active wheels $T_{w,L}, T_{w,R} \in [-5.0, 5.0]\,	ext{Nm}$.</li>
+              <li>$a_2, a_3$: Target leg lengths for left & right legs $L_{L}^*, L_{R}^* \in [0.15, 0.32]\,	ext{m}$.</li>
+              <li>$a_4, a_5$: Virtual leg inclination trim angles $\Delta 	heta_{L}, \Delta 	heta_{R} \in [-10^\circ, +10^\circ]$.</li>
+            </ul>
+            <ul class="lang-de">
+              <li>$a_0, a_1$: Antriebsmomente linkes & rechtes Rad $T_{w,L}, T_{w,R} \in [-5.0, 5.0]\,	ext{Nm}$.</li>
+              <li>$a_2, a_3$: Soll-Beinlängen links & rechts $L_{L}^*, L_{R}^* \in [0.15, 0.32]\,	ext{m}$.</li>
+              <li>$a_4, a_5$: Virtuelle Korrektur-Beinwinkel $\Delta 	heta_{L}, \Delta 	heta_{R} \in [-10^\circ, +10^\circ]$.</li>
             </ul>
           </section>
 
           <!-- SECTION 4 -->
           <section id="sec-ppo-reward">
-            <h2><span class="h2-badge">PHẦN 4</span> Giải Thuật PPO & Nghệ Thuật Thiết Kế Hàm Thưởng (Reward Shaping)</h2>
+            <h2>
+              <span class="lang-vi"><span class="h2-badge">PHẦN 4</span> Giải Thuật PPO & Nghệ Thuật Thiết Kế Hàm Thưởng (Reward Shaping)</span>
+              <span class="lang-en"><span class="h2-badge">PART 4</span> PPO Algorithm & Art of Reward Shaping</span>
+              <span class="lang-de"><span class="h2-badge">TEIL 4</span> PPO-Algorithmus & Kunst des Reward-Shapings</span>
+            </h2>
 
-            <p>
+            <p class="lang-vi">
               Chúng ta lựa chọn thuật toán <strong>Proximal Policy Optimization (PPO)</strong> của OpenAI nhờ tính ổn định vượt trội trên các bài toán điều khiển liên tục (Continuous Control).
             </p>
-
-            <h3>Hàm mục tiêu PPO Clipped Objective:</h3>
-            $$L^{CLIP}(\theta) = \hat{\mathbb{E}}_t \left[ \min\left( r_t(\theta)\hat{A}_t, \; \text{clip}(r_t(\theta), 1-\epsilon, 1+\epsilon)\hat{A}_t \right) \right]$$
-            <p>
-              Trong đó $r_t(\theta) = \frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_{old}}(a_t|s_t)}$ là tỉ số xác suất, và $\epsilon = 0.2$ là biên kẹp an toàn. Điều này ngăn chặn việc cập nhật trọng số quá đà khiến robot rơi vào trạng thái "quên sạch kỹ năng" (Catastrophic Collapsing).
+            <p class="lang-en">
+              We select OpenAI's <strong>Proximal Policy Optimization (PPO)</strong> algorithm due to its celebrated sample efficiency and robust stability in continuous control robotics.
+            </p>
+            <p class="lang-de">
+              Wir wählen den <strong>Proximal Policy Optimization (PPO)</strong>-Algorithmus von OpenAI aufgrund seiner herausragenden Stabilität bei kontinuierlichen Regelungsproblemen.
             </p>
 
-            <h3>Thiết Kế Hàm Thưởng Toàn Diện (Reward Function):</h3>
-            <p>
-              Hàm thưởng tại mỗi bước $t$ là sự kết hợp có trọng số giữa các tiêu chí tích cực (Reward) và các hình phạt (Penalty):
+            <h3>
+              <span class="lang-vi">Hàm mục tiêu PPO Clipped Objective:</span>
+              <span class="lang-en">PPO Clipped Objective Function:</span>
+              <span class="lang-de">PPO Clipped Objective Zielfunktion:</span>
+            </h3>
+            $$L^{CLIP}(	heta) = \hat{\mathbb{E}}_t \left[ \min\left( r_t(	heta)\hat{A}_t, \; 	ext{clip}(r_t(	heta), 1-\epsilon, 1+\epsilon)\hat{A}_t ight) ight]$$
+            <p class="lang-vi">
+              Trong đó $r_t(	heta) = rac{\pi_	heta(a_t|s_t)}{\pi_{	heta_{old}}(a_t|s_t)}$ là tỉ số xác suất, và $\epsilon = 0.2$ là biên kẹp an toàn. Điều này ngăn chặn việc cập nhật trọng số quá đà khiến robot rơi vào trạng thái "quên sạch kỹ năng" (Catastrophic Collapsing).
             </p>
-            $$R_t = w_1 R_{\text{upright}} + w_2 R_{\text{tracking}} + w_3 R_{\text{yaw}} + w_4 R_{\text{height}} - w_5 P_{\text{torque}} - w_6 P_{\text{jerk}} - w_7 P_{\text{roll}}$$
+            <p class="lang-en">
+              Where $r_t(	heta) = rac{\pi_	heta(a_t|s_t)}{\pi_{	heta_{old}}(a_t|s_t)}$ represents the probability ratio, and $\epsilon = 0.2$ is the clipping boundary. This prevents excessively large policy updates that cause catastrophic policy collapse.
+            </p>
+            <p class="lang-de">
+              Hierbei ist $r_t(	heta) = rac{\pi_	heta(a_t|s_t)}{\pi_{	heta_{old}}(a_t|s_t)}$ das Wahrscheinlichkeitsverhältnis und $\epsilon = 0.2$ das Clipping-Intervall. Dies schützt vor destruktiven Parametersprüngen (Catastrophic Collapsing).
+            </p>
+
+            <h3>
+              <span class="lang-vi">Thiết Kế Hàm Thưởng Toàn Diện (Reward Function):</span>
+              <span class="lang-en">Comprehensive Reward Function Architecture:</span>
+              <span class="lang-de">Struktur der Belohnungsfunktion (Reward Function):</span>
+            </h3>
+            <p class="lang-vi">Hàm thưởng tại mỗi bước $t$ là sự kết hợp có trọng số giữa các tiêu chí tích cực (Reward) và các hình phạt (Penalty):</p>
+            <p class="lang-en">The scalar reward at step $t$ balances weighted positive objectives against penalty terms:</p>
+            <p class="lang-de">Die Belohnung zu Zeitschritt $t$ kombiniert gewichtete positive Zielgrößen und Strafannahmen:</p>
+            $$R_t = w_1 R_{	ext{upright}} + w_2 R_{	ext{tracking}} + w_3 R_{	ext{yaw}} + w_4 R_{	ext{height}} - w_5 P_{	ext{torque}} - w_6 P_{	ext{jerk}} - w_7 P_{	ext{roll}}$$
 
             <div class="table-wrap">
               <table class="tech-table">
                 <thead>
                   <tr>
-                    <th>Thành Phần Thưởng</th>
-                    <th>Công Thức Toán Học</th>
-                    <th>Ý Nghĩa Vật Lý</th>
+                    <th><span class="lang-vi">Thành Phần Thưởng</span><span class="lang-en">Reward Component</span><span class="lang-de">Term</span></th>
+                    <th><span class="lang-vi">Công Thức Toán Học</span><span class="lang-en">Mathematical Formulation</span><span class="lang-de">Mathematische Formel</span></th>
+                    <th><span class="lang-vi">Ý Nghĩa Vật Lý</span><span class="lang-en">Physical Objective</span><span class="lang-de">Physikalische Bedeutung</span></th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><strong>Thăng bằng thân xe ($R_{\text{upright}}$)</strong></td>
-                    <td>$\exp\left(-\frac{\theta_{\text{pitch}}^2}{2\sigma_\theta^2}\right)$</td>
-                    <td>Thưởng tối đa khi thân xe hoàn toàn thẳng đứng ($\theta = 0$). Dạng hàm Gaussian giúp gradient mượt hơn hàm bình phương sai số.</td>
+                    <td><strong><span class="lang-vi">Thăng bằng thân xe ($R_{	ext{upright}}$)</span><span class="lang-en">Upright Balance ($R_{	ext{upright}}$)</span><span class="lang-de">Aufrechte Lage ($R_{	ext{upright}}$)</span></strong></td>
+                    <td>$\exp\left(-rac{	heta_{	ext{pitch}}^2}{2\sigma_	heta^2}ight)$</td>
+                    <td>
+                      <span class="lang-vi">Thưởng tối đa khi thân xe hoàn toàn thẳng đứng ($	heta = 0$). Hàm Gaussian giúp gradient mượt hơn hàm bình phương sai số.</span>
+                      <span class="lang-en">Peak reward at upright attitude ($	heta = 0$). Gaussian kernel ensures smoother gradient than squared errors.</span>
+                      <span class="lang-de">Maximaler Ertrag bei exakter Vertikalausrichtung ($	heta = 0$). Glatte Gradienten durch Gauß-Funktion.</span>
+                    </td>
                   </tr>
                   <tr>
-                    <td><strong>Bám vận tốc mục tiêu ($R_{\text{tracking}}$)</strong></td>
-                    <td>$\exp\left(-\frac{(v_x - v_x^*)^2}{2\sigma_v^2}\right)$</td>
-                    <td>Thưởng cho khả năng duy trì đúng tốc độ người dùng yêu cầu (ví dụ $1.0\,\text{m/s}$).</td>
+                    <td><strong><span class="lang-vi">Bám vận tốc mục tiêu ($R_{	ext{tracking}}$)</span><span class="lang-en">Velocity Tracking ($R_{	ext{tracking}}$)</span><span class="lang-de">Geschwindigkeitsfolge ($R_{	ext{tracking}}$)</span></strong></td>
+                    <td>$\exp\left(-rac{(v_x - v_x^*)^2}{2\sigma_v^2}ight)$</td>
+                    <td>
+                      <span class="lang-vi">Thưởng cho khả năng duy trì đúng tốc độ người dùng yêu cầu (ví dụ $1.0\,	ext{m/s}$).</span>
+                      <span class="lang-en">Rewards following commanded user velocity trajectories (e.g. $1.0\,	ext{m/s}$).</span>
+                      <span class="lang-de">Belohnt das präzise Einhalten der vorgegebenen Fahrgeschwindigkeit ($1.0\,	ext{m/s}$).</span>
+                    </td>
                   </tr>
                   <tr>
-                    <td><strong>Bám tốc độ bẻ lái ($R_{\text{yaw}}$)</strong></td>
-                    <td>$\exp\left(-\frac{(\omega_z - \omega_z^*)^2}{2\sigma_\omega^2}\right)$</td>
-                    <td>Thưởng cho robot quay vòng mượt mà theo lệnh điều khiển hướng di chuyển.</td>
+                    <td><strong><span class="lang-vi">Bám tốc độ bẻ lái ($R_{	ext{yaw}}$)</span><span class="lang-en">Yaw Heading Tracking ($R_{	ext{yaw}}$)</span><span class="lang-de">Gierratenfolge ($R_{	ext{yaw}}$)</span></strong></td>
+                    <td>$\exp\left(-rac{(\omega_z - \omega_z^*)^2}{2\sigma_\omega^2}ight)$</td>
+                    <td>
+                      <span class="lang-vi">Thưởng cho robot quay vòng mượt mà theo lệnh điều khiển hướng di chuyển.</span>
+                      <span class="lang-en">Rewards smooth differential steering tracking user turning commands.</span>
+                      <span class="lang-de">Belohnt gleichmäßige Kurvenfahrten entsprechend dem Gier-Steuerbefehl.</span>
+                    </td>
                   </tr>
                   <tr>
-                    <td><strong>Phạt hao phí năng lượng ($P_{\text{torque}}$)</strong></td>
-                    <td>$\sum (T_{w,i}^2 + \tau_{joint,j}^2)$</td>
-                    <td>Ngăn chặn động cơ bị ép xung liên tục ở dòng tải cực đại, bảo vệ phần cứng thực tế.</td>
+                    <td><strong><span class="lang-vi">Phạt hao phí năng lượng ($P_{	ext{torque}}$)</span><span class="lang-en">Energy Penalty ($P_{	ext{torque}}$)</span><span class="lang-de">Energiestrafe ($P_{	ext{torque}}$)</span></strong></td>
+                    <td>$\sum (T_{w,i}^2 + 	au_{joint,j}^2)$</td>
+                    <td>
+                      <span class="lang-vi">Ngăn chặn động cơ bị ép xung liên tục ở dòng tải cực đại, bảo vệ phần hardware thực tế.</span>
+                      <span class="lang-en">Prevents continuous motor current saturation, safeguarding actuator hardware.</span>
+                      <span class="lang-de">Verhindert thermische Überlastung der Motoren an der Drehmomentsättigungsgrenze.</span>
+                    </td>
                   </tr>
                   <tr>
-                    <td><strong>Phạt giật gián đoạn ($P_{\text{jerk}}$)</strong></td>
+                    <td><strong><span class="lang-vi">Phạt giật gián đoạn ($P_{	ext{jerk}}$)</span><span class="lang-en">Action Jerk Penalty ($P_{	ext{jerk}}$)</span><span class="lang-de">Ruckstrafe ($P_{	ext{jerk}}$)</span></strong></td>
                     <td>$\|a_t - a_{t-1}\|^2$</td>
-                    <td>Triệt tiêu hiện tượng rung giật tần số cao (High-frequency jittering), giúp hành động mượt mà tự nhiên.</td>
+                    <td>
+                      <span class="lang-vi">Triệt tiêu hiện tượng rung giật tần số cao (High-frequency jittering), giúp hành động mượt mà tự nhiên.</span>
+                      <span class="lang-en">Suppresses high-frequency chatter and vibrations, promoting fluid biological-like movements.</span>
+                      <span class="lang-de">Dämpft hochfrequentes Aktionszittern und sorgt für flüssige Bewegungsabläufe.</span>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -390,18 +577,38 @@
             <div class="callout callout-warning">
               <span class="callout-icon">⚡</span>
               <div>
-                <strong>Điều kiện ngắt sớm (Early Termination):</strong><br>
-                Môi trường sẽ lập tức ngắt vòng lặp (Done/Terminated) và phát thưởng phạt âm nếu góc nghiêng vượt quá ngưỡng an toàn: $|\theta_{\text{pitch}}| > 35^\circ$ hoặc $|\phi_{\text{roll}}| > 30^\circ$, hoặc độ cao hông rơi xuống dưới $0.12\,\text{m}$ (robot chạm sàn). Điều này giúp tiết kiệm thời gian train khi robot đã ngã vô phương cứu chữa.
+                <div class="lang-vi">
+                  <strong>Điều kiện ngắt sớm (Early Termination):</strong><br>
+                  Môi trường sẽ lập tức ngắt vòng lặp (Done/Terminated) và phát thưởng phạt âm nếu góc nghiêng vượt quá ngưỡng an toàn: $|	heta_{	ext{pitch}}| > 35^\circ$ hoặc $|\phi_{	ext{roll}}| > 30^\circ$, hoặc độ cao hông rơi xuống dưới $0.12\,	ext{m}$ (robot chạm sàn). Điều này giúp tiết kiệm thời gian train khi robot đã ngã vô phương cứu chữa.
+                </div>
+                <div class="lang-en">
+                  <strong>Early Termination Conditions:</strong><br>
+                  The episode immediately terminates with negative penalty if safety margins are exceeded: $|	heta_{	ext{pitch}}| > 35^\circ$ or $|\phi_{	ext{roll}}| > 30^\circ$, or if hip height drops below $0.12\,	ext{m}$ (chassis hits floor). This conserves computational cycles once recovery is physically impossible.
+                </div>
+                <div class="lang-de">
+                  <strong>Vorzeitige Abbruchbedingungen (Early Termination):</strong><br>
+                  Die Episode bricht sofort mit Strafpunkte ab, wenn Grenzwerte überschritten werden: $|	heta_{	ext{pitch}}| > 35^\circ$, $|\phi_{	ext{roll}}| > 30^\circ$ oder Hüfthöhe $< 0.12\,	ext{m}$ (Bodenkontakt des Chassis). Dies spart Rechenzeit bei unrettbaren Stürzen.
+                </div>
               </div>
             </div>
           </section>
 
           <!-- SECTION 5 -->
           <section id="sec-codebase">
-            <h2><span class="h2-badge">PHẦN 5</span> Mổ Xẻ Cấu Trúc Mã Nguồn: Thư Mục models/, eval/, và Các Kịch Bản</h2>
+            <h2>
+              <span class="lang-vi"><span class="h2-badge">PHẦN 5</span> Mổ Xẻ Cấu Trúc Mã Nguồn: Thư Mục models/, eval/, và Các Kịch Bản</span>
+              <span class="lang-en"><span class="h2-badge">PART 5</span> Codebase Architecture: models/, eval/ Directories & Scenarios</span>
+              <span class="lang-de"><span class="h2-badge">TEIL 5</span> Codebasis-Architektur: models/, eval/ & Szenarien</span>
+            </h2>
 
-            <p>
+            <p class="lang-vi">
               Dự án RL được tổ chức bài bản theo kiến trúc module hóa để người mới bắt đầu dễ dàng phân tách trách nhiệm giữa môi trường mô phỏng, thuật toán học, và pipeline kiểm thử:
+            </p>
+            <p class="lang-en">
+              The codebase is modularized cleanly so that practitioners can inspect environment wrappers, learning algorithms, and evaluation scripts independently:
+            </p>
+            <p class="lang-de">
+              Das Projekt ist modular aufgebaut, um Simulation, Lernalgorithmen und Evaluierungs-Pipelines sauber zu trennen:
             </p>
 
             <div class="code-box">
@@ -410,61 +617,132 @@
                 <span style="color: var(--text-muted); font-size: 0.72rem;">Simulation/rl/</span>
               </div>
               <pre class="code-pre"><code>Simulation/rl/
-├── models/                         # Thư mục chứa các kịch bản môi trường Gym/Gymnasium
-│   ├── wbr_env_balance.py          # Kịch bản 1: Học đứng yên giữ thăng bằng tại chỗ
-│   ├── wbr_env_drive.py            # Kịch bản 2: Học tiến/lùi theo dải tốc độ ngẫu nhiên
-│   ├── wbr_env_yaw.py              # Kịch bản 3: Học quay vòng và rẽ hướng trái/phải
-│   ├── wbr_env_push.py             # Kịch bản 4: Học chống chịu lực đẩy va chạm ngoại lực (Push Recovery)
-│   └── wbr_env_all.py              # Kịch bản 5: Tổng hợp toàn diện toàn bộ kỹ năng trên
-├── eval/                           # Thư mục tự động lưu kết quả đánh giá & benchmark
-│   ├── best_model.zip              # Trọng số tốt nhất đạt reward cao nhất trong quá trình train
-│   └── evaluations.npz             # File lưu lịch sử điểm số sau mỗi chu kỳ eval
-├── train.py                        # Script điều phối chính cho quá trình Train PPO
-├── eval.py                         # Script chạy kiểm thử và trực quan hóa mô hình đã học
-├── setup_windows.bat / .sh         # Cài đặt môi trường 1-click tự động
-├── train_windows.bat / run_rl...   # Menu tương tác chạy train & render 3D
-└── view_3d.bat                     # Lệnh mở nhanh 3D Viewer trực tiếp</code></pre>
+├── models/                         # Gym/Gymnasium training environment scenarios
+│   ├── wbr_env_balance.py          # Scenario 1: Stationary upright balance at origin
+│   ├── wbr_env_drive.py            # Scenario 2: Forward & reverse variable velocity driving
+│   ├── wbr_env_yaw.py              # Scenario 3: Differential steering & yaw heading turns
+│   ├── wbr_env_push.py             # Scenario 4: External pulse impulse push recovery
+│   └── wbr_env_all.py              # Scenario 5: Full curriculum combining all skills
+├── eval/                           # Auto-saved evaluation checkpoints & benchmark stats
+│   ├── best_model.zip              # Highest mean reward policy saved across training
+│   └── evaluations.npz             # Evaluation score history per evaluation interval
+├── train.py                        # Central training orchestrator script
+├── eval.py                         # Benchmark and 3D visualizer evaluation script
+├── setup_windows.bat / .sh         # 1-click automated setup scripts
+├── train_windows.bat / run_rl...   # Interactive launcher menus
+└── view_3d.bat                     # Quick one-command 3D viewer launcher</code></pre>
             </div>
 
-            <h3>Chức năng chi tiết của các kịch bản trong <code>models/</code>:</h3>
-            <ul>
+            <h3>
+              <span class="lang-vi">Chức năng chi tiết của các kịch bản trong <code>models/</code>:</span>
+              <span class="lang-en">Detailed Scenario Functionality in <code>models/</code>:</span>
+              <span class="lang-de">Detaillierte Szenarienübersicht in <code>models/</code>:</span>
+            </h3>
+
+            <ul class="lang-vi">
               <li>
                 <strong><code>wbr_env_balance.py</code> (Balance Scenario):</strong><br>
-                Đây là bài học vỡ lòng của robot. Mục tiêu duy nhất là giữ robot đứng thẳng ở tọa độ cố định, triệt tiêu sai số góc pitch và không cho xe bị trôi. Vận tốc mục tiêu luôn cố định bằng $0$.
+                Bài học vỡ lòng của robot. Mục tiêu duy nhất là giữ robot đứng thẳng ở tọa độ cố định, triệt tiêu sai số góc pitch và không cho xe bị trôi. Vận tốc mục tiêu luôn bằng $0$.
               </li>
               <li>
                 <strong><code>wbr_env_drive.py</code> (Drive Scenario):</strong><br>
-                Robot được giao nhiệm vụ di chuyển tiến hoặc lùi với dải vận tốc thay đổi ngẫu nhiên $v_x^* \in [-1.5, +1.5]\,\text{m/s}$. Môi trường liên tục đổi tốc độ đích sau mỗi $5\,\text{s}$ để robot học cách tăng tốc và phanh hãm thăng bằng.
+                Robot di chuyển tiến hoặc lùi với dải vận tốc thay đổi ngẫu nhiên $v_x^* \in [-1.5, +1.5]\,	ext{m/s}$. Môi trường liên tục đổi tốc độ đích sau mỗi $5\,	ext{s}$ để robot học tăng tốc và phanh hãm.
               </li>
               <li>
                 <strong><code>wbr_env_yaw.py</code> (Yaw & Steer Scenario):</strong><br>
-                Bổ sung lệnh quay quanh trục thẳng đứng $\omega_z^* \in [-1.0, +1.0]\,\text{rad/s}$. Robot phải học cách phân phối lực kéo không cân bằng giữa bánh trái và bánh phải (Differential Drive Steering) mà không làm nghiêng lật thân xe.
+                Bổ sung lệnh quay quanh trục thẳng đứng $\omega_z^* \in [-1.0, +1.0]\,	ext{rad/s}$. Robot phải học cách phân phối lực kéo không cân bằng giữa 2 bánh (Differential Drive) mà không bị lật.
               </li>
               <li>
                 <strong><code>wbr_env_push.py</code> (Push Disturbance Recovery):</strong><br>
-                Cứ sau mỗi vài giây mô phỏng, một ngoại lực xung lực ngẫu nhiên từ $20\,\text{N}$ đến $80\,\text{N}$ bất ngờ đập vào thân xe từ các hướng khác nhau. Robot học cách nhún chân, phóng bánh xe đón trọng tâm để không bị đổ.
+                Ngoại lực xung ngẫu nhiên từ $20\,	ext{N}$ đến $80\,	ext{N}$ bất ngờ đập vào thân xe. Robot học cách nhún chân, phóng bánh xe đón trọng tâm để giữ thăng bằng.
               </li>
               <li>
                 <strong><code>wbr_env_all.py</code> (Full Curriculum All-in-One):</strong><br>
-                Môi trường kết hợp tất cả các thử thách trên: vừa chạy tiến lùi, vừa bẻ lái, vừa co giãn chiều cao chân, vừa chống chịu va đập ngoại lực ngẫu nhiên.
+                Tổng hợp tất cả các thử thách: vừa chạy tiến lùi, vừa bẻ lái, vừa co giãn chân, vừa chống chịu va đập ngoại lực.
+              </li>
+            </ul>
+
+            <ul class="lang-en">
+              <li>
+                <strong><code>wbr_env_balance.py</code> (Balance Scenario):</strong><br>
+                Foundational curriculum. Sole objective is station-keeping upright at origin, damping pitch oscillations with zero target velocity.
+              </li>
+              <li>
+                <strong><code>wbr_env_drive.py</code> (Drive Scenario):</strong><br>
+                Trains longitudinal traversal with randomized command speeds $v_x^* \in [-1.5, +1.5]\,	ext{m/s}$, alternating targets every $5\,	ext{s}$ to teach acceleration and braking dynamics.
+              </li>
+              <li>
+                <strong><code>wbr_env_yaw.py</code> (Yaw & Steer Scenario):</strong><br>
+                Introduces yaw turning commands $\omega_z^* \in [-1.0, +1.0]\,	ext{rad/s}$, guiding the policy to apply differential wheel torques while preventing roll rollover.
+              </li>
+              <li>
+                <strong><code>wbr_env_push.py</code> (Push Recovery Scenario):</strong><br>
+                Injects randomized external pulse impulses from $20\,	ext{N}$ to $80\,	ext{N}$ at unexpected intervals, teaching the robot to flex legs and sprint wheels beneath the tumbling body.
+              </li>
+              <li>
+                <strong><code>wbr_env_all.py</code> (Curriculum All-in-One):</strong><br>
+                Integrates all operational modes concurrently: locomotion, sharp steering, height articulation, and dynamic disturbance rejection.
+              </li>
+            </ul>
+
+            <ul class="lang-de">
+              <li>
+                <strong><code>wbr_env_balance.py</code> (Balance-Szenario):</strong><br>
+                Basisschulung. Einziges Ziel ist das stationäre Balancieren am Ursprung mit Sollgeschwindigkeit $0$.
+              </li>
+              <li>
+                <strong><code>wbr_env_drive.py</code> (Fahrszenario):</strong><br>
+                Vorwärts- und Rückwärtsfahrt mit variablen Sollgeschwindigkeiten $v_x^* \in [-1.5, +1.5]\,	ext{m/s}$ im $5\,	ext{s}$-Takt zum Erlernen von Beschleunigungs- und Bremsdynamiken.
+              </li>
+              <li>
+                <strong><code>wbr_env_yaw.py</code> (Kurven- und Lenkszenario):</strong><br>
+                Trainiert Drehung um die Hochachse $\omega_z^* \in [-1.0, +1.0]\,	ext{rad/s}$ via Differenzialantrieb ohne Kippen.
+              </li>
+              <li>
+                <strong><code>wbr_env_push.py</code> (Stoßstörungs-Kompensation):</strong><br>
+                Zufällige Kraftstöße ($20\,	ext{N}$ bis $80\,	ext{N}$) fordern Beineinfederung und Radbeschleunigung zum Abfangen des Schwerpunkts.
+              </li>
+              <li>
+                <strong><code>wbr_env_all.py</code> (Gesamtcurriculum):</strong><br>
+                Vereint alle Fertigkeiten: Fahren, Lenken, Beinhöhenverstellung und Stoßkompensation.
               </li>
             </ul>
 
             <div class="callout callout-tip">
               <span class="callout-icon">📁</span>
               <div>
-                <strong>Thư mục <code>eval/</code> dùng để làm gì?</strong><br>
-                Trong quá trình train, thuật toán Stable-Baselines3 sử dụng cơ chế <code>EvalCallback</code>. Cứ sau mỗi $10,000$ bước huấn luyện, hệ thống sẽ tự động tạm dừng mô hình chính, mang policy sang thư mục <code>eval/</code> chạy thử nghiệm 5 tập độc lập (không có nhiễu khám phá). Nếu điểm số thưởng trung bình đạt kỷ lục mới, nó sẽ tự động ghi đè file <code>eval/best_model.zip</code>! Nhờ đó bạn luôn giữ lại được mô hình chuẩn xác nhất ngay cả khi các bước train sau bị overfitting.
+                <div class="lang-vi">
+                  <strong>Thư mục <code>eval/</code> dùng để làm gì?</strong><br>
+                  Trong quá trình train, Stable-Baselines3 sử dụng cơ chế <code>EvalCallback</code>. Cứ sau mỗi $10,000$ bước huấn luyện, hệ thống sẽ tự động tạm dừng mô hình chính, mang policy sang thư mục <code>eval/</code> chạy thử nghiệm 5 tập độc lập (không có nhiễu khám phá). Nếu điểm số thưởng trung bình đạt kỷ lục mới, nó sẽ tự động ghi đè file <code>eval/best_model.zip</code>! Nhờ đó bạn luôn giữ lại được mô hình chuẩn xác nhất ngay cả khi các bước train sau bị overfitting.
+                </div>
+                <div class="lang-en">
+                  <strong>What is the purpose of the <code>eval/</code> folder?</strong><br>
+                  During training, Stable-Baselines3 invokes <code>EvalCallback</code> every $10,000$ steps to evaluate the policy across 5 isolated deterministic episodes. When mean evaluation reward hits a new all-time high, it automatically overwrites <code>eval/best_model.zip</code>! This guarantees you retain the peak-performing model even if late training overfits.
+                </div>
+                <div class="lang-de">
+                  <strong>Welche Funktion hat das Verzeichnis <code>eval/</code>?</strong><br>
+                  Während des Trainings führt <code>EvalCallback</code> alle $10.000$ Schritte 5 deterministische Testläufe durch. Bei Erreichen eines neuen Rekordwerts wird automatisch <code>eval/best_model.zip</code> aktualisiert. So bleibt der beste Zustand stets gesichert.
+                </div>
               </div>
             </div>
           </section>
 
           <!-- SECTION 6 -->
           <section id="sec-setup">
-            <h2><span class="h2-badge">PHẦN 6</span> Thiết Lập Môi Trường Huấn Luyện (Windows vs Linux)</h2>
+            <h2>
+              <span class="lang-vi"><span class="h2-badge">PHẦN 6</span> Thiết Lập Môi Trường Huấn Luyện (Windows vs Linux)</span>
+              <span class="lang-en"><span class="h2-badge">PART 6</span> Training Environment Setup (Windows vs Linux)</span>
+              <span class="lang-de"><span class="h2-badge">TEIL 6</span> Einrichtung der Trainingsumgebung (Windows vs. Linux)</span>
+            </h2>
 
-            <p>
+            <p class="lang-vi">
               Dưới đây là quy trình cài đặt môi trường ảo Python 3.10+, PyTorch hỗ trợ tăng tốc GPU CUDA, MuJoCo 3.x, và thư viện Stable-Baselines3. Bạn hãy nhấp vào tab tương ứng với hệ điều hành đang dùng:
+            </p>
+            <p class="lang-en">
+              Setup procedure for Python 3.10+, CUDA-accelerated PyTorch, MuJoCo 3.x, and Stable-Baselines3. Select your platform tab below:
+            </p>
+            <p class="lang-de">
+              Installationsanleitung für Python 3.10+, CUDA-beschleunigtes PyTorch, MuJoCo 3.x und Stable-Baselines3. Wählen Sie den Reiter Ihres Betriebssystems:
             </p>
 
             <!-- OS TAB BOX: SETUP -->
@@ -480,54 +758,58 @@
                     Linux (Ubuntu / Terminal Bash)
                   </button>
                 </div>
-                <button class="code-copy-btn" onclick="navigator.clipboard.writeText(this.closest('.os-code-box').querySelector('.os-tab-pane.active pre').innerText); alert('Đã sao chép lệnh cài đặt!');">Copy Script</button>
+                <button class="code-copy-btn" onclick="navigator.clipboard.writeText(this.closest('.os-code-box').querySelector('.os-tab-pane.active pre').innerText); alert('Copied setup script!');">Copy Script</button>
               </div>
 
               <!-- PANE WINDOWS -->
               <div class="os-tab-pane active" data-os="windows">
                 <div class="os-pane-summary">
-                  <span>⚡ Cách 1: Chạy file cài đặt tự động 1-Click (Khuyên dùng)</span>
+                  <span class="lang-vi">⚡ Cách 1: Chạy file cài đặt tự động 1-Click (Khuyên dùng)</span>
+                  <span class="lang-en">⚡ Option 1: Run 1-Click Automated Setup Batch (Recommended)</span>
+                  <span class="lang-de">⚡ Option 1: Automatische 1-Klick-Batch-Installation (Empfohlen)</span>
                 </div>
-                <pre class="code-pre"><code>:: Di chuyển vào thư mục dự án RL
-cd d:\HUST\-n-1\Simulation\rl
+                <pre class="code-pre"><code>:: Navigate to project directory
+cd d:\HUST\-n-1\Simulationl
 
-:: Chạy tệp cài đặt tự động đã tối ưu hóa cho Windows & GPU RTX
+:: Execute automated 1-click batch optimized for Windows & RTX GPU
 setup_windows.bat
 
-:: Hoặc thực hiện thủ công bằng tay nếu bạn muốn kiểm soát chi tiết:
+:: Alternatively, setup manually if preferred:
 python -m venv venv
-call venv\Scripts\activate.bat
+call venv\Scriptsctivate.bat
 
-:: Cài đặt PyTorch có CUDA (Dành cho GPU NVIDIA như RTX 3050, 4060, 5060)
+:: Install PyTorch with CUDA 12.4 support
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cu124
 
-:: Cài đặt MuJoCo, Gymnasium, Stable-Baselines3 và TensorBoard
+:: Install MuJoCo physics, Gymnasium, Stable-Baselines3, and TensorBoard
 pip install mujoco gymnasium stable-baselines3 tensorboard matplotlib numpy</code></pre>
               </div>
 
               <!-- PANE LINUX -->
               <div class="os-tab-pane" data-os="linux">
                 <div class="os-pane-summary">
-                  <span>🐧 Thiết lập trên Linux (Ubuntu 20.04 / 22.04 LTS)</span>
+                  <span class="lang-vi">🐧 Thiết lập trên Linux (Ubuntu 20.04 / 22.04 LTS)</span>
+                  <span class="lang-en">🐧 Setup on Linux (Ubuntu 20.04 / 22.04 LTS)</span>
+                  <span class="lang-de">🐧 Installation unter Linux (Ubuntu 20.04 / 22.04 LTS)</span>
                 </div>
-                <pre class="code-pre"><code># Di chuyển vào thư mục dự án RL
+                <pre class="code-pre"><code># Navigate to project directory
 cd ~/Simulation/rl
 
-# Cài đặt các thư viện đồ họa & OpenGL cần thiết cho MuJoCo
+# Install required graphics & OpenGL development headers for MuJoCo
 sudo apt-get update
 sudo apt-get install -y libgl1-mesa-dev libgl1-mesa-glx libosmesa6-dev libglfw3-dev python3-venv python3-pip
 
-# Tạo và kích hoạt môi trường ảo
+# Create and activate virtual environment
 python3 -m venv venv
 source venv/bin/activate
 
-# Cài đặt PyTorch CUDA
+# Install PyTorch with CUDA support
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cu124
 
-# Cài đặt MuJoCo physics và các thư viện học máy
+# Install MuJoCo physics engine and RL toolkits
 pip install mujoco gymnasium stable-baselines3 tensorboard matplotlib numpy
 
-# Cấp quyền thực thi cho các file script
+# Grant execution permissions
 chmod +x train.py eval.py</code></pre>
               </div>
             </div>
@@ -535,18 +817,38 @@ chmod +x train.py eval.py</code></pre>
             <div class="callout callout-tip">
               <span class="callout-icon">🚀</span>
               <div>
-                <strong>Kiểm tra GPU CUDA sẵn sàng:</strong><br>
-                Sau khi kích hoạt môi trường, gõ lệnh kiểm tra nhanh: <code>python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| GPU:', torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'None')"</code>. Nếu kết quả in ra tên GPU của bạn (ví dụ NVIDIA GeForce RTX), hệ thống đã sẵn sàng tăng tốc phần cứng!
+                <div class="lang-vi">
+                  <strong>Kiểm tra GPU CUDA sẵn sàng:</strong><br>
+                  Sau khi kích hoạt môi trường, gõ lệnh kiểm tra nhanh: <code>python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| GPU:', torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'None')"</code>. Nếu kết quả in ra tên GPU của bạn (ví dụ NVIDIA GeForce RTX), hệ thống đã sẵn sàng tăng tốc phần cứng!
+                </div>
+                <div class="lang-en">
+                  <strong>Verify GPU CUDA Readiness:</strong><br>
+                  Verify via: <code>python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| GPU:', torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'None')"</code>. If your NVIDIA RTX card prints, hardware acceleration is primed!
+                </div>
+                <div class="lang-de">
+                  <strong>GPU CUDA-Bereitschaft prüfen:</strong><br>
+                  Prüfbefehl: <code>python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| GPU:', torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'None')"</code>. Wird Ihre NVIDIA RTX-GPU angezeigt, ist die Hardwarebeschleunigung aktiv!
+                </div>
               </div>
             </div>
           </section>
 
           <!-- SECTION 7 -->
           <section id="sec-training">
-            <h2><span class="h2-badge">PHẦN 7</span> Thực Chiến Huấn Luyện: Chạy Train & Xem 3D Viewer Song Song</h2>
+            <h2>
+              <span class="lang-vi"><span class="h2-badge">PHẦN 7</span> Thực Chiến Huấn Luyện: Chạy Train & Xem 3D Viewer Song Song</span>
+              <span class="lang-en"><span class="h2-badge">PART 7</span> Hands-on Training: Running Train & 3D Viewer Concurrently</span>
+              <span class="lang-de"><span class="h2-badge">TEIL 7</span> Praxistraining: Training & 3D-Viewer parallel ausführen</span>
+            </h2>
 
-            <p>
-              Đây là phần thú vị nhất! Chúng ta sẽ khởi động quá trình học và có thể trực tiếp quan sát robot học cách đứng dậy qua cửa sổ 3D của MuJoCo Viewer.
+            <p class="lang-vi">
+              Khởi động quá trình học và trực tiếp quan sát robot học cách đứng dậy qua cửa sổ 3D của MuJoCo Viewer:
+            </p>
+            <p class="lang-en">
+              Initiate training while observing the robot learn to stand in real-time within MuJoCo 3D Viewer:
+            </p>
+            <p class="lang-de">
+              Starten Sie das Training und beobachten Sie das Aufstehverhalten des Roboters im MuJoCo 3D-Viewer:
             </p>
 
             <!-- OS TAB BOX: TRAIN -->
@@ -562,42 +864,46 @@ chmod +x train.py eval.py</code></pre>
                     Linux (Bash Terminal)
                   </button>
                 </div>
-                <button class="code-copy-btn" onclick="navigator.clipboard.writeText(this.closest('.os-code-box').querySelector('.os-tab-pane.active pre').innerText); alert('Đã sao chép lệnh Train!');">Copy Command</button>
+                <button class="code-copy-btn" onclick="navigator.clipboard.writeText(this.closest('.os-code-box').querySelector('.os-tab-pane.active pre').innerText); alert('Copied train command!');">Copy Command</button>
               </div>
 
               <!-- PANE WINDOWS -->
               <div class="os-tab-pane active" data-os="windows">
                 <div class="os-pane-summary">
-                  <span>🪟 Huấn luyện trên Windows: Có thể dùng Menu tương tác hoặc dòng lệnh trực tiếp</span>
+                  <span class="lang-vi">🪟 Huấn luyện trên Windows: Có thể dùng Menu tương tác hoặc dòng lệnh trực tiếp</span>
+                  <span class="lang-en">🪟 Windows Training: Use Interactive Menu or Direct CLI</span>
+                  <span class="lang-de">🪟 Windows-Training: Interaktives Menü oder Direktbefehle</span>
                 </div>
-                <pre class="code-pre"><code>:: CÁCH 1: Dùng Menu tương tác (Chọn kịch bản, GPU, và bật 3D Viewer chỉ bằng phím số)
+                <pre class="code-pre"><code>:: OPTION 1: Interactive Menu (Select scenarios, GPU & 3D Viewer via number keys)
 train_windows.bat
 
-:: CÁCH 2: Dùng PowerShell script nâng cao
-.\run_rl_windows.ps1 train -Scenario balance -Device cuda -Render
+:: OPTION 2: Advanced PowerShell script
+.un_rl_windows.ps1 train -Scenario balance -Device cuda -Render
 
-:: CÁCH 3: Chạy trực tiếp từ CMD (Hiển thị ngay cửa sổ MuJoCo 3D Viewer trên GPU)
+:: OPTION 3: Direct CMD command (launches MuJoCo 3D Viewer on GPU)
 venv\Scripts\python.exe train.py --scenario balance --device cuda --render --timesteps 300000
 
-:: CÁCH 4: Nếu muốn train siêu tốc ở chế độ ẩn (Headless - Không mở giao diện 3D để tối đa FPS)
+:: OPTION 4: High-speed Headless Training (no GUI window for maximum FPS)
 venv\Scripts\python.exe train.py --scenario balance --device cuda --timesteps 1000000</code></pre>
               </div>
 
               <!-- PANE LINUX -->
               <div class="os-tab-pane" data-os="linux">
                 <div class="os-pane-summary">
-                  <span>🐧 Huấn luyện trên Linux bằng Terminal</span>
+                  <span class="lang-vi">🐧 Huấn luyện trên Linux bằng Terminal</span>
+                  <span class="lang-en">🐧 Training on Linux via Terminal</span>
+                  <span class="lang-de">🐧 Training unter Linux via Terminal</span>
                 </div>
-                <pre class="code-pre"><code># Kích hoạt môi trường
+                <pre class="code-pre"><code># Activate virtual environment
 source venv/bin/activate
 
-# Lựa chọn 1: Train có mở cửa sổ 3D Viewer trực tiếp trên GPU
+# Option 1: Live training with 3D Viewer window on GPU
 python train.py --scenario balance --device cuda --render --timesteps 300000
 
-# Lựa chọn 2: Train chế độ Headless tốc độ cao (khuyên dùng khi huấn luyện số bước lớn)
+# Option 2: High-speed Headless training (recommended for long runs)
 python train.py --scenario balance --device cuda --timesteps 1000000
 
-# Lựa chọn 3: Huấn luyện kịch bản di chuyển tiến lùi (Drive) hoặc bẻ lái (Yaw)
+# Option 3: Train driving or steering scenarios
 python train.py --scenario drive --device cuda --timesteps 500000
 python train.py --scenario yaw --device cuda --timesteps 500000</code></pre>
               </div>
@@ -606,33 +912,67 @@ python train.py --scenario yaw --device cuda --timesteps 500000</code></pre>
             <div class="callout callout-info">
               <span class="callout-icon">💡</span>
               <div>
-                <strong>Làm sao để mở nhanh 3D Viewer mà không cần nhớ câu lệnh dài?</strong><br>
-                Trên Windows, bạn chỉ cần gõ duy nhất một lệnh trong CMD: <code>view_3d.bat</code>. Tệp này đã được lập trình sẵn để tự động phát hiện mô hình tốt nhất trong <code>eval/best_model.zip</code> hoặc <code>models/wbr_balance_latest.zip</code> và mở ngay giao diện 3D cho bạn thưởng thức!
+                <div class="lang-vi">
+                  <strong>Làm sao để mở nhanh 3D Viewer mà không cần nhớ câu lệnh dài?</strong><br>
+                  Trên Windows, bạn chỉ cần gõ duy nhất một lệnh trong CMD: <code>view_3d.bat</code>. Tệp này tự động phát hiện mô hình tốt nhất trong <code>eval/best_model.zip</code> hoặc <code>models/wbr_balance_latest.zip</code> và mở ngay giao diện 3D!
+                </div>
+                <div class="lang-en">
+                  <strong>Quick shortcut to launch the 3D Viewer:</strong><br>
+                  On Windows, simply run: <code>view_3d.bat</code>. It auto-detects the highest scoring checkpoint in <code>eval/best_model.zip</code> and opens the 3D interface immediately!
+                </div>
+                <div class="lang-de">
+                  <strong>Schnellstart für den 3D-Viewer:</strong><br>
+                  Unter Windows genügt der Befehl <code>view_3d.bat</code>. Er lädt automatisch das beste Modell aus <code>eval/best_model.zip</code> und öffnet die 3D-Ansicht!
+                </div>
               </div>
             </div>
           </section>
 
           <!-- SECTION 8 -->
           <section id="sec-continuous">
-            <h2><span class="h2-badge">PHẦN 8</span> Cơ Chế Học Liên Tục (Continuous Learning / Resume Checkpoint)</h2>
+            <h2>
+              <span class="lang-vi"><span class="h2-badge">PHẦN 8</span> Cơ Chế Học Liên Tục (Continuous Learning / Resume Checkpoint)</span>
+              <span class="lang-en"><span class="h2-badge">PART 8</span> Continuous Learning (Resume Checkpoint Mechanism)</span>
+              <span class="lang-de"><span class="h2-badge">TEIL 8</span> Kontinuierliches Lernen (Resume-Checkpoint-Mechanismus)</span>
+            </h2>
 
-            <p>
-              Đây là câu hỏi mà rất nhiều kỹ sư mới bắt đầu thường thắc mắc:
-            </p>
+            <p class="lang-vi">Đây là câu hỏi mà rất nhiều kỹ sư mới bắt đầu thường thắc mắc:</p>
+            <p class="lang-en">A very common dilemma faced by robotics engineers:</p>
+            <p class="lang-de">Eine zentrale Frage vieler Einsteiger:</p>
+
             <blockquote style="border-left: 3px solid var(--accent-cyan); padding-left: 1rem; color: var(--accent-cyan); font-style: italic; margin: 1rem 0;">
-              "Nếu tôi tăng số bước từ 300,000 lên 3,000,000 thì những lần chạy trước có được lưu không? Làm thế nào để robot liên tục học, mỗi lần chạy là một lần robot học khôn thêm chứ không phải học lại từ đầu?"
+              <span class="lang-vi">"Nếu tôi tăng số bước từ 300,000 lên 3,000,000 thì những lần chạy trước có được lưu không? Làm thế nào để robot liên tục học, mỗi lần chạy là một lần robot học khôn thêm chứ không phải học lại từ đầu?"</span>
+              <span class="lang-en">"If I increase training from 300,000 to 3,000,000 steps, can I resume from previous checkpoints? How do I ensure the robot builds upon acquired skills rather than starting from scratch?"</span>
+              <span class="lang-de">"Wenn ich die Trainingsschritte von 300.000 auf 3.000.000 erhöhe, bleiben vorherige Läufe erhalten? Wie kann der Roboter fortlaufend weiterlernen, statt jedes Mal bei null zu beginnen?"</span>
             </blockquote>
 
-            <p>
-              <strong>Câu trả lời là CÓ!</strong> Bạn hoàn toàn có thể huấn luyện liên tục thông qua cơ chế <strong>Policy Checkpoint Resuming</strong>.
-            </p>
+            <p class="lang-vi"><strong>Câu trả lời là CÓ!</strong> Bạn hoàn toàn có thể huấn luyện liên tục thông qua cơ chế <strong>Policy Checkpoint Resuming</strong>.</p>
+            <p class="lang-en"><strong>The answer is YES!</strong> You can seamlessly continue training via <strong>Policy Checkpoint Resuming</strong>.</p>
+            <p class="lang-de"><strong>Die Antwort lautet JA!</strong> Über den <strong>Resume-Checkpoint-Mechanismus</strong> kann nahtlos weitergelernt werden.</p>
 
-            <h3>Nguyên lý hoạt động của Resume:</h3>
-            <ol>
-              <li>Khi bạn kết thúc đợt chạy thứ nhất ($300,000$ bước), mạng nơ-ron PPO đã tối ưu các trọng số synapse để robot biết cách giữ thăng bằng cơ bản và lưu tệp <code>models/wbr_balance_latest.zip</code>.</li>
-              <li>Ở lần chạy tiếp theo, thay vì khởi tạo ngẫu nhiên từ đầu, ta sử dụng cờ <code>--resume models/wbr_balance_latest.zip</code>.</li>
-              <li>PPO sẽ nạp lại toàn bộ trọng số của cả <strong>Policy Network (Actor)</strong> và <strong>Value Network (Critic)</strong>, cùng với thống kê trung bình/phương sai của bộ chuẩn hóa trạng thái <code>VecNormalize</code>.</li>
-              <li>Robot sẽ tiếp tục học thêm $3,000,000$ bước nữa trên nền tảng tri thức đã có, giúp nâng cao khả năng phản xạ và thích nghi với các tình huống khó khăn hơn!</li>
+            <h3>
+              <span class="lang-vi">Nguyên lý hoạt động của Resume:</span>
+              <span class="lang-en">Principles of Resume Checkpointing:</span>
+              <span class="lang-de">Funktionsweise des Resume-Mechanismus:</span>
+            </h3>
+
+            <ol class="lang-vi">
+              <li>Khi kết thúc đợt chạy thứ nhất ($300,000$ bước), mạng nơ-ron PPO đã tối ưu các trọng số synapse để robot biết giữ thăng bằng và lưu tệp <code>models/wbr_balance_latest.zip</code>.</li>
+              <li>Ở lần chạy tiếp theo, sử dụng cờ <code>--resume models/wbr_balance_latest.zip</code> thay vì khởi tạo ngẫu nhiên.</li>
+              <li>PPO nạp lại toàn bộ trọng số của cả <strong>Policy Network (Actor)</strong> và <strong>Value Network (Critic)</strong>, cùng với thống kê trung bình/phương sai của bộ chuẩn hóa trạng thái <code>VecNormalize</code>.</li>
+              <li>Robot tiếp tục học thêm $3,000,000$ bước nữa trên nền tảng tri thức đã có!</li>
+            </ol>
+            <ol class="lang-en">
+              <li>Upon finishing round 1 ($300,000$ steps), the PPO network has optimized synaptic weights for upright balance and serialized to <code>models/wbr_balance_latest.zip</code>.</li>
+              <li>In subsequent runs, specify the flag <code>--resume models/wbr_balance_latest.zip</code> instead of initializing weights randomly.</li>
+              <li>PPO reloads all weights of both <strong>Actor</strong> and <strong>Critic</strong>, along with running mean/variance statistics from <code>VecNormalize</code> wrappers.</li>
+              <li>The robot resumes for another $3,000,000$ steps upon existing knowledge, refining robustness!</li>
+            </ol>
+            <ol class="lang-de">
+              <li>Nach Durchlauf 1 ($300.000$ Schritte) speichert das Netz den Balancierzustand in <code>models/wbr_balance_latest.zip</code>.</li>
+              <li>Im nächsten Lauf wird das Flag <code>--resume models/wbr_balance_latest.zip</code> übergeben.</li>
+              <li>PPO lädt alle Gewichte von <strong>Actor</strong> und <strong>Critic</strong> sowie Mittelwerte und Varianzen aus <code>VecNormalize</code>.</li>
+              <li>Der Roboter lernt $3.000.000$ weitere Schritte auf Basis des erworbenen Wissens!</li>
             </ol>
 
             <!-- OS TAB BOX: RESUME -->
@@ -648,36 +988,40 @@ python train.py --scenario yaw --device cuda --timesteps 500000</code></pre>
                     Linux (Resume Training)
                   </button>
                 </div>
-                <button class="code-copy-btn" onclick="navigator.clipboard.writeText(this.closest('.os-code-box').querySelector('.os-tab-pane.active pre').innerText); alert('Đã sao chép lệnh Resume!');">Copy Resume</button>
+                <button class="code-copy-btn" onclick="navigator.clipboard.writeText(this.closest('.os-code-box').querySelector('.os-tab-pane.active pre').innerText); alert('Copied resume command!');">Copy Resume</button>
               </div>
 
               <!-- PANE WINDOWS -->
               <div class="os-tab-pane active" data-os="windows">
                 <div class="os-pane-summary">
-                  <span>🪟 Nạp checkpoint cũ và train tiếp 3,000,000 bước trên Windows</span>
+                  <span class="lang-vi">🪟 Nạp checkpoint cũ và train tiếp 3,000,000 bước trên Windows</span>
+                  <span class="lang-en">🪟 Load existing checkpoint and train for 3,000,000 additional steps on Windows</span>
+                  <span class="lang-de">🪟 Checkpoint laden und 3.000.000 weitere Schritte trainieren (Windows)</span>
                 </div>
-                <pre class="code-pre"><code>:: Cách 1: Chọn mục số [6] trong menu train_windows.bat
+                <pre class="code-pre"><code>:: Option 1: Select item [6] in interactive menu
 train_windows.bat
 
-:: Cách 2: Dùng dòng lệnh CMD trực tiếp với tham số --resume
+:: Option 2: Direct CMD command with --resume
 venv\Scripts\python.exe train.py --scenario balance --device cuda --resume models/wbr_balance_latest.zip --timesteps 3000000
 
-:: Cách 3: Nạp mô hình đạt giải nhất từ thư mục eval/ để huấn luyện tiếp
+:: Option 3: Resume from top benchmark model in eval/
 venv\Scripts\python.exe train.py --scenario balance --device cuda --resume eval/best_model.zip --timesteps 3000000</code></pre>
               </div>
 
               <!-- PANE LINUX -->
               <div class="os-tab-pane" data-os="linux">
                 <div class="os-pane-summary">
-                  <span>🐧 Nạp checkpoint cũ và train tiếp 3,000,000 bước trên Linux</span>
+                  <span class="lang-vi">🐧 Nạp checkpoint cũ và train tiếp 3,000,000 bước trên Linux</span>
+                  <span class="lang-en">🐧 Load existing checkpoint and train for 3,000,000 additional steps on Linux</span>
+                  <span class="lang-de">🐧 Checkpoint laden und 3.000.000 weitere Schritte trainieren (Linux)</span>
                 </div>
-                <pre class="code-pre"><code># Kích hoạt venv
+                <pre class="code-pre"><code># Activate venv
 source venv/bin/activate
 
-# Tiếp tục học từ checkpoint mới nhất
+# Resume training from latest checkpoint
 python train.py --scenario balance --device cuda --resume models/wbr_balance_latest.zip --timesteps 3000000
 
-# Hoặc tiếp tục học từ best_model với kịch bản di chuyển nâng cao
+# Or resume from best_model to train advanced driving
 python train.py --scenario drive --device cuda --resume eval/best_model.zip --timesteps 1500000</code></pre>
               </div>
             </div>
@@ -685,10 +1029,20 @@ python train.py --scenario drive --device cuda --resume eval/best_model.zip --ti
 
           <!-- SECTION 9 -->
           <section id="sec-monitoring">
-            <h2><span class="h2-badge">PHẦN 9</span> Giám Sát Qua TensorBoard & Đánh Giá Chất Lượng Chính Sách (Eval)</h2>
+            <h2>
+              <span class="lang-vi"><span class="h2-badge">PHẦN 9</span> Giám Sát Qua TensorBoard & Đánh Giá Chất Lượng Chính Sách (Eval)</span>
+              <span class="lang-en"><span class="h2-badge">PART 9</span> Real-time Monitoring via TensorBoard & Policy Evaluation (Eval)</span>
+              <span class="lang-de"><span class="h2-badge">TEIL 9</span> Echtzeit-Überwachung via TensorBoard & Policy-Evaluierung</span>
+            </h2>
 
-            <p>
+            <p class="lang-vi">
               Đừng bao giờ huấn luyện RL trong "bóng tối"! <strong>TensorBoard</strong> là công cụ trực quan hóa thời gian thực tối thượng giúp bạn nhìn rõ từng nhịp đập của mạng nơ-ron:
+            </p>
+            <p class="lang-en">
+              Never train RL blindfolded! <strong>TensorBoard</strong> provides real-time diagnostic curves tracking neural training metrics:
+            </p>
+            <p class="lang-de">
+              Trainieren Sie niemals im Blindflug! <strong>TensorBoard</strong> liefert Echtzeitkurven zur Diagnose aller Trainingsmetriken:
             </p>
 
             <!-- OS TAB BOX: TENSORBOARD -->
@@ -704,45 +1058,78 @@ python train.py --scenario drive --device cuda --resume eval/best_model.zip --ti
                     Linux (TensorBoard)
                   </button>
                 </div>
-                <button class="code-copy-btn" onclick="navigator.clipboard.writeText(this.closest('.os-code-box').querySelector('.os-tab-pane.active pre').innerText); alert('Đã sao chép lệnh TensorBoard!');">Copy Command</button>
+                <button class="code-copy-btn" onclick="navigator.clipboard.writeText(this.closest('.os-code-box').querySelector('.os-tab-pane.active pre').innerText); alert('Copied TensorBoard command!');">Copy Command</button>
               </div>
 
               <!-- PANE WINDOWS -->
               <div class="os-tab-pane active" data-os="windows">
                 <div class="os-pane-summary">
-                  <span>🪟 Mở TensorBoard trên Windows: 1-Click tự động bật trình duyệt</span>
+                  <span class="lang-vi">🪟 Mở TensorBoard trên Windows: 1-Click tự động bật trình duyệt</span>
+                  <span class="lang-en">🪟 Launch TensorBoard on Windows: 1-Click browser launch</span>
+                  <span class="lang-de">🪟 TensorBoard unter Windows: 1-Klick-Browserstart</span>
                 </div>
-                <pre class="code-pre"><code>:: Chạy tệp batch đã tạo sẵn để mở TensorBoard tại http://localhost:6006
+                <pre class="code-pre"><code>:: Run 1-click batch launcher opening http://localhost:6006
 tensorboard_windows.bat
 
-:: Hoặc mở thủ công bằng lệnh CMD:
-venv\Scripts\tensorboard.exe --logdir=./tensorboard_logs/ --port=6006</code></pre>
+:: Or launch via CMD directly:
+venv\Scripts	ensorboard.exe --logdir=./tensorboard_logs/ --port=6006</code></pre>
               </div>
 
               <!-- PANE LINUX -->
               <div class="os-tab-pane" data-os="linux">
                 <div class="os-pane-summary">
-                  <span>🐧 Mở TensorBoard trên Linux</span>
+                  <span class="lang-vi">🐧 Mở TensorBoard trên Linux</span>
+                  <span class="lang-en">🐧 Launch TensorBoard on Linux</span>
+                  <span class="lang-de">🐧 TensorBoard unter Linux starten</span>
                 </div>
-                <pre class="code-pre"><code># Kích hoạt venv và chạy server TensorBoard
+                <pre class="code-pre"><code># Activate venv and host TensorBoard server
 source venv/bin/activate
 tensorboard --logdir=./tensorboard_logs/ --port=6006 --bind_all
 
-# Truy cập trình duyệt tại địa chỉ: http://localhost:6006</code></pre>
+# Open browser at: http://localhost:6006</code></pre>
               </div>
             </div>
 
-            <h3>4 Chỉ Số Vàng Cần Theo Dõi Trên Đồ Thị:</h3>
-            <ul>
-              <li><strong><code>rollout/ep_rew_mean</code> (Điểm thưởng trung bình mỗi tập):</strong> Đây là chỉ số quan trọng nhất. Đồ thị phải tăng dần theo thời gian và tiệm cận giá trị đỉnh cao (thường từ $+400$ đến $+800$). Nếu đường này đi ngang ở mức âm hoặc tụt dốc, robot đang bị ngã liên tục.</li>
-              <li><strong><code>rollout/ep_len_mean</code> (Độ dài sống sót trung bình):</strong> Ban đầu con số này rất thấp ($20 - 50$ steps do ngã sớm). Khi robot học được cách đứng vững, nó sẽ chạm trần giới hạn của một tập (ví dụ $1000$ steps).</li>
+            <h3>
+              <span class="lang-vi">4 Chỉ Số Vàng Cần Theo Dõi Trên Đồ Thị:</span>
+              <span class="lang-en">4 Golden Metrics to Monitor on Curves:</span>
+              <span class="lang-de">4 entscheidende Metriken im Kurvenverlauf:</span>
+            </h3>
+
+            <ul class="lang-vi">
+              <li><strong><code>rollout/ep_rew_mean</code> (Điểm thưởng trung bình mỗi tập):</strong> Chỉ số quan trọng nhất. Phải tăng dần theo thời gian và tiệm cận giá trị đỉnh (thường $+400$ đến $+800$). Nếu đi ngang ở mức âm, robot đang ngã liên tục.</li>
+              <li><strong><code>rollout/ep_len_mean</code> (Độ dài sống sót trung bình):</strong> Ban đầu rất thấp ($20 - 50$ steps do ngã sớm). Khi robot học được cách đứng vững, nó sẽ chạm trần giới hạn tập (ví dụ $1000$ steps).</li>
               <li><strong><code>train/value_loss</code> (Sai số ước lượng của mạng Critic):</strong> Phản ánh khả năng dự đoán tương lai của mạng nơ-ron. Ban đầu tăng cao khi khám phá, sau đó phải giảm dần và ổn định.</li>
               <li><strong><code>train/entropy_loss</code> (Mức độ ngẫu nhiên khám phá):</strong> Giảm dần từ từ từ giá trị âm nhỏ xuống mức thấp hơn, chứng tỏ mạng dần tự tin với các hành động của mình.</li>
             </ul>
 
-            <h3>Chạy Đánh Giá Kiểm Thử (Evaluation) Sau Khi Train:</h3>
-            <p>
-              Khi quá trình train hoàn tất, hãy chạy script <code>eval.py</code> để kiểm chứng phản xạ của robot mà không có yếu tố ngẫu nhiên (Deterministic Policy):
+            <ul class="lang-en">
+              <li><strong><code>rollout/ep_rew_mean</code> (Mean Episode Reward):</strong> Most crucial metric. Should ascend continuously toward asymptote ($+400$ to $+800$). Flat negative values indicate recurring falls.</li>
+              <li><strong><code>rollout/ep_len_mean</code> (Mean Episode Length):</strong> Starts short ($20 - 50$ steps). Reaches ceiling ($1000$ steps) once stable balance is acquired.</li>
+              <li><strong><code>train/value_loss</code> (Critic Value Estimation Loss):</strong> Measures value estimation accuracy. Spikes early during exploration, then gradually stabilizes.</li>
+              <li><strong><code>train/entropy_loss</code> (Exploration Entropy):</strong> Decreases smoothly as policy gains deterministic confidence in optimal action selection.</li>
+            </ul>
+
+            <ul class="lang-de">
+              <li><strong><code>rollout/ep_rew_mean</code> (Mittlerer Episoden-Reward):</strong> Wichtigste Kennzahl. Soll stetig steigen ($+400$ bis $+800$). Verharren im Minus bedeutet dauerndes Umkippen.</li>
+              <li><strong><code>rollout/ep_len_mean</code> (Mittlere Episodendauer):</strong> Steigt von $20 - 50$ Schritten bis zum Episodenlimit ($1000$ Schritte).</li>
+              <li><strong><code>train/value_loss</code> (Schätzfehler des Critic-Netzes):</strong> Fällt nach anfänglichem Anstieg ab und stabilisiert sich.</li>
+              <li><strong><code>train/entropy_loss</code> (Aktionsentropie):</strong> Sinkt stetig, wenn die Policy sicherer agiert.</li>
+            </ul>
+
+            <h3>
+              <span class="lang-vi">Chạy Đánh Giá Kiểm Thử (Evaluation) Sau Khi Train:</span>
+              <span class="lang-en">Benchmarking & Evaluation After Training:</span>
+              <span class="lang-de">Evaluierung & Validierung nach dem Training:</span>
+            </h3>
+            <p class="lang-vi">
+              Khi quá trình train hoàn tất, chạy script <code>eval.py</code> để kiểm chứng phản xạ của robot không có yếu tố ngẫu nhiên (Deterministic Policy):
+            </p>
+            <p class="lang-en">
+              When training completes, execute <code>eval.py</code> to test policy determinism without exploratory noise:
+            </p>
+            <p class="lang-de">
+              Nach dem Training validiert <code>eval.py</code> die deterministische Policy ohne Explorationsrauschen:
             </p>
 
             <!-- OS TAB BOX: EVAL -->
@@ -758,21 +1145,21 @@ tensorboard --logdir=./tensorboard_logs/ --port=6006 --bind_all
                     Linux (Eval 3D)
                   </button>
                 </div>
-                <button class="code-copy-btn" onclick="navigator.clipboard.writeText(this.closest('.os-code-box').querySelector('.os-tab-pane.active pre').innerText); alert('Đã sao chép lệnh Eval!');">Copy Eval</button>
+                <button class="code-copy-btn" onclick="navigator.clipboard.writeText(this.closest('.os-code-box').querySelector('.os-tab-pane.active pre').innerText); alert('Copied eval command!');">Copy Eval</button>
               </div>
 
               <!-- PANE WINDOWS -->
               <div class="os-tab-pane active" data-os="windows">
-                <pre class="code-pre"><code>:: Chạy file tiện ích đánh giá có sẵn
+                <pre class="code-pre"><code>:: Run evaluation batch script
 eval_windows.bat
 
-:: Hoặc chạy bằng dòng lệnh chi tiết (Kiểm tra mô hình tốt nhất với giao diện 3D)
+:: Or evaluate via command line with 3D render across 10 episodes
 venv\Scripts\python.exe eval.py --scenario balance --model eval/best_model.zip --render --episodes 10</code></pre>
               </div>
 
               <!-- PANE LINUX -->
               <div class="os-tab-pane" data-os="linux">
-                <pre class="code-pre"><code># Kiểm tra mô hình tốt nhất trong 10 tập mô phỏng
+                <pre class="code-pre"><code># Benchmark best checkpoint across 10 simulation episodes
 python eval.py --scenario balance --model eval/best_model.zip --render --episodes 10</code></pre>
               </div>
             </div>
@@ -780,54 +1167,120 @@ python eval.py --scenario balance --model eval/best_model.zip --render --episode
 
           <!-- SECTION 10 -->
           <section id="sec-faq">
-            <h2><span class="h2-badge">PHẦN 10</span> Checklist Gỡ Lỗi & Câu Hỏi Thường Gặp (FAQ) Cho Người Mới</h2>
+            <h2>
+              <span class="lang-vi"><span class="h2-badge">PHẦN 10</span> Checklist Gỡ Lỗi & Câu Hỏi Thường Gặp (FAQ) Cho Người Mới</span>
+              <span class="lang-en"><span class="h2-badge">PART 10</span> Troubleshooting Checklist & FAQ for Beginners</span>
+              <span class="lang-de"><span class="h2-badge">TEIL 10</span> Fehlersuche & Häufig gestellte Fragen (FAQ)</span>
+            </h2>
 
             <div class="callout callout-warning">
               <span class="callout-icon">❓</span>
               <div>
-                <strong>Câu hỏi 1: Tại sao lệnh `python train.py --render` trên Windows lúc đầu báo không mở được cửa sổ?</strong><br>
-                <em>Giải thích:</em> Thư viện <code>mujoco.viewer</code> sử dụng luồng kết xuất OpenGL native của hệ điều hành. Trên Windows, nếu bạn gọi render từ một tiến trình con hoặc không chạy trực tiếp bằng tệp thực thi chính trong <code>venv\Scripts\python.exe</code>, cửa sổ có thể bị treo. Hãy đảm bảo bạn sử dụng script <code>train_windows.bat</code> hoặc <code>view_3d.bat</code> đã được cấu hình đường dẫn chuẩn xác.
+                <div class="lang-vi">
+                  <strong>Câu hỏi 1: Tại sao lệnh `python train.py --render` trên Windows lúc đầu báo không mở được cửa sổ?</strong><br>
+                  <em>Giải thích:</em> Thư viện <code>mujoco.viewer</code> sử dụng luồng kết xuất OpenGL native của hệ điều hành. Trên Windows, nếu gọi render từ tiến trình con hoặc không chạy bằng python trong <code>venv\Scripts\python.exe</code>, cửa sổ có thể bị treo. Hãy đảm bảo dùng script <code>train_windows.bat</code> hoặc <code>view_3d.bat</code>.
+                </div>
+                <div class="lang-en">
+                  <strong>Question 1: Why does `python train.py --render` fail to display a window on Windows?</strong><br>
+                  <em>Explanation:</em> The <code>mujoco.viewer</code> relies on OS-native OpenGL contexts. Running from secondary sub-processes or mismatched Python paths can freeze windows. Always invoke via <code>train_windows.bat</code> or <code>venv\Scripts\python.exe</code>.
+                </div>
+                <div class="lang-de">
+                  <strong>Frage 1: Warum öffnet sich das 3D-Fenster unter Windows nicht sofort?</strong><br>
+                  <em>Erklärung:</em> <code>mujoco.viewer</code> benötigt den nativen OpenGL-Kontext des Betriebssystems. Verwenden Sie stets <code>train_windows.bat</code> oder den direkten Pfad <code>venv\Scripts\python.exe</code>.
+                </div>
               </div>
             </div>
 
             <div class="callout callout-warning">
               <span class="callout-icon">❓</span>
               <div>
-                <strong>Câu hỏi 2: Tại sao máy có card đồ họa RTX nhưng cảm giác CPU vẫn chạy 100%?</strong><br>
-                <em>Giải thích:</em> Trong mô phỏng Reinforcement Learning, có 2 phần tách biệt:
-                <ol>
-                  <li><strong>Bộ giải vật lý (MuJoCo Physics Engine):</strong> Tính toán va chạm, liên kết động học ngược, và ma sát tiếp xúc. MuJoCo chạy hoàn toàn trên <strong>CPU</strong> bằng các tập lệnh vector hóa AVX/AVX2. Do đó CPU hoạt động hết công suất là hoàn toàn bình thường và tối ưu!</li>
-                  <li><strong>Mạng nơ-ron Actor-Critic (PyTorch):</strong> Được chuyển lên <strong>GPU CUDA</strong> (khi có cờ <code>--device cuda</code>) để tính toán lan truyền tiến (Forward Pass) và lan truyền ngược (Backpropagation) siêu tốc.</li>
-                </ol>
+                <div class="lang-vi">
+                  <strong>Câu hỏi 2: Tại sao máy có card đồ họa RTX nhưng cảm giác CPU vẫn chạy 100%?</strong><br>
+                  <em>Giải thích:</em> Trong mô phỏng Reinforcement Learning:
+                  <ol>
+                    <li><strong>Bộ giải vật lý (MuJoCo Physics Engine):</strong> Tính toán va chạm, động học ngược, và ma sát tiếp xúc hoàn toàn trên <strong>CPU</strong> bằng tập lệnh AVX/AVX2. Do đó CPU chạy hết công suất là hoàn toàn tối ưu!</li>
+                    <li><strong>Mạng nơ-ron Actor-Critic (PyTorch):</strong> Được chuyển lên <strong>GPU CUDA</strong> (với cờ <code>--device cuda</code>) để lan truyền tiến và lan truyền ngược siêu tốc.</li>
+                  </ol>
+                </div>
+                <div class="lang-en">
+                  <strong>Question 2: Why does CPU run at 100% even with a dedicated RTX GPU?</strong><br>
+                  <em>Explanation:</em> In RL simulations:
+                  <ol>
+                    <li><strong>Physics Engine (MuJoCo):</strong> Rigid body dynamics, contact mechanics, and collision run entirely on the <strong>CPU</strong> via AVX/AVX2 vector instructions. 100% CPU utilization is optimal!</li>
+                    <li><strong>Actor-Critic Neural Network (PyTorch):</strong> Relocated to <strong>GPU CUDA</strong> (via <code>--device cuda</code>) for rapid batch forward passes and backpropagation.</li>
+                  </ol>
+                </div>
+                <div class="lang-de">
+                  <strong>Frage 2: Warum läuft die CPU bei 100%, obwohl eine RTX-Grafikkarte verbaut ist?</strong><br>
+                  <em>Erklärung:</em> 
+                  <ol>
+                    <li><strong>Physik-Engine (MuJoCo):</strong> Mehrkörperdynamik und Kontakte laufen vollständig auf der <strong>CPU</strong> via AVX/AVX2. Volle CPU-Auslastung ist optimal!</li>
+                    <li><strong>Actor-Critic-Netz (PyTorch):</strong> Wird auf die <strong>GPU (CUDA)</strong> ausgelagert für blitzschnelle Vorwärts- und Rückwärtspropagation.</li>
+                  </ol>
+                </div>
               </div>
             </div>
 
             <div class="callout callout-tip">
               <span class="callout-icon">💡</span>
               <div>
-                <strong>Câu hỏi 3: Robot bị hiện tượng rung giật chân liên tục (High-Frequency Jittering)?</strong><br>
-                <em>Khắc phục:</em> Hãy tăng hệ số phạt gián đoạn hành động $w_6 P_{\text{jerk}} = \|a_t - a_{t-1}\|^2$ trong file cấu hình môi trường, hoặc bổ sung một bộ lọc thông thấp (First-Order Low-Pass Filter $\alpha = 0.8$) ở đầu ra của mạng nơ-ron trước khi truyền tín hiệu tới bộ điều khiển PD.
+                <div class="lang-vi">
+                  <strong>Câu hỏi 3: Robot bị hiện tượng rung giật chân liên tục (High-Frequency Jittering)?</strong><br>
+                  <em>Khắc phục:</em> Hãy tăng hệ số phạt gián đoạn hành động $w_6 P_{	ext{jerk}} = \|a_t - a_{t-1}\|^2$ trong file cấu hình môi trường, hoặc bổ sung một bộ lọc thông thấp (First-Order Low-Pass Filter $lpha = 0.8$) ở đầu ra của mạng nơ-ron trước khi truyền tín hiệu tới bộ điều khiển PD.
+                </div>
+                <div class="lang-en">
+                  <strong>Question 3: How to fix high-frequency leg jittering?</strong><br>
+                  <em>Remedy:</em> Increase action jerk penalty weight $w_6 P_{	ext{jerk}} = \|a_t - a_{t-1}\|^2$ in environment configs, or apply a first-order low-pass filter ($lpha = 0.8$) on policy outputs before routing into PD controllers.
+                </div>
+                <div class="lang-de">
+                  <strong>Frage 3: Wie wird hochfrequentes Beinflattern (Jittering) behoben?</strong><br>
+                  <em>Abhilfe:</em> Den Ruckstrafen-Koeffizienten $w_6 P_{	ext{jerk}} = \|a_t - a_{t-1}\|^2$ erhöhen oder einen Tiefpassfilter 1. Ordnung ($lpha = 0.8$) am Netzausgang vorschalten.
+                </div>
               </div>
             </div>
 
             <div class="callout callout-tip">
               <span class="callout-icon">💡</span>
               <div>
-                <strong>Lời khuyên vàng cho lộ trình học:</strong><br>
-                Đừng nhảy ngay vào kịch bản phức tạp <code>all</code>! Hãy áp dụng chiến lược học phân cấp (Curriculum Learning): Bắt đầu train kịch bản <code>balance</code> ($300,000$ bước) $\rightarrow$ Resume sang <code>drive</code> ($500,000$ bước) $\rightarrow$ Resume sang <code>yaw</code> ($500,000$ bước) $\rightarrow$ Cuối cùng mới train <code>push</code> và <code>all</code>. Bạn sẽ thấy tốc độ hội tụ nhanh gấp 5 lần!
+                <div class="lang-vi">
+                  <strong>Lời khuyên vàng cho lộ trình học:</strong><br>
+                  Đừng nhảy ngay vào kịch bản phức tạp <code>all</code>! Hãy áp dụng chiến lược học phân cấp (Curriculum Learning): Bắt đầu train kịch bản <code>balance</code> ($300,000$ bước) $ightarrow$ Resume sang <code>drive</code> ($500,000$ bước) $ightarrow$ Resume sang <code>yaw</code> ($500,000$ bước) $ightarrow$ Cuối cùng mới train <code>push</code> và <code>all</code>. Bạn sẽ thấy tốc độ hội tụ nhanh gấp 5 lần!
+                </div>
+                <div class="lang-en">
+                  <strong>Golden Tip for Curriculum Progression:</strong><br>
+                  Do not jump straight into the full <code>all</code> environment! Follow Curriculum Learning: Begin with <code>balance</code> ($300,000$ steps) $ightarrow$ Resume into <code>drive</code> ($500,000$ steps) $ightarrow$ Resume into <code>yaw</code> ($500,000$ steps) $ightarrow$ Finally train <code>push</code> and <code>all</code>. You will witness a 5x faster convergence rate!
+                </div>
+                <div class="lang-de">
+                  <strong>Goldener Tipp zum Lerncurriculum:</strong><br>
+                  Beginnen Sie nicht direkt mit dem Gesamtszenario <code>all</code>! Nutzen Sie Curriculum Learning: Zuerst <code>balance</code> ($300.000$ Schritte) $ightarrow$ Resume in <code>drive</code> ($500.000$ Schritte) $ightarrow$ Resume in <code>yaw</code> ($500.000$ Schritte) $ightarrow$ Zum Schluss <code>push</code> und <code>all</code> trainieren für 5-fach schnellere Konvergenz!
+                </div>
               </div>
             </div>
 
             <div class="sidebar-divider" style="margin: 3rem 0;"></div>
 
             <div style="text-align: center; padding: 2rem; background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border-color); box-shadow: var(--glow-card);">
-              <h3 style="margin-top: 0; color: var(--accent-cyan);">Sẵn Sàng Thử Nghiệm Trên Robot Của Riêng Bạn?</h3>
+              <h3 style="margin-top: 0; color: var(--accent-cyan);">
+                <span class="lang-vi">Sẵn Sàng Thử Nghiệm Trên Robot Của Riêng Bạn?</span>
+                <span class="lang-en">Ready to Test on Your Own Robot?</span>
+                <span class="lang-de">Bereit für den Test auf Ihrem eigenen Roboter?</span>
+              </h3>
               <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.5rem; max-width: 650px; margin-left: auto; margin-right: auto;">
-                Toàn bộ mã nguồn mô phỏng MuJoCo, các file môi trường Gym, script tương tác Windows/Linux và mô hình trọng số đã được đồng bộ trong hệ sinh thái mã nguồn mở của nhóm nghiên cứu.
+                <span class="lang-vi">Toàn bộ mã nguồn mô phỏng MuJoCo, các file môi trường Gym, script tương tác Windows/Linux và mô hình trọng số đã được đồng bộ trong hệ sinh thái mã nguồn mở của nhóm nghiên cứu.</span>
+                <span class="lang-en">All MuJoCo simulation assets, Gymnasium environments, Windows/Linux utility scripts, and trained policy weights are synchronized in our open repository.</span>
+                <span class="lang-de">Alle MuJoCo-Simulationsdateien, Gym-Umgebungen, Windows/Linux-Skripte und vortrainierten Modelle sind im Open-Source-Repository synchronisiert.</span>
               </p>
               <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-                <a href="../../blog.html" class="btn-tech btn-tech-primary">← Xem Các Bài Viết Khác</a>
-                <a href="https://github.com/vinhdo281" target="_blank" rel="noopener" class="btn-tech">Ghé Thăm GitHub Repository</a>
+                <a href="../../blog.html" class="btn-tech btn-tech-primary">
+                  <span class="lang-vi">← Xem Các Bài Viết Khác</span>
+                  <span class="lang-en">← Explore Other Articles</span>
+                  <span class="lang-de">← Weitere Artikel ansehen</span>
+                </a>
+                <a href="https://github.com/vinhdo281" target="_blank" rel="noopener" class="btn-tech">
+                  <span class="lang-vi">Ghé Thăm GitHub Repository</span>
+                  <span class="lang-en">Visit GitHub Repository</span>
+                  <span class="lang-de">GitHub Repository besuchen</span>
+                </a>
               </div>
             </div>
           </section>
@@ -842,7 +1295,7 @@ python eval.py --scenario balance --model eval/best_model.zip --render --episode
     <div class="search-modal">
       <div class="search-input-wrap">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="search-input" class="search-input" placeholder="Tìm kiếm bài viết... / Search..." autocomplete="off">
+        <input type="text" id="search-input" class="search-input" placeholder="Tìm kiếm... / Search..." autocomplete="off">
         <span class="kbd-shortcut">ESC</span>
       </div>
       <div id="search-results" class="search-results"></div>
@@ -857,4 +1310,3 @@ python eval.py --scenario balance --model eval/best_model.zip --render --episode
   <script src="../../assets/js/main.js"></script>
 </body>
 </html>
-
