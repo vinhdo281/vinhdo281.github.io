@@ -6,7 +6,7 @@ const SEARCH_DATA = [
     title_de: "Lebenslauf & Technische Kompetenzen (CV)",
     category: "CV / Hồ sơ",
     url: "cv.html",
-    keywords: "cv resume lebenslauf fähigkeiten kompetenzen ausbildung studium hust mechatronics co dien tu kinh nghiem pvgas uavcup pickleball self driving car drone smai esp32 fusion 360 siemens nx autocad kicad altium ielts c1 goethe b1 cpa"
+    keywords: "cv resume lebenslauf fähigkeiten kompetenzen ausbildung studium hust mechatronics co dien tu kinh nghiem pvgas uavcup pickleball self driving car drone smai esp32 fusion 360 siemens nx autocad kicad altium ielts c1 goethe b1"
   },
   {
     title_vi: "Hệ Thống & Dự Án Kỹ Thuật (Project Matrix)",
