@@ -139,6 +139,20 @@
     switch (activeTab) {
       case 'overview':
         contentHtml = isVi ? project.overview_vi : project.overview_en;
+        // Prepend metrics grid if available
+        if (project.metrics && project.metrics.length > 0) {
+          const metricsGridHtml = `
+            <div class="metrics-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem;">
+              ${project.metrics.map(m => `
+                <div style="background: rgba(0,242,254,0.06); border: 1px solid rgba(0,242,254,0.25); border-radius: 8px; padding: 0.75rem; text-align: center;">
+                  <div style="font-family: var(--font-mono); font-size: 1.25rem; color: var(--accent-cyan); font-weight: bold;">${m.value}</div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">${isVi ? m.label_vi : m.label_en}</div>
+                </div>
+              `).join('')}
+            </div>
+          `;
+          contentHtml = metricsGridHtml + contentHtml;
+        }
         break;
       case 'architecture':
         contentHtml = isVi ? project.architecture_vi : project.architecture_en;
@@ -159,6 +173,42 @@
     if (bodyEl) {
       bodyEl.innerHTML = contentHtml || '<p>Đang cập nhật nội dung...</p>';
       bodyEl.scrollTop = 0;
+
+      // Enhance code blocks with copy buttons
+      bodyEl.querySelectorAll('.code-terminal, pre').forEach(block => {
+        if (block.querySelector('.code-copy-btn')) return;
+        const preEl = block.tagName === 'PRE' ? block : block.querySelector('pre');
+        if (!preEl) return;
+
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'code-copy-btn';
+        copyBtn.setAttribute('title', isVi ? 'Sao chép đoạn mã' : 'Copy code');
+        copyBtn.innerHTML = `
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span>${isVi ? 'Sao chép' : 'Copy'}</span>
+        `;
+        copyBtn.style.cssText = 'position: absolute; top: 8px; right: 8px; padding: 0.2rem 0.55rem; font-size: 0.72rem; font-family: var(--font-mono); background: rgba(255,255,255,0.08); border: 1px solid var(--border-color); color: var(--text-secondary); border-radius: 4px; cursor: pointer; display: inline-flex; align-items: center; gap: 0.3rem; transition: var(--transition); z-index: 5;';
+
+        copyBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const codeText = preEl.textContent.trim();
+          navigator.clipboard.writeText(codeText).then(() => {
+            copyBtn.innerHTML = `<span style="color:var(--accent-cyan);">✓ ${isVi ? 'Đã chép!' : 'Copied!'}</span>`;
+            setTimeout(() => {
+              copyBtn.innerHTML = `
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span>${isVi ? 'Sao chép' : 'Copy'}</span>
+              `;
+            }, 2000);
+          });
+        });
+
+        // Set position relative on block container if not already
+        if (getComputedStyle(block).position === 'static') {
+          block.style.position = 'relative';
+        }
+        block.appendChild(copyBtn);
+      });
     }
   }
 

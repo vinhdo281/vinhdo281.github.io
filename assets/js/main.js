@@ -270,9 +270,11 @@
         if (lang === 'de') {
           if (category.includes('CV')) category = 'Lebenslauf / Profil';
           else if (category.includes('Bài Viết') || category.includes('Blog')) category = 'Blog / Technische Artikel';
+          else if (category.includes('Dự Án') || category.includes('Projects')) category = 'Projekte / Systeme';
         } else if (lang === 'en') {
           if (category.includes('CV')) category = 'CV / Resume';
           else if (category.includes('Bài Viết')) category = 'Blog / Articles';
+          else if (category.includes('Dự Án')) category = 'Projects / Systems';
         }
 
         const targetUrl = (item.url.startsWith('http') || item.url.startsWith('/')) ? item.url : (urlPrefix + item.url);

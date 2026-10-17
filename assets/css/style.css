@@ -2111,5 +2111,69 @@ body[data-lang="de"] .lang-en {
   }
 }
 
+/* Card Specs Pill Bar */
+.card-specs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--accent-cyan);
+  background: rgba(0, 242, 254, 0.05);
+  border: 1px dashed rgba(0, 242, 254, 0.22);
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+  margin-bottom: 0.85rem;
+}
+
+.card-specs span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.card-specs .sep {
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+/* Modal Table & Block Enhancements */
+.project-modal-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  font-size: 0.86rem;
+  background: rgba(10, 16, 28, 0.5);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.project-modal-body th {
+  background: rgba(0, 242, 254, 0.08);
+  color: var(--accent-cyan);
+  font-family: var(--font-mono);
+  font-weight: 600;
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid var(--border-color);
+  text-align: left;
+}
+
+.project-modal-body td {
+  padding: 0.6rem 0.85rem;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.08);
+  color: var(--text-secondary);
+}
+
+.project-modal-body tr:last-child td {
+  border-bottom: none;
+}
+
+.project-modal-body tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+
 
 

@@ -20,16 +20,17 @@
         </svg>
         <span class="lang-vi">BÀI VIẾT KỸ THUẬT</span>
         <span class="lang-en">TECHNICAL ARTICLES</span>
+        <span class="lang-de">TECHNISCHE ARTIKEL</span>
         <span class="brand-badge">BLOG</span>
       </div>
 
       <nav class="masthead__nav">
         <ul class="nav-links">
-          <li><a href="index.html"><span class="lang-vi">Trang chủ</span><span class="lang-en">Home</span></a></li>
-          <li><a href="research.html"><span class="lang-vi">Nghiên cứu</span><span class="lang-en">Research</span></a></li>
-          <li><a href="publications.html"><span class="lang-vi">Bài báo</span><span class="lang-en">Publications</span></a></li>
-          <li><a href="portfolio.html"><span class="lang-vi">Dự án</span><span class="lang-en">Projects</span></a></li>
-          <li><a href="blog.html" class="active"><span class="lang-vi">Bài viết</span><span class="lang-en">Blog</span></a></li>
+          <li><a href="index.html"><span class="lang-vi">Trang chủ</span><span class="lang-en">Home</span><span class="lang-de">Startseite</span></a></li>
+          <li><a href="research.html"><span class="lang-vi">Nghiên cứu</span><span class="lang-en">Research</span><span class="lang-de">Forschung</span></a></li>
+          <li><a href="publications.html"><span class="lang-vi">Bài báo</span><span class="lang-en">Publications</span><span class="lang-de">Publikationen</span></a></li>
+          <li><a href="portfolio.html"><span class="lang-vi">Dự án</span><span class="lang-en">Projects</span><span class="lang-de">Projekte</span></a></li>
+          <li><a href="blog.html" class="active"><span class="lang-vi">Bài viết</span><span class="lang-en">Blog</span><span class="lang-de">Blog</span></a></li>
           <li><a href="cv.html"><span>CV</span></a></li>
         </ul>
 
@@ -38,11 +39,37 @@
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             <span class="kbd-shortcut">Ctrl K</span>
           </button>
-          <button id="lang-toggle-btn" class="tool-btn" title="Đổi ngôn ngữ">VI</button>
+          <!-- Language selector dropdown -->
+          <div class="lang-dropdown-wrapper">
+            <button id="lang-toggle-btn" class="tool-btn lang-tool-btn" title="Đổi ngôn ngữ / Select language / Sprache wählen" aria-expanded="false">
+              <span id="lang-current-label">VI</span>
+              <svg class="lang-caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="lang-dropdown-menu" id="lang-dropdown-menu">
+              <button type="button" class="lang-dropdown-item active" data-lang-val="vi">
+                <span class="lang-flag">🇻🇳</span>
+                <span class="lang-item-name">Tiếng Việt</span>
+                <span class="lang-item-badge">VI</span>
+              </button>
+              <button type="button" class="lang-dropdown-item" data-lang-val="en">
+                <span class="lang-flag">🇬🇧</span>
+                <span class="lang-item-name">English</span>
+                <span class="lang-item-badge">EN</span>
+              </button>
+              <button type="button" class="lang-dropdown-item" data-lang-val="de">
+                <span class="lang-flag">🇩🇪</span>
+                <span class="lang-item-name">Deutsch</span>
+                <span class="lang-item-badge">DE</span>
+              </button>
+            </div>
+          </div>
           <button id="theme-toggle-btn" class="tool-btn" title="Chuyển chế độ sáng/tối">
             <span id="theme-icon">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
             </span>
+          </button>
+          <button id="mobile-menu-btn" class="tool-btn mobile-menu-btn" aria-label="Menu">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
           </button>
         </div>
       </nav>
@@ -63,12 +90,14 @@
           <h2 class="author-name">
             <span class="lang-vi">Kỹ Sư Cơ Điện Tử</span>
             <span class="lang-en">Robotics Engineer</span>
+            <span class="lang-de">Robotik-Ingenieur</span>
           </h2>
           <div class="author-handle">@vinhdo281 · HUST</div>
           <div class="author-status">
             <span class="status-dot"></span>
             <span class="lang-vi">POSTS: 2</span>
             <span class="lang-en">POSTS: 2</span>
+            <span class="lang-de">BEITRÄGE: 2</span>
           </div>
         </div>
         <div class="sidebar-divider"></div>
@@ -105,12 +134,16 @@
         <h1 class="hero-title">
           <span class="lang-vi">Bài Viết & Ghi Chép Kỹ Thuật</span>
           <span class="lang-en">Technical Articles & Engineering Notes</span>
+          <span class="lang-de">Technische Artikel & Entwicklungsnotizen</span>
         </h1>
         <p class="hero-desc lang-vi">
           Chia sẻ kinh nghiệm thực tế về tối ưu thuật toán điều khiển, sửa lỗi phần cứng nhúng, và các phương pháp mô phỏng robot tiên tiến.
         </p>
         <p class="hero-desc lang-en">
           Hands-on technical notes, control theory tuning tricks, embedded debugging insights, and cutting-edge robotics simulation pipelines.
+        </p>
+        <p class="hero-desc lang-de">
+          Praxiserfahrungen zu Regelungsalgorithmen, Embedded-Debugging-Erkenntnissen und modernen Robotik-Simulations-Pipelines.
         </p>
       </section>
 
@@ -127,6 +160,7 @@
             <a href="posts/reinforcement-learning-wbr/" style="color: inherit; text-decoration: none;">
               <span class="lang-vi">Hướng Dẫn Toàn Diện Từ A–Z: Học Tăng Cường (Reinforcement Learning) Cho Robot Chân - Bánh Xe Trên MuJoCo Physics & Stable-Baselines3</span>
               <span class="lang-en">Comprehensive A-to-Z Guide: Reinforcement Learning for Wheeled-Bipedal Robot on MuJoCo Physics & Stable-Baselines3</span>
+              <span class="lang-de">Umfassender A–Z Leitfaden: Reinforcement Learning für radgetriebene zweibeinige Roboter mit MuJoCo Physics & Stable-Baselines3</span>
             </a>
           </h2>
           <p class="card-desc">
@@ -135,6 +169,9 @@
             </span>
             <span class="lang-en">
               Beginner-to-advanced guide on Wheeled-Bipedal Robot (WBR) dynamics, Virtual Model Control (VMC-PD), PPO policy optimization, reward shaping, models/ & eval/ architecture, continuous checkpoint resuming, and <strong>interactive OS tabs switching between Windows and Linux</strong> with live 3D MuJoCo rendering on CUDA RTX GPUs.
+            </span>
+            <span class="lang-de">
+              Umfassender Einsteiger- bis Fortgeschrittenen-Leitfaden zur Dynamik radgetriebener zweibeiniger Roboter (WBR), virtueller Modellregelung (VMC-PD), PPO-Algorithmus, Reward Shaping, Projektarchitektur, kontinuierlichem Wiederaufnehmen von Checkpoints und <strong>interaktiven OS-Tabs zum Umschalten zwischen Windows und Linux</strong> mit Live-3D-Rendering auf CUDA-RTX-GPUs.
             </span>
           </p>
           <div class="card-tags">
@@ -147,7 +184,9 @@
           </div>
           <div style="margin-top: 1.25rem;">
             <a href="posts/reinforcement-learning-wbr/" class="btn-tech btn-tech-primary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
-              <span>Đọc Hướng Dẫn Chi Tiết</span>
+              <span class="lang-vi">Đọc Hướng Dẫn Chi Tiết</span>
+              <span class="lang-en">Read Detailed Tutorial</span>
+              <span class="lang-de">Ausführlichen Leitfaden lesen</span>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </a>
           </div>
@@ -163,6 +202,7 @@
             <a href="posts/fuzzy-inverted-pendulum/" style="color: inherit; text-decoration: none;">
               <span class="lang-vi">Hướng Dẫn Từ A–Z: Thiết Kế Bộ Điều Khiển Mờ (Fuzzy Logic) Cho Con Lắc Ngược Trên Simscape Multibody & Simulink</span>
               <span class="lang-en">A-to-Z Guide: Design a Fuzzy Logic Controller for Inverted Pendulum on Simscape Multibody & Simulink</span>
+              <span class="lang-de">A–Z Leitfaden: Entwurf eines Fuzzy-Logic-Reglers für ein inverses Pendel mit Simscape Multibody & Simulink</span>
             </a>
           </h2>
           <p class="card-desc">
@@ -171,6 +211,9 @@
             </span>
             <span class="lang-en">
               Step-by-step tutorial on importing CAD assemblies via <code>smimport</code> with XML & data files, detailing physical joint subsystems, synthesizing a 16-rule Mamdani FIS in MATLAB, wiring the root Simulink model, and stabilizing large-angle deviations (20°) with zero cart drift.
+            </span>
+            <span class="lang-de">
+              Schritt-für-Schritt-Anleitung zum Importieren von CAD-Baugruppen via <code>smimport</code> mit XML- und Datendateien, detaillierter Analyse der physikalischen Gelenksubsysteme, Entwurf eines Mamdani-FIS mit 16 Regeln in MATLAB, Simulink-Verschaltung und Stabilisierung bei großen Auslenkungen (20°) ohne Wagendrift.
             </span>
           </p>
           <div class="card-tags">
@@ -185,6 +228,7 @@
             <a href="posts/fuzzy-inverted-pendulum/" class="btn-tech btn-tech-primary">
               <span class="lang-vi">Đọc bài viết chi tiết →</span>
               <span class="lang-en">Read Full Tutorial →</span>
+              <span class="lang-de">Vollständigen Artikel lesen →</span>
             </a>
             <a href="https://github.com/vinhdo281" target="_blank" rel="noopener" class="btn-tech">
               <span>GitHub Code</span>
