@@ -38,11 +38,37 @@
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             <span class="kbd-shortcut">Ctrl K</span>
           </button>
-          <button id="lang-toggle-btn" class="tool-btn" title="Đổi ngôn ngữ">VI</button>
+          <!-- Language selector dropdown -->
+          <div class="lang-dropdown-wrapper">
+            <button id="lang-toggle-btn" class="tool-btn lang-tool-btn" title="Đổi ngôn ngữ / Select language / Sprache wählen" aria-expanded="false">
+              <span id="lang-current-label">VI</span>
+              <svg class="lang-caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="lang-dropdown-menu" id="lang-dropdown-menu">
+              <button type="button" class="lang-dropdown-item active" data-lang-val="vi">
+                <span class="lang-flag">🇻🇳</span>
+                <span class="lang-item-name">Tiếng Việt</span>
+                <span class="lang-item-badge">VI</span>
+              </button>
+              <button type="button" class="lang-dropdown-item" data-lang-val="en">
+                <span class="lang-flag">🇬🇧</span>
+                <span class="lang-item-name">English</span>
+                <span class="lang-item-badge">EN</span>
+              </button>
+              <button type="button" class="lang-dropdown-item" data-lang-val="de">
+                <span class="lang-flag">🇩🇪</span>
+                <span class="lang-item-name">Deutsch</span>
+                <span class="lang-item-badge">DE</span>
+              </button>
+            </div>
+          </div>
           <button id="theme-toggle-btn" class="tool-btn" title="Chuyển chế độ sáng/tối">
             <span id="theme-icon">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
             </span>
+          </button>
+          <button id="mobile-menu-btn" class="tool-btn mobile-menu-btn" aria-label="Menu">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
           </button>
         </div>
       </nav>
@@ -67,8 +93,8 @@
           <div class="author-handle">@vinhdo281 · HUST</div>
           <div class="author-status">
             <span class="status-dot"></span>
-            <span class="lang-vi">PROJECTS: 0</span>
-            <span class="lang-en">PROJECTS: 0</span>
+            <span class="lang-vi">PROJECTS: 11</span>
+            <span class="lang-en">PROJECTS: 11</span>
           </div>
         </div>
         <div class="sidebar-divider"></div>
@@ -101,40 +127,521 @@
       <section class="hero-card">
         <div class="hero-header">
           <span class="terminal-badge">PROJECT_MATRIX // HARDWARE & SOFTWARE</span>
+          <span class="card-date font-mono">2026.10</span>
         </div>
         <h1 class="hero-title">
           <span class="lang-vi">Hệ Thống & Dự Án Kỹ Thuật</span>
           <span class="lang-en">Engineering Projects & Systems</span>
         </h1>
         <p class="hero-desc lang-vi">
-          Các dự án tích hợp từ thiết kế cơ khí CAD, mạch điện tử công suất, thuật toán điều khiển và phần mềm nhúng. Bạn có thể chọn danh mục để lọc dự án.
+          Tổng hợp 11 dự án mã nguồn mở kỹ thuật: Từ lý thuyết điều khiển tự động phi tuyến (Fuzzy Logic, Cascade PID), mô phỏng robot vi sai trên ROS 2 / MuJoCo, thị giác máy tính AI (YOLOv11, MediaPipe, PyTorch) đến thiết kế mạch điện tử nhúng và phần mềm ứng dụng.
         </p>
         <p class="hero-desc lang-en">
-          Integrated systems spanning CAD mechanical design, custom power electronics, control algorithms, and embedded firmware. Use category filters to browse.
+          Comprehensive suite of 11 open-source engineering systems: spanning non-linear control theory (Fuzzy Logic, Cascade PID), ROS 2 / MuJoCo robotics physics, AI computer vision (YOLOv11, MediaPipe, PyTorch), custom embedded hardware, and application software.
         </p>
       </section>
 
-      <!-- EMPTY STATE -->
-      <div style="text-align: center; padding: 3.5rem 1.5rem; background: var(--bg-card); border: 1px dashed var(--border-color); border-radius: 12px; margin-top: 1.5rem;">
-        <div style="font-family: var(--font-mono); color: var(--accent-cyan); font-size: 1rem; margin-bottom: 0.75rem;">
-          [ PROJECT_MATRIX: IN_PROGRESS // DANG_CAP_NHAT ]
+      <!-- INTERACTIVE TOOLBAR & FILTERS -->
+      <section class="project-toolbar">
+        <div class="project-toolbar-top">
+          <div class="project-filters-wrap">
+            <button class="project-filter-btn active" data-filter="all">
+              <span>Tất cả // ALL (11)</span>
+            </button>
+            <button class="project-filter-btn" data-filter="control">
+              <span>Điều khiển & Robot (3)</span>
+            </button>
+            <button class="project-filter-btn" data-filter="vision">
+              <span>Thị giác AI (4)</span>
+            </button>
+            <button class="project-filter-btn" data-filter="hardware">
+              <span>Phần cứng & Nhúng (2)</span>
+            </button>
+            <button class="project-filter-btn" data-filter="software">
+              <span>Phần mềm & Tooling (2)</span>
+            </button>
+          </div>
+
+          <div class="project-search-box">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="project-search-input" placeholder="Lọc theo tên, thuật toán, công nghệ..." autocomplete="off">
+          </div>
         </div>
-        <p class="lang-vi" style="color: var(--text-muted); font-size: 0.92rem; max-width: 480px; margin: 0 auto;">
-          Chưa có dự án kỹ thuật nào được hiển thị. Các dự án phần cứng & thuật toán sẽ sớm được cập nhật.
-        </p>
-        <p class="lang-en" style="color: var(--text-muted); font-size: 0.92rem; max-width: 480px; margin: 0 auto;">
-          No engineering projects listed yet. Hardware & algorithm repositories will be updated soon.
-        </p>
+
+        <div id="project-count-hud" class="project-status-hud">
+          <span class="status-dot"></span> ĐANG HIỂN THỊ: <strong>11/11</strong> DỰ ÁN
+        </div>
+      </section>
+
+      <!-- PROJECTS CARDS GRID -->
+      <div class="cards-grid" id="projects-grid">
+
+        <!-- 1. FUZZY CONTROLLER -->
+        <article class="tech-card project-card featured" data-category="control" id="fuzzy-controller">
+          <div class="card-top">
+            <span class="card-type">CAD // SIMULATION // MUJOCO</span>
+            <span class="card-date font-mono">10/2026</span>
+          </div>
+          <h2 class="card-title">
+            <span class="lang-vi">Bộ Điều Khiển Mờ Mamdani 16 Luật Cho Con Lắc Ngược Trên Xe (MuJoCo & Simulink)</span>
+            <span class="lang-en">Single Unified Mamdani FIS Inverted Pendulum Controller in MuJoCo & Simulink</span>
+          </h2>
+          <p class="card-desc">
+            <span class="lang-vi">
+              Thiết kế bộ điều khiển mờ (Fuzzy Logic Controller - Mamdani FIS) 4 ngõ vào, 16 luật tối ưu hóa, ổn định con lắc ngược từ góc lệch lớn 22° trên mô phỏng vật lý MuJoCo và MATLAB/Simulink Simscape Multibody với thông số CAD thực tế tại HUST.
+            </span>
+            <span class="lang-en">
+              A single unified 16-rule Mamdani FIS controller with 4 state inputs, stabilizing an inverted pendulum from large initial angles (up to 22°) in MuJoCo physics and MATLAB/Simulink Simscape Multibody.
+            </span>
+          </p>
+          <div class="card-tags">
+            <span class="tag-badge" style="border-color: var(--accent-cyan); color: var(--accent-cyan);">Fuzzy Logic</span>
+            <span class="tag-badge">Mamdani FIS</span>
+            <span class="tag-badge">MuJoCo 3D</span>
+            <span class="tag-badge">Simscape</span>
+            <span class="tag-badge">Simulink</span>
+            <span class="tag-badge">Python</span>
+          </div>
+          <div class="project-card-footer">
+            <button class="btn-tech btn-tech-primary" onclick="openProjectModal('fuzzy-controller')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              <span>Xem Chi Tiết & Demo</span>
+            </button>
+            <a href="https://github.com/vinhdo281/Fuzzy-Controller" target="_blank" rel="noopener" class="btn-tech">
+              <span>GitHub</span>
+            </a>
+            <a href="posts/fuzzy-inverted-pendulum/" class="btn-tech" style="border-color: rgba(56, 189, 248, 0.4);">
+              <span>Bài viết A–Z</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- 2. CASCADE PID -->
+        <article class="tech-card project-card featured" data-category="control" id="cascade-pid">
+          <div class="card-top">
+            <span class="card-type">CONTROL // DUAL-LOOP // SIMULINK</span>
+            <span class="card-date font-mono">08/2026</span>
+          </div>
+          <h2 class="card-title">
+            <span class="lang-vi">Bộ Điều Khiển Phân Tầng Cascade PID Cho Robot Hai Bánh Tự Cân Bằng</span>
+            <span class="lang-en">Dual-Loop Cascade PID Controller for Two-Wheeled Self-Balancing Robot</span>
+          </h2>
+          <p class="card-desc">
+            <span class="lang-vi">
+              Kiến trúc điều khiển phân tầng Cascade PID hai vòng độc lập (Vòng ngoài: Vị trí/Vận tốc &rarr; Góc nghiêng đặt; Vòng trong: Góc nghiêng &rarr; Mô-men động cơ) trên MATLAB/Simulink hỗ trợ triển khai thực tế trên vi điều khiển ESP32 và động cơ SimpleFOC.
+            </span>
+            <span class="lang-en">
+              Dual-loop cascade PID control architecture (Outer: Position/Velocity to Reference Angle; Inner: Pitch Angle to Motor Torque) implemented in Simulink, engineered for deployment on ESP32 & SimpleFOC.
+            </span>
+          </p>
+          <div class="card-tags">
+            <span class="tag-badge" style="border-color: var(--accent-cyan); color: var(--accent-cyan);">Cascade PID</span>
+            <span class="tag-badge">Self-Balancing Robot</span>
+            <span class="tag-badge">Simulink</span>
+            <span class="tag-badge">MATLAB</span>
+            <span class="tag-badge">ESP32</span>
+            <span class="tag-badge">SimpleFOC</span>
+          </div>
+          <div class="project-card-footer">
+            <button class="btn-tech btn-tech-primary" onclick="openProjectModal('cascade-pid')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              <span>Xem Chi Tiết & Demo</span>
+            </button>
+            <a href="https://github.com/vinhdo281/Cascade-PID" target="_blank" rel="noopener" class="btn-tech">
+              <span>GitHub</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- 3. BOT1 (ROS 2 MOBILE ROBOT) -->
+        <article class="tech-card project-card featured" data-category="control" id="bot1">
+          <div class="card-top">
+            <span class="card-type">ROS 2 // HUMBLE // GAZEBO & URDF</span>
+            <span class="card-date font-mono">10/2025</span>
+          </div>
+          <h2 class="card-title">
+            <span class="lang-vi">Gói Mô Phỏng Robot Di Động Bánh Vi Sai Trên ROS 2 & Gazebo</span>
+            <span class="lang-en">ROS 2 Differential Drive Mobile Robot Simulation Package</span>
+          </h2>
+          <p class="card-desc">
+            <span class="lang-vi">
+              Thiết kế kiến trúc phần mềm robot di động tự hành trên nền tảng ROS 2 Humble và Gazebo: Mô hình hóa động học URDF/Xacro, tích hợp bộ điều khiển ros2_control diff_drive, cảm biến Lidar 2D và cấu hình launch file sẵn sàng cho Nav2 SLAM.
+            </span>
+            <span class="lang-en">
+              A comprehensive ROS 2 Humble differential drive mobile robot package featuring modular URDF/Xacro modeling, Gazebo physics simulation, ros2_control integration, and 2D LiDAR sensors.
+            </span>
+          </p>
+          <div class="card-tags">
+            <span class="tag-badge" style="border-color: var(--accent-cyan); color: var(--accent-cyan);">ROS 2</span>
+            <span class="tag-badge">Gazebo</span>
+            <span class="tag-badge">URDF / Xacro</span>
+            <span class="tag-badge">diff_drive_controller</span>
+            <span class="tag-badge">RViz2</span>
+            <span class="tag-badge">Linux</span>
+          </div>
+          <div class="project-card-footer">
+            <button class="btn-tech btn-tech-primary" onclick="openProjectModal('bot1')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              <span>Xem Chi Tiết & Demo</span>
+            </button>
+            <a href="https://github.com/vinhdo281/bot1" target="_blank" rel="noopener" class="btn-tech">
+              <span>GitHub</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- 4. CAR COUNTER YOLO -->
+        <article class="tech-card project-card featured" data-category="vision" id="carcounter-yolo">
+          <div class="card-top">
+            <span class="card-type">VISION // YOLO11 // SORT TRACKER</span>
+            <span class="card-date font-mono">09/2025</span>
+          </div>
+          <h2 class="card-title">
+            <span class="lang-vi">Hệ Thống Đếm & Theo Dõi Phương Tiện Giao Thông Thời Gian Thực (YOLO + SORT)</span>
+            <span class="lang-en">Real-time Highway Vehicle Counter & Tracking System (YOLO + SORT)</span>
+          </h2>
+          <p class="card-desc">
+            <span class="lang-vi">
+              Ứng dụng Computer Vision thông minh giám sát luồng giao thông trên cao tốc: Sử dụng mạng nơ-ron tích chập YOLOv11/v8 kết hợp bộ lọc Kalman và thuật toán SORT Tracker để theo dõi quỹ đạo, gán ID duy nhất và đếm phương tiện qua vạch ảo.
+            </span>
+            <span class="lang-en">
+              An intelligent highway traffic monitoring vision pipeline combining Ultralytics YOLOv11 with Kalman-filter-based SORT tracker for multi-class vehicle detection, persistent ID tracking, and virtual line counting.
+            </span>
+          </p>
+          <div class="card-tags">
+            <span class="tag-badge" style="border-color: var(--accent-cyan); color: var(--accent-cyan);">YOLOv11</span>
+            <span class="tag-badge">Computer Vision</span>
+            <span class="tag-badge">SORT Tracker</span>
+            <span class="tag-badge">Kalman Filter</span>
+            <span class="tag-badge">OpenCV</span>
+            <span class="tag-badge">Python</span>
+          </div>
+          <div class="project-card-footer">
+            <button class="btn-tech btn-tech-primary" onclick="openProjectModal('carcounter-yolo')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              <span>Xem Chi Tiết & Demo</span>
+            </button>
+            <a href="https://github.com/vinhdo281/CarCounterYOLO" target="_blank" rel="noopener" class="btn-tech">
+              <span>GitHub</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- 5. VOLUMN HAND CONTROL -->
+        <article class="tech-card project-card" data-category="vision" id="volumn-hand-control">
+          <div class="card-top">
+            <span class="card-type">HCI // MEDIAPIPE // AUDIO PYCAW</span>
+            <span class="card-date font-mono">09/2025</span>
+          </div>
+          <h2 class="card-title">
+            <span class="lang-vi">Điều Khiển Âm Lượng Máy Tính Không Chạm Bằng Cử Chỉ Bàn Tay</span>
+            <span class="lang-en">Touchless Hand Gesture Volume Controller (MediaPipe & PyCaw)</span>
+          </h2>
+          <p class="card-desc">
+            <span class="lang-vi">
+              Hệ thống điều khiển âm lượng PC/Laptop thông minh không cần chạm (Touchless HCI): Sử dụng MediaPipe Hands xác định 21 điểm mốc bàn tay qua webcam, tính toán khoảng cách ngón tay để nội suy và điều chỉnh trực tiếp Master Volume của Windows.
+            </span>
+            <span class="lang-en">
+              Touchless computer volume control interface powered by MediaPipe hand landmark tracking and PyCaw audio API, mapping fingertip distances smoothly to system master volume.
+            </span>
+          </p>
+          <div class="card-tags">
+            <span class="tag-badge">MediaPipe</span>
+            <span class="tag-badge">OpenCV</span>
+            <span class="tag-badge">PyCaw</span>
+            <span class="tag-badge">Touchless HCI</span>
+            <span class="tag-badge">Python</span>
+          </div>
+          <div class="project-card-footer">
+            <button class="btn-tech btn-tech-primary" onclick="openProjectModal('volumn-hand-control')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              <span>Xem Chi Tiết & Demo</span>
+            </button>
+            <a href="https://github.com/vinhdo281/VolumnHandControl" target="_blank" rel="noopener" class="btn-tech">
+              <span>GitHub</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- 6. FINGER COUNTER -->
+        <article class="tech-card project-card" data-category="vision" id="finger-counter">
+          <div class="card-top">
+            <span class="card-type">VISION // POSE ESTIMATION // OPENCV</span>
+            <span class="card-date font-mono">09/2025</span>
+          </div>
+          <h2 class="card-title">
+            <span class="lang-vi">Đếm Số Ngón Tay Thời Gian Thực Qua Camera (OpenCV & MediaPipe)</span>
+            <span class="lang-en">Real-Time Hand Landmark Estimation & Finger Counter (OpenCV & MediaPipe)</span>
+          </h2>
+          <p class="card-desc">
+            <span class="lang-vi">
+              Hệ thống thị giác máy tính nhận dạng bàn tay theo thời gian thực: Phân tích 21 điểm mốc landmark MediaPipe, tự động nhận biết bàn tay Trái / Phải và xác định trạng thái đóng/mở của từng ngón tay để đếm chính xác số lượng từ 0 đến 5.
+            </span>
+            <span class="lang-en">
+              Real-time hand gesture analysis leveraging MediaPipe 21-landmark topological graph to discern left vs. right hands and determine finger state for precise counting from 0 to 5.
+            </span>
+          </p>
+          <div class="card-tags">
+            <span class="tag-badge">MediaPipe</span>
+            <span class="tag-badge">OpenCV</span>
+            <span class="tag-badge">Hand Tracking</span>
+            <span class="tag-badge">Gesture Recognition</span>
+            <span class="tag-badge">Python</span>
+          </div>
+          <div class="project-card-footer">
+            <button class="btn-tech btn-tech-primary" onclick="openProjectModal('finger-counter')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              <span>Xem Chi Tiết & Demo</span>
+            </button>
+            <a href="https://github.com/vinhdo281/FingerCounter" target="_blank" rel="noopener" class="btn-tech">
+              <span>GitHub</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- 7. K-THUAT-LAP-TRINH -->
+        <article class="tech-card project-card" data-category="vision" id="k-thuat-lap-trinh">
+          <div class="card-top">
+            <span class="card-type">AI // PYTORCH // IMAGE PROCESSING</span>
+            <span class="card-date font-mono">01/2026</span>
+          </div>
+          <h2 class="card-title">
+            <span class="lang-vi">Xử Lý Ảnh Số & Phân Loại Đối Tượng Bằng Mô Hình Học Sâu PyTorch</span>
+            <span class="lang-en">Digital Image Processing & Deep Learning Object Classification (PyTorch)</span>
+          </h2>
+          <p class="card-desc">
+            <span class="lang-vi">
+              Dự án nghiên cứu môn Kỹ thuật lập trình & Thị giác máy tính tại HUST: Kết hợp các thuật toán tiền xử lý ảnh nâng cao (lọc không gian, phân đoạn ngưỡng nhị phân, trích xuất đặc trưng Canny) với mô hình mạng nơ-ron học sâu PyTorch (.pt).
+            </span>
+            <span class="lang-en">
+              Computer vision and deep learning framework developed at HUST, bridging traditional digital image filtering pipelines with modern PyTorch convolutional neural networks.
+            </span>
+          </p>
+          <div class="card-tags">
+            <span class="tag-badge">PyTorch</span>
+            <span class="tag-badge">OpenCV</span>
+            <span class="tag-badge">Deep Learning</span>
+            <span class="tag-badge">Image Processing</span>
+            <span class="tag-badge">CNN</span>
+          </div>
+          <div class="project-card-footer">
+            <button class="btn-tech btn-tech-primary" onclick="openProjectModal('k-thuat-lap-trinh')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              <span>Xem Chi Tiết & Demo</span>
+            </button>
+            <a href="https://github.com/vinhdo281/K-thu-t-l-p-tr-nh" target="_blank" rel="noopener" class="btn-tech">
+              <span>GitHub</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- 8. DO-LINE -->
+        <article class="tech-card project-card featured" data-category="hardware" id="do-line">
+          <div class="card-top">
+            <span class="card-type">HARDWARE // FSM // ARDUINO & OLED</span>
+            <span class="card-date font-mono">07/2025</span>
+          </div>
+          <h2 class="card-title">
+            <span class="lang-vi">Robot Dò Line Tự Hành Tốc Độ Cao (Line Follower Robot)</span>
+            <span class="lang-en">Autonomous High-Speed Line Follower Robot (FSM & IR Sensor Array)</span>
+          </h2>
+          <p class="card-desc">
+            <span class="lang-vi">
+              Dự án chế tạo phần cứng và lập trình vi điều khiển cho Robot dò line tự hành thi đấu: Tích hợp mảng 5 cảm biến hồng ngoại (IR), màn hình OLED I2C hiển thị thông số, mạch cầu H điều khiển động cơ DC và thuật toán máy trạng thái hữu hạn (FSM).
+            </span>
+            <span class="lang-en">
+              Hardware design and embedded firmware for an autonomous racing line follower robot, featuring a 5-channel IR optical sensor array, I2C OLED telemetry, and Finite State Machine (FSM) control logic.
+            </span>
+          </p>
+          <div class="card-tags">
+            <span class="tag-badge" style="border-color: var(--accent-cyan); color: var(--accent-cyan);">Arduino</span>
+            <span class="tag-badge">Embedded C++</span>
+            <span class="tag-badge">Hardware</span>
+            <span class="tag-badge">OLED SSD1306</span>
+            <span class="tag-badge">L298N</span>
+            <span class="tag-badge">Robotics</span>
+          </div>
+          <div class="project-card-footer">
+            <button class="btn-tech btn-tech-primary" onclick="openProjectModal('do-line')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              <span>Xem Chi Tiết & Demo</span>
+            </button>
+            <a href="https://github.com/vinhdo281/Do-Line" target="_blank" rel="noopener" class="btn-tech">
+              <span>GitHub</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- 9. XE-UA-2 (MICRO:BIT) -->
+        <article class="tech-card project-card" data-category="hardware" id="xe-ua-2">
+          <div class="card-top">
+            <span class="card-type">EMBEDDED // MICRO:BIT // MAKECODE</span>
+            <span class="card-date font-mono">09/2021</span>
+          </div>
+          <h2 class="card-title">
+            <span class="lang-vi">Xe Đua Thông Minh STEM Robotics Trên Vi Điều Khiển BBC Micro:bit</span>
+            <span class="lang-en">BBC Micro:bit STEM Autonomous Racing Car & Game Controller</span>
+          </h2>
+          <p class="card-desc">
+            <span class="lang-vi">
+              Dự án giáo dục STEM Robotics và phát triển phần mềm nhúng trên nền tảng vi điều khiển BBC micro:bit: Tích hợp trò chơi né chướng ngại vật trên ma trận LED 5x5, cơ chế ngắt nút bấm vật lý và đóng gói thư viện MakeCode Extension điều khiển xe robot.
+            </span>
+            <span class="lang-en">
+              STEM robotics and embedded software package for BBC micro:bit, featuring an obstacle-dodging racing game engine on the 5x5 LED matrix and MakeCode extension drivers for robot chassis control.
+            </span>
+          </p>
+          <div class="card-tags">
+            <span class="tag-badge">Micro:bit</span>
+            <span class="tag-badge">TypeScript</span>
+            <span class="tag-badge">MakeCode</span>
+            <span class="tag-badge">STEM</span>
+            <span class="tag-badge">Embedded</span>
+          </div>
+          <div class="project-card-footer">
+            <button class="btn-tech btn-tech-primary" onclick="openProjectModal('xe-ua-2')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              <span>Xem Chi Tiết & Demo</span>
+            </button>
+            <a href="https://github.com/vinhdo281/xe-ua-2" target="_blank" rel="noopener" class="btn-tech">
+              <span>GitHub</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- 10. CHECKING WEATHER USING API -->
+        <article class="tech-card project-card" data-category="software" id="checking-weather">
+          <div class="card-top">
+            <span class="card-type">DESKTOP // PYQT5 // REST API</span>
+            <span class="card-date font-mono">08/2025</span>
+          </div>
+          <h2 class="card-title">
+            <span class="lang-vi">Ứng Dụng Tra Cứu Thời Tiết Toàn Cầu Giao Diện PyQt5</span>
+            <span class="lang-en">Global Weather Forecast Desktop GUI Application (PyQt5 & OpenWeatherMap)</span>
+          </h2>
+          <p class="card-desc">
+            <span class="lang-vi">
+              Phần mềm máy tính để bàn (Desktop GUI) được phát triển bằng Python và PyQt5: Kết nối trực tiếp OpenWeatherMap RESTful API để hiển thị các chỉ số khí tượng thời gian thực (nhiệt độ, độ ẩm, áp suất, trạng thái mây mưa) của mọi thành phố trên thế giới.
+            </span>
+            <span class="lang-en">
+              A modern desktop GUI application engineered with Python & PyQt5, fetching and visualizing real-time worldwide meteorological telemetry from OpenWeatherMap REST API.
+            </span>
+          </p>
+          <div class="card-tags">
+            <span class="tag-badge">Python</span>
+            <span class="tag-badge">PyQt5</span>
+            <span class="tag-badge">REST API</span>
+            <span class="tag-badge">GUI</span>
+            <span class="tag-badge">OpenWeatherMap</span>
+          </div>
+          <div class="project-card-footer">
+            <button class="btn-tech btn-tech-primary" onclick="openProjectModal('checking-weather')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              <span>Xem Chi Tiết & Demo</span>
+            </button>
+            <a href="https://github.com/vinhdo281/Checking-Weather-using-API" target="_blank" rel="noopener" class="btn-tech">
+              <span>GitHub</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- 11. PYTHON COLLECTION -->
+        <article class="tech-card project-card" data-category="software" id="python-collection">
+          <div class="card-top">
+            <span class="card-type">ALGORITHMS // TOOLS // SUITE</span>
+            <span class="card-date font-mono">08/2025</span>
+          </div>
+          <h2 class="card-title">
+            <span class="lang-vi">Tuyển Tập Thuật Toán & Ứng Dụng Mini-Projects Bằng Python</span>
+            <span class="lang-en">Python Algorithmic Utilities & Interactive Mini-Projects Suite</span>
+          </h2>
+          <p class="card-desc">
+            <span class="lang-vi">
+              Bộ sưu tập các dự án ứng dụng Python đa dạng minh họa tư duy thuật toán, cấu trúc dữ liệu, lập trình giao diện GUI và xử lý API: Đồng hồ số Digital Clock, Pokemon Finder qua PokéAPI, Thuật toán mã hóa Simple Encryption, Game Slot Machine và Đồng hồ bấm giờ Stopwatch.
+            </span>
+            <span class="lang-en">
+              A versatile suite of algorithmic tools and mini-projects including a desktop Digital Clock, PokéAPI consumer, symmetric cipher encryption engine, RNG Slot Machine simulator, and high-precision Stopwatch.
+            </span>
+          </p>
+          <div class="card-tags">
+            <span class="tag-badge">Python</span>
+            <span class="tag-badge">Algorithms</span>
+            <span class="tag-badge">PokéAPI</span>
+            <span class="tag-badge">Cryptography</span>
+            <span class="tag-badge">Mini-Projects</span>
+          </div>
+          <div class="project-card-footer">
+            <button class="btn-tech btn-tech-primary" onclick="openProjectModal('python-collection')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              <span>Xem Chi Tiết & Demo</span>
+            </button>
+            <a href="https://github.com/vinhdo281/Python" target="_blank" rel="noopener" class="btn-tech">
+              <span>GitHub</span>
+            </a>
+          </div>
+        </article>
+
       </div>
     </main>
   </div>
 
-  <!-- SEARCH MODAL -->
+  <!-- INTERACTIVE CYBER PROJECT MODAL -->
+  <div id="project-modal-backdrop" class="project-modal-backdrop">
+    <div class="project-modal-container">
+      <div class="project-modal-header">
+        <div>
+          <span id="project-modal-badge" class="project-modal-badge">PROJECT // SPEC</span>
+          <h3 id="project-modal-title" class="project-modal-title">Tiêu Đề Dự Án</h3>
+        </div>
+        <button id="project-modal-close-btn" class="project-modal-close" title="Đóng (ESC)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="project-modal-tabs">
+        <button class="project-modal-tab-btn active" data-tab="overview">
+          <span>📋 Tổng quan</span>
+        </button>
+        <button class="project-modal-tab-btn" data-tab="architecture">
+          <span>⚙️ Kiến trúc & Thuật toán</span>
+        </button>
+        <button class="project-modal-tab-btn" data-tab="guide">
+          <span>🚀 Hướng dẫn cài đặt</span>
+        </button>
+        <button class="project-modal-tab-btn" data-tab="results">
+          <span>📊 Kết quả & Đánh giá</span>
+        </button>
+        <button class="project-modal-tab-btn" data-tab="demo">
+          <span>💻 Demo & Code</span>
+        </button>
+      </div>
+
+      <div id="project-modal-body" class="project-modal-body">
+        <!-- Rendered dynamically via projects-modal.js -->
+      </div>
+
+      <div class="project-modal-footer">
+        <div style="display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
+          <a id="project-modal-github-link" href="#" target="_blank" rel="noopener" class="btn-tech btn-tech-primary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            <span>Mở GitHub Repository</span>
+          </a>
+          <a id="project-modal-blog-link" href="#" class="btn-tech" style="display: none;">
+            <span>Đọc Bài Hướng Dẫn Chuyên Sâu &rarr;</span>
+          </a>
+        </div>
+        <button class="btn-tech" onclick="closeProjectModal()">
+          <span>Đóng cửa sổ</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEARCH MODAL (Ctrl + K) -->
   <div id="search-modal-backdrop" class="search-modal-backdrop">
     <div class="search-modal">
       <div class="search-input-wrap">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="search-input" class="search-input" placeholder="Tìm kiếm... / Search..." autocomplete="off">
+        <input type="text" id="search-input" class="search-input" placeholder="Tìm kiếm dự án, kỹ năng, bài viết (Ctrl+K)..." autocomplete="off">
         <span class="kbd-shortcut">ESC</span>
       </div>
       <div id="search-results" class="search-results"></div>
@@ -142,10 +649,13 @@
   </div>
 
   <footer class="site-footer">
-    <div>&copy; 2026 · Powered by GitHub Pages · Cyber-Tech Portfolio</div>
+    <div>&copy; 2026 · Powered by GitHub Pages · Cyber-Tech Portfolio · @vinhdo281</div>
   </footer>
 
+  <!-- SCRIPTS -->
   <script src="assets/js/search-data.js"></script>
+  <script src="assets/js/projects-data.js"></script>
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/projects-modal.js"></script>
 </body>
 </html>

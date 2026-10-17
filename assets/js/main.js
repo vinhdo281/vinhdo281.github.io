@@ -5,35 +5,142 @@
 (function () {
   'use strict';
 
-  // --- 1. LANGUAGE SWITCHER (VI / EN) ---
+  // --- 1. LANGUAGE SWITCHER (VI / EN / DE) ---
   const DEFAULT_LANG = 'vi';
+  const SUPPORTED_LANGS = ['vi', 'en', 'de'];
   const LANG_STORAGE_KEY = 'site_lang';
+
+  const LANG_META = {
+    vi: {
+      code: 'VI',
+      name: 'Tiếng Việt',
+      title: 'Ngôn ngữ: Tiếng Việt (Bấm để chọn ngôn ngữ)',
+      searchPlaceholder: 'Gõ từ khóa tìm kiếm (Ctrl+K)...',
+      searchEmpty: 'Không tìm thấy kết quả phù hợp.',
+      bibtexToast: '✓ Đã sao chép BibTeX vào Clipboard!'
+    },
+    en: {
+      code: 'EN',
+      name: 'English',
+      title: 'Language: English (Click to select language)',
+      searchPlaceholder: 'Type to search (Ctrl+K)...',
+      searchEmpty: 'No results found.',
+      bibtexToast: '✓ BibTeX copied to clipboard!'
+    },
+    de: {
+      code: 'DE',
+      name: 'Deutsch',
+      title: 'Sprache: Deutsch (Klicken, um Sprache zu wählen)',
+      searchPlaceholder: 'Suchbegriff eingeben (Strg+K)...',
+      searchEmpty: 'Keine passenden Ergebnisse gefunden.',
+      bibtexToast: '✓ BibTeX in die Zwischenablage kopiert!'
+    }
+  };
 
   function initLanguage() {
     let savedLang = localStorage.getItem(LANG_STORAGE_KEY);
-    if (!savedLang || (savedLang !== 'vi' && savedLang !== 'en')) {
+    if (!savedLang || !SUPPORTED_LANGS.includes(savedLang)) {
       savedLang = DEFAULT_LANG;
     }
     setLanguage(savedLang);
 
-    const langBtn = document.getElementById('lang-toggle-btn');
-    if (langBtn) {
-      langBtn.addEventListener('click', () => {
-        const currentLang = document.body.getAttribute('data-lang') || DEFAULT_LANG;
-        const nextLang = currentLang === 'vi' ? 'en' : 'vi';
-        setLanguage(nextLang);
+    // Dropdown and buttons
+    const dropdownWrappers = document.querySelectorAll('.lang-dropdown-wrapper');
+    const langBtns = document.querySelectorAll('#lang-toggle-btn');
+
+    langBtns.forEach(langBtn => {
+      langBtn.addEventListener('click', (e) => {
+        const wrap = langBtn.closest('.lang-dropdown-wrapper');
+        const menu = wrap ? wrap.querySelector('.lang-dropdown-menu') : null;
+        if (wrap && menu) {
+          e.stopPropagation();
+          const isOpen = wrap.classList.toggle('open');
+          langBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        } else {
+          // Direct cycle fallback (VI -> EN -> DE -> VI)
+          const currentLang = document.body.getAttribute('data-lang') || DEFAULT_LANG;
+          const nextIndex = (SUPPORTED_LANGS.indexOf(currentLang) + 1) % SUPPORTED_LANGS.length;
+          setLanguage(SUPPORTED_LANGS[nextIndex]);
+        }
       });
-    }
+    });
+
+    document.querySelectorAll('.lang-dropdown-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const targetLang = item.getAttribute('data-lang-val');
+        if (targetLang && SUPPORTED_LANGS.includes(targetLang)) {
+          setLanguage(targetLang);
+        }
+        dropdownWrappers.forEach(wrap => {
+          wrap.classList.remove('open');
+          const btn = wrap.querySelector('#lang-toggle-btn');
+          if (btn) btn.setAttribute('aria-expanded', 'false');
+        });
+      });
+    });
+
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+      dropdownWrappers.forEach(wrap => {
+        if (!wrap.contains(e.target)) {
+          wrap.classList.remove('open');
+          const btn = wrap.querySelector('#lang-toggle-btn');
+          if (btn) btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        dropdownWrappers.forEach(wrap => {
+          wrap.classList.remove('open');
+          const btn = wrap.querySelector('#lang-toggle-btn');
+          if (btn) btn.setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
   }
 
   function setLanguage(lang) {
+    if (!SUPPORTED_LANGS.includes(lang)) {
+      lang = DEFAULT_LANG;
+    }
     document.body.setAttribute('data-lang', lang);
+    document.documentElement.setAttribute('lang', lang);
     localStorage.setItem(LANG_STORAGE_KEY, lang);
-    
-    const langBtn = document.getElementById('lang-toggle-btn');
-    if (langBtn) {
-      langBtn.textContent = lang === 'vi' ? 'VI' : 'EN';
-      langBtn.setAttribute('title', lang === 'vi' ? 'Chuyển sang English' : 'Switch to Vietnamese');
+
+    const meta = LANG_META[lang] || LANG_META[DEFAULT_LANG];
+
+    // Update button text
+    document.querySelectorAll('#lang-current-label').forEach(el => {
+      el.textContent = meta.code;
+    });
+
+    document.querySelectorAll('#lang-toggle-btn').forEach(btn => {
+      btn.setAttribute('title', meta.title);
+      // If button doesn't have child #lang-current-label, update textContent directly
+      if (!btn.querySelector('#lang-current-label')) {
+        btn.textContent = meta.code;
+      }
+    });
+
+    // Update active dropdown items
+    document.querySelectorAll('.lang-dropdown-item').forEach(item => {
+      if (item.getAttribute('data-lang-val') === lang) {
+        item.classList.add('active');
+        item.setAttribute('aria-selected', 'true');
+      } else {
+        item.classList.remove('active');
+        item.removeAttribute('aria-selected');
+      }
+    });
+
+    // Update search placeholder dynamically
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+      searchInput.setAttribute('placeholder', meta.searchPlaceholder);
     }
   }
 
@@ -131,15 +238,18 @@
       const filtered = query === '' 
         ? SEARCH_DATA.slice(0, 5) 
         : SEARCH_DATA.filter(item => {
-            return item.title_vi.toLowerCase().includes(query) ||
-                   item.title_en.toLowerCase().includes(query) ||
-                   item.keywords.toLowerCase().includes(query);
+            const matchVi = item.title_vi && item.title_vi.toLowerCase().includes(query);
+            const matchEn = item.title_en && item.title_en.toLowerCase().includes(query);
+            const matchDe = item.title_de && item.title_de.toLowerCase().includes(query);
+            const matchKeywords = item.keywords && item.keywords.toLowerCase().includes(query);
+            return matchVi || matchEn || matchDe || matchKeywords;
           });
 
       if (filtered.length === 0) {
+        const meta = LANG_META[lang] || LANG_META['vi'];
         searchResults.innerHTML = `
           <div style="padding: 1.5rem; text-align: center; color: var(--text-muted); font-size: 0.9rem;">
-            ${lang === 'vi' ? 'Không tìm thấy kết quả phù hợp.' : 'No results found.'}
+            ${meta.searchEmpty}
           </div>
         `;
         return;
@@ -149,12 +259,27 @@
       const urlPrefix = isInPosts ? '../../' : '';
 
       searchResults.innerHTML = filtered.map(item => {
-        const title = lang === 'vi' ? item.title_vi : item.title_en;
+        let title = item.title_vi;
+        if (lang === 'en') {
+          title = item.title_en || item.title_vi;
+        } else if (lang === 'de') {
+          title = item.title_de || item.title_en || item.title_vi;
+        }
+
+        let category = item.category;
+        if (lang === 'de') {
+          if (category.includes('CV')) category = 'Lebenslauf / Profil';
+          else if (category.includes('Bài Viết') || category.includes('Blog')) category = 'Blog / Technische Artikel';
+        } else if (lang === 'en') {
+          if (category.includes('CV')) category = 'CV / Resume';
+          else if (category.includes('Bài Viết')) category = 'Blog / Articles';
+        }
+
         const targetUrl = (item.url.startsWith('http') || item.url.startsWith('/')) ? item.url : (urlPrefix + item.url);
         return `
           <a class="search-result-item" href="${targetUrl}">
             <div class="search-result-title">${title}</div>
-            <div class="search-result-meta">${item.category}</div>
+            <div class="search-result-meta">${category}</div>
           </a>
         `;
       }).join('');
@@ -180,7 +305,8 @@
     function showToast() {
       if (!toast) return;
       const lang = document.body.getAttribute('data-lang') || 'vi';
-      toast.textContent = lang === 'vi' ? '✓ Đã sao chép BibTeX vào Clipboard!' : '✓ BibTeX copied to clipboard!';
+      const meta = LANG_META[lang] || LANG_META['vi'];
+      toast.textContent = meta.bibtexToast;
       toast.classList.add('show');
       setTimeout(() => {
         toast.classList.remove('show');
