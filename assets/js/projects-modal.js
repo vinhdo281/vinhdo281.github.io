@@ -193,7 +193,7 @@
           e.stopPropagation();
           const codeText = preEl.textContent.trim();
           navigator.clipboard.writeText(codeText).then(() => {
-            copyBtn.innerHTML = `<span style="color:var(--accent-cyan);">✓ ${isVi ? 'Đã chép!' : 'Copied!'}</span>`;
+            copyBtn.innerHTML = `<span style="color:var(--accent-cyan); font-weight: 500;">${isVi ? 'Đã sao chép' : 'Copied'}</span>`;
             setTimeout(() => {
               copyBtn.innerHTML = `
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
