@@ -64,20 +64,6 @@ const SEARCH_DATA = [
     keywords: "pytorch cnn modnew deep learning opencv hust bildverarbeitung klassifikation"
   },
   {
-    title_en: "Project: Autonomous High-Speed Line Follower Robot (FSM & IR Sensor Array)",
-    title_de: "Projekt: Autonomer Hochgeschwindigkeits-Linienfolgeroboter (FSM & IR-Sensor-Array)",
-    category: "Projects",
-    url: "portfolio.html#do-line",
-    keywords: "do line line follower robot do line arduino fsm l298n oled ssd1306 ir sensor linienfolger autonom"
-  },
-  {
-    title_en: "Project: BBC Micro:bit STEM Autonomous Racing Car & Game Controller (xe-ua-2)",
-    title_de: "Projekt: BBC Micro:bit STEM Autonomes Rennauto & Game-Controller (xe-ua-2)",
-    category: "Projects",
-    url: "portfolio.html#xe-ua-2",
-    keywords: "xe ua 2 microbit makecode stem typescript led matrix robot game rennauto controller"
-  },
-  {
     title_en: "Project: Global Weather Forecast Desktop GUI Application (PyQt5 & OpenWeatherMap)",
     title_de: "Projekt: Globale Wettervorhersage Desktop-GUI-Anwendung (PyQt5 & OpenWeatherMap)",
     category: "Projects",
