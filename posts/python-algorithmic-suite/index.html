@@ -166,8 +166,8 @@
             </span>
             <span class="article-meta-item">
               <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              <span class="lang-en">15 Min Read · Algorithmic Engineering</span>
-              <span class="lang-de">15 Min Lesezeit · Algorithmische Softwareentwicklung</span>
+              <span class="lang-en">20 Min Read · Algorithmic Complexity, Cryptography & OOP</span>
+              <span class="lang-de">20 Min Lesezeit · Algorithmische Komplexität, Kryptographie & OOP</span>
             </span>
             <span class="card-type">PYTHON // ALGORITHMS // CRYPTOGRAPHY & OOP</span>
           </div>
@@ -181,84 +181,177 @@
             <span class="lang-de">INHALTSVERZEICHNIS</span>
           </div>
           <ul class="article-toc-list">
-            <li><a href="#sec-suite"><span class="lang-en">1. Suite Architecture & Code Organization</span><span class="lang-de">1. Suite-Architektur & Code-Organisation</span></a></li>\n            <li><a href="#sec-crypto"><span class="lang-en">2. Symmetric Substitution Cipher Engineering</span><span class="lang-de">2. Entwicklung Symmetrischer Substitutions-Chiffren</span></a></li>\n            <li><a href="#sec-oop"><span class="lang-en">3. Object-Oriented Simulation Engine (Pokémon)</span><span class="lang-de">3. Objektorientierte Simulations-Engine (Pokémon)</span></a></li>\n            <li><a href="#sec-clock"><span class="lang-en">4. Event-Driven Real-Time Desktop Chronometer</span><span class="lang-de">4. Event-gesteuerte Echtzeit-Desktop-Uhr</span></a></li>\n            <li><a href="#sec-testing"><span class="lang-en">5. Algorithmic Complexity & Automated Unit Testing</span><span class="lang-de">5. Algorithmische Komplexität & Automatisierte Unit-Tests</span></a></li>
+            <li><a href="#sec-crypto-math"><span class="lang-en">1. Symmetric Cipher Mathematics: Keyspace Complexity 94!</span><span class="lang-de">1. Symmetrische Chiffren-Mathematik: Schlüsselraum-Komplexität 94!</span></a></li>\n            <li><a href="#sec-fisher-yates"><span class="lang-en">2. Fisher-Yates Shuffle vs Biased Naive Swapping</span><span class="lang-de">2. Fisher-Yates-Shuffle vs. fehlerhaftes naives Mischen</span></a></li>\n            <li><a href="#sec-cryptanalysis"><span class="lang-en">3. Cryptanalysis & Vulnerabilities: Frequency Attack Mechanics</span><span class="lang-de">3. Kryptoanalyse & Schwachstellen: Frequenzanalyse-Mechanik</span></a></li>\n            <li><a href="#sec-oop-engine"><span class="lang-en">4. Object-Oriented Game Engine & O(1) Matrix Lookup</span><span class="lang-de">4. Objektorientierte Game-Engine & O(1)-Matrix-Lookup</span></a></li>\n            <li><a href="#sec-clock-skew"><span class="lang-en">5. Event-Driven GUI Chronometer & Clock Skew Elimination</span><span class="lang-de">5. Event-gesteuerte Desktop-Uhr & Vermeidung von Taktdrift</span></a></li>\n            <li><a href="#sec-code-walk"><span class="lang-en">6. Annotated Python Implementations & Test Suite</span><span class="lang-de">6. Kommentierte Python-Implementierungen & Test-Suite</span></a></li>\n            <li><a href="#sec-best-practices"><span class="lang-en">7. Software Architecture: PEP 8, Type Hints & Complexity</span><span class="lang-de">7. Softwarearchitektur: PEP 8, Type Hints & Komplexität</span></a></li>
           </ul>
         </div>
 
         <!-- ARTICLE BODY -->
         <div class="article-content">
           <div class="lang-en">
-            <section id="sec-suite">
-            <h2><span class="h2-badge">PART 1</span> Suite Architecture & Code Organization</h2>
-            <p>Writing resilient Python code demands mastering data structures, complexity trade-offs, and clean modular encapsulation. This project brings together cryptographic tools, OOP game engines, and real-time GUIs.</p>
-          </section>
+            <section id="sec-crypto-math">
+        <h2><span class="h2-badge">PART 1</span> Symmetric Cipher Mathematics: Keyspace Complexity 94!</h2>
+        <p>A fundamental problem in applied computer science is constructing reversible mathematical mappings (bijections) for data obfuscation. Our symmetric substitution cipher defines a character set $S$ containing all printable ASCII characters from ASCII 32 (Space) through ASCII 126 (Tilde):</p>
+        
+        <p>$$|S| = 94 \\text{ distinct characters}$$</p>
+        
+        <p>A substitution key is a <strong>bijective permutation function</strong> $f: S \\to S$ that maps each plaintext symbol $p_i \\in S$ to a unique ciphertext symbol $c_i \\in S$. Because the mapping is bijective (both injective and surjective), the inverse function $f^{-1}: S \\to S$ exists and guarantees <strong>$100\\%$ loss-free roundtrip decryption</strong>:</p>
+        <p>$$f^{-1}(f(p_i)) = p_i, \\quad \\forall p_i \\in S$$</p>
 
-          <section id="sec-crypto">
-            <h2><span class="h2-badge">PART 2</span> Symmetric Substitution Cipher Engineering</h2>
-            <p>The substitution cipher creates a bijective mapping across all printable ASCII and UTF-8 characters via pseudorandom shuffling, ensuring 100% loss-free roundtrip decryption:</p>
-            <div class="code-terminal"><pre><code>import random
-import string
+        <h4>Keyspace Complexity Analysis:</h4>
+        <p>The total number of possible distinct permutations is given by the factorial of the set size:</p>
+        <p>$$|\\mathcal{K}| = 94! \\approx 1.087 \\times 10^{146}$$</p>
+        
+        <div class="callout callout-info">
+          <strong>How astronomically large is $94!$?</strong>
+          <ul>
+            <li>The total number of atoms in the observable universe is estimated at $\\sim 10^{80}$.</li>
+            <li>The standard AES-128 cryptographic keyspace is $2^{128} \\approx 3.40 \\times 10^{38}$.</li>
+            <li>A brute-force exhaustive key search trying 1 trillion keys per second would take over $3.4 \\times 10^{126}$ years—billions of times longer than the lifespan of the universe!</li>
+          </ul>
+        </div>
+      </section>
 
-chars = list(string.punctuation + string.digits + string.ascii_letters + " ")
-key = chars.copy()
-random.seed(42)
-random.shuffle(key)
+      <section id="sec-fisher-yates">
+        <h2><span class="h2-badge">PART 2</span> Fisher-Yates Shuffle vs Biased Naive Swapping</h2>
+        <p>How do we generate an unbiased random permutation of the key array? Many beginners write a naive random swap loop:</p>
 
-def encrypt(plain_text: str) -> str:
-    return "".join(key[chars.index(c)] if c in chars else c for c in plain_text)
+        <div class="code-terminal"><pre><code># FLAWED NAIVE SHUFFLE: Introduces severe statistical bias!
+for i in range(len(key)):
+    j = random.randint(0, len(key) - 1)
+    key[i], key[j] = key[j], key[i]</code></pre></div>
 
-def decrypt(cipher_text: str) -> str:
-    return "".join(chars[key.index(c)] if c in key else c for c in cipher_text)</code></pre></div>
-          </section>
+        <div class="callout callout-warning">
+          <strong>Why the Naive Shuffle is Mathematically Broken:</strong> For an array of length $N$, the naive loop makes $N$ independent choices of $N$ possibilities, yielding $N^N$ possible execution branches. However, there are only $N!$ true permutations. Because $N^N$ is <em>not evenly divisible</em> by $N!$ (for any $N > 2$), some permutations must occur more frequently than others! This statistical bias gives cryptanalysts a direct mathematical attack vector.
+        </div>
 
-          <section id="sec-oop">
-            <h2><span class="h2-badge">PART 3</span> Object-Oriented Simulation Engine (Pokémon)</h2>
-            <p>Implements object-oriented hierarchy, polymorphism, and state machine transitions for turn-based mechanics with elemental effectiveness matrices.</p>
-          </section>
+        <p>Python's <code>random.shuffle()</code> implements the mathematically rigorous <strong>Fisher-Yates (Knuth) Shuffle</strong>:</p>
+        <div class="code-terminal"><pre><code># RIGOROUS FISHER-YATES SHUFFLE: O(N) uniform permutation
+for i in range(len(key) - 1, 0, -1):
+    j = random.randint(0, i) # Strictly choose from [0, i]
+    key[i], key[j] = key[j], key[i]</code></pre></div>
+        <p>The Fisher-Yates algorithm produces exactly $N \\times (N-1) \\times \\cdots \\times 1 = N!$ branches, guaranteeing that every single one of the $N!$ permutations has an identical probability $P = \\frac{1}{N!}$.</p>
+      </section>
 
-          <section id="sec-clock">
-            <h2><span class="h2-badge">PART 4</span> Event-Driven Real-Time Desktop Chronometer</h2>
-            <p>Utilizes Tkinter's non-blocking event loop <code>root.after(1000, update_time)</code> for accurate timekeeping without CPU spinning.</p>
-          </section>
+      <section id="sec-cryptanalysis">
+        <h2><span class="h2-badge">PART 3</span> Cryptanalysis & Vulnerabilities: Frequency Attack Mechanics</h2>
+        <p>Despite its vast keyspace of $94!$, why is a monoalphabetic substitution cipher insecure for modern classified communications?</p>
+        
+        <p>Because monoalphabetic substitution preserves the <strong>underlying statistical frequency distribution of the natural language</strong>:</p>
+        <ul>
+          <li>In natural English text, the letter <code>'e'</code> appears with an average frequency of $12.7\\%$, <code>'t'</code> appears $9.1\\%$, and <code>'a'</code> appears $8.2\\%$.</li>
+          <li>Common digrams (<code>'th'</code>, <code>'he'</code>, <code>'in'</code>) and trigrams (<code>'the'</code>, <code>'and'</code>) exhibit rigid statistical signatures.</li>
+          <li>An attacker intercepting a few paragraphs of ciphertext can count symbol frequencies, map the most frequent symbol to <code>'e'</code>, and break the entire cipher in seconds without testing $94!$ keys.</li>
+        </ul>
+        <p>This tutorial highlights the fundamental lesson of cryptography: <em>A huge keyspace alone does not guarantee security if statistical entropy is leaked.</em></p>
+      </section>
 
-          <section id="sec-testing">
-            <h2><span class="h2-badge">PART 5</span> Algorithmic Complexity & Automated Unit Testing</h2>
-            <div class="code-terminal"><pre><code>import unittest
+      <section id="sec-oop-engine">
+        <h2><span class="h2-badge">PART 4</span> Object-Oriented Game Engine & O(1) Matrix Lookup</h2>
+        <p>The suite includes an interactive turn-based battle engine illustrating Object-Oriented Design patterns:</p>
+        
+        <ul>
+          <li><strong>Encapsulation:</strong> The <code>Pokemon</code> base class encapsulates hit points, base stats, and move sets, exposing strict accessor methods with damage validation.</li>
+          <li><strong>$O(1)$ Hash Matrix Lookup:</strong> Elemental type effectiveness (e.g., Water against Fire is $2.0\\times$, Grass against Fire is $0.5\\times$) is modeled as a nested hash map:
+            <code>EFFECTIVENESS_MATRIX[attack_type][defender_type]</code>. This evaluates damage multipliers in instantaneous $O(1)$ time rather than nested <code>if-else</code> cascades.
+          </li>
+          <li><strong>State Machine Transitions:</strong> Manages turn-based mechanics with deterministic priority resolution (Speed stat determines who strikes first).</li>
+        </ul>
+      </section>
 
-class TestCipher(unittest.TestCase):
-    def test_roundtrip(self):
-        msg = "Hello, Autonomous World 2026!"
-        self.assertEqual(decrypt(encrypt(msg)), msg)
+      <section id="sec-clock-skew">
+        <h2><span class="h2-badge">PART 5</span> Event-Driven GUI Chronometer & Clock Skew Elimination</h2>
+        <p>In real-time graphical tools like our desktop digital clock, a naive approach uses <code>time.sleep(1)</code> in an infinite loop. This locks the GUI window message queue and causes cumulative time drift.</p>
+
+        <p>We eliminate clock skew using event-driven scheduling with absolute system clock synchronization:</p>
+        <div class="code-terminal"><pre><code>def update_time():
+    # 1. Query operating system high-precision real-time clock
+    current_time_str = datetime.now().strftime("%H:%M:%S")
+    time_label.config(text=current_time_str)
+
+    # 2. Schedule next execution tick via Tkinter event queue
+    # Recalculates millisecond offset to snap precisely onto the next second boundary
+    millis_to_next_sec = 1000 - (datetime.now().microsecond // 1000)
+    root.after(millis_to_next_sec, update_time)</code></pre></div>
+      </section>
+
+      <section id="sec-code-walk">
+        <h2><span class="h2-badge">PART 6</span> Annotated Python Implementations & Test Suite</h2>
+        <div class="code-terminal"><pre><code>import string
+import random
+import unittest
+
+class SymmetricCipher:
+    def __init__(self, seed: int = 42):
+        self.chars = list(string.punctuation + string.digits + string.ascii_letters + " ")
+        self.key = self.chars.copy()
+        random.seed(seed)
+        random.shuffle(self.key) # Fisher-Yates uniform permutation
+
+    def encrypt(self, plain_text: str) -> str:
+        return "".join(self.key[self.chars.index(c)] if c in self.chars else c for c in plain_text)
+
+    def decrypt(self, cipher_text: str) -> str:
+        return "".join(self.chars[self.key.index(c)] if c in self.key else c for c in cipher_text)
+
+class TestCipherIntegrity(unittest.TestCase):
+    def setUp(self):
+        self.cipher = SymmetricCipher(seed=2026)
+
+    def test_lossless_roundtrip(self):
+        sample = "Autonomous Mechatronics & Robotics Lab 2026! @vinhdo281"
+        encrypted = self.cipher.encrypt(sample)
+        decrypted = self.cipher.decrypt(encrypted)
+        self.assertEqual(decrypted, sample)
+        self.assertNotEqual(encrypted, sample)
 
 if __name__ == "__main__":
     unittest.main()</code></pre></div>
-          </section>
+      </section>
+
+      <section id="sec-best-practices">
+        <h2><span class="h2-badge">PART 7</span> Software Architecture: PEP 8, Type Hints & Complexity</h2>
+        <ul>
+          <li><strong>Type Hints:</strong> Full typing annotations (<code>typing.List</code>, <code>typing.Dict</code>, <code>typing.Tuple</code>) ensure static type validation with <code>mypy</code>.</li>
+          <li><strong>Algorithmic Complexity:</strong> String encryption achieves linear time complexity $O(N)$ with respect to message length $N$.</li>
+          <li><strong>Zero External Dependencies:</strong> Written strictly with Python's standard library for universal cross-platform portability.</li>
+        </ul>
+      </section>
           </div>
           <div class="lang-de">
-            <section id="sec-suite">
-            <h2><span class="h2-badge">TEIL 1</span> Suite-Architektur & Code-Organisation</h2>
-            <p>Eine strukturierte Sammlung modularer Python-Module zur praktischen Umsetzung von Algorithmen, Datenstrukturen und OOP-Konzepten.</p>
-          </section>
+            <section id="sec-crypto-math">
+        <h2><span class="h2-badge">TEIL 1</span> Symmetrische Chiffren-Mathematik: Schlüsselraum-Komplexität 94!</h2>
+        <p>Eine bijektive Abbildung über alle 94 druckbaren ASCII-Zeichen erzeugt einen Schlüsselraum von $94! \\approx 1.087 \\times 10^{146}$. Dies übertrifft den Schlüsselraum von AES-128 ($2^{128} \\approx 3.4 \\times 10^{38}$) um viele Größenordnungen und schließt Brute-Force-Angriffe mathematisch aus.</p>
+      </section>
 
-          <section id="sec-crypto">
-            <h2><span class="h2-badge">TEIL 2</span> Entwicklung Symmetrischer Substitutions-Chiffren</h2>
-            <p>Bijektive Abbildung des Zeichensatzes für verlustfreie Ver- und Entschlüsselung in $O(n)$ Laufzeit.</p>
-          </section>
+      <section id="sec-fisher-yates">
+        <h2><span class="h2-badge">TEIL 2</span> Fisher-Yates-Shuffle vs. fehlerhaftes naives Mischen</h2>
+        <p>Der Fisher-Yates-Algorithmus garantiert eine gleichmäßige Wahrscheinlichkeitsverteilung ($P = \\frac{1}{N!}$) aller Permutationen, während naive Vertauschungsschleifen statistische Häufungen erzeugen.</p>
+      </section>
 
-          <section id="sec-oop">
-            <h2><span class="h2-badge">TEIL 3</span> Objektorientierte Simulations-Engine (Pokémon)</h2>
-            <p>OOP-Klassenhierarchien mit Polymorphie und rundenbasierten Zustandsübergängen.</p>
-          </section>
+      <section id="sec-cryptanalysis">
+        <h2><span class="h2-badge">TEIL 3</span> Kryptoanalyse & Schwachstellen: Frequenzanalyse-Mechanik</h2>
+        <p>Monoalphabetische Chiffren erhalten die Buchstabenhäufigkeit natürlicher Sprachen (z.B. 'e' mit 12,7% im Englischen) und können trotz riesigen Schlüsselraums über Frequenzanalysen schnell gebrochen werden.</p>
+      </section>
 
-          <section id="sec-clock">
-            <h2><span class="h2-badge">TEIL 4</span> Event-gesteuerte Echtzeit-Desktop-Uhr</h2>
-            <p>Präzise nicht-blockierende Zeitanzeige mittels <code>root.after()</code>-Event-Loop.</p>
-          </section>
+      <section id="sec-oop-engine">
+        <h2><span class="h2-badge">TEIL 4</span> Objektorientierte Game-Engine & O(1)-Matrix-Lookup</h2>
+        <p>Kapselung von Zuständen und $O(1)$-Hashmap-Abfragen für Elementarschadens-Multiplikatoren.</p>
+      </section>
 
-          <section id="sec-testing">
-            <h2><span class="h2-badge">TEIL 5</span> Algorithmische Komplexität & Automatisierte Unit-Tests</h2>
-            <p>Unit-Tests sichern 100% Code-Integrität und Reversibilität aller Algorithmen.</p>
-          </section>
+      <section id="sec-clock-skew">
+        <h2><span class="h2-badge">TEIL 5</span> Event-gesteuerte Desktop-Uhr & Vermeidung von Taktdrift</h2>
+        <p>Synchronisation mit der Systemuhr über <code>root.after()</code> verhindert das Blockieren des Event-Loops und eliminiert kumulative Zeitschwankungen.</p>
+      </section>
+
+      <section id="sec-code-walk">
+        <h2><span class="h2-badge">TEIL 6</span> Kommentierte Python-Implementierungen & Test-Suite</h2>
+        <p>Vollständige Implementierung mit automatisierter <code>unittest</code>-Verifikation der Reversibilität.</p>
+      </section>
+
+      <section id="sec-best-practices">
+        <h2><span class="h2-badge">TEIL 7</span> Softwarearchitektur: PEP 8, Type Hints & Komplexität</h2>
+        <p>PEP-8-konformer Code mit Type Hints und linearer Zeitkomplexität $O(N)$ ohne externe Abhängigkeiten.</p>
+      </section>
           </div>
 
           <div class="sidebar-divider" style="margin: 3rem 0;"></div>

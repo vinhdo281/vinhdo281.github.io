@@ -166,8 +166,8 @@
             </span>
             <span class="article-meta-item">
               <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              <span class="lang-en">16 Min Read · Practical Control Engineering</span>
-              <span class="lang-de">16 Min Lesezeit · Praktische Regelungstechnik</span>
+              <span class="lang-en">22 Min Read · Advanced Control Theory & Embedded FreeRTOS</span>
+              <span class="lang-de">22 Min Lesezeit · Fortgeschrittene Regelungstechnik & FreeRTOS</span>
             </span>
             <span class="card-type">CONTROL // DUAL-LOOP PID // SIMULINK & ESP32</span>
           </div>
@@ -181,170 +181,256 @@
             <span class="lang-de">INHALTSVERZEICHNIS</span>
           </div>
           <ul class="article-toc-list">
-            <li><a href="#sec-problem"><span class="lang-en">1. Dynamic Modeling & Inverted Pendulum Physics</span><span class="lang-de">1. Dynamische Modellierung & Inverses-Pendel-Physik</span></a></li>\n            <li><a href="#sec-architecture"><span class="lang-en">2. Dual-Loop Cascade Control Architecture (500Hz / 50Hz)</span><span class="lang-de">2. Kaskadierte Zweikreis-Regelungsarchitektur (500Hz / 50Hz)</span></a></li>\n            <li><a href="#sec-simulink"><span class="lang-en">3. MATLAB & Simulink Model Implementation (Simulation_TWSBR.slx)</span><span class="lang-de">3. MATLAB & Simulink Modellierung (Simulation_TWSBR.slx)</span></a></li>\n            <li><a href="#sec-firmware"><span class="lang-en">4. ESP32 FreeRTOS Firmware & Sensor Fusion Implementation</span><span class="lang-de">4. ESP32 FreeRTOS Firmware & Sensorfusions-Implementierung</span></a></li>\n            <li><a href="#sec-tuning"><span class="lang-en">5. Systematic Tuning Protocol & Anti-Windup Strategy</span><span class="lang-de">5. Systematisches Einstellprotokoll & Anti-Windup-Strategie</span></a></li>\n            <li><a href="#sec-results"><span class="lang-en">6. Experimental Push-Recovery Verification & Benchmarks</span><span class="lang-de">6. Experimentelle Verifikation & Störgrößenkompensation</span></a></li>
+            <li><a href="#sec-physics"><span class="lang-en">1. Physics & Lagrangian Equations: Why is TWSBR Underactuated?</span><span class="lang-de">1. Physik & Lagrange-Gleichungen: Warum ist das System unteraktuiert?</span></a></li>\n            <li><a href="#sec-why-single-fails"><span class="lang-en">2. Theoretical Dilemma: Why Single-Loop PID Catastrophically Fails</span><span class="lang-de">2. Theoretisches Dilemma: Warum einkreisige PID-Regler versagen</span></a></li>\n            <li><a href="#sec-cascade-arch"><span class="lang-en">3. Cascade Architecture & Bandwidth Decoupling (500Hz vs 50Hz)</span><span class="lang-de">3. Kaskadenarchitektur & Bandbreitenentkopplung (500Hz vs 50Hz)</span></a></li>\n            <li><a href="#sec-simulink"><span class="lang-en">4. Detailed MATLAB / Simulink Nonlinear Plant Modeling</span><span class="lang-de">4. Detaillierte MATLAB / Simulink Modellierung</span></a></li>\n            <li><a href="#sec-firmware"><span class="lang-en">5. Line-by-Line ESP32 FreeRTOS Firmware Implementation</span><span class="lang-de">5. Zeilenweise Analyse der ESP32 FreeRTOS Firmware</span></a></li>\n            <li><a href="#sec-filter"><span class="lang-en">6. Complementary Filter Derivation: Why Alpha = 0.98?</span><span class="lang-de">6. Komplementärfilter-Herleitung: Warum Alpha = 0.98?</span></a></li>\n            <li><a href="#sec-tuning"><span class="lang-en">7. Systematic Gain Tuning Protocol & Anti-Windup Strategy</span><span class="lang-de">7. Systematisches Tuning-Protokoll & Anti-Windup-Strategie</span></a></li>\n            <li><a href="#sec-troubleshooting"><span class="lang-en">8. Engineering Diagnostics & Common Failure Modes</span><span class="lang-de">8. Technische Fehlerdiagnose & Häufige Ursachen</span></a></li>
           </ul>
         </div>
 
         <!-- ARTICLE BODY -->
         <div class="article-content">
           <div class="lang-en">
-            <section id="sec-problem">
-            <h2><span class="h2-badge">PART 1</span> Dynamic Modeling & Inverted Pendulum Physics</h2>
-            <p>A Two-Wheeled Self-Balancing Robot (TWSBR) is a nonlinear, underactuated, non-minimum phase mechatronic system. It possesses 3 degrees of freedom (chassis pitch angle $\theta$, wheel angular positions $\phi_L, \phi_R$, and heading yaw $\psi$), but actuation is provided solely by two DC brushless/stepper motors generating torques $\tau_L, \tau_R$.</p>
-            <p>Using the Euler-Lagrange equations of motion, the system can be linearized around the unstable vertical equilibrium point $(\theta = 0, \dot{\theta} = 0)$:</p>
-            <div class="code-terminal"><pre><code>% Linearized State-Space Formulation around theta = 0:
-% State vector: x = [position; velocity; pitch_angle; pitch_rate]^T
-% dx/dt = A*x + B*u
-% y     = C*x + D*u</code></pre></div>
-            <p>The total inertia matrix $M(q)$ couples the linear acceleration of the wheel base $\ddot{x}$ directly into the angular acceleration of the body $\ddot{\theta}$. When the chassis pitches forward ($+\theta$), the wheels must accelerate forward ($+\ddot{x}$) to generate a corrective inertial reaction torque restoring vertical balance.</p>
-            <div class="callout callout-info">
-              <strong>Core Insight:</strong> You cannot stabilize position without modulating pitch angle. Therefore, a single-loop PID controller fails because position error and pitch error require opposite control directions. The dual-loop cascade topology is mathematically essential.
-            </div>
-          </section>
+            <section id="sec-physics">
+        <h2><span class="h2-badge">PART 1</span> Physics & Lagrangian Equations: Why is TWSBR Underactuated?</h2>
+        <p>A Two-Wheeled Self-Balancing Robot (TWSBR) is a classic <strong>underactuated, non-minimum phase mechatronic system</strong>. Understanding the system's mathematics explains why conventional control fails.</p>
+        <p>The system possesses 3 mechanical degrees of freedom (chassis tilt angle $\\theta$, wheel angular displacement $\\phi$, and heading yaw $\\psi$), but only <strong>two actuators</strong> (DC brushed/brushless motors applying torques $\\tau_L, \\tau_R$). The rotational joint between the wheels and the chassis has no direct restoring actuator—it relies entirely on horizontal ground reaction forces generated by the wheels.</p>
+        
+        <p>Using the Euler-Lagrange formulation, the generalized coordinates are chosen as $q = [x, \\theta]^T$, where $x = R \\phi$ is the linear displacement of the wheel axle and $\\theta$ is the pitch angle from the vertical. The Lagrangian $L = T - V$ is defined by kinetic energy $T$ and potential energy $V$:</p>
+        
+        <p>$$T = \\frac{1}{2}(M + 2m)\\dot{x}^2 + M L \\dot{x}\\dot{\\theta}\\cos\\theta + \\frac{1}{2}(J_{\\text{chassis}} + M L^2)\\dot{\\theta}^2 + \\frac{1}{2} J_{\\text{wheel}}\\frac{\\dot{x}^2}{R^2}$$</p>
+        <p>$$V = M g L \\cos\\theta$$</p>
+        
+        <p>Applying the Euler-Lagrange equation $\\frac{d}{dt}\\left(\\frac{\\partial L}{\\partial \\dot{q}_i}\\right) - \\frac{\\partial L}{\\partial q_i} = Q_i$, the coupled nonlinear equations of motion are:</p>
+        
+        <p>$$(M + 2m + \\frac{2J_{\\text{wheel}}}{R^2})\\ddot{x} + M L \\ddot{\\theta}\\cos\\theta - M L \\dot{\\theta}^2 \\sin\\theta = \\frac{2\\tau}{R}$$</p>
+        <p>$$(J_{\\text{chassis}} + M L^2)\\ddot{\\theta} + M L \\ddot{x}\\cos\\theta - M g L \\sin\\theta = -2\\tau$$</p>
+        
+        <div class="callout callout-info">
+          <strong>Key Physical Insight:</strong> Notice the term $M L \\ddot{x}\\cos\\theta$ in the pitch equation. The only way to generate a torque that accelerates the chassis in the direction of vertical equilibrium ($\\ddot{\\theta} < 0$) is by accelerating the wheel base forward ($\\ddot{x} > 0$). Acceleration of the cart directly dictates the restoring torque of the pendulum.
+        </div>
+      </section>
 
-          <section id="sec-architecture">
-            <h2><span class="h2-badge">PART 2</span> Dual-Loop Cascade Control Architecture (500Hz / 50Hz)</h2>
-            <p>The control architecture decouples the dynamics into two distinct frequency regimes:</p>
-            <ul>
-              <li><strong>Fast Inner Loop (Attitude / Balance Loop - 500 Hz):</strong> Operates on pitch angle error $e_\theta = \theta_{\text{ref}} - \theta$ and pitch rate $\dot{\theta}$. Outputs motor voltage/PWM torque command $\tau$.</li>
-              <li><strong>Slow Outer Loop (Position / Velocity Loop - 50 Hz):</strong> Operates on cart linear displacement error $e_x = x_{\text{ref}} - x$ and linear velocity $\dot{x}$. Outputs the reference tilt angle $\theta_{\text{ref}}$ fed to the inner loop.</li>
-            </ul>
-            <div class="code-terminal"><pre><code>% Mathematical Equations:
-% Inner Loop: tau(t) = Kp_theta * (theta_ref - theta) + Kd_theta * (0 - theta_dot)
-% Outer Loop: theta_ref(t) = Kp_x * (x_ref - x) + Ki_x * integral(x_ref - x) + Kd_x * (0 - x_dot)
-% Saturation clamp: theta_ref = max(-12 deg, min(+12 deg, theta_ref))</code></pre></div>
-            <p>By enforcing a strict bandwidth separation (inner loop is $10\times$ faster than outer loop), the inner loop views $\theta_{\text{ref}}$ as a quasi-static setpoint, preventing destabilizing high-frequency resonance between wheels and chassis.</p>
-          </section>
+      <section id="sec-why-single-fails">
+        <h2><span class="h2-badge">PART 2</span> Theoretical Dilemma: Why Single-Loop PID Catastrophically Fails</h2>
+        <p>Many beginners attempt to control a self-balancing robot with a single PID controller that tries to regulate position error $e_x = x_{\\text{target}} - x$. This approach is doomed to fail due to <strong>non-minimum phase zero dynamics</strong>:</p>
+        
+        <ul>
+          <li><strong>The Conflict:</strong> Suppose the robot is at $x = -0.5\\text{m}$ and needs to move forward to $x = 0$. A single-loop position controller sees a positive error $e_x > 0$ and immediately applies forward motor torque ($\\tau > 0$).</li>
+          <li><strong>The Catastrophe:</strong> Forward torque drives the wheels forward ($+\\ddot{x}$). According to Newton's third law and our inertia coupling term, the bottom of the chassis accelerates forward faster than the center of mass, causing the chassis to tilt <em>backward</em> ($-\\theta$).</li>
+          <li><strong>The Inversion:</strong> Once tilted backward, gravity accelerates the robot backward, compounding the problem. To travel forward, an inverted pendulum must <strong>first pitch forward</strong> ($+\\theta$), allowing gravity to pull the center of mass forward, after which the wheels chase the center of mass.</li>
+        </ul>
 
-          <section id="sec-simulink">
-            <h2><span class="h2-badge">PART 3</span> MATLAB & Simulink Model Implementation (Simulation_TWSBR.slx)</h2>
-            <p>The nonlinear physics plant is implemented in <code>Simulation_TWSBR.slx</code>, incorporating realistic actuator constraints:</p>
-            <ul>
-              <li>Motor back-EMF voltage saturation ($\pm 12\text{V}$ H-bridge limits).</li>
-              <li>Coulomb & viscous friction coefficients at the wheel-ground contact interface.</li>
-              <li>Sensor noise injection (Gaussian white noise on accelerometer and gyroscope channels).</li>
-              <li>Actuator quantization and discrete-time sampling effects.</li>
-            </ul>
-            <div class="code-terminal"><pre><code>% MATLAB script to initialize parameters and execute simulation:
-% twsbr_params.m
-M_cart = 1.25;    % Chassis mass (kg)
-m_wheel = 0.15;   % Wheel mass (kg)
-R_wheel = 0.0325; % Wheel radius (m)
-L_com = 0.085;    % Height to center of mass (m)
-J_chassis = 0.012;% Pitch moment of inertia (kg*m^2)
+        <div class="callout callout-warning">
+          <strong>Conclusion:</strong> Position error and pitch error demand <em>opposite initial torque directions</em>. A single PID loop cannot resolve this dynamic contradiction. A cascade control structure is mathematically required to separate attitude stabilization from translational displacement.
+        </div>
+      </section>
 
-% Load model & run step response (1.0 meter commanded target)
-open_system('Simulation_TWSBR.slx');
-simOut = sim('Simulation_TWSBR', 'StopTime', '10.0');</code></pre></div>
-          </section>
+      <section id="sec-cascade-arch">
+        <h2><span class="h2-badge">PART 3</span> Cascade Architecture & Bandwidth Decoupling (500Hz vs 50Hz)</h2>
+        <p>The cascade control topology decomposes the problem hierarchically into two nested feedback loops running at distinctly decoupled frequencies:</p>
+        
+        <p>$$\\text{Outer Loop (Position/Velocity) } [50\\text{ Hz}] \\longrightarrow \\theta_{\\text{ref}} \\longrightarrow \\text{Inner Loop (Attitude Balance) } [500\\text{ Hz}] \\longrightarrow \\tau$$</p>
 
-          <section id="sec-firmware">
-            <h2><span class="h2-badge">PART 4</span> ESP32 FreeRTOS Firmware & Sensor Fusion Implementation</h2>
-            <p>The embedded implementation runs on a dual-core ESP32 micro-controller under FreeRTOS. An MPU6050 6-DOF IMU communicates via hardware I2C at 400kHz.</p>
-            <div class="code-terminal"><pre><code>// FreeRTOS Task Architecture:
-// Core 1: High-Priority Fast Control Task (Period: 2ms / 500Hz)
+        <h4>1. Fast Inner Loop (Attitude Stabilization - 500 Hz / $\\Delta t = 2\\text{ms}$):</h4>
+        <p>Governed by high-frequency IMU feedback. Its sole objective is to force pitch angle $\\theta$ to track a commanded reference angle $\\theta_{\\text{ref}}$:</p>
+        <p>$$\\tau(t) = K_p^\\theta (\\theta_{\\text{ref}} - \\theta) - K_d^\\theta \\dot{\\theta}$$</p>
+        <p><em>Why no integral term ($K_i^\\theta$) in the inner loop?</em> An integrator on pitch introduces phase lag ($90^\\circ$ phase penalty), which destabilizes marginally stable inverted systems. Steady-state pitch bias is instead handled by the outer loop.</p>
+
+        <h4>2. Slow Outer Loop (Position & Velocity Regulation - 50 Hz / $\\Delta t = 20\\text{ms}$):</h4>
+        <p>Governed by wheel optical encoder odometry. Compares target position $x_{\\text{ref}}$ against cart position $x$, outputting the required lean angle $\\theta_{\\text{ref}}$:</p>
+        <p>$$\\theta_{\\text{ref}}(t) = K_p^x (x_{\\text{ref}} - x) + K_i^x \\int (x_{\\text{ref}} - x) dt - K_d^x \\dot{x}$$</p>
+
+        <div class="callout callout-tip">
+          <strong>Why the $10\\times$ Bandwidth Ratio Matters:</strong> The inner loop bandwidth must be at least 5 to 10 times higher than the outer loop. This ensures the inner balance dynamics settle so quickly that the outer position loop can mathematically treat the inner loop as an instantaneous tilt actuator with transfer function $\\frac{\\theta(s)}{\\theta_{\\text{ref}}(s)} \\approx 1$.
+        </div>
+      </section>
+
+      <section id="sec-simulink">
+        <h2><span class="h2-badge">PART 4</span> Detailed MATLAB / Simulink Nonlinear Plant Modeling</h2>
+        <p>The Simulink model <code>Simulation_TWSBR.slx</code> contains complete non-linear dynamics, actuator saturation limits, and physical friction losses:</p>
+        
+        <div class="code-terminal"><pre><code>% Parameters definition script (init_twsbr.m)
+M   = 1.250;      % Chassis mass (kg)
+m   = 0.160;      % Single wheel mass (kg)
+R   = 0.033;      % Wheel radius (m)
+L   = 0.082;      % Distance from wheel axle to Center of Mass (m)
+J_c = 0.0125;     % Chassis pitch moment of inertia (kg*m^2)
+J_w = 0.00012;    % Wheel rotational inertia (kg*m^2)
+g   = 9.810;      % Gravitational acceleration (m/s^2)
+
+% Motor Electrical & Mechanical Constants
+Km  = 0.045;      % Motor torque constant (Nm/A)
+Ke  = 0.045;      % Back-EMF constant (V/(rad/s))
+Ra  = 3.200;      % Motor armature winding resistance (Ohms)
+Vmax= 12.0;       % H-bridge supply voltage limit (V)
+
+% Saturation clamp on reference tilt angle to prevent tip-over:
+theta_max_deg = 12.0; % Max allowable tilt command (degrees)</code></pre></div>
+        
+        <p><strong>Actuator Saturation Modeling:</strong> Real DC motors cannot deliver infinite torque. In Simulink, the motor voltage is clamped at $\\pm 12\\text{V}$. When the motor reaches maximum RPM, back-EMF ($V_{\\text{emf}} = K_e \\omega$) cancels the supply voltage, causing delivered torque $\\tau = \\frac{K_m (V - K_e \\omega)}{R_a}$ to drop to zero. Modeling this prevents unrealistically optimistic control gains.</p>
+      </section>
+
+      <section id="sec-firmware">
+        <h2><span class="h2-badge">PART 5</span> Line-by-Line ESP32 FreeRTOS Firmware Implementation</h2>
+        <p>The embedded C++ firmware leverages the ESP32 dual-core Xtensa LX6 architecture under FreeRTOS. Core 1 is pinned exclusively to high-priority hard real-time control, while Core 0 handles WiFi telemetry and Bluetooth user commands.</p>
+        
+        <div class="code-terminal"><pre><code>// ============================================================================
+// Core 1 Real-Time Balance Interrupt Task (Fixed 500 Hz / 2000 microsecond loop)
+// ============================================================================
 void BalanceTask(void *pvParameters) {
     TickType_t xLastWakeTime = xTaskGetTickCount();
-    const TickType_t xFrequency = pdMS_TO_TICKS(2);
-    
+    const TickType_t xFrequency = pdMS_TO_TICKS(2); // 2ms = 500 Hz
+
     for(;;) {
-        // 1. Read MPU6050 & apply Complementary Filter
-        float dt = 0.002f;
-        float gyro_rate = read_gyro_y();
-        float accel_angle = atan2f(read_accel_x(), read_accel_z()) * 57.29577f;
-        pitch_angle = 0.98f * (pitch_angle + gyro_rate * dt) + 0.02f * accel_angle;
-        
-        // 2. Compute Inner Loop Torque
-        float torque_pwm = Kp_pitch * (theta_ref - pitch_angle) - Kd_pitch * gyro_rate;
-        apply_motor_pwm(torque_pwm);
-        
+        // Step 1: Read raw IMU data via hardware I2C at 400kHz
+        int16_t ax_raw, ay_raw, az_raw;
+        int16_t gx_raw, gy_raw, gz_raw;
+        mpu.getMotion6(&ax_raw, &ay_raw, &az_raw, &gx_raw, &gy_raw, &gz_raw);
+
+        // Step 2: Convert to physical SI units (deg/s and rad)
+        float gyro_y_rate = (float)gy_raw / 131.0f; // Scale factor for +/- 250 deg/s range
+        float accel_angle = atan2f((float)ax_raw, (float)az_raw) * 57.2957795f; // Rad to Deg
+
+        // Step 3: Complementary Sensor Fusion Filter (Alpha = 0.98)
+        float dt = 0.002f; // 2 milliseconds
+        pitch_angle = 0.98f * (pitch_angle + gyro_y_rate * dt) + 0.02f * accel_angle;
+
+        // Step 4: Outer loop execution decimation (every 10 cycles = 50 Hz)
+        loop_counter++;
+        if (loop_counter >= 10) {
+            loop_counter = 0;
+            // Read quadrature wheel encoders
+            long enc_left = encoder_left.getCount();
+            long enc_right = encoder_right.getCount();
+            cart_position = ((enc_left + enc_right) * 0.5f) * METERS_PER_TICK;
+            cart_velocity = (cart_position - prev_cart_position) / 0.020f; // 50 Hz velocity
+            prev_cart_position = cart_position;
+
+            // Outer Position PID computation
+            float pos_error = target_position - cart_position;
+            pos_integral += pos_error * 0.020f;
+            // Anti-Windup Clamping on Position Integrator:
+            pos_integral = constrain(pos_integral, -0.3f, 0.3f);
+
+            // Compute commanded reference pitch angle
+            theta_ref = (Kp_pos * pos_error) + (Ki_pos * pos_integral) - (Kd_pos * cart_velocity);
+            // CRITICAL: Clamp commanded angle to +/- 12 degrees
+            theta_ref = constrain(theta_ref, -12.0f, +12.0f);
+        }
+
+        // Step 5: Fast Inner Attitude PID computation
+        float angle_error = theta_ref - pitch_angle;
+        float torque_output = (Kp_angle * angle_error) - (Kd_angle * gyro_y_rate);
+
+        // Step 6: Convert torque command to PWM with deadzone compensation
+        apply_motor_pwm(torque_output);
+
+        // Enforce strict deterministic real-time scheduling
         vTaskDelayUntil(&xLastWakeTime, xFrequency);
     }
 }</code></pre></div>
-          </section>
+      </section>
 
-          <section id="sec-tuning">
-            <h2><span class="h2-badge">PART 5</span> Systematic Tuning Protocol & Anti-Windup Strategy</h2>
-            <p>Tuning a cascade balance controller requires a disciplined, sequential approach:</p>
-            <ol>
-              <li><strong>Step 1 (Isolate Inner Loop):</strong> Set outer loop gains ($K_p^x, K_i^x, K_d^x$) to zero. Set $\theta_{\text{ref}} = 0$. Hold the robot upright and slowly increase $K_p^\theta$ until the robot resists tilt and starts oscillating mildly.</li>
-              <li><strong>Step 2 (Damp the Oscillation):</strong> Increase $K_d^\theta$ until the oscillation is critically damped and the robot stiffly maintains balance when disturbed manually.</li>
-              <li><strong>Step 3 (Engage Outer Velocity Loop):</strong> Enable $K_d^x$ to introduce wheel-speed damping, preventing the robot from running away across the table.</li>
-              <li><strong>Step 4 (Engage Position Loop with Clamp):</strong> Add $K_p^x$ to pull the robot back to origin $x = 0$. Strictly limit $\theta_{\text{ref}} \in [-12^\circ, +12^\circ]$ so a large position displacement never requests a pitch that causes wheel slippage or tipping over.</li>
-              <li><strong>Step 5 (Integral Action with Conditional Clamping):</strong> Introduce small $K_i^x$ only when $|e_x| < 0.2\text{m}$ to cancel steady-state drift without causing integrator windup during large maneuvers.</li>
-            </ol>
-          </section>
+      <section id="sec-filter">
+        <h2><span class="h2-badge">PART 6</span> Complementary Filter Derivation: Why Alpha = 0.98?</h2>
+        <p>Why do we choose $\\alpha = 0.98$ in $\\theta_t = 0.98(\\theta_{t-1} + \\dot{\\theta}_{\\text{gyro}}\\Delta t) + 0.02\\theta_{\\text{accel}}$? This is not an arbitrary guess—it is mathematically derived from the sensor noise crossover frequency:</p>
+        
+        <ul>
+          <li><strong>Accelerometer weakness:</strong> Measures true gravity vector when stationary, but is corrupted by high-frequency linear translational accelerations and motor vibrations ($> 5\\text{ Hz}$).</li>
+          <li><strong>Gyroscope weakness:</strong> Extremely responsive and immune to linear vibration, but subject to low-frequency DC bias drift ($< 0.5\\text{ Hz}$).</li>
+          <li><strong>Filter Time Constant Equation:</strong>
+            $$\\tau = \\frac{\\alpha \\cdot \\Delta t}{1 - \\alpha} \\iff \\alpha = \\frac{\\tau}{\\tau + \\Delta t}$$
+          </li>
+          <li><strong>Crossover Cutoff Frequency:</strong>
+            $$f_c = \\frac{1}{2\\pi \\tau}$$
+          </li>
+          <li>With sampling interval $\\Delta t = 0.002\\text{ s}$ and chosen time constant $\\tau \\approx 0.10\\text{ s}$ ($f_c \\approx 1.6\\text{ Hz}$):
+            $$\\alpha = \\frac{0.10}{0.10 + 0.002} = \\frac{0.10}{0.102} \\approx 0.9804$$
+          </li>
+        </ul>
+        <p>Thus, $\\alpha = 0.98$ guarantees that all signals above $1.6\\text{ Hz}$ are governed by clean rate gyroscope integration, while slow DC drift below $1.6\\text{ Hz}$ is continuously corrected by gravity accelerometer vectors.</p>
+      </section>
 
-          <section id="sec-results">
-            <h2><span class="h2-badge">PART 6</span> Experimental Push-Recovery Verification & Benchmarks</h2>
-            <p>The controller was verified against sudden impulsive lateral force perturbations in both Simulink and real-world physical hardware:</p>
-            <ul>
-              <li><strong>Impulse Disturbance:</strong> Instantaneous 20N horizontal push applied at chassis center of mass.</li>
-              <li><strong>Recovery Settling Time ($t_s$):</strong> Less than 1.25 seconds to return to vertical with zero overshoot oscillations.</li>
-              <li><strong>Stationary Drift:</strong> Cart position held within $\pm 0.005\text{m}$ indefinitely under ground-plane vibration.</li>
-            </ul>
-          </section>
+      <section id="sec-tuning">
+        <h2><span class="h2-badge">PART 7</span> Systematic Gain Tuning Protocol & Anti-Windup Strategy</h2>
+        <p>Tuning must follow an invariant, methodical sequence:</p>
+        
+        <ol>
+          <li><strong>Zero Everything Out:</strong> Set $K_p^x = 0, K_i^x = 0, K_d^x = 0, K_p^\\theta = 0, K_d^\\theta = 0$. Hold the robot by hand.</li>
+          <li><strong>Tune Inner $K_p^\\theta$ (Proportional Balance):</strong> Gradually raise $K_p^\\theta$. When disturbed, the wheels should immediately drive underneath the chassis to restore balance. Keep raising until the robot balances briefly by itself and begins a gentle, low-frequency oscillation.</li>
+          <li><strong>Tune Inner $K_d^\\theta$ (Derivative Damping):</strong> Slowly increase $K_d^\\theta$. This adds damping torque against rapid angular velocities ($\\dot{\\theta}$). The oscillation will vanish, and the robot will feel rigid and stiff when pushed manually.</li>
+          <li><strong>Tune Outer $K_d^x$ (Velocity Drag):</strong> Turn on outer velocity damping. This prevents the robot from drifting across the room; if it moves forward, $K_d^x \\dot{x}$ commands a backward pitch to slow down.</li>
+          <li><strong>Tune Outer $K_p^x$ & $K_i^x$ (Position Lock):</strong> Add $K_p^x$ to pull the robot back to its starting coordinate. Introduce small $K_i^x$ with <strong>strict integral clamping (Anti-Windup)</strong> to eliminate steady-state offsets caused by chassis weight imbalance.</li>
+        </ol>
+      </section>
+
+      <section id="sec-troubleshooting">
+        <h2><span class="h2-badge">PART 8</span> Engineering Diagnostics & Common Failure Modes</h2>
+        <div class="callout callout-warning">
+          <strong>Diagnostic Failure 1: Robot vigorously shakes / jitters at 50Hz+:</strong><br>
+          <em>Root Cause:</em> $K_d^\\theta$ gain is too high, or raw gyroscope noise is being amplified by differentiation. Solution: Lower $K_d^\\theta$ by 30% or add a 2nd-order low-pass filter on gyro readings.
+        </div>
+        <div class="callout callout-warning">
+          <strong>Diagnostic Failure 2: Robot slowly accelerates in one direction until falling:</strong><br>
+          <em>Root Cause:</em> Mechanical center of mass is offset from vertical zero, or accelerometer was not calibrated horizontally on a precision level table. Solution: Adjust software zero-point trim $\\theta_{\\text{offset}} = +1.2^\\circ$.
+        </div>
+        <div class="callout callout-tip">
+          <strong>Diagnostic Failure 3: Robot falls over when pushed firmly (Integrator Windup):</strong><br>
+          <em>Root Cause:</em> While pushed, position error accumulates in $pos\_integral$, demanding tilt angles $> 20^\\circ$ that exceed wheel traction limits. Solution: Enforce anti-windup clamping on $\\theta_{\\text{ref}} \\in [-12^\\circ, +12^\\circ]$ and freeze integration when error exceeds $0.2\\text{m}$.
+        </div>
+      </section>
           </div>
           <div class="lang-de">
-            <section id="sec-problem">
-            <h2><span class="h2-badge">TEIL 1</span> Dynamische Modellierung & Inverses-Pendel-Physik</h2>
-            <p>Ein zweirädriger Balancierroboter (TWSBR) ist ein nichtlineares, unteraktuiertes mechatronisches System. Es verfügt über 3 Freiheitsgrade (Kippwinkel $\theta$, Radpositionen $\phi_L, \phi_R$, Gierwinkel $\psi$), wird jedoch nur durch zwei Antriebsmotoren (Drehmomente $\tau_L, \tau_R$) angesteuert.</p>
-            <p>Über die Euler-Lagrange-Bewegungsgleichungen lässt sich das System um den instabilen vertikalen Gleichgewichtspunkt $(\theta = 0, \dot{\theta} = 0)$ linearisieren:</p>
-            <div class="code-terminal"><pre><code>% Lineare Zustandsraumdarstellung um theta = 0:
-% Zustandsvektor: x = [Position; Geschwindigkeit; Neigungswinkel; Winkelgeschwindigkeit]^T
-% dx/dt = A*x + B*u
-% y     = C*x + D*u</code></pre></div>
-            <p>Kippt das Chassis nach vorne ($+\theta$), müssen die Räder nach vorne beschleunigen ($+\ddot{x}$), um ein aufrichtendes Trägheitsmoment zu erzeugen.</p>
-            <div class="callout callout-info">
-              <strong>Zentrale Erkenntnis:</strong> Die Position kann nicht stabilisiert werden, ohne den Neigungswinkel anzupassen. Ein einkreisiger PID-Regler scheitert, weshalb die kaskadierte Zweikreis-Architektur mathematisch zwingend erforderlich ist.
-            </div>
-          </section>
+            <section id="sec-physics">
+        <h2><span class="h2-badge">TEIL 1</span> Physik & Lagrange-Gleichungen: Warum ist das System unteraktuiert?</h2>
+        <p>Ein zweirädriger Balancierroboter (TWSBR) ist ein <strong>unteraktuiertes mechatronisches System mit nicht-minimaler Phase</strong>. Es besitzt 3 mechanische Freiheitsgrade (Kippwinkel $\\theta$, Radwinkel $\\phi$, Gierwinkel $\\psi$), wird jedoch nur von <strong>zwei Motoren</strong> angetrieben. Das Kippgelenk zwischen Rädern und Chassis besitzt keinen eigenen Aktuator und muss über horizontale Radreaktionskräfte stabilisiert werden.</p>
+        <p>Über den Euler-Lagrange-Ansatz mit verallgemeinerten Koordinaten $q = [x, \\theta]^T$ ergeben sich die gekoppelten Bewegungsgleichungen:</p>
+        <p>$$(M + 2m + \\frac{2J_{\\text{wheel}}}{R^2})\\ddot{x} + M L \\ddot{\\theta}\\cos\\theta - M L \\dot{\\theta}^2 \\sin\\theta = \\frac{2\\tau}{R}$$</p>
+        <p>$$(J_{\\text{chassis}} + M L^2)\\ddot{\\theta} + M L \\ddot{x}\\cos\\theta - M g L \\sin\\theta = -2\\tau$$</p>
+        <div class="callout callout-info">
+          <strong>Physikalische Koppelung:</strong> Der Term $M L \\ddot{x}\\cos\\theta$ zeigt: Ein aufrichtendes Moment ($\\ddot{\\theta} < 0$) kann nur durch Beschleunigung der Radachse ($\\ddot{x} > 0$) erzeugt werden.
+        </div>
+      </section>
 
-          <section id="sec-architecture">
-            <h2><span class="h2-badge">TEIL 2</span> Kaskadierte Zweikreis-Regelungsarchitektur (500Hz / 50Hz)</h2>
-            <p>Die Architektur entkoppelt die Dynamik in zwei Frequenzbereiche:</p>
-            <ul>
-              <li><strong>Schneller Innenkreis (Neigungs-/Balancierkreis - 500 Hz):</strong> Verarbeitet Neigungswinkelfehler $e_\theta$ und Winkelgeschwindigkeit $\dot{\theta}$. Gibt PWM-/Drehmomentbefehle an die Motoren aus.</li>
-              <li><strong>Langsamer Außenkreis (Positions-/Geschwindigkeitskreis - 50 Hz):</strong> Berechnet aus dem Positionsfehler $e_x$ den Soll-Neigungswinkel $\theta_{\text{ref}}$ für den Innenkreis.</li>
-            </ul>
-            <div class="code-terminal"><pre><code>% Mathematische Gleichungen:
-% Innenkreis: tau(t) = Kp_theta * (theta_ref - theta) + Kd_theta * (0 - theta_dot)
-% Außenkreis: theta_ref(t) = Kp_x * (x_ref - x) + Ki_x * integral(x_ref - x) + Kd_x * (0 - x_dot)
-% Winkelbegrenzung: theta_ref = max(-12 deg, min(+12 deg, theta_ref))</code></pre></div>
-          </section>
+      <section id="sec-why-single-fails">
+        <h2><span class="h2-badge">TEIL 2</span> Theoretisches Dilemma: Warum einkreisige PID-Regler versagen</h2>
+        <p>Ein einkreisiger PID-Regler zur Positionsregelung $e_x = x_{\\text{soll}} - x > 0$ gibt sofort Vorwärtsmoment aus. Dadurch beschleunigt die Achse nach vorne und das Chassis kippt durch Trägheit <em>nach hinten</em> ($-\\theta$), wodurch der Roboter unweigerlich umstürzt. Um vorwärts zu fahren, muss der Roboter sich <strong>zuerst nach vorne neigen</strong> ($+\\theta$), damit die Schwerkraft ihn zieht. Positions- und Neigungsfehler fordern entgegengesetzte Stellgrößen – ein einzelner Regelkreis kann diesen Konflikt nicht lösen.</p>
+      </section>
 
-          <section id="sec-simulink">
-            <h2><span class="h2-badge">TEIL 3</span> MATLAB & Simulink Modellierung (Simulation_TWSBR.slx)</h2>
-            <p>Das nichtlineare Modell in <code>Simulation_TWSBR.slx</code> bildet alle physikalischen Effekte ab: Motorsättigung ($\pm 12\text{V}$), Reibungskoeffizienten am Bodenkontakt und Sensorrauschen des Beschleunigungsmessers und Gyroskops.</p>
-            <div class="code-terminal"><pre><code>open_system('Simulation_TWSBR.slx');
-simOut = sim('Simulation_TWSBR', 'StopTime', '10.0');</code></pre></div>
-          </section>
+      <section id="sec-cascade-arch">
+        <h2><span class="h2-badge">TEIL 3</span> Kaskadenarchitektur & Bandbreitenentkopplung (500Hz vs 50Hz)</h2>
+        <p>Die Kaskadenregelung trennt die Dynamik strikt in zwei Frequenzen:</p>
+        <ul>
+          <li><strong>Schneller Innenkreis (500 Hz / $\\Delta t = 2\\text{ms}$):</strong> Stabilisiert den Neigungswinkel $\\theta$ auf den Sollwinkel $\\theta_{\\text{ref}}$: $\\tau = K_p^\\theta (\\theta_{\\text{ref}} - \\theta) - K_d^\\theta \\dot{\\theta}$.</li>
+          <li><strong>Langsamer Außenkreis (50 Hz / $\\Delta t = 20\\text{ms}$):</strong> Berechnet aus der Positionsabweichung den erforderlichen Soll-Neigungswinkel $\\theta_{\\text{ref}} = K_p^x (x_{\\text{ref}} - x) + K_i^x \\int e_x dt - K_d^x \\dot{x}$.</li>
+        </ul>
+        <div class="callout callout-tip">
+          <strong>Bandbreitenverhältnis 10:1:</strong> Da der Innenkreis zehnmal schneller reagiert, sieht der Außenkreis die Neigungsregelung als nahezu verzögerungsfreien Stellantrieb.
+        </div>
+      </section>
 
-          <section id="sec-firmware">
-            <h2><span class="h2-badge">TEIL 4</span> ESP32 FreeRTOS Firmware & Sensorfusions-Implementierung</h2>
-            <p>Auf dem ESP32 läuft die Regelung im Dual-Core-Betrieb: Core 1 führt den zeitkritischen 500Hz-Regeltask aus, während Core 0 Telemetrie und Fernsteuerung übernimmt.</p>
-            <div class="code-terminal"><pre><code>// 500Hz Regelungs-Task auf Core 1 via FreeRTOS
-float dt = 0.002f;
-pitch_angle = 0.98f * (pitch_angle + gyro_rate * dt) + 0.02f * accel_angle;
-float torque_pwm = Kp_pitch * (theta_ref - pitch_angle) - Kd_pitch * gyro_rate;
-apply_motor_pwm(torque_pwm);</code></pre></div>
-          </section>
+      <section id="sec-simulink">
+        <h2><span class="h2-badge">TEIL 4</span> Detaillierte MATLAB / Simulink Modellierung</h2>
+        <p>Das Modell <code>Simulation_TWSBR.slx</code> bildet Motorsättigung ($\pm 12\\text{V}$), Gegeninduktion ($V_{\\text{emf}} = K_e \\omega$) sowie Roll- und Haftreibung exakt ab.</p>
+      </section>
 
-          <section id="sec-tuning">
-            <h2><span class="h2-badge">TEIL 5</span> Systematisches Einstellprotokoll & Anti-Windup-Strategie</h2>
-            <ol>
-              <li><strong>Schritt 1 (Innenkreis isolieren):</strong> Außenkreis deaktivieren. $K_p^\theta$ schrittweise erhöhen, bis das Chassis auf Stöße reagiert.</li>
-              <li><strong>Schritt 2 (Dämpfung):</strong> $K_d^\theta$ anheben, um Schwingungen aperiodisch zu dämpfen.</li>
-              <li><strong>Schritt 3 (Geschwindigkeitsdämpfung):</strong> $K_d^x$ im Außenkreis aktivieren, um Wegdriften zu verhindern.</li>
-              <li><strong>Schritt 4 (Positionsrückführung):</strong> $K_p^x$ mit harter Begrenzung auf $\theta_{\text{ref}} \in [-12^\circ, +12^\circ]$ hinzuschalten.</li>
-              <li><strong>Schritt 5 (I-Anteil mit Anti-Windup):</strong> $K_i^x$ nur bei kleinen Abweichungen aktivieren.</li>
-            </ol>
-          </section>
+      <section id="sec-firmware">
+        <h2><span class="h2-badge">TEIL 5</span> Zeilenweise Analyse der ESP32 FreeRTOS Firmware</h2>
+        <p>Core 1 des ESP32 führt den zeitkritischen 500Hz-Task aus (I2C-Abfrage, Komplementärfilter, PID-Berechnung), während Core 0 die Telemetrie bedient.</p>
+      </section>
 
-          <section id="sec-results">
-            <h2><span class="h2-badge">TEIL 6</span> Experimentelle Verifikation & Störgrößenkompensation</h2>
-            <p>In Simulation und realem Test hält der Roboter seitlichen Stößen von bis zu 20N stand und schwingt in unter 1,25 Sekunden ohne Überschwingen wieder stabil ein.</p>
-          </section>
+      <section id="sec-filter">
+        <h2><span class="h2-badge">TEIL 6</span> Komplementärfilter-Herleitung: Warum Alpha = 0.98?</h2>
+        <p>Aus der Filterzeitkonstante $\\tau = \\frac{\\alpha \\Delta t}{1 - \\alpha}$ folgt bei $\\Delta t = 2\\text{ms}$ und $\\tau = 0.1\\text{s}$ exakt $\\alpha = \\frac{0.1}{0.102} \\approx 0.98$. Frequenzen oberhalb von 1,6 Hz werden vom rauscharmen Gyroskop getragen, während die langsame Drift unterhalb von 1,6 Hz durch den Schwerkraftvektor des Beschleunigungsmessers korrigiert wird.</p>
+      </section>
+
+      <section id="sec-tuning">
+        <h2><span class="h2-badge">TEIL 7</span> Systematisches Tuning-Protokoll & Anti-Windup-Strategie</h2>
+        <p>Reihenfolge: 1. $K_p^\\theta$ erhöhen bis zum leichten Schwingen. 2. $K_d^\\theta$ erhöhen für aperiodische Dämpfung. 3. $K_d^x$ für Geschwindigkeitsdämpfung. 4. $K_p^x$ mit harter Begrenzung $\\theta_{\\text{ref}} \\in [-12^\\circ, +12^\\circ]$ gegen Umkippen.</p>
+      </section>
+
+      <section id="sec-troubleshooting">
+        <h2><span class="h2-badge">TEIL 8</span> Technische Fehlerdiagnose & Häufige Ursachen</h2>
+        <p>Hochfrequentes Zittern deutet auf zu hohes $K_d^\\theta$ hin. Kontinuierliches Wegdriften erfordert einen mechanischen Nullpunkt-Offset-Abgleich $\\theta_{\\text{offset}}$.</p>
+      </section>
           </div>
 
           <div class="sidebar-divider" style="margin: 3rem 0;"></div>
