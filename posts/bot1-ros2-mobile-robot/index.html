@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>End-to-End Guide: Building a ROS 2 Differential Drive Mobile Robot from Scratch in Gazebo, ros2_control & Nav2 · Cyber-Tech Portfolio</title>
+  <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
+  <link rel="stylesheet" href="../../assets/css/style.css?v=3.5">
+  <!-- KaTeX CSS & JS for Math Equations -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('site_lang');
+        if (saved !== 'de') {
+          localStorage.setItem('site_lang', 'en');
+          document.documentElement.setAttribute('lang', 'en');
+          if (document.body) document.body.setAttribute('data-lang', 'en');
+        } else {
+          document.documentElement.setAttribute('lang', 'de');
+          if (document.body) document.body.setAttribute('data-lang', 'de');
+        }
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body data-lang="en">
+
+  <!-- TOP MASTHEAD -->
+  <header class="masthead">
+    <div class="masthead__container">
+      <div class="masthead__brand">
+        <svg class="brand-icon" viewBox="0 0 32 32" fill="none">
+          <circle cx="16" cy="16" r="11" stroke="#00f2fe" stroke-width="2" stroke-dasharray="4 2"/>
+          <polygon points="16,8 23,20 9,20" stroke="#38bdf8" stroke-width="1.5" fill="rgba(56, 189, 248, 0.2)"/>
+          <circle cx="16" cy="16" r="2.5" fill="#00f2fe"/>
+        </svg>
+        <span class="lang-en">TECHNICAL ARTICLES</span>
+        <span class="lang-de">TECHNISCHE ARTIKEL</span>
+        <span class="brand-badge">BLOG</span>
+      </div>
+
+      <nav class="masthead__nav">
+        <ul class="nav-links">
+          <li><a href="../../index.html"><span class="lang-en">Home</span><span class="lang-de">Startseite</span></a></li>
+          <li><a href="../../research.html"><span class="lang-en">Research</span><span class="lang-de">Forschung</span></a></li>
+          <li><a href="../../portfolio.html"><span class="lang-en">Projects</span><span class="lang-de">Projekte</span></a></li>
+          <li><a href="../../blog.html" class="active"><span class="lang-en">Blog</span><span class="lang-de">Blog</span></a></li>
+          <li><a href="../../cv.html"><span>CV</span></a></li>
+        </ul>
+
+        <div class="masthead__tools">
+          <button id="site-search-btn" class="tool-btn" title="Search (Ctrl+K)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span class="kbd-shortcut">Ctrl K</span>
+          </button>
+          <!-- Language selector dropdown -->
+          <div class="lang-dropdown-wrapper">
+            <button id="lang-toggle-btn" class="tool-btn lang-tool-btn" title="Select language / Sprache wählen" aria-expanded="false">
+              <span id="lang-current-label">EN</span>
+              <svg class="lang-caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="lang-dropdown-menu" id="lang-dropdown-menu">
+              <button type="button" class="lang-dropdown-item active" data-lang-val="en">
+                <span class="lang-flag">🇬🇧</span>
+                <span class="lang-item-name">English</span>
+                <span class="lang-item-badge">EN</span>
+              </button>
+              <button type="button" class="lang-dropdown-item" data-lang-val="de">
+                <span class="lang-flag">🇩🇪</span>
+                <span class="lang-item-name">Deutsch</span>
+                <span class="lang-item-badge">DE</span>
+              </button>
+            </div>
+          </div>
+          <button id="theme-toggle-btn" class="tool-btn" title="Toggle light/dark mode">
+            <span id="theme-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            </span>
+          </button>
+          <button id="mobile-menu-btn" class="tool-btn mobile-menu-btn" aria-label="Menu">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- APP CONTAINER -->
+  <div class="app-container">
+    
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="profile-card">
+        <div class="avatar-wrapper">
+          <div class="avatar-pulse-ring"></div>
+          <img src="../../assets/images/1.jpg" alt="Avatar" class="avatar-img">
+        </div>
+        <div class="author-info">
+          <h2 class="author-name">
+            <span class="lang-en">Đỗ Hiểu Vinh</span>
+            <span class="lang-de">Đỗ Hiểu Vinh</span>
+          </h2>
+          <div class="author-handle">@vinhdo281 · HUST</div>
+          <div class="author-status">
+            <span class="status-dot"></span>
+            <span class="lang-en">POSTS: 10</span>
+            <span class="lang-de">BEITRÄGE: 10</span>
+          </div>
+        </div>
+        <div class="sidebar-divider"></div>
+
+        <div class="contact-location">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span><span class="lang-en">Hanoi, Vietnam</span><span class="lang-de">Hanoi, Vietnam</span></span>
+        </div>
+
+        <div class="social-icons-dock">
+          <a href="https://github.com/vinhdo281" target="_blank" rel="noopener" class="tech-icon-btn" data-tooltip="GitHub" aria-label="GitHub">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/in/vinhdo281" target="_blank" rel="noopener" class="tech-icon-btn" data-tooltip="LinkedIn" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="https://www.facebook.com/AlexDo281" target="_blank" rel="noopener" class="tech-icon-btn" data-tooltip="Facebook" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="mailto:dohieuvinh@gmail.com" class="tech-icon-btn" data-tooltip="Email" aria-label="Email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN ARTICLE CONTENT -->
+    <main class="main-content">
+      <div class="article-container">
+
+        <!-- ARTICLE HERO -->
+        <article class="article-hero">
+          <nav class="article-breadcrumb">
+            <a href="../../index.html"><span class="lang-en">Home</span><span class="lang-de">Startseite</span></a>
+            <span>/</span>
+            <a href="../../blog.html"><span class="lang-en">Blog</span><span class="lang-de">Blog</span></a>
+            <span>/</span>
+            <span><span class="lang-en">ROS 2 Mobile Robot Stack</span><span class="lang-de">ROS 2 Mobiler Roboter Stack</span></span>
+          </nav>
+          
+          <h1 class="article-title">
+            <span class="lang-en">End-to-End Guide: Building a ROS 2 Differential Drive Mobile Robot from Scratch in Gazebo, ros2_control & Nav2</span>
+            <span class="lang-de">End-to-End-Leitfaden: Bau eines ROS 2 Differential-Drive mobilen Roboters von Grund auf in Gazebo, ros2_control & Nav2</span>
+          </h1>
+          
+          <div class="article-meta">
+            <span class="article-meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <span class="lang-en">October 20, 2025</span>
+              <span class="lang-de">20. Oktober 2025</span>
+            </span>
+            <span class="article-meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span class="lang-en">Mechatronics Team · HUST</span>
+              <span class="lang-de">Mechatronik-Team · HUST</span>
+            </span>
+            <span class="article-meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span class="lang-en">20 Min Read · Robotics Simulation Stack</span>
+              <span class="lang-de">20 Min Lesezeit · Robotik-Simulations-Stack</span>
+            </span>
+            <span class="card-type">ROS 2 HUMBLE // GAZEBO // NAV2 SLAM</span>
+          </div>
+        </article>
+
+        <!-- TABLE OF CONTENTS -->
+        <div class="article-toc">
+          <div class="article-toc-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            <span class="lang-en">TABLE OF CONTENTS</span>
+            <span class="lang-de">INHALTSVERZEICHNIS</span>
+          </div>
+          <ul class="article-toc-list">
+            <li><a href="#sec-overview"><span class="lang-en">1. ROS 2 Simulation Stack Architecture</span><span class="lang-de">1. ROS 2 Simulations-Architektur</span></a></li>\n            <li><a href="#sec-urdf"><span class="lang-en">2. Modular URDF / Xacro Robot Kinematics & Inertia</span><span class="lang-de">2. Modulare URDF / Xacro Roboterdynamik & Trägheit</span></a></li>\n            <li><a href="#sec-ros2-control"><span class="lang-en">3. Gazebo Physics & ros2_control Plugin Configuration</span><span class="lang-de">3. Gazebo Physik & ros2_control Plugin Konfiguration</span></a></li>\n            <li><a href="#sec-slam"><span class="lang-en">4. 2D LiDAR SLAM with SLAM Toolbox</span><span class="lang-de">4. 2D LiDAR SLAM mit der SLAM Toolbox</span></a></li>\n            <li><a href="#sec-nav2"><span class="lang-en">5. Autonomous Navigation & Obstacle Avoidance via Nav2</span><span class="lang-de">5. Autonome Navigation & Hindernisvermeidung mit Nav2</span></a></li>\n            <li><a href="#sec-execution"><span class="lang-en">6. Step-by-Step Terminal Execution & Verification</span><span class="lang-de">6. Schritt-für-Schritt Ausführung & Verifikation</span></a></li>
+          </ul>
+        </div>
+
+        <!-- ARTICLE BODY -->
+        <div class="article-content">
+          <div class="lang-en">
+            <section id="sec-overview">
+            <h2><span class="h2-badge">PART 1</span> ROS 2 Simulation Stack Architecture</h2>
+            <p>Deploying autonomous mobile robots requires a seamless pipeline connecting geometric modeling, physics dynamics, sensor simulation, mapping, and motion planning. This project implements a production-grade ROS 2 Humble/Iron simulation stack for a differential drive robot named <code>bot1</code>.</p>
+            <p>The package isolates hardware abstraction via <code>ros2_control</code>, allowing identical ROS 2 nodes, navigation action servers, and controllers to transition from Gazebo simulation to real microcontroller hardware with zero code modifications.</p>
+          </section>
+
+          <section id="sec-urdf">
+            <h2><span class="h2-badge">PART 2</span> Modular URDF / Xacro Robot Kinematics & Inertia</h2>
+            <p>The robot model is composed using modular Xacro macros, separating visual meshes, collision primitives, and accurate physics inertial matrices:</p>
+            <div class="code-terminal"><pre><code><!-- Inertial macro snippet for solid cylinder wheel -->
+<xacro:macro name="inertial_cylinder" params="mass length radius *origin">
+  <inertial>
+    <xacro:insert_block name="origin"/>
+    <mass value="${mass}"/>
+    <inertia ixx="${(1/12) * mass * (3*radius*radius + length*length)}" ixy="0.0" ixz="0.0"
+             iyy="${(1/12) * mass * (3*radius*radius + length*length)}" iyz="0.0"
+             izz="${(1/2) * mass * (radius*radius)}" />
+  </inertial>
+</xacro:macro></code></pre></div>
+            <p>The differential kinematics relate left and right wheel angular speeds $(\omega_L, \omega_R)$ to the robot linear velocity $v$ and yaw rate $\omega$:</p>
+            <div class="code-terminal"><pre><code>% Kinematic Equations:
+% v     = (R / 2) * (omega_R + omega_L)
+% omega = (R / W) * (omega_R - omega_L)
+% where R = wheel radius, W = track width distance</code></pre></div>
+          </section>
+
+          <section id="sec-ros2-control">
+            <h2><span class="h2-badge">PART 3</span> Gazebo Physics & ros2_control Plugin Configuration</h2>
+            <p>We configure <code>diff_drive_controller</code> in <code>my_controllers.yaml</code>, managing velocity command topics (<code>/cmd_vel</code>) and publishing odometry transforms (<code>odom -> base_link</code>) at 50Hz:</p>
+            <div class="code-terminal"><pre><code>controller_manager:
+  ros__parameters:
+    update_rate: 50
+    diff_cont:
+      type: diff_drive_controller/DiffDriveController
+    joint_broad:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+diff_cont:
+  ros__parameters:
+    left_wheel_names: ["left_wheel_joint"]
+    right_wheel_names: ["right_wheel_joint"]
+    wheel_separation: 0.297
+    wheel_radius: 0.033
+    use_stamped_vel: false
+    publish_rate: 50.0
+    open_loop: false</code></pre></div>
+          </section>
+
+          <section id="sec-slam">
+            <h2><span class="h2-badge">PART 4</span> 2D LiDAR SLAM with SLAM Toolbox</h2>
+            <p>A planar 2D LiDAR sensor simulated in Gazebo publishes 360-degree laser scan rays on <code>/scan</code> at 30Hz. We use <code>slam_toolbox</code> in synchronous mapping mode to build high-accuracy 2D occupancy grid maps without odometry drift.</p>
+            <div class="code-terminal"><pre><code># Launch SLAM mapping session:
+ros2 launch slam_toolbox online_sync_launch.py slam_params_file:=./src/bot1/config/mapper_params_online_sync.yaml use_sim_time:=true</code></pre></div>
+          </section>
+
+          <section id="sec-nav2">
+            <h2><span class="h2-badge">PART 5</span> Autonomous Navigation & Obstacle Avoidance via Nav2</h2>
+            <p>Once the map is generated, the Nav2 stack is engaged. Nav2 coordinates global path planning (NavFn Dijkstra/A*), local obstacle avoidance (DWB local planner with inflation costmaps), and recovery behaviors (spinning in place or backing up when trapped).</p>
+          </section>
+
+          <section id="sec-execution">
+            <h2><span class="h2-badge">PART 6</span> Step-by-Step Terminal Execution & Verification</h2>
+            <p>Follow these steps to launch the complete simulation:</p>
+            <div class="code-terminal"><pre><code># Terminal 1: Build & Launch Gazebo World with bot1
+cd ~/ros2_ws
+colcon build --symlink-install
+source install/setup.bash
+ros2 launch bot1 launch_sim.launch.py world:=./src/bot1/worlds/obstacles.world
+
+# Terminal 2: Launch SLAM Toolbox
+ros2 launch slam_toolbox online_sync_launch.py use_sim_time:=true
+
+# Terminal 3: Teleoperate with keyboard
+ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r /cmd_vel:=/diff_cont/cmd_vel_unstamped
+
+# Terminal 4: Save generated 2D map
+ros2 run nav2_map_server map_saver_cli -f ~/ros2_ws/src/bot1/maps/my_lab_map</code></pre></div>
+          </section>
+          </div>
+          <div class="lang-de">
+            <section id="sec-overview">
+            <h2><span class="h2-badge">TEIL 1</span> ROS 2 Simulations-Architektur</h2>
+            <p>Dieser Leitfaden beschreibt den Aufbau eines vollständigen ROS 2 Humble/Iron Simulations-Stacks für einen zweirädrigen mobilen Roboter (Differential Drive) in Gazebo mit <code>ros2_control</code>, 2D-LiDAR und Nav2.</p>
+          </section>
+
+          <section id="sec-urdf">
+            <h2><span class="h2-badge">TEIL 2</span> Modulare URDF / Xacro Roboterdynamik & Trägheit</h2>
+            <p>Das Robotermodell verwendet modulare Xacro-Makros zur exakten Berechnung von Kollisionskörpern und Trägheitstensoren für Räder, Stützrad und Chassis.</p>
+            <div class="code-terminal"><pre><code><!-- Differenzielle Kinematik -->
+v     = (R / 2) * (omega_R + omega_L)
+omega = (R / W) * (omega_R - omega_L)</code></pre></div>
+          </section>
+
+          <section id="sec-ros2-control">
+            <h2><span class="h2-badge">TEIL 3</span> Gazebo Physik & ros2_control Plugin Konfiguration</h2>
+            <p>Der <code>diff_drive_controller</code> empfängt <code>/cmd_vel</code>-Nachrichten und steuert die Radgelenke im 50Hz-Takt an, während er Odometriedaten an den TF-Tree übergibt.</p>
+          </section>
+
+          <section id="sec-slam">
+            <h2><span class="h2-badge">TEIL 4</span> 2D LiDAR SLAM mit der SLAM Toolbox</h2>
+            <p>Über die <code>slam_toolbox</code> wird eine 2D-Belegungsgitterkarte (Occupancy Grid) in Echtzeit erzeugt.</p>
+            <div class="code-terminal"><pre><code>ros2 launch slam_toolbox online_sync_launch.py use_sim_time:=true</code></pre></div>
+          </section>
+
+          <section id="sec-nav2">
+            <h2><span class="h2-badge">TEIL 5</span> Autonome Navigation & Hindernisvermeidung mit Nav2</h2>
+            <p>Nav2 berechnet globale Pfade und weicht dynamischen Hindernissen mittels DWB Local Planner und 2D-Costmaps zuverlässig aus.</p>
+          </section>
+
+          <section id="sec-execution">
+            <h2><span class="h2-badge">TEIL 6</span> Schritt-für-Schritt Ausführung & Verifikation</h2>
+            <div class="code-terminal"><pre><code># 1. Gazebo Simulation starten:
+ros2 launch bot1 launch_sim.launch.py world:=./src/bot1/worlds/obstacles.world
+# 2. SLAM & RViz2 starten:
+ros2 launch slam_toolbox online_sync_launch.py use_sim_time:=true
+# 3. Teleoperation:
+ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r /cmd_vel:=/diff_cont/cmd_vel_unstamped</code></pre></div>
+          </section>
+          </div>
+
+          <div class="sidebar-divider" style="margin: 3rem 0;"></div>
+
+          <div style="text-align: center; padding: 1.5rem; background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border-color);">
+            <h3 style="margin-top: 0; color: var(--accent-cyan);">
+              <span class="lang-en">Explore the Code & Implementation</span>
+              <span class="lang-de">Quellcode & Implementierung erkunden</span>
+            </h3>
+            <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.25rem;">
+              <span class="lang-en">The full source code, simulation configs, and verified test benches are open-source on GitHub.</span>
+              <span class="lang-de">Der vollständige Quellcode, Simulationsmodelle und verifizierte Testfälle sind Open Source auf GitHub verfügbar.</span>
+            </p>
+            <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+              <a href="../../blog.html" class="btn-tech btn-tech-primary">
+                <span class="lang-en">← Back to Blog List</span>
+                <span class="lang-de">← Zurück zur Blogliste</span>
+              </a>
+              <a href="../../portfolio.html" class="btn-tech">
+                <span class="lang-en">View in Portfolio</span>
+                <span class="lang-de">Im Portfolio ansehen</span>
+              </a>
+              <a href="https://github.com/vinhdo281/bot1" target="_blank" rel="noopener" class="btn-tech">
+                <span class="lang-en">Visit GitHub Repository</span>
+                <span class="lang-de">GitHub Repository besuchen</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- SEARCH MODAL -->
+  <div id="search-modal-backdrop" class="search-modal-backdrop">
+    <div class="search-modal">
+      <div class="search-input-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="search-input" class="search-input" placeholder="Type to search (Ctrl+K)..." autocomplete="off">
+        <span class="kbd-shortcut">ESC</span>
+      </div>
+      <div id="search-results" class="search-results"></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div>&copy; 2026 · Powered by GitHub Pages · Cyber-Tech Portfolio · Vinh Do (HUST)</div>
+  </footer>
+
+  <script src="../../assets/js/search-data.js?v=3.5"></script>
+  <script src="../../assets/js/main.js?v=3.5"></script>
+</body>
+</html>

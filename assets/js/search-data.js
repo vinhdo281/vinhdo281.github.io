@@ -90,5 +90,61 @@ const SEARCH_DATA = [
     category: "Blog",
     url: "posts/fuzzy-inverted-pendulum/index.html",
     keywords: "fuzzy logic fuzzy regler inverses pendel inverted pendulum simscape multibody smimport mamdani 16 regeln xml simulink solidworks cart pole"
+  },
+  {
+    title_en: "Engineering Guide: Dual-Loop Cascade PID Controller for Two-Wheeled Self-Balancing Robot",
+    title_de: "Technischer Leitfaden: Kaskadierter Zweikreis-PID-Regler für Zweirad-Balancierroboter",
+    category: "Blog",
+    url: "posts/cascade-pid-twsbr/index.html",
+    keywords: "cascade pid self balancing robot twsbr simulink matlab esp32 freertos inner loop outer loop tuning protocol push recovery kaskadierter pid"
+  },
+  {
+    title_en: "End-to-End Guide: ROS 2 Mobile Robot Simulation Stack in Gazebo, ros2_control & Nav2",
+    title_de: "End-to-End-Leitfaden: ROS 2 Mobiler Roboter Simulations-Stack in Gazebo, ros2_control & Nav2",
+    category: "Blog",
+    url: "posts/bot1-ros2-mobile-robot/index.html",
+    keywords: "ros2 humble gazebo bot1 urdf xacro diff_drive_controller slam toolbox nav2 costmaps autonomous navigation"
+  },
+  {
+    title_en: "Computer Vision Guide: Highway Vehicle Detection, SORT Tracking & Virtual Line Counting",
+    title_de: "Computer Vision Leitfaden: Fahrzeugerkennung, SORT-Tracking & Zählung an virtuellen Linien",
+    category: "Blog",
+    url: "posts/carcounter-yolo-sort/index.html",
+    keywords: "yolo sort tracker vehicle counter highway traffic kalman filter opencv deep learning fahrzeugzähler autobahn"
+  },
+  {
+    title_en: "Touchless HCI Guide: Building a Hand Gesture Volume Controller with MediaPipe & PyCaw",
+    title_de: "Berührungslose HCI-Anleitung: Handgesten-Lautstärkeregelung mit MediaPipe & PyCaw",
+    category: "Blog",
+    url: "posts/touchless-hand-volume-control/index.html",
+    keywords: "touchless volume hand control mediapipe pycaw opencv hci audio com api gestures lautstärke gestensteuerung"
+  },
+  {
+    title_en: "Step-by-Step Tutorial: Real-Time Multi-Hand Finger Counter & Landmark Estimation",
+    title_de: "Schritt-für-Schritt-Anleitung: Echtzeit-Fingerzählung & Landmarken-Schätzung für mehrere Hände",
+    category: "Blog",
+    url: "posts/realtime-finger-counter-mediapipe/index.html",
+    keywords: "finger counter mediapipe hands opencv real time gesture recognition tip pip joints fingerzähler echtzeit"
+  },
+  {
+    title_en: "Practical Machine Learning: Classical Digital Image Processing vs Convolutional Neural Networks",
+    title_de: "Praktisches Machine Learning: Klassische digitale Bildverarbeitung vs. Convolutional Neural Networks",
+    category: "Blog",
+    url: "posts/dip-cnn-classification/index.html",
+    keywords: "dip cnn pytorch opencv canny sobel edge detection convolution neural network image processing bildverarbeitung"
+  },
+  {
+    title_en: "Desktop Engineering Guide: Weather Telemetry Desktop App with Python & OpenWeatherMap API",
+    title_de: "Desktop-Entwicklungsleitfaden: Wetter-Telemetrie Desktop-App mit Python & OpenWeatherMap API",
+    category: "Blog",
+    url: "posts/weather-telemetry-desktop-app/index.html",
+    keywords: "weather desktop app openweathermap rest api python threading pyinstaller gui wettervorhersage"
+  },
+  {
+    title_en: "Python Algorithmic Engineering: From Cryptographic Ciphers to Interactive Desktop Applications",
+    title_de: "Algorithmische Softwareentwicklung mit Python: Von kryptografischen Chiffren bis zu Desktop-Apps",
+    category: "Blog",
+    url: "posts/python-algorithmic-suite/index.html",
+    keywords: "python algorithms cryptography substitution cipher pokemon oop digital clock unit testing algorithmik"
   }
 ];

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comprehensive Engineering Guide: Dual-Loop Cascade PID Controller for Two-Wheeled Self-Balancing Robot (TWSBR) · Cyber-Tech Portfolio</title>
+  <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
+  <link rel="stylesheet" href="../../assets/css/style.css?v=3.5">
+  <!-- KaTeX CSS & JS for Math Equations -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('site_lang');
+        if (saved !== 'de') {
+          localStorage.setItem('site_lang', 'en');
+          document.documentElement.setAttribute('lang', 'en');
+          if (document.body) document.body.setAttribute('data-lang', 'en');
+        } else {
+          document.documentElement.setAttribute('lang', 'de');
+          if (document.body) document.body.setAttribute('data-lang', 'de');
+        }
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body data-lang="en">
+
+  <!-- TOP MASTHEAD -->
+  <header class="masthead">
+    <div class="masthead__container">
+      <div class="masthead__brand">
+        <svg class="brand-icon" viewBox="0 0 32 32" fill="none">
+          <circle cx="16" cy="16" r="11" stroke="#00f2fe" stroke-width="2" stroke-dasharray="4 2"/>
+          <polygon points="16,8 23,20 9,20" stroke="#38bdf8" stroke-width="1.5" fill="rgba(56, 189, 248, 0.2)"/>
+          <circle cx="16" cy="16" r="2.5" fill="#00f2fe"/>
+        </svg>
+        <span class="lang-en">TECHNICAL ARTICLES</span>
+        <span class="lang-de">TECHNISCHE ARTIKEL</span>
+        <span class="brand-badge">BLOG</span>
+      </div>
+
+      <nav class="masthead__nav">
+        <ul class="nav-links">
+          <li><a href="../../index.html"><span class="lang-en">Home</span><span class="lang-de">Startseite</span></a></li>
+          <li><a href="../../research.html"><span class="lang-en">Research</span><span class="lang-de">Forschung</span></a></li>
+          <li><a href="../../portfolio.html"><span class="lang-en">Projects</span><span class="lang-de">Projekte</span></a></li>
+          <li><a href="../../blog.html" class="active"><span class="lang-en">Blog</span><span class="lang-de">Blog</span></a></li>
+          <li><a href="../../cv.html"><span>CV</span></a></li>
+        </ul>
+
+        <div class="masthead__tools">
+          <button id="site-search-btn" class="tool-btn" title="Search (Ctrl+K)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span class="kbd-shortcut">Ctrl K</span>
+          </button>
+          <!-- Language selector dropdown -->
+          <div class="lang-dropdown-wrapper">
+            <button id="lang-toggle-btn" class="tool-btn lang-tool-btn" title="Select language / Sprache wählen" aria-expanded="false">
+              <span id="lang-current-label">EN</span>
+              <svg class="lang-caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="lang-dropdown-menu" id="lang-dropdown-menu">
+              <button type="button" class="lang-dropdown-item active" data-lang-val="en">
+                <span class="lang-flag">🇬🇧</span>
+                <span class="lang-item-name">English</span>
+                <span class="lang-item-badge">EN</span>
+              </button>
+              <button type="button" class="lang-dropdown-item" data-lang-val="de">
+                <span class="lang-flag">🇩🇪</span>
+                <span class="lang-item-name">Deutsch</span>
+                <span class="lang-item-badge">DE</span>
+              </button>
+            </div>
+          </div>
+          <button id="theme-toggle-btn" class="tool-btn" title="Toggle light/dark mode">
+            <span id="theme-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            </span>
+          </button>
+          <button id="mobile-menu-btn" class="tool-btn mobile-menu-btn" aria-label="Menu">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- APP CONTAINER -->
+  <div class="app-container">
+    
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="profile-card">
+        <div class="avatar-wrapper">
+          <div class="avatar-pulse-ring"></div>
+          <img src="../../assets/images/1.jpg" alt="Avatar" class="avatar-img">
+        </div>
+        <div class="author-info">
+          <h2 class="author-name">
+            <span class="lang-en">Đỗ Hiểu Vinh</span>
+            <span class="lang-de">Đỗ Hiểu Vinh</span>
+          </h2>
+          <div class="author-handle">@vinhdo281 · HUST</div>
+          <div class="author-status">
+            <span class="status-dot"></span>
+            <span class="lang-en">POSTS: 10</span>
+            <span class="lang-de">BEITRÄGE: 10</span>
+          </div>
+        </div>
+        <div class="sidebar-divider"></div>
+
+        <div class="contact-location">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span><span class="lang-en">Hanoi, Vietnam</span><span class="lang-de">Hanoi, Vietnam</span></span>
+        </div>
+
+        <div class="social-icons-dock">
+          <a href="https://github.com/vinhdo281" target="_blank" rel="noopener" class="tech-icon-btn" data-tooltip="GitHub" aria-label="GitHub">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/in/vinhdo281" target="_blank" rel="noopener" class="tech-icon-btn" data-tooltip="LinkedIn" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="https://www.facebook.com/AlexDo281" target="_blank" rel="noopener" class="tech-icon-btn" data-tooltip="Facebook" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="mailto:dohieuvinh@gmail.com" class="tech-icon-btn" data-tooltip="Email" aria-label="Email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN ARTICLE CONTENT -->
+    <main class="main-content">
+      <div class="article-container">
+
+        <!-- ARTICLE HERO -->
+        <article class="article-hero">
+          <nav class="article-breadcrumb">
+            <a href="../../index.html"><span class="lang-en">Home</span><span class="lang-de">Startseite</span></a>
+            <span>/</span>
+            <a href="../../blog.html"><span class="lang-en">Blog</span><span class="lang-de">Blog</span></a>
+            <span>/</span>
+            <span><span class="lang-en">Cascade PID Self-Balancing Robot</span><span class="lang-de">Kaskadierter PID Balancierroboter</span></span>
+          </nav>
+          
+          <h1 class="article-title">
+            <span class="lang-en">Comprehensive Engineering Guide: Dual-Loop Cascade PID Controller for Two-Wheeled Self-Balancing Robot (TWSBR)</span>
+            <span class="lang-de">Umfassender technischer Leitfaden: Kaskadierter Zweikreis-PID-Regler für Zweirad-Balancierroboter (TWSBR)</span>
+          </h1>
+          
+          <div class="article-meta">
+            <span class="article-meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <span class="lang-en">August 15, 2026</span>
+              <span class="lang-de">15. August 2026</span>
+            </span>
+            <span class="article-meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span class="lang-en">Mechatronics Team · HUST</span>
+              <span class="lang-de">Mechatronik-Team · HUST</span>
+            </span>
+            <span class="article-meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span class="lang-en">16 Min Read · Practical Control Engineering</span>
+              <span class="lang-de">16 Min Lesezeit · Praktische Regelungstechnik</span>
+            </span>
+            <span class="card-type">CONTROL // DUAL-LOOP PID // SIMULINK & ESP32</span>
+          </div>
+        </article>
+
+        <!-- TABLE OF CONTENTS -->
+        <div class="article-toc">
+          <div class="article-toc-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            <span class="lang-en">TABLE OF CONTENTS</span>
+            <span class="lang-de">INHALTSVERZEICHNIS</span>
+          </div>
+          <ul class="article-toc-list">
+            <li><a href="#sec-problem"><span class="lang-en">1. Dynamic Modeling & Inverted Pendulum Physics</span><span class="lang-de">1. Dynamische Modellierung & Inverses-Pendel-Physik</span></a></li>\n            <li><a href="#sec-architecture"><span class="lang-en">2. Dual-Loop Cascade Control Architecture (500Hz / 50Hz)</span><span class="lang-de">2. Kaskadierte Zweikreis-Regelungsarchitektur (500Hz / 50Hz)</span></a></li>\n            <li><a href="#sec-simulink"><span class="lang-en">3. MATLAB & Simulink Model Implementation (Simulation_TWSBR.slx)</span><span class="lang-de">3. MATLAB & Simulink Modellierung (Simulation_TWSBR.slx)</span></a></li>\n            <li><a href="#sec-firmware"><span class="lang-en">4. ESP32 FreeRTOS Firmware & Sensor Fusion Implementation</span><span class="lang-de">4. ESP32 FreeRTOS Firmware & Sensorfusions-Implementierung</span></a></li>\n            <li><a href="#sec-tuning"><span class="lang-en">5. Systematic Tuning Protocol & Anti-Windup Strategy</span><span class="lang-de">5. Systematisches Einstellprotokoll & Anti-Windup-Strategie</span></a></li>\n            <li><a href="#sec-results"><span class="lang-en">6. Experimental Push-Recovery Verification & Benchmarks</span><span class="lang-de">6. Experimentelle Verifikation & Störgrößenkompensation</span></a></li>
+          </ul>
+        </div>
+
+        <!-- ARTICLE BODY -->
+        <div class="article-content">
+          <div class="lang-en">
+            <section id="sec-problem">
+            <h2><span class="h2-badge">PART 1</span> Dynamic Modeling & Inverted Pendulum Physics</h2>
+            <p>A Two-Wheeled Self-Balancing Robot (TWSBR) is a nonlinear, underactuated, non-minimum phase mechatronic system. It possesses 3 degrees of freedom (chassis pitch angle $\theta$, wheel angular positions $\phi_L, \phi_R$, and heading yaw $\psi$), but actuation is provided solely by two DC brushless/stepper motors generating torques $\tau_L, \tau_R$.</p>
+            <p>Using the Euler-Lagrange equations of motion, the system can be linearized around the unstable vertical equilibrium point $(\theta = 0, \dot{\theta} = 0)$:</p>
+            <div class="code-terminal"><pre><code>% Linearized State-Space Formulation around theta = 0:
+% State vector: x = [position; velocity; pitch_angle; pitch_rate]^T
+% dx/dt = A*x + B*u
+% y     = C*x + D*u</code></pre></div>
+            <p>The total inertia matrix $M(q)$ couples the linear acceleration of the wheel base $\ddot{x}$ directly into the angular acceleration of the body $\ddot{\theta}$. When the chassis pitches forward ($+\theta$), the wheels must accelerate forward ($+\ddot{x}$) to generate a corrective inertial reaction torque restoring vertical balance.</p>
+            <div class="callout callout-info">
+              <strong>Core Insight:</strong> You cannot stabilize position without modulating pitch angle. Therefore, a single-loop PID controller fails because position error and pitch error require opposite control directions. The dual-loop cascade topology is mathematically essential.
+            </div>
+          </section>
+
+          <section id="sec-architecture">
+            <h2><span class="h2-badge">PART 2</span> Dual-Loop Cascade Control Architecture (500Hz / 50Hz)</h2>
+            <p>The control architecture decouples the dynamics into two distinct frequency regimes:</p>
+            <ul>
+              <li><strong>Fast Inner Loop (Attitude / Balance Loop - 500 Hz):</strong> Operates on pitch angle error $e_\theta = \theta_{\text{ref}} - \theta$ and pitch rate $\dot{\theta}$. Outputs motor voltage/PWM torque command $\tau$.</li>
+              <li><strong>Slow Outer Loop (Position / Velocity Loop - 50 Hz):</strong> Operates on cart linear displacement error $e_x = x_{\text{ref}} - x$ and linear velocity $\dot{x}$. Outputs the reference tilt angle $\theta_{\text{ref}}$ fed to the inner loop.</li>
+            </ul>
+            <div class="code-terminal"><pre><code>% Mathematical Equations:
+% Inner Loop: tau(t) = Kp_theta * (theta_ref - theta) + Kd_theta * (0 - theta_dot)
+% Outer Loop: theta_ref(t) = Kp_x * (x_ref - x) + Ki_x * integral(x_ref - x) + Kd_x * (0 - x_dot)
+% Saturation clamp: theta_ref = max(-12 deg, min(+12 deg, theta_ref))</code></pre></div>
+            <p>By enforcing a strict bandwidth separation (inner loop is $10\times$ faster than outer loop), the inner loop views $\theta_{\text{ref}}$ as a quasi-static setpoint, preventing destabilizing high-frequency resonance between wheels and chassis.</p>
+          </section>
+
+          <section id="sec-simulink">
+            <h2><span class="h2-badge">PART 3</span> MATLAB & Simulink Model Implementation (Simulation_TWSBR.slx)</h2>
+            <p>The nonlinear physics plant is implemented in <code>Simulation_TWSBR.slx</code>, incorporating realistic actuator constraints:</p>
+            <ul>
+              <li>Motor back-EMF voltage saturation ($\pm 12\text{V}$ H-bridge limits).</li>
+              <li>Coulomb & viscous friction coefficients at the wheel-ground contact interface.</li>
+              <li>Sensor noise injection (Gaussian white noise on accelerometer and gyroscope channels).</li>
+              <li>Actuator quantization and discrete-time sampling effects.</li>
+            </ul>
+            <div class="code-terminal"><pre><code>% MATLAB script to initialize parameters and execute simulation:
+% twsbr_params.m
+M_cart = 1.25;    % Chassis mass (kg)
+m_wheel = 0.15;   % Wheel mass (kg)
+R_wheel = 0.0325; % Wheel radius (m)
+L_com = 0.085;    % Height to center of mass (m)
+J_chassis = 0.012;% Pitch moment of inertia (kg*m^2)
+
+% Load model & run step response (1.0 meter commanded target)
+open_system('Simulation_TWSBR.slx');
+simOut = sim('Simulation_TWSBR', 'StopTime', '10.0');</code></pre></div>
+          </section>
+
+          <section id="sec-firmware">
+            <h2><span class="h2-badge">PART 4</span> ESP32 FreeRTOS Firmware & Sensor Fusion Implementation</h2>
+            <p>The embedded implementation runs on a dual-core ESP32 micro-controller under FreeRTOS. An MPU6050 6-DOF IMU communicates via hardware I2C at 400kHz.</p>
+            <div class="code-terminal"><pre><code>// FreeRTOS Task Architecture:
+// Core 1: High-Priority Fast Control Task (Period: 2ms / 500Hz)
+void BalanceTask(void *pvParameters) {
+    TickType_t xLastWakeTime = xTaskGetTickCount();
+    const TickType_t xFrequency = pdMS_TO_TICKS(2);
+    
+    for(;;) {
+        // 1. Read MPU6050 & apply Complementary Filter
+        float dt = 0.002f;
+        float gyro_rate = read_gyro_y();
+        float accel_angle = atan2f(read_accel_x(), read_accel_z()) * 57.29577f;
+        pitch_angle = 0.98f * (pitch_angle + gyro_rate * dt) + 0.02f * accel_angle;
+        
+        // 2. Compute Inner Loop Torque
+        float torque_pwm = Kp_pitch * (theta_ref - pitch_angle) - Kd_pitch * gyro_rate;
+        apply_motor_pwm(torque_pwm);
+        
+        vTaskDelayUntil(&xLastWakeTime, xFrequency);
+    }
+}</code></pre></div>
+          </section>
+
+          <section id="sec-tuning">
+            <h2><span class="h2-badge">PART 5</span> Systematic Tuning Protocol & Anti-Windup Strategy</h2>
+            <p>Tuning a cascade balance controller requires a disciplined, sequential approach:</p>
+            <ol>
+              <li><strong>Step 1 (Isolate Inner Loop):</strong> Set outer loop gains ($K_p^x, K_i^x, K_d^x$) to zero. Set $\theta_{\text{ref}} = 0$. Hold the robot upright and slowly increase $K_p^\theta$ until the robot resists tilt and starts oscillating mildly.</li>
+              <li><strong>Step 2 (Damp the Oscillation):</strong> Increase $K_d^\theta$ until the oscillation is critically damped and the robot stiffly maintains balance when disturbed manually.</li>
+              <li><strong>Step 3 (Engage Outer Velocity Loop):</strong> Enable $K_d^x$ to introduce wheel-speed damping, preventing the robot from running away across the table.</li>
+              <li><strong>Step 4 (Engage Position Loop with Clamp):</strong> Add $K_p^x$ to pull the robot back to origin $x = 0$. Strictly limit $\theta_{\text{ref}} \in [-12^\circ, +12^\circ]$ so a large position displacement never requests a pitch that causes wheel slippage or tipping over.</li>
+              <li><strong>Step 5 (Integral Action with Conditional Clamping):</strong> Introduce small $K_i^x$ only when $|e_x| < 0.2\text{m}$ to cancel steady-state drift without causing integrator windup during large maneuvers.</li>
+            </ol>
+          </section>
+
+          <section id="sec-results">
+            <h2><span class="h2-badge">PART 6</span> Experimental Push-Recovery Verification & Benchmarks</h2>
+            <p>The controller was verified against sudden impulsive lateral force perturbations in both Simulink and real-world physical hardware:</p>
+            <ul>
+              <li><strong>Impulse Disturbance:</strong> Instantaneous 20N horizontal push applied at chassis center of mass.</li>
+              <li><strong>Recovery Settling Time ($t_s$):</strong> Less than 1.25 seconds to return to vertical with zero overshoot oscillations.</li>
+              <li><strong>Stationary Drift:</strong> Cart position held within $\pm 0.005\text{m}$ indefinitely under ground-plane vibration.</li>
+            </ul>
+          </section>
+          </div>
+          <div class="lang-de">
+            <section id="sec-problem">
+            <h2><span class="h2-badge">TEIL 1</span> Dynamische Modellierung & Inverses-Pendel-Physik</h2>
+            <p>Ein zweirädriger Balancierroboter (TWSBR) ist ein nichtlineares, unteraktuiertes mechatronisches System. Es verfügt über 3 Freiheitsgrade (Kippwinkel $\theta$, Radpositionen $\phi_L, \phi_R$, Gierwinkel $\psi$), wird jedoch nur durch zwei Antriebsmotoren (Drehmomente $\tau_L, \tau_R$) angesteuert.</p>
+            <p>Über die Euler-Lagrange-Bewegungsgleichungen lässt sich das System um den instabilen vertikalen Gleichgewichtspunkt $(\theta = 0, \dot{\theta} = 0)$ linearisieren:</p>
+            <div class="code-terminal"><pre><code>% Lineare Zustandsraumdarstellung um theta = 0:
+% Zustandsvektor: x = [Position; Geschwindigkeit; Neigungswinkel; Winkelgeschwindigkeit]^T
+% dx/dt = A*x + B*u
+% y     = C*x + D*u</code></pre></div>
+            <p>Kippt das Chassis nach vorne ($+\theta$), müssen die Räder nach vorne beschleunigen ($+\ddot{x}$), um ein aufrichtendes Trägheitsmoment zu erzeugen.</p>
+            <div class="callout callout-info">
+              <strong>Zentrale Erkenntnis:</strong> Die Position kann nicht stabilisiert werden, ohne den Neigungswinkel anzupassen. Ein einkreisiger PID-Regler scheitert, weshalb die kaskadierte Zweikreis-Architektur mathematisch zwingend erforderlich ist.
+            </div>
+          </section>
+
+          <section id="sec-architecture">
+            <h2><span class="h2-badge">TEIL 2</span> Kaskadierte Zweikreis-Regelungsarchitektur (500Hz / 50Hz)</h2>
+            <p>Die Architektur entkoppelt die Dynamik in zwei Frequenzbereiche:</p>
+            <ul>
+              <li><strong>Schneller Innenkreis (Neigungs-/Balancierkreis - 500 Hz):</strong> Verarbeitet Neigungswinkelfehler $e_\theta$ und Winkelgeschwindigkeit $\dot{\theta}$. Gibt PWM-/Drehmomentbefehle an die Motoren aus.</li>
+              <li><strong>Langsamer Außenkreis (Positions-/Geschwindigkeitskreis - 50 Hz):</strong> Berechnet aus dem Positionsfehler $e_x$ den Soll-Neigungswinkel $\theta_{\text{ref}}$ für den Innenkreis.</li>
+            </ul>
+            <div class="code-terminal"><pre><code>% Mathematische Gleichungen:
+% Innenkreis: tau(t) = Kp_theta * (theta_ref - theta) + Kd_theta * (0 - theta_dot)
+% Außenkreis: theta_ref(t) = Kp_x * (x_ref - x) + Ki_x * integral(x_ref - x) + Kd_x * (0 - x_dot)
+% Winkelbegrenzung: theta_ref = max(-12 deg, min(+12 deg, theta_ref))</code></pre></div>
+          </section>
+
+          <section id="sec-simulink">
+            <h2><span class="h2-badge">TEIL 3</span> MATLAB & Simulink Modellierung (Simulation_TWSBR.slx)</h2>
+            <p>Das nichtlineare Modell in <code>Simulation_TWSBR.slx</code> bildet alle physikalischen Effekte ab: Motorsättigung ($\pm 12\text{V}$), Reibungskoeffizienten am Bodenkontakt und Sensorrauschen des Beschleunigungsmessers und Gyroskops.</p>
+            <div class="code-terminal"><pre><code>open_system('Simulation_TWSBR.slx');
+simOut = sim('Simulation_TWSBR', 'StopTime', '10.0');</code></pre></div>
+          </section>
+
+          <section id="sec-firmware">
+            <h2><span class="h2-badge">TEIL 4</span> ESP32 FreeRTOS Firmware & Sensorfusions-Implementierung</h2>
+            <p>Auf dem ESP32 läuft die Regelung im Dual-Core-Betrieb: Core 1 führt den zeitkritischen 500Hz-Regeltask aus, während Core 0 Telemetrie und Fernsteuerung übernimmt.</p>
+            <div class="code-terminal"><pre><code>// 500Hz Regelungs-Task auf Core 1 via FreeRTOS
+float dt = 0.002f;
+pitch_angle = 0.98f * (pitch_angle + gyro_rate * dt) + 0.02f * accel_angle;
+float torque_pwm = Kp_pitch * (theta_ref - pitch_angle) - Kd_pitch * gyro_rate;
+apply_motor_pwm(torque_pwm);</code></pre></div>
+          </section>
+
+          <section id="sec-tuning">
+            <h2><span class="h2-badge">TEIL 5</span> Systematisches Einstellprotokoll & Anti-Windup-Strategie</h2>
+            <ol>
+              <li><strong>Schritt 1 (Innenkreis isolieren):</strong> Außenkreis deaktivieren. $K_p^\theta$ schrittweise erhöhen, bis das Chassis auf Stöße reagiert.</li>
+              <li><strong>Schritt 2 (Dämpfung):</strong> $K_d^\theta$ anheben, um Schwingungen aperiodisch zu dämpfen.</li>
+              <li><strong>Schritt 3 (Geschwindigkeitsdämpfung):</strong> $K_d^x$ im Außenkreis aktivieren, um Wegdriften zu verhindern.</li>
+              <li><strong>Schritt 4 (Positionsrückführung):</strong> $K_p^x$ mit harter Begrenzung auf $\theta_{\text{ref}} \in [-12^\circ, +12^\circ]$ hinzuschalten.</li>
+              <li><strong>Schritt 5 (I-Anteil mit Anti-Windup):</strong> $K_i^x$ nur bei kleinen Abweichungen aktivieren.</li>
+            </ol>
+          </section>
+
+          <section id="sec-results">
+            <h2><span class="h2-badge">TEIL 6</span> Experimentelle Verifikation & Störgrößenkompensation</h2>
+            <p>In Simulation und realem Test hält der Roboter seitlichen Stößen von bis zu 20N stand und schwingt in unter 1,25 Sekunden ohne Überschwingen wieder stabil ein.</p>
+          </section>
+          </div>
+
+          <div class="sidebar-divider" style="margin: 3rem 0;"></div>
+
+          <div style="text-align: center; padding: 1.5rem; background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border-color);">
+            <h3 style="margin-top: 0; color: var(--accent-cyan);">
+              <span class="lang-en">Explore the Code & Implementation</span>
+              <span class="lang-de">Quellcode & Implementierung erkunden</span>
+            </h3>
+            <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.25rem;">
+              <span class="lang-en">The full source code, simulation configs, and verified test benches are open-source on GitHub.</span>
+              <span class="lang-de">Der vollständige Quellcode, Simulationsmodelle und verifizierte Testfälle sind Open Source auf GitHub verfügbar.</span>
+            </p>
+            <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+              <a href="../../blog.html" class="btn-tech btn-tech-primary">
+                <span class="lang-en">← Back to Blog List</span>
+                <span class="lang-de">← Zurück zur Blogliste</span>
+              </a>
+              <a href="../../portfolio.html" class="btn-tech">
+                <span class="lang-en">View in Portfolio</span>
+                <span class="lang-de">Im Portfolio ansehen</span>
+              </a>
+              <a href="https://github.com/vinhdo281/Cascade-PID" target="_blank" rel="noopener" class="btn-tech">
+                <span class="lang-en">Visit GitHub Repository</span>
+                <span class="lang-de">GitHub Repository besuchen</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- SEARCH MODAL -->
+  <div id="search-modal-backdrop" class="search-modal-backdrop">
+    <div class="search-modal">
+      <div class="search-input-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="search-input" class="search-input" placeholder="Type to search (Ctrl+K)..." autocomplete="off">
+        <span class="kbd-shortcut">ESC</span>
+      </div>
+      <div id="search-results" class="search-results"></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div>&copy; 2026 · Powered by GitHub Pages · Cyber-Tech Portfolio · Vinh Do (HUST)</div>
+  </footer>
+
+  <script src="../../assets/js/search-data.js?v=3.5"></script>
+  <script src="../../assets/js/main.js?v=3.5"></script>
+</body>
+</html>

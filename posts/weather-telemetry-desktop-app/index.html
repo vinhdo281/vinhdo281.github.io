@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Building a Production-Ready Weather Telemetry Desktop Application with Python, Asynchronous Polling, and Custom UI · Cyber-Tech Portfolio</title>
+  <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
+  <link rel="stylesheet" href="../../assets/css/style.css?v=3.5">
+  <!-- KaTeX CSS & JS for Math Equations -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('site_lang');
+        if (saved !== 'de') {
+          localStorage.setItem('site_lang', 'en');
+          document.documentElement.setAttribute('lang', 'en');
+          if (document.body) document.body.setAttribute('data-lang', 'en');
+        } else {
+          document.documentElement.setAttribute('lang', 'de');
+          if (document.body) document.body.setAttribute('data-lang', 'de');
+        }
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body data-lang="en">
+
+  <!-- TOP MASTHEAD -->
+  <header class="masthead">
+    <div class="masthead__container">
+      <div class="masthead__brand">
+        <svg class="brand-icon" viewBox="0 0 32 32" fill="none">
+          <circle cx="16" cy="16" r="11" stroke="#00f2fe" stroke-width="2" stroke-dasharray="4 2"/>
+          <polygon points="16,8 23,20 9,20" stroke="#38bdf8" stroke-width="1.5" fill="rgba(56, 189, 248, 0.2)"/>
+          <circle cx="16" cy="16" r="2.5" fill="#00f2fe"/>
+        </svg>
+        <span class="lang-en">TECHNICAL ARTICLES</span>
+        <span class="lang-de">TECHNISCHE ARTIKEL</span>
+        <span class="brand-badge">BLOG</span>
+      </div>
+
+      <nav class="masthead__nav">
+        <ul class="nav-links">
+          <li><a href="../../index.html"><span class="lang-en">Home</span><span class="lang-de">Startseite</span></a></li>
+          <li><a href="../../research.html"><span class="lang-en">Research</span><span class="lang-de">Forschung</span></a></li>
+          <li><a href="../../portfolio.html"><span class="lang-en">Projects</span><span class="lang-de">Projekte</span></a></li>
+          <li><a href="../../blog.html" class="active"><span class="lang-en">Blog</span><span class="lang-de">Blog</span></a></li>
+          <li><a href="../../cv.html"><span>CV</span></a></li>
+        </ul>
+
+        <div class="masthead__tools">
+          <button id="site-search-btn" class="tool-btn" title="Search (Ctrl+K)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span class="kbd-shortcut">Ctrl K</span>
+          </button>
+          <!-- Language selector dropdown -->
+          <div class="lang-dropdown-wrapper">
+            <button id="lang-toggle-btn" class="tool-btn lang-tool-btn" title="Select language / Sprache wählen" aria-expanded="false">
+              <span id="lang-current-label">EN</span>
+              <svg class="lang-caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="lang-dropdown-menu" id="lang-dropdown-menu">
+              <button type="button" class="lang-dropdown-item active" data-lang-val="en">
+                <span class="lang-flag">🇬🇧</span>
+                <span class="lang-item-name">English</span>
+                <span class="lang-item-badge">EN</span>
+              </button>
+              <button type="button" class="lang-dropdown-item" data-lang-val="de">
+                <span class="lang-flag">🇩🇪</span>
+                <span class="lang-item-name">Deutsch</span>
+                <span class="lang-item-badge">DE</span>
+              </button>
+            </div>
+          </div>
+          <button id="theme-toggle-btn" class="tool-btn" title="Toggle light/dark mode">
+            <span id="theme-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            </span>
+          </button>
+          <button id="mobile-menu-btn" class="tool-btn mobile-menu-btn" aria-label="Menu">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- APP CONTAINER -->
+  <div class="app-container">
+    
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="profile-card">
+        <div class="avatar-wrapper">
+          <div class="avatar-pulse-ring"></div>
+          <img src="../../assets/images/1.jpg" alt="Avatar" class="avatar-img">
+        </div>
+        <div class="author-info">
+          <h2 class="author-name">
+            <span class="lang-en">Đỗ Hiểu Vinh</span>
+            <span class="lang-de">Đỗ Hiểu Vinh</span>
+          </h2>
+          <div class="author-handle">@vinhdo281 · HUST</div>
+          <div class="author-status">
+            <span class="status-dot"></span>
+            <span class="lang-en">POSTS: 10</span>
+            <span class="lang-de">BEITRÄGE: 10</span>
+          </div>
+        </div>
+        <div class="sidebar-divider"></div>
+
+        <div class="contact-location">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span><span class="lang-en">Hanoi, Vietnam</span><span class="lang-de">Hanoi, Vietnam</span></span>
+        </div>
+
+        <div class="social-icons-dock">
+          <a href="https://github.com/vinhdo281" target="_blank" rel="noopener" class="tech-icon-btn" data-tooltip="GitHub" aria-label="GitHub">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/in/vinhdo281" target="_blank" rel="noopener" class="tech-icon-btn" data-tooltip="LinkedIn" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="https://www.facebook.com/AlexDo281" target="_blank" rel="noopener" class="tech-icon-btn" data-tooltip="Facebook" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="mailto:dohieuvinh@gmail.com" class="tech-icon-btn" data-tooltip="Email" aria-label="Email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN ARTICLE CONTENT -->
+    <main class="main-content">
+      <div class="article-container">
+
+        <!-- ARTICLE HERO -->
+        <article class="article-hero">
+          <nav class="article-breadcrumb">
+            <a href="../../index.html"><span class="lang-en">Home</span><span class="lang-de">Startseite</span></a>
+            <span>/</span>
+            <a href="../../blog.html"><span class="lang-en">Blog</span><span class="lang-de">Blog</span></a>
+            <span>/</span>
+            <span><span class="lang-en">Weather Telemetry Desktop App</span><span class="lang-de">Wetter-Telemetrie Desktop-App</span></span>
+          </nav>
+          
+          <h1 class="article-title">
+            <span class="lang-en">Building a Production-Ready Weather Telemetry Desktop Application with Python, Asynchronous Polling, and Custom UI</span>
+            <span class="lang-de">Entwicklung einer produktionsreifen Desktop-Anwendung für Wetter-Telemetrie mit Python, asynchronem Abruf und Custom UI</span>
+          </h1>
+          
+          <div class="article-meta">
+            <span class="article-meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <span class="lang-en">April 05, 2025</span>
+              <span class="lang-de">05. April 2025</span>
+            </span>
+            <span class="article-meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span class="lang-en">Mechatronics Team · HUST</span>
+              <span class="lang-de">Mechatronik-Team · HUST</span>
+            </span>
+            <span class="article-meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span class="lang-en">14 Min Read · Desktop App Engineering</span>
+              <span class="lang-de">14 Min Lesezeit · Desktop-App-Entwicklung</span>
+            </span>
+            <span class="card-type">SOFTWARE DEV // DESKTOP GUI // TELEMETRY API</span>
+          </div>
+        </article>
+
+        <!-- TABLE OF CONTENTS -->
+        <div class="article-toc">
+          <div class="article-toc-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            <span class="lang-en">TABLE OF CONTENTS</span>
+            <span class="lang-de">INHALTSVERZEICHNIS</span>
+          </div>
+          <ul class="article-toc-list">
+            <li><a href="#sec-arch"><span class="lang-en">1. Desktop Architecture & Asynchronous Design</span><span class="lang-de">1. Desktop-Architektur & Asynchrones Design</span></a></li>\n            <li><a href="#sec-api"><span class="lang-en">2. RESTful API Telemetry Ingestion (OpenWeatherMap)</span><span class="lang-de">2. REST-API-Telemetrieabruf (OpenWeatherMap)</span></a></li>\n            <li><a href="#sec-threading"><span class="lang-en">3. Multithreaded UI Responsive Architecture</span><span class="lang-de">3. Multithreaded UI-Architektur ohne Blockieren</span></a></li>\n            <li><a href="#sec-gui"><span class="lang-en">4. Custom HUD GUI Layout & Metric Visualization</span><span class="lang-de">4. Custom HUD GUI-Layout & Metrik-Visualisierung</span></a></li>\n            <li><a href="#sec-packaging"><span class="lang-en">5. Standalone Windows Executable Compilation (PyInstaller)</span><span class="lang-de">5. Eigenständige Windows-Executable-Erstellung (PyInstaller)</span></a></li>
+          </ul>
+        </div>
+
+        <!-- ARTICLE BODY -->
+        <div class="article-content">
+          <div class="lang-en">
+            <section id="sec-arch">
+            <h2><span class="h2-badge">PART 1</span> Desktop Architecture & Asynchronous Design</h2>
+            <p>Desktop telemetry tools must provide instantaneous responsiveness without freezing when network requests experience lag. This project builds a dedicated meteorological telemetry dashboard fetching live global atmospheric metrics via OpenWeatherMap.</p>
+          </section>
+
+          <section id="sec-api">
+            <h2><span class="h2-badge">PART 2</span> RESTful API Telemetry Ingestion (OpenWeatherMap)</h2>
+            <div class="code-terminal"><pre><code>import requests
+
+def fetch_weather(city: str, api_key: str):
+    url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric"
+    response = requests.get(url, timeout=5.0)
+    response.raise_for_status()
+    data = response.json()
+    return {
+        "temp": data["main"]["temp"],
+        "humidity": data["main"]["humidity"],
+        "pressure": data["main"]["pressure"],
+        "wind_speed": data["wind"]["speed"]
+    }</code></pre></div>
+          </section>
+
+          <section id="sec-threading">
+            <h2><span class="h2-badge">PART 3</span> Multithreaded UI Responsive Architecture</h2>
+            <p>By delegating HTTP calls to a background <code>threading.Thread(daemon=True)</code> worker, the Tkinter main event loop processes user clicks and redraws animations at 60 FPS without UI freezing.</p>
+          </section>
+
+          <section id="sec-gui">
+            <h2><span class="h2-badge">PART 4</span> Custom HUD GUI Layout & Metric Visualization</h2>
+            <p>The UI is styled with a sleek cyberpunk dark palette, showing telemetry cards for Temperature, Humidity, Barometric Pressure, and Wind Vectors.</p>
+          </section>
+
+          <section id="sec-packaging">
+            <h2><span class="h2-badge">PART 5</span> Standalone Windows Executable Compilation (PyInstaller)</h2>
+            <div class="code-terminal"><pre><code># Build standalone .exe with embedded assets
+pyinstaller --noconsole --onefile --icon=weather.ico weather_app.py</code></pre></div>
+          </section>
+          </div>
+          <div class="lang-de">
+            <section id="sec-arch">
+            <h2><span class="h2-badge">TEIL 1</span> Desktop-Architektur & Asynchrones Design</h2>
+            <p>Eine reaktionsschnelle Desktop-Anwendung zur Abfrage globaler meteorologischer Telemetriedaten via OpenWeatherMap.</p>
+          </section>
+
+          <section id="sec-api">
+            <h2><span class="h2-badge">TEIL 2</span> REST-API-Telemetrieabruf (OpenWeatherMap)</h2>
+            <p>Strukturierte Abfrage und Deserialisierung von JSON-Telemetrie-Payloads (Temperatur, Luftdruck, Luftfeuchtigkeit, Wind).</p>
+          </section>
+
+          <section id="sec-threading">
+            <h2><span class="h2-badge">TEIL 3</span> Multithreaded UI-Architektur ohne Blockieren</h2>
+            <p>Hintergrund-Threads verhindern das Einfrieren der Tkinter-Oberfläche bei langsamen Netzwerkverbindungen.</p>
+          </section>
+
+          <section id="sec-gui">
+            <h2><span class="h2-badge">TEIL 4</span> Custom HUD GUI-Layout & Metrik-Visualisierung</h2>
+            <p>Cyberpunk-Telemetry-Dashboard mit Echtzeit-Indikatoren.</p>
+          </section>
+
+          <section id="sec-packaging">
+            <h2><span class="h2-badge">TEIL 5</span> Eigenständige Windows-Executable-Erstellung (PyInstaller)</h2>
+            <div class="code-terminal"><pre><code>pyinstaller --noconsole --onefile --icon=weather.ico weather_app.py</code></pre></div>
+          </section>
+          </div>
+
+          <div class="sidebar-divider" style="margin: 3rem 0;"></div>
+
+          <div style="text-align: center; padding: 1.5rem; background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border-color);">
+            <h3 style="margin-top: 0; color: var(--accent-cyan);">
+              <span class="lang-en">Explore the Code & Implementation</span>
+              <span class="lang-de">Quellcode & Implementierung erkunden</span>
+            </h3>
+            <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.25rem;">
+              <span class="lang-en">The full source code, simulation configs, and verified test benches are open-source on GitHub.</span>
+              <span class="lang-de">Der vollständige Quellcode, Simulationsmodelle und verifizierte Testfälle sind Open Source auf GitHub verfügbar.</span>
+            </p>
+            <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+              <a href="../../blog.html" class="btn-tech btn-tech-primary">
+                <span class="lang-en">← Back to Blog List</span>
+                <span class="lang-de">← Zurück zur Blogliste</span>
+              </a>
+              <a href="../../portfolio.html" class="btn-tech">
+                <span class="lang-en">View in Portfolio</span>
+                <span class="lang-de">Im Portfolio ansehen</span>
+              </a>
+              <a href="https://github.com/vinhdo281/Checking-weather" target="_blank" rel="noopener" class="btn-tech">
+                <span class="lang-en">Visit GitHub Repository</span>
+                <span class="lang-de">GitHub Repository besuchen</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- SEARCH MODAL -->
+  <div id="search-modal-backdrop" class="search-modal-backdrop">
+    <div class="search-modal">
+      <div class="search-input-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="search-input" class="search-input" placeholder="Type to search (Ctrl+K)..." autocomplete="off">
+        <span class="kbd-shortcut">ESC</span>
+      </div>
+      <div id="search-results" class="search-results"></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div>&copy; 2026 · Powered by GitHub Pages · Cyber-Tech Portfolio · Vinh Do (HUST)</div>
+  </footer>
+
+  <script src="../../assets/js/search-data.js?v=3.5"></script>
+  <script src="../../assets/js/main.js?v=3.5"></script>
+</body>
+</html>
