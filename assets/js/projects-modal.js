@@ -10,7 +10,7 @@
   let currentActiveTab = 'overview';
 
   function getLang() {
-    return document.body.getAttribute('data-lang') || 'vi';
+    return document.body.getAttribute('data-lang') || 'en';
   }
 
   function getProjectsData() {
@@ -56,9 +56,7 @@
 
       if (hudCounter) {
         const lang = getLang();
-        if (lang === 'vi') {
-          hudCounter.innerHTML = `<span class="status-dot"></span> ĐANG HIỂN THỊ: <strong>${visibleCount}/${totalCount}</strong> DỰ ÁN`;
-        } else if (lang === 'de') {
+        if (lang === 'de') {
           hudCounter.innerHTML = `<span class="status-dot"></span> ANGEZEIGT: <strong>${visibleCount}/${totalCount}</strong> PROJEKTE`;
         } else {
           hudCounter.innerHTML = `<span class="status-dot"></span> DISPLAYING: <strong>${visibleCount}/${totalCount}</strong> PROJECTS`;
@@ -67,9 +65,7 @@
 
       if (searchInput) {
         const lang = getLang();
-        if (lang === 'vi') {
-          searchInput.placeholder = 'Lọc theo tên, thuật toán, công nghệ...';
-        } else if (lang === 'de') {
+        if (lang === 'de') {
           searchInput.placeholder = 'Nach Name, Algorithmus, Technologie filtern...';
         } else {
           searchInput.placeholder = 'Filter by name, algorithm, technology...';
@@ -138,7 +134,6 @@
     if (!project) return;
 
     const lang = getLang();
-    const isVi = lang === 'vi';
     const isDe = lang === 'de';
 
     const badgeEl = document.getElementById('project-modal-badge');
@@ -150,9 +145,7 @@
 
     if (badgeEl) badgeEl.textContent = project.badge;
     if (titleEl) {
-      if (isVi) {
-        titleEl.textContent = project.title_vi;
-      } else if (isDe && project.title_de) {
+      if (isDe && project.title_de) {
         titleEl.textContent = project.title_de;
       } else {
         titleEl.textContent = project.title_en;
@@ -186,13 +179,13 @@
     let contentHtml = '';
     switch (activeTab) {
       case 'overview':
-        contentHtml = isVi ? project.overview_vi : (isDe && project.overview_de ? project.overview_de : project.overview_en);
+        contentHtml = (isDe && project.overview_de ? project.overview_de : project.overview_en);
         // Prepend metrics grid if available
         if (project.metrics && project.metrics.length > 0) {
           const metricsGridHtml = `
             <div class="metrics-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem;">
               ${project.metrics.map(m => {
-                const label = isVi ? m.label_vi : (isDe && m.label_de ? m.label_de : m.label_en);
+                const label = (isDe && m.label_de ? m.label_de : m.label_en);
                 return `
                   <div style="background: rgba(0,242,254,0.06); border: 1px solid rgba(0,242,254,0.25); border-radius: 8px; padding: 0.75rem; text-align: center;">
                     <div style="font-family: var(--font-mono); font-size: 1.25rem; color: var(--accent-cyan); font-weight: bold;">${m.value}</div>
@@ -206,23 +199,23 @@
         }
         break;
       case 'architecture':
-        contentHtml = isVi ? project.architecture_vi : (isDe && project.architecture_de ? project.architecture_de : project.architecture_en);
+        contentHtml = (isDe && project.architecture_de ? project.architecture_de : project.architecture_en);
         break;
       case 'guide':
-        contentHtml = isVi ? project.guide_vi : (isDe && project.guide_de ? project.guide_de : project.guide_en);
+        contentHtml = (isDe && project.guide_de ? project.guide_de : project.guide_en);
         break;
       case 'results':
-        contentHtml = isVi ? project.results_vi : (isDe && project.results_de ? project.results_de : project.results_en);
+        contentHtml = (isDe && project.results_de ? project.results_de : project.results_en);
         break;
       case 'demo':
-        contentHtml = isVi ? project.demo_vi : (isDe && project.demo_de ? project.demo_de : project.demo_en);
+        contentHtml = (isDe && project.demo_de ? project.demo_de : project.demo_en);
         break;
       default:
-        contentHtml = isVi ? project.overview_vi : project.overview_en;
+        contentHtml = project.overview_en;
     }
 
     if (bodyEl) {
-      bodyEl.innerHTML = contentHtml || '<p>Đang cập nhật nội dung...</p>';
+      bodyEl.innerHTML = contentHtml || '<p>Content is being updated...</p>';
       bodyEl.scrollTop = 0;
 
       // Enhance code blocks with copy buttons
@@ -233,10 +226,10 @@
 
         const copyBtn = document.createElement('button');
         copyBtn.className = 'code-copy-btn';
-        copyBtn.setAttribute('title', isVi ? 'Sao chép đoạn mã' : (isDe ? 'Code kopieren' : 'Copy code'));
+        copyBtn.setAttribute('title', isDe ? 'Code kopieren' : 'Copy code');
         copyBtn.innerHTML = `
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          <span>${isVi ? 'Sao chép' : (isDe ? 'Kopieren' : 'Copy')}</span>
+          <span>${isDe ? 'Kopieren' : 'Copy'}</span>
         `;
         copyBtn.style.cssText = 'position: absolute; top: 8px; right: 8px; padding: 0.2rem 0.55rem; font-size: 0.72rem; font-family: var(--font-mono); background: rgba(255,255,255,0.08); border: 1px solid var(--border-color); color: var(--text-secondary); border-radius: 4px; cursor: pointer; display: inline-flex; align-items: center; gap: 0.3rem; transition: var(--transition); z-index: 5;';
 
@@ -244,11 +237,11 @@
           e.stopPropagation();
           const codeText = preEl.textContent.trim();
           navigator.clipboard.writeText(codeText).then(() => {
-            copyBtn.innerHTML = `<span style="color:var(--accent-cyan); font-weight: 500;">${isVi ? 'Đã sao chép' : (isDe ? 'Kopiert' : 'Copied')}</span>`;
+            copyBtn.innerHTML = `<span style="color:var(--accent-cyan); font-weight: 500;">${isDe ? 'Kopiert' : 'Copied'}</span>`;
             setTimeout(() => {
               copyBtn.innerHTML = `
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                <span>${isVi ? 'Sao chép' : (isDe ? 'Kopieren' : 'Copy')}</span>
+                <span>${isDe ? 'Kopieren' : 'Copy'}</span>
               `;
             }, 2000);
           });

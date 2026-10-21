@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi" data-theme="dark">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body data-lang="vi">
+<body data-lang="en">
 
   <!-- TOP MASTHEAD -->
   <header class="masthead">
@@ -18,7 +18,6 @@
           <polygon points="16,8 23,20 9,20" stroke="#38bdf8" stroke-width="1.5" fill="rgba(56, 189, 248, 0.2)"/>
           <circle cx="16" cy="16" r="2.5" fill="#00f2fe"/>
         </svg>
-        <span class="lang-vi">AUTOMATION & ROBOTICS</span>
         <span class="lang-en">ROBOTICS & CONTROL</span>
         <span class="lang-de">ROBOTIK & REGELUNG</span>
         <span class="brand-badge">v2.4.0</span>
@@ -26,33 +25,28 @@
 
       <nav class="masthead__nav">
         <ul class="nav-links">
-          <li><a href="index.html" class="active"><span class="lang-vi">Trang chủ</span><span class="lang-en">Home</span><span class="lang-de">Startseite</span></a></li>
-          <li><a href="research.html"><span class="lang-vi">Nghiên cứu</span><span class="lang-en">Research</span><span class="lang-de">Forschung</span></a></li>
-          <li><a href="portfolio.html"><span class="lang-vi">Dự án</span><span class="lang-en">Projects</span><span class="lang-de">Projekte</span></a></li>
-          <li><a href="blog.html"><span class="lang-vi">Bài viết</span><span class="lang-en">Blog</span><span class="lang-de">Blog</span></a></li>
+          <li><a href="index.html" class="active"><span class="lang-en">Home</span><span class="lang-de">Startseite</span></a></li>
+          <li><a href="research.html"><span class="lang-en">Research</span><span class="lang-de">Forschung</span></a></li>
+          <li><a href="portfolio.html"><span class="lang-en">Projects</span><span class="lang-de">Projekte</span></a></li>
+          <li><a href="blog.html"><span class="lang-en">Blog</span><span class="lang-de">Blog</span></a></li>
           <li><a href="cv.html"><span>CV</span></a></li>
         </ul>
 
         <div class="masthead__tools">
           <!-- Search trigger -->
-          <button id="site-search-btn" class="tool-btn" title="Tìm kiếm (Ctrl+K)">
+          <button id="site-search-btn" class="tool-btn" title="Search (Ctrl+K)">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             <span class="kbd-shortcut">Ctrl K</span>
           </button>
 
           <!-- Language selector dropdown -->
           <div class="lang-dropdown-wrapper">
-            <button id="lang-toggle-btn" class="tool-btn lang-tool-btn" title="Đổi ngôn ngữ / Select language / Sprache wählen" aria-expanded="false">
-              <span id="lang-current-label">VI</span>
+            <button id="lang-toggle-btn" class="tool-btn lang-tool-btn" title="Select language / Sprache wählen" aria-expanded="false">
+              <span id="lang-current-label">EN</span>
               <svg class="lang-caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="lang-dropdown-menu" id="lang-dropdown-menu">
-              <button type="button" class="lang-dropdown-item active" data-lang-val="vi">
-                <span class="lang-flag">🇻🇳</span>
-                <span class="lang-item-name">Tiếng Việt</span>
-                <span class="lang-item-badge">VI</span>
-              </button>
-              <button type="button" class="lang-dropdown-item" data-lang-val="en">
+              <button type="button" class="lang-dropdown-item active" data-lang-val="en">
                 <span class="lang-flag">🇬🇧</span>
                 <span class="lang-item-name">English</span>
                 <span class="lang-item-badge">EN</span>
@@ -66,7 +60,7 @@
           </div>
 
           <!-- Theme toggle -->
-          <button id="theme-toggle-btn" class="tool-btn" title="Chuyển chế độ sáng/tối">
+          <button id="theme-toggle-btn" class="tool-btn" title="Toggle light/dark mode">
             <span id="theme-icon">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
             </span>
@@ -94,7 +88,6 @@
 
         <div class="author-info">
           <h2 class="author-name">
-            <span class="lang-vi">Đỗ Hiểu Vinh</span>
             <span class="lang-en">Đỗ Hiểu Vinh</span>
             <span class="lang-de">Đỗ Hiểu Vinh</span>
           </h2>
@@ -102,14 +95,10 @@
 
           <div class="author-status">
             <span class="status-dot"></span>
-            <span class="lang-vi">SYSTEM: OPERATIONAL</span>
             <span class="lang-en">SYSTEM: OPERATIONAL</span>
             <span class="lang-de">SYSTEM: BEREIT</span>
           </div>
 
-          <p class="author-bio lang-vi">
-            Kỹ sư Cơ điện tử & Điều khiển tự động. Tập trung vào Robot chân - bánh xe (Wheeled-Bipedal Robot), mô phỏng động lực học trên MuJoCo Physics & Simscape Multibody, lý thuyết điều khiển và hệ thống nhúng STM32 / ESP32.
-          </p>
           <p class="author-bio lang-en">
             Mechatronics & Control Systems Engineer. Focusing on Wheeled-Bipedal Robotics, MuJoCo & Simscape Multibody physics simulation, control theory, and STM32 / ESP32 embedded systems.
           </p>
@@ -122,7 +111,7 @@
 
         <div class="contact-location">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          <span><span class="lang-vi">Hà Nội, Việt Nam</span><span class="lang-en">Hanoi, Vietnam</span><span class="lang-de">Hanoi, Vietnam</span></span>
+          <span><span class="lang-en">Hanoi, Vietnam</span><span class="lang-de">Hanoi, Vietnam</span></span>
         </div>
 
         <!-- Tech Social Icons Dock -->
@@ -154,20 +143,15 @@
         </div>
 
         <h1 class="hero-title">
-          <span class="lang-vi">Khoa Học Robot & Hệ Thống Điều Khiển</span>
           <span class="lang-en">Robotics Science & Control Systems</span>
           <span class="lang-de">Robotik & Regelungssysteme</span>
         </h1>
 
         <div class="hero-subtitle font-mono">
-          <span class="lang-vi">&gt; Điều khiển phân tầng · Nhúng thời gian thực · Mô phỏng AI</span>
           <span class="lang-en">&gt; Hierarchical Control · Real-time Embedded · AI Simulation</span>
           <span class="lang-de">&gt; Hierarchische Regelung · Echtzeit-Embedded · KI-Simulation</span>
         </div>
 
-        <p class="hero-desc lang-vi">
-          Chào mừng bạn đến với không gian nghiên cứu kỹ thuật số của tôi. Tôi chuyên nghiên cứu thiết kế thuật toán điều khiển phi tuyến và tối ưu (LQR, MPC, PID thích nghi), ước lượng trạng thái với Extended Kalman Filter, và xây dựng các hệ robot hai bánh tự cân bằng, cánh tay máy và hệ AGV dẫn đường thị giác.
-        </p>
         <p class="hero-desc lang-en">
           Welcome to my digital research space. I specialize in designing non-linear and optimal control algorithms (LQR, MPC, Adaptive PID), state estimation via Extended Kalman Filter, and developing wheeled-bipedal robots, manipulators, and vision-guided AGVs.
         </p>
@@ -196,12 +180,10 @@
         <div class="section-title-wrap">
           <h2 class="section-title">
             <span class="section-prefix">#01</span>
-            <span class="lang-vi">Dự Án Kỹ Thuật Nổi Bật</span>
             <span class="lang-en">Featured Engineering Projects</span>
             <span class="lang-de">Hervorgehobene Ingenieurprojekte</span>
           </h2>
           <a href="portfolio.html" class="section-link">
-            <span class="lang-vi">Xem tất cả &rarr;</span>
             <span class="lang-en">View all &rarr;</span>
             <span class="lang-de">Alle ansehen &rarr;</span>
           </a>
@@ -216,13 +198,11 @@
             </div>
             <h3 class="card-title">
               <a href="portfolio.html#fuzzy-controller" style="color: inherit; text-decoration: none;">
-                <span class="lang-vi">Bộ Điều Khiển Mờ Mamdani Cho Con Lắc Ngược (MuJoCo & Simulink)</span>
                 <span class="lang-en">Mamdani FIS Inverted Pendulum Controller in MuJoCo & Simulink</span>
                 <span class="lang-de">Mamdani-FIS-Regler für Inverses Pendel in MuJoCo & Simulink</span>
               </a>
             </h3>
             <p class="card-desc">
-              <span class="lang-vi">Hệ mờ 16 luật 4 ngõ vào ổn định con lắc từ góc lệch lớn 22°, triệt tiêu trôi xe và tích hợp mô hình CAD HUST.</span>
               <span class="lang-en">16-rule Mamdani FIS stabilizing inverted pendulum from 22° tilt with zero cart drift.</span>
               <span class="lang-de">16-Regeln-Mamdani-FIS zur Stabilisierung des inversen Pendels ab 22° Neigung ohne Wagendrift.</span>
             </p>
@@ -233,7 +213,6 @@
             </div>
             <div style="margin-top: 1rem;">
               <a href="portfolio.html#fuzzy-controller" class="btn-tech btn-tech-primary">
-                <span class="lang-vi">Xem chi tiết & Demo &rarr;</span>
                 <span class="lang-en">View Details & Demo &rarr;</span>
                 <span class="lang-de">Details & Demo ansehen &rarr;</span>
               </a>
@@ -248,13 +227,11 @@
             </div>
             <h3 class="card-title">
               <a href="portfolio.html#cascade-pid" style="color: inherit; text-decoration: none;">
-                <span class="lang-vi">Cascade PID Cho Robot Hai Bánh Tự Cân Bằng Trên Simulink</span>
                 <span class="lang-en">Cascade PID for Two-Wheeled Self-Balancing Robot</span>
                 <span class="lang-de">Kaskadierter PID-Regler für Zweirad-Balancierroboter</span>
               </a>
             </h3>
             <p class="card-desc">
-              <span class="lang-vi">Kiến trúc hai vòng kín tách biệt động học góc nghiêng và vị trí, thiết kế tối ưu cho ESP32 và SimpleFOC.</span>
               <span class="lang-en">Dual-loop architecture separating tilt angle and translational position dynamics.</span>
               <span class="lang-de">Zweikreis-Architektur zur getrennten Regelung von Neigungswinkel und Translationsposition.</span>
             </p>
@@ -265,7 +242,6 @@
             </div>
             <div style="margin-top: 1rem;">
               <a href="portfolio.html#cascade-pid" class="btn-tech">
-                <span class="lang-vi">Xem chi tiết & Demo &rarr;</span>
                 <span class="lang-en">View Details & Demo &rarr;</span>
                 <span class="lang-de">Details & Demo ansehen &rarr;</span>
               </a>
@@ -280,13 +256,11 @@
             </div>
             <h3 class="card-title">
               <a href="portfolio.html#carcounter-yolo" style="color: inherit; text-decoration: none;">
-                <span class="lang-vi">Đếm & Theo Dõi Phương Tiện Giao Thông Thời Gian Thực (YOLO + SORT)</span>
                 <span class="lang-en">Real-Time Highway Vehicle Counter & Tracker</span>
                 <span class="lang-de">Echtzeit-Fahrzeugzähler & Tracker für Autobahnen</span>
               </a>
             </h3>
             <p class="card-desc">
-              <span class="lang-vi">Nhận diện và gán Track ID liên tục cho xe qua bộ lọc Kalman và thuật toán Hungary, đếm lượt qua vạch ảo 60 FPS.</span>
               <span class="lang-en">Multi-class vehicle tracking with Kalman filter and virtual line counting at 60 FPS.</span>
               <span class="lang-de">Mehrklassen-Fahrzeugverfolgung mit Kalman-Filter und Zählung an virtueller Linie bei 60 FPS.</span>
             </p>
@@ -297,7 +271,6 @@
             </div>
             <div style="margin-top: 1rem;">
               <a href="portfolio.html#carcounter-yolo" class="btn-tech">
-                <span class="lang-vi">Xem chi tiết & Demo &rarr;</span>
                 <span class="lang-en">View Details & Demo &rarr;</span>
                 <span class="lang-de">Details & Demo ansehen &rarr;</span>
               </a>
@@ -314,7 +287,7 @@
     <div class="search-modal">
       <div class="search-input-wrap">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="search-input" class="search-input" placeholder="Gõ từ khóa tìm kiếm (Ctrl+K)... / Type to search..." autocomplete="off">
+        <input type="text" id="search-input" class="search-input" placeholder="Type to search (Ctrl+K)..." autocomplete="off">
         <span class="kbd-shortcut">ESC</span>
       </div>
       <div id="search-results" class="search-results"></div>

@@ -5,20 +5,12 @@
 (function () {
   'use strict';
 
-  // --- 1. LANGUAGE SWITCHER (VI / EN / DE) ---
-  const DEFAULT_LANG = 'vi';
-  const SUPPORTED_LANGS = ['vi', 'en', 'de'];
+  // --- 1. LANGUAGE SWITCHER (EN / DE) ---
+  const DEFAULT_LANG = 'en';
+  const SUPPORTED_LANGS = ['en', 'de'];
   const LANG_STORAGE_KEY = 'site_lang';
 
   const LANG_META = {
-    vi: {
-      code: 'VI',
-      name: 'Tiếng Việt',
-      title: 'Ngôn ngữ: Tiếng Việt (Bấm để chọn ngôn ngữ)',
-      searchPlaceholder: 'Gõ từ khóa tìm kiếm (Ctrl+K)...',
-      searchEmpty: 'Không tìm thấy kết quả phù hợp.',
-      bibtexToast: '✓ Đã sao chép BibTeX vào Clipboard!'
-    },
     en: {
       code: 'EN',
       name: 'English',
@@ -57,7 +49,7 @@
           const isOpen = wrap.classList.toggle('open');
           langBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
         } else {
-          // Direct cycle fallback (VI -> EN -> DE -> VI)
+          // Direct cycle fallback (EN -> DE -> EN)
           const currentLang = document.body.getAttribute('data-lang') || DEFAULT_LANG;
           const nextIndex = (SUPPORTED_LANGS.indexOf(currentLang) + 1) % SUPPORTED_LANGS.length;
           setLanguage(SUPPORTED_LANGS[nextIndex]);
@@ -236,20 +228,19 @@
     function renderSearchResults(query) {
       if (typeof SEARCH_DATA === 'undefined') return;
 
-      const lang = document.body.getAttribute('data-lang') || 'vi';
+      const lang = document.body.getAttribute('data-lang') || 'en';
 
       const filtered = query === '' 
         ? SEARCH_DATA.slice(0, 5) 
         : SEARCH_DATA.filter(item => {
-            const matchVi = item.title_vi && item.title_vi.toLowerCase().includes(query);
             const matchEn = item.title_en && item.title_en.toLowerCase().includes(query);
             const matchDe = item.title_de && item.title_de.toLowerCase().includes(query);
             const matchKeywords = item.keywords && item.keywords.toLowerCase().includes(query);
-            return matchVi || matchEn || matchDe || matchKeywords;
+            return matchEn || matchDe || matchKeywords;
           });
 
       if (filtered.length === 0) {
-        const meta = LANG_META[lang] || LANG_META['vi'];
+        const meta = LANG_META[lang] || LANG_META['en'];
         searchResults.innerHTML = `
           <div style="padding: 1.5rem; text-align: center; color: var(--text-muted); font-size: 0.9rem;">
             ${meta.searchEmpty}
@@ -262,22 +253,20 @@
       const urlPrefix = isInPosts ? '../../' : '';
 
       searchResults.innerHTML = filtered.map(item => {
-        let title = item.title_vi;
-        if (lang === 'en') {
-          title = item.title_en || item.title_vi;
-        } else if (lang === 'de') {
-          title = item.title_de || item.title_en || item.title_vi;
+        let title = item.title_en;
+        if (lang === 'de') {
+          title = item.title_de || item.title_en;
         }
 
         let category = item.category;
         if (lang === 'de') {
           if (category.includes('CV')) category = 'Lebenslauf / Profil';
-          else if (category.includes('Bài Viết') || category.includes('Blog')) category = 'Blog / Technische Artikel';
-          else if (category.includes('Dự Án') || category.includes('Projects')) category = 'Projekte / Systeme';
-        } else if (lang === 'en') {
+          else if (category.includes('Blog')) category = 'Blog / Technische Artikel';
+          else if (category.includes('Projects')) category = 'Projekte / Systeme';
+        } else {
           if (category.includes('CV')) category = 'CV / Resume';
-          else if (category.includes('Bài Viết')) category = 'Blog / Articles';
-          else if (category.includes('Dự Án')) category = 'Projects / Systems';
+          else if (category.includes('Blog')) category = 'Blog / Articles';
+          else if (category.includes('Projects')) category = 'Projects / Systems';
         }
 
         const targetUrl = (item.url.startsWith('http') || item.url.startsWith('/')) ? item.url : (urlPrefix + item.url);
@@ -309,8 +298,8 @@
 
     function showToast() {
       if (!toast) return;
-      const lang = document.body.getAttribute('data-lang') || 'vi';
-      const meta = LANG_META[lang] || LANG_META['vi'];
+      const lang = document.body.getAttribute('data-lang') || 'en';
+      const meta = LANG_META[lang] || LANG_META['en'];
       toast.textContent = meta.bibtexToast;
       toast.classList.add('show');
       setTimeout(() => {

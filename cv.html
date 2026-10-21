@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi" data-theme="dark">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -107,7 +107,7 @@
     }
   </style>
 </head>
-<body data-lang="vi">
+<body data-lang="en">
 
   <!-- TOP MASTHEAD -->
   <header class="masthead">
@@ -118,11 +118,9 @@
           <polygon points="16,8 23,20 9,20" stroke="#38bdf8" stroke-width="1.5" fill="rgba(56, 189, 248, 0.2)"/>
           <circle cx="16" cy="16" r="2.5" fill="#00f2fe"/>
         </svg>
-        <span class="lang-vi">HỒ SƠ NĂNG LỰC</span>
         <span class="lang-en">CURRICULUM VITAE</span>
         <span class="lang-de">LEBENSLAUF</span>
         <span class="brand-badge">
-          <span class="lang-vi">HỒ SƠ</span>
           <span class="lang-en">RESUME</span>
           <span class="lang-de">VITA</span>
         </span>
@@ -130,31 +128,26 @@
 
       <nav class="masthead__nav">
         <ul class="nav-links">
-          <li><a href="index.html"><span class="lang-vi">Trang chủ</span><span class="lang-en">Home</span><span class="lang-de">Startseite</span></a></li>
-          <li><a href="research.html"><span class="lang-vi">Nghiên cứu</span><span class="lang-en">Research</span><span class="lang-de">Forschung</span></a></li>
-          <li><a href="portfolio.html"><span class="lang-vi">Dự án</span><span class="lang-en">Projects</span><span class="lang-de">Projekte</span></a></li>
-          <li><a href="blog.html"><span class="lang-vi">Bài viết</span><span class="lang-en">Blog</span><span class="lang-de">Blog</span></a></li>
+          <li><a href="index.html"><span class="lang-en">Home</span><span class="lang-de">Startseite</span></a></li>
+          <li><a href="research.html"><span class="lang-en">Research</span><span class="lang-de">Forschung</span></a></li>
+          <li><a href="portfolio.html"><span class="lang-en">Projects</span><span class="lang-de">Projekte</span></a></li>
+          <li><a href="blog.html"><span class="lang-en">Blog</span><span class="lang-de">Blog</span></a></li>
           <li><a href="cv.html" class="active"><span>CV</span></a></li>
         </ul>
 
         <div class="masthead__tools">
-          <button id="site-search-btn" class="tool-btn" title="Tìm kiếm (Ctrl+K)">
+          <button id="site-search-btn" class="tool-btn" title="Search (Ctrl+K)">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             <span class="kbd-shortcut">Ctrl K</span>
           </button>
           
           <div class="lang-dropdown-wrapper">
-            <button id="lang-toggle-btn" class="tool-btn lang-tool-btn" title="Đổi ngôn ngữ / Select language / Sprache wählen" aria-expanded="false">
-              <span id="lang-current-label">VI</span>
+            <button id="lang-toggle-btn" class="tool-btn lang-tool-btn" title="Select language / Sprache wählen" aria-expanded="false">
+              <span id="lang-current-label">EN</span>
               <svg class="lang-caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="lang-dropdown-menu" id="lang-dropdown-menu">
-              <button type="button" class="lang-dropdown-item active" data-lang-val="vi">
-                <span class="lang-flag">🇻🇳</span>
-                <span class="lang-item-name">Tiếng Việt</span>
-                <span class="lang-item-badge">VI</span>
-              </button>
-              <button type="button" class="lang-dropdown-item" data-lang-val="en">
+              <button type="button" class="lang-dropdown-item active" data-lang-val="en">
                 <span class="lang-flag">🇬🇧</span>
                 <span class="lang-item-name">English</span>
                 <span class="lang-item-badge">EN</span>
@@ -167,7 +160,7 @@
             </div>
           </div>
 
-          <button id="theme-toggle-btn" class="tool-btn" title="Chuyển chế độ sáng/tối">
+          <button id="theme-toggle-btn" class="tool-btn" title="Toggle light/dark mode">
             <span id="theme-icon">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
             </span>
@@ -192,7 +185,6 @@
         </div>
         <div class="author-info">
           <h2 class="author-name">
-            <span class="lang-vi">Đỗ Hiểu Vinh</span>
             <span class="lang-en">Đỗ Hiểu Vinh</span>
             <span class="lang-de">Đỗ Hiểu Vinh</span>
           </h2>
@@ -200,7 +192,6 @@
 
           <div class="author-status">
             <span class="status-dot"></span>
-            <span class="lang-vi">KỸ SƯ CƠ ĐIỆN TỬ</span>
             <span class="lang-en">MECHATRONICS ENGINEER</span>
             <span class="lang-de">MECHATRONIK-INGENIEUR</span>
           </div>
@@ -210,7 +201,6 @@
         <div class="contact-location">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
           <span>
-            <span class="lang-vi">Long Biên, Hà Nội</span>
             <span class="lang-en">Long Bien, Hanoi</span>
             <span class="lang-de">Long Bien, Hanoi</span>
           </span>
@@ -250,18 +240,15 @@
       <section class="hero-card">
         <div class="hero-header">
           <span class="terminal-badge">
-            <span class="lang-vi">HỒ SƠ // KỸ SƯ CƠ ĐIỆN TỬ</span>
             <span class="lang-en">IDENTITY // MECHATRONICS ENGINEER</span>
             <span class="lang-de">IDENTITÄT // MECHATRONIK-INGENIEUR</span>
           </span>
         </div>
         <h1 class="hero-title">
-          <span class="lang-vi">Hồ Sơ Năng Lực &amp; Lý Lịch Khoa Học</span>
           <span class="lang-en">Curriculum Vitae &amp; Credentials</span>
           <span class="lang-de">Lebenslauf &amp; Qualifikationen</span>
         </h1>
         <p class="hero-desc">
-          <span class="lang-vi">KỸ SƯ CƠ ĐIỆN TỬ · ĐẠI HỌC BÁCH KHOA HÀ NỘI (HUST)</span>
           <span class="lang-en">MECHATRONICS ENGINEER · HANOI UNIVERSITY OF SCIENCE AND TECHNOLOGY</span>
           <span class="lang-de">MECHATRONIK-INGENIEUR · TECHNISCHE UNIVERSITÄT HANOI</span>
         </p>
@@ -272,7 +259,6 @@
         <div class="section-title-wrap">
           <h2 class="section-title">
             <span class="section-prefix">&gt;</span>
-            <span class="lang-vi">HỌC VẤN</span>
             <span class="lang-en">EDUCATION</span>
             <span class="lang-de">AUSBILDUNG</span>
           </h2>
@@ -281,12 +267,10 @@
         <div class="cv-timeline">
           <div class="cv-node">
             <div class="cv-title">
-              <span class="lang-vi">Đại học Bách Khoa Hà Nội</span>
               <span class="lang-en">Hanoi University of Science and Technology</span>
               <span class="lang-de">Technische Universität Hanoi</span>
             </div>
             <div class="cv-sub">
-              <span class="lang-vi">Kỹ thuật Cơ điện tử - 2027</span>
               <span class="lang-en">Mechatronics Engineering - 2027</span>
               <span class="lang-de">Mechatronik - Abschluss 2027</span>
             </div>
@@ -299,7 +283,6 @@
         <div class="section-title-wrap">
           <h2 class="section-title">
             <span class="section-prefix">&gt;</span>
-            <span class="lang-vi">KINH NGHIỆM NGHIÊN CỨU</span>
             <span class="lang-en">RESEARCH EXPERIENCE</span>
             <span class="lang-de">FORSCHUNGSERFAHRUNG</span>
           </h2>
@@ -309,23 +292,19 @@
           <!-- Club -->
           <div class="cv-node">
             <div class="cv-title">
-              <span class="lang-vi">CLB Robot và Thiết Bị Thông Minh HUST</span>
               <span class="lang-en">HUST ROBOTICS AND SMART EQUIPMENT CLUB</span>
               <span class="lang-de">HUST Robotik- und Smart-Equipment-Club</span>
             </div>
             <div class="cv-sub">
-              <span class="lang-vi">2024 - 2025 · Kỹ sư Thiết kế Cơ khí &amp; Lập trình</span>
               <span class="lang-en">2024 - 2025 · Mechanical Designer &amp; Programmer</span>
               <span class="lang-de">2024 - 2025 · Mechanischer Konstrukteur &amp; Programmierer</span>
             </div>
             <ul class="cv-bullets">
               <li>
-                <span class="lang-vi">Thiết kế các cơ cấu robot và các bộ phận kết cấu, chú trọng vào độ cứng vững và độ bền</span>
                 <span class="lang-en">Designed robotic mechanisms and structural components with focus on stiffness and durability</span>
                 <span class="lang-de">Konstruktion von Robotermechanismen und Strukturkomponenten mit Fokus auf Steifigkeit und Haltbarkeit</span>
               </li>
               <li>
-                <span class="lang-vi">Tích hợp cơ cấu chấp hành, cảm biến và phần cứng điều khiển (ESP32) vào các hệ thống con cơ khí</span>
                 <span class="lang-en">Integrated actuators, sensors, and control hardware (ESP32) into mechanical subsystems</span>
                 <span class="lang-de">Integration von Aktoren, Sensoren und Steuerungshardware (ESP32) in mechanische Subsysteme</span>
               </li>
@@ -335,23 +314,19 @@
           <!-- Lab -->
           <div class="cv-node">
             <div class="cv-title">
-              <span class="lang-vi">Phòng Thí Nghiệm Cơ Điện Tử Thông Minh &amp; Trí Tuệ Nhân Tạo</span>
               <span class="lang-en">Smart Mechatronics and Artificial Intelligence Lab</span>
               <span class="lang-de">Labor für Intelligente Mechatronik und Künstliche Intelligenz</span>
             </div>
             <div class="cv-sub">
-              <span class="lang-vi">2024 - Hiện tại · Kỹ sư Thiết kế Cơ khí Robot</span>
               <span class="lang-en">2024 - Present · Mechanical Robotics Designer</span>
               <span class="lang-de">2024 - Gegenwart · Robotik-Konstruktionsingenieur</span>
             </div>
             <ul class="cv-bullets">
               <li>
-                <span class="lang-vi">Thiết kế kết cấu cơ khí cho các nền tảng cảm nhận và điều hướng của robot</span>
                 <span class="lang-en">Designed mechanical structures for robotic perception and navigation platforms</span>
                 <span class="lang-de">Entwurf mechanischer Strukturen für Sensorik- und Navigationsplattformen von Robotern</span>
               </li>
               <li>
-                <span class="lang-vi">Phối hợp tích hợp hệ thống giữa cụm kết cấu cơ khí và hệ thống điều khiển trên nền tảng ROS 2</span>
                 <span class="lang-en">Collaborated in system integration between mechanical assemblies and ROS 2-based control systems</span>
                 <span class="lang-de">Koordination der Systemintegration zwischen mechanischen Baugruppen und ROS 2-basierten Steuerungssystemen</span>
               </li>
@@ -365,7 +340,6 @@
         <div class="section-title-wrap">
           <h2 class="section-title">
             <span class="section-prefix">&gt;</span>
-            <span class="lang-vi">DỰ ÁN</span>
             <span class="lang-en">PROJECT</span>
             <span class="lang-de">PROJEKTE</span>
           </h2>
@@ -375,28 +349,23 @@
           <!-- Project 1 -->
           <div class="cv-node">
             <div class="cv-title">
-              <span class="lang-vi">PVGAS UAVCUP 2025 · Kỹ sư Thiết kế Cơ khí</span>
               <span class="lang-en">PVGAS UAVCUP 2025 · Mechanical Designer</span>
               <span class="lang-de">PVGAS UAVCUP 2025 · Mechanischer Konstrukteur</span>
             </div>
             <div class="cv-sub">
-              <span class="lang-vi">2025</span>
               <span class="lang-en">2025</span>
               <span class="lang-de">2025</span>
             </div>
             <ul class="cv-bullets">
               <li>
-                <span class="lang-vi">Phát triển cấu trúc vòng bảo vệ cánh quạt nhằm nâng cao an toàn vận hành và khả năng chống va đập, đồng thời giảm thiểu lực cản khí động học trên drone.</span>
                 <span class="lang-en">Developed a propeller protection ring structure to improve operational safety and impact resistance while minimizing aerodynamic drag on drone.</span>
                 <span class="lang-de">Entwicklung einer Propellerschutzring-Struktur zur Verbesserung der Betriebssicherheit und Stoßfestigkeit bei gleichzeitiger Minimierung des aerodynamischen Widerstands der Drohne.</span>
               </li>
               <li>
-                <span class="lang-vi">Thiết kế và kiểm nghiệm cơ cấu càng đáp tích hợp kẹp gắp &amp; thả tải trọng điều khiển bằng động cơ servo, đảm bảo truyền động chính xác, độ lặp lại và độ tin cậy cơ học trong điều kiện bay động lực học.</span>
                 <span class="lang-en">Designed and validated a servo-actuated gripping &amp; payload release landing gear mechanism, ensuring precise actuation, repeatability, and mechanical reliability under dynamic flight conditions.</span>
                 <span class="lang-de">Konstruktion und Validierung eines servobetriebenen Greif- und Lastabwurf-Landegestellmechanismus, der präzise Betätigung, Wiederholgenauigkeit und mechanische Zuverlässigkeit unter dynamischen Flugbedingungen gewährleistet.</span>
               </li>
               <li>
-                <span class="lang-vi">Thực hiện phân tích tải trọng, lựa chọn vật liệu, thiết kế dung sai và kiểm định kết cấu nhằm đảm bảo tuân thủ các ràng buộc của cuộc thi.</span>
                 <span class="lang-en">Performed load analysis, material selection, tolerance design, and structural validation to ensure compliance with competition constraints.</span>
                 <span class="lang-de">Durchführung von Lastanalysen, Materialauswahl, Toleranzberechnung und Strukturvalidierung zur Einhaltung der Wettbewerbsvorgaben.</span>
               </li>
@@ -406,28 +375,23 @@
           <!-- Project 2 -->
           <div class="cv-node">
             <div class="cv-title">
-              <span class="lang-vi">Cuộc thi Robot Pickleball 2024 · Kỹ sư Thiết kế Cơ khí &amp; Điện tử</span>
               <span class="lang-en">Robot Pickleball Competition 2024 · Mechanical &amp; Electronics Designer</span>
               <span class="lang-de">Pickleball-Roboter-Wettbewerb 2024 · Mechanik- &amp; Elektronik-Entwickler</span>
             </div>
             <div class="cv-sub">
-              <span class="lang-vi">2024</span>
               <span class="lang-en">2024</span>
               <span class="lang-de">2024</span>
             </div>
             <div class="cv-award-badge">
-              <span class="lang-vi">🏆 Đạt giải "Outstanding Design Award" (Thiết kế Xuất sắc) trong cuộc thi.</span>
               <span class="lang-en">🏆 Awarded “Outstanding Design Award” in the competition.</span>
               <span class="lang-de">🏆 Ausgezeichnet mit dem „Outstanding Design Award“ im Wettbewerb.</span>
             </div>
             <ul class="cv-bullets">
               <li>
-                <span class="lang-vi">Đảm nhiệm vai trò trưởng nhóm phát triển ý tưởng và thiết kế cơ khí chính của robot, đảm bảo tính năng hoạt động, độ bền bỉ và cấu trúc sáng tạo.</span>
                 <span class="lang-en">Took the lead in concept development and main mechanical design of the robot, ensuring functionality, robustness, and innovative structure.</span>
                 <span class="lang-de">Federführend bei der Konzeptentwicklung und der mechanischen Hauptkonstruktion des Roboters, mit Fokus auf Funktionalität, Robustheit und innovative Bauweise.</span>
               </li>
               <li>
-                <span class="lang-vi">Chịu trách nhiệm lắp ráp và tích hợp hệ thống điện - điện tử, bao gồm đi dây, đấu nối mạch và thiết lập vi điều khiển cho khả năng điều khiển ổn định, tin cậy.</span>
                 <span class="lang-en">Responsible for installation and integration of the electronic system, including wiring, circuit connections, and microcontroller setup for reliable control</span>
                 <span class="lang-de">Verantwortlich für Installation und Integration des elektronischen Systems einschließlich Verkabelung, Schaltungsanschlüssen und Mikrocontroller-Einrichtung für zuverlässige Steuerung.</span>
               </li>
@@ -437,28 +401,23 @@
           <!-- Project 3 -->
           <div class="cv-node">
             <div class="cv-title">
-              <span class="lang-vi">Xe Tự Hành · Lập trình viên Thị giác máy tính &amp; ROS 2</span>
               <span class="lang-en">Self-Driving Car · Computer Vision &amp; ROS 2 Developer</span>
               <span class="lang-de">Autonomes Fahrzeug · Entwickler für Computer Vision &amp; ROS 2</span>
             </div>
             <div class="cv-sub">
-              <span class="lang-vi">2025</span>
               <span class="lang-en">2025</span>
               <span class="lang-de">2025</span>
             </div>
             <ul class="cv-bullets">
               <li>
-                <span class="lang-vi">Thiết kế và triển khai xe tự hành có khả năng tự định vị &amp; điều hướng sử dụng các kỹ thuật thị giác máy tính.</span>
                 <span class="lang-en">Designed and implemented an autonomous vehicle capable of navigation using computer vision techniques</span>
                 <span class="lang-de">Entwurf und Implementierung eines autonomen Fahrzeugs mit Navigationsfähigkeit unter Einsatz von Computer-Vision-Techniken.</span>
               </li>
               <li>
-                <span class="lang-vi">Ứng dụng OpenCV (cv2) để xử lý ảnh thời gian thực, bao gồm phát hiện làn đường, nhận diện vật thể và ra quyết định dựa trên dữ liệu camera.</span>
                 <span class="lang-en">Applied OpenCV (cv2) for real-time image processing, including lane detection, object recognition, and decision-making based on visual inputs.</span>
                 <span class="lang-de">Anwendung von OpenCV (cv2) zur Echtzeit-Bildverarbeitung, einschließlich Spurerkennung, Objekterkennung und Entscheidungsfindung basierend auf visuellen Eingaben.</span>
               </li>
               <li>
-                <span class="lang-vi">Phát triển và tích hợp các thuật toán điều khiển trên nền tảng ROS 2 nhằm quản lý chuyển động xe, kết hợp cảm biến (sensor fusion) và truyền thông giữa các hệ thống con.</span>
                 <span class="lang-en">Developed and integrated control algorithms on ROS 2 to manage vehicle motion, sensor fusion, and communication between subsystems</span>
                 <span class="lang-de">Entwicklung und Integration von Steuerungsalgorithmen auf ROS 2 zur Regelung der Fahrzeugbewegung, Sensorfusion und Kommunikation zwischen Subsystemen.</span>
               </li>
@@ -472,7 +431,6 @@
         <div class="section-title-wrap">
           <h2 class="section-title">
             <span class="section-prefix">&gt;</span>
-            <span class="lang-vi">KỸ NĂNG</span>
             <span class="lang-en">SKILL</span>
             <span class="lang-de">KOMPETENZEN</span>
           </h2>
@@ -480,12 +438,10 @@
 
         <div class="skills-category">
           <div class="skills-cat-title">
-            <span class="lang-vi">[ 01 ] LẬP TRÌNH</span>
             <span class="lang-en">[ 01 ] PROGRAMMING</span>
             <span class="lang-de">[ 01 ] PROGRAMMIERUNG</span>
           </div>
           <div class="cv-skill-text">
-            <span class="lang-vi">Thành thạo C, Python và MATLAB.</span>
             <span class="lang-en">Proficient in C ,Python and MATLAB.</span>
             <span class="lang-de">Fundierte Kenntnisse in C, Python und MATLAB.</span>
           </div>
@@ -493,12 +449,10 @@
 
         <div class="skills-category">
           <div class="skills-cat-title">
-            <span class="lang-vi">[ 02 ] THIẾT KẾ CƠ KHÍ (3D &amp; 2D CAD)</span>
             <span class="lang-en">[ 02 ] MECHANICAL DESIGN (3D &amp; 2D CAD)</span>
             <span class="lang-de">[ 02 ] MECHANISCHE KONSTRUKTION (3D &amp; 2D CAD)</span>
           </div>
           <div class="cv-skill-text">
-            <span class="lang-vi">Fusion 360 (Nâng cao), Siemens NX (Nâng cao), AutoCAD.</span>
             <span class="lang-en">Fusion 360 (Advanced), Siemens NX (Advanced), AutoCAD.</span>
             <span class="lang-de">Fusion 360 (Fortgeschritten), Siemens NX (Fortgeschritten), AutoCAD.</span>
           </div>
@@ -506,12 +460,10 @@
 
         <div class="skills-category">
           <div class="skills-cat-title">
-            <span class="lang-vi">[ 03 ] THIẾT KẾ ĐIỆN TỬ &amp; MẠCH</span>
             <span class="lang-en">[ 03 ] ELECTRONICS AND CIRCUIT DESIGN</span>
             <span class="lang-de">[ 03 ] ELEKTRONIK- &amp; SCHALTUNGSENTWURF</span>
           </div>
           <div class="cv-skill-text">
-            <span class="lang-vi">KiCad, Altium (Trung cấp).</span>
             <span class="lang-en">KiCad, Altium (Intermediate).</span>
             <span class="lang-de">KiCad, Altium (Fortgeschrittene Grundkenntnisse).</span>
           </div>
@@ -523,7 +475,6 @@
         <div class="section-title-wrap">
           <h2 class="section-title">
             <span class="section-prefix">&gt;</span>
-            <span class="lang-vi">CHỨNG CHỈ</span>
             <span class="lang-en">CERTIFICATE</span>
             <span class="lang-de">ZERTIFIKATE</span>
           </h2>
@@ -533,19 +484,16 @@
           <div class="tech-card">
             <div class="card-top">
               <span class="card-type">
-                <span class="lang-vi">CHỨNG CHỈ NGOẠI NGỮ</span>
                 <span class="lang-en">LANGUAGE CERTIFICATE</span>
                 <span class="lang-de">SPRACHZERTIFIKAT</span>
               </span>
               <span class="cert-pill">C1</span>
             </div>
             <h3 class="card-title" style="margin-bottom: 0.25rem;">
-              <span class="lang-vi">TIẾNG ANH (IELTS)</span>
               <span class="lang-en">ENGLISH (IELTS)</span>
               <span class="lang-de">ENGLISCH (IELTS)</span>
             </h3>
             <p class="card-desc" style="color: var(--accent-cyan); font-family: var(--font-mono); font-weight: 600;">
-              <span class="lang-vi">Trình độ: C1</span>
               <span class="lang-en">Level: C1</span>
               <span class="lang-de">Niveau: C1</span>
             </p>
@@ -554,19 +502,16 @@
           <div class="tech-card">
             <div class="card-top">
               <span class="card-type">
-                <span class="lang-vi">CHỨNG CHỈ NGOẠI NGỮ</span>
                 <span class="lang-en">LANGUAGE CERTIFICATE</span>
                 <span class="lang-de">SPRACHZERTIFIKAT</span>
               </span>
               <span class="cert-pill">B1</span>
             </div>
             <h3 class="card-title" style="margin-bottom: 0.25rem;">
-              <span class="lang-vi">TIẾNG ĐỨC (Goethe-Zertifikat)</span>
               <span class="lang-en">GERMAN (Goethe-Zertifikat)</span>
               <span class="lang-de">DEUTSCH (Goethe-Zertifikat)</span>
             </h3>
             <p class="card-desc" style="color: var(--accent-cyan); font-family: var(--font-mono); font-weight: 600;">
-              <span class="lang-vi">Trình độ: B1</span>
               <span class="lang-en">Level: B1</span>
               <span class="lang-de">Niveau: B1</span>
             </p>
@@ -582,7 +527,7 @@
     <div class="search-modal">
       <div class="search-input-wrap">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="search-input" class="search-input" placeholder="Tìm kiếm... / Search..." autocomplete="off">
+        <input type="text" id="search-input" class="search-input" placeholder="Type to search (Ctrl+K)..." autocomplete="off">
         <span class="kbd-shortcut">ESC</span>
       </div>
       <div id="search-results" class="search-results"></div>
