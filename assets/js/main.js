@@ -10,6 +10,19 @@
   const SUPPORTED_LANGS = ['en', 'de'];
   const LANG_STORAGE_KEY = 'site_lang';
 
+  // Immediate legacy migration & state cleanup
+  try {
+    const raw = localStorage.getItem(LANG_STORAGE_KEY);
+    if (raw !== 'de') {
+      localStorage.setItem(LANG_STORAGE_KEY, 'en');
+    }
+    const current = localStorage.getItem(LANG_STORAGE_KEY) || 'en';
+    document.documentElement.setAttribute('lang', current);
+    if (document.body) {
+      document.body.setAttribute('data-lang', current);
+    }
+  } catch(e) {}
+
   const LANG_META = {
     en: {
       code: 'EN',

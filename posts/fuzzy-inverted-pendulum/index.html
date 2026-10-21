@@ -5,11 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fuzzy Logic Control for Inverted Pendulum | Simscape Multibody & Simulink</title>
   <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
-  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="../../assets/css/style.css?v=3.2">
   <!-- KaTeX CSS & JS for Math Equations -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('site_lang');
+        if (saved !== 'de') {
+          localStorage.setItem('site_lang', 'en');
+          document.documentElement.setAttribute('lang', 'en');
+          if (document.body) document.body.setAttribute('data-lang', 'en');
+        } else {
+          document.documentElement.setAttribute('lang', 'de');
+          if (document.body) document.body.setAttribute('data-lang', 'de');
+        }
+      } catch(e) {}
+    })();
+  </script>
 </head>
 <body data-lang="en">
 
@@ -539,22 +554,52 @@ disp('=== IMPORT SUCCESSFUL! smiData VARIABLE READY IN WORKSPACE ===');</code></
                   </tr>
                 </thead>
                 <tbody>
-                  <tr><td><strong>R01</strong></td><td>N</td><td>N</td><td>N</td><td>N</td><td><strong>NL</strong></td><td><span class="lang-en">Extreme emergency: Left tilt, swinging left, cart displaced left $ightarrow$ Full left force ($-10	ext{N}$).</span><span class="lang-de">Höchste Dringlichkeit: Linksauslenkung, Drehimpuls links, Wagen links $ightarrow$ Volle Kraft links ($-10	ext{N}$).</span></td></tr>
-                  <tr><td><strong>R02</strong></td><td>N</td><td>N</td><td>N</td><td>P</td><td><strong>NL</strong></td><td><span class="lang-en">Left tilt + swinging left $ightarrow$ Top priority is saving the tilt angle, output NL.</span><span class="lang-de">Linksauslenkung + Drehimpuls links $ightarrow$ Höchste Priorität hat Pendelaufrichtung, NL ausgeben.</span></td></tr>
-                  <tr><td><strong>R03</strong></td><td>N</td><td>N</td><td>P</td><td>N</td><td><strong>NL</strong></td><td><span class="lang-en">Although cart is right, pole is falling left $ightarrow$ Apply NL to catch the center of gravity.</span><span class="lang-de">Wagen steht rechts, aber Pendel fällt nach links $ightarrow$ NL schalten, um Schwerpunkt aufzufangen.</span></td></tr>
-                  <tr><td><strong>R04</strong></td><td>N</td><td>N</td><td>P</td><td>P</td><td><strong>NM</strong></td><td><span class="lang-en">Cart is on right moving right $ightarrow$ Adequate runway, apply moderate negative force ($-7	ext{N}$).</span><span class="lang-de">Wagen rechts und driftet nach rechts $ightarrow$ Sanfte Bremskraft ($-7	ext{N}$) gegen Rucken.</span></td></tr>
-                  <tr><td><strong>R05</strong></td><td>N</td><td>P</td><td>N</td><td>N</td><td><strong>NM</strong></td><td><span class="lang-en">Tilted left but <em>swinging back right</em> ($\dot{	heta} > 0$) $ightarrow$ Drop to NM for smooth damping.</span><span class="lang-de">Nach links geneigt, schwingt aber <em>selbsttätig nach rechts</em> $ightarrow$ Drosseln auf NM.</span></td></tr>
-                  <tr><td><strong>R06</strong></td><td>N</td><td>P</td><td>N</td><td>P</td><td><strong>NM</strong></td><td><span class="lang-en">Pendulum returning, cart heading toward center $ightarrow$ Apply moderate force NM.</span><span class="lang-de">Pendel kehrt zurück, Wagen steuert Schienenmitte an $ightarrow$ Moderate Stellkraft NM.</span></td></tr>
-                  <tr><td><strong>R07</strong></td><td>N</td><td>P</td><td>P</td><td>N</td><td><strong>NM</strong></td><td><span class="lang-en">Pendulum returning, cart on right $ightarrow$ Maintain mild negative force to damp oscillations.</span><span class="lang-de">Pendel kehrt zurück, Wagen rechts $ightarrow$ Leichte Gegenkraft zur Schwingungsdämpfung.</span></td></tr>
-                  <tr><td><strong>R08</strong></td><td>N</td><td>P</td><td>P</td><td>P</td><td><strong>NM</strong></td><td><span class="lang-en">Pendulum recovering, cart right $ightarrow$ Moderate negative force balances both states.</span><span class="lang-de">Pendel kehrt zurück, Wagen rechts $ightarrow$ Moderate Kraft balanciert beides aus.</span></td></tr>
-                  <tr><td><strong>R09</strong></td><td>P</td><td>N</td><td>N</td><td>N</td><td><strong>PM</strong></td><td><span class="lang-en">Tilted right but <em>swinging back left</em> ($\dot{	heta} < 0$) $ightarrow$ Moderate positive force ($+7	ext{N}$).</span><span class="lang-de">Nach rechts geneigt, schwingt aber <em>nach links</em> $ightarrow$ Moderate positive Kraft ($+7	ext{N}$).</span></td></tr>
-                  <tr><td><strong>R10</strong></td><td>P</td><td>N</td><td>N</td><td>P</td><td><strong>PM</strong></td><td><span class="lang-en">Pendulum self-recovering, cart heading right $ightarrow$ Soft capture with PM.</span><span class="lang-de">Pendel schwingt ein, Wagen fährt rechts $ightarrow$ Sanftes Abfangen mit PM.</span></td></tr>
-                  <tr><td><strong>R11</strong></td><td>P</td><td>N</td><td>P</td><td>N</td><td><strong>PM</strong></td><td><span class="lang-en">Pendulum self-recovering $ightarrow$ PM.</span><span class="lang-de">Pendel schwingt selbsttätig ein $ightarrow$ PM.</span></td></tr>
-                  <tr><td><strong>R12</strong></td><td>P</td><td>N</td><td>P</td><td>P</td><td><strong>PM</strong></td><td><span class="lang-en">Pendulum self-recovering, cart right $ightarrow$ Moderate positive force stabilizes without overshoot.</span><span class="lang-de">Pendel kehrt zurück, Wagen rechts $ightarrow$ Moderate positive Kraft stabilisiert ruckfrei.</span></td></tr>
-                  <tr><td><strong>R13</strong></td><td>P</td><td>P</td><td>N</td><td>N</td><td><strong>PL</strong></td><td><span class="lang-en">Right tilt + swinging right $ightarrow$ Maximum positive force ($+10	ext{N}$) to drive cart beneath.</span><span class="lang-de">Rechtsneigung + Drehimpuls rechts $ightarrow$ Maximale Vorwärtskraft ($+10	ext{N}$) zum Unterfahren.</span></td></tr>
-                  <tr><td><strong>R14</strong></td><td>P</td><td>P</td><td>N</td><td>P</td><td><strong>PL</strong></td><td><span class="lang-en">Falling right + swinging right $ightarrow$ Output maximal PL force to catch up with falling rate.</span><span class="lang-de">Kippt rechts + Drehimpuls rechts $ightarrow$ Maximale Kraft PL, um Fallgeschwindigkeit einzuholen.</span></td></tr>
+                  <tr><td><strong>R01</strong></td><td>N</td><td>N</td><td>N</td><td>N</td><td><strong>NL</strong></td><td><span class="lang-en">Extreme emergency: Left tilt, swinging left, cart displaced left $
+ightarrow$ Full left force ($-10	ext{N}$).</span><span class="lang-de">Höchste Dringlichkeit: Linksauslenkung, Drehimpuls links, Wagen links $
+ightarrow$ Volle Kraft links ($-10	ext{N}$).</span></td></tr>
+                  <tr><td><strong>R02</strong></td><td>N</td><td>N</td><td>N</td><td>P</td><td><strong>NL</strong></td><td><span class="lang-en">Left tilt + swinging left $
+ightarrow$ Top priority is saving the tilt angle, output NL.</span><span class="lang-de">Linksauslenkung + Drehimpuls links $
+ightarrow$ Höchste Priorität hat Pendelaufrichtung, NL ausgeben.</span></td></tr>
+                  <tr><td><strong>R03</strong></td><td>N</td><td>N</td><td>P</td><td>N</td><td><strong>NL</strong></td><td><span class="lang-en">Although cart is right, pole is falling left $
+ightarrow$ Apply NL to catch the center of gravity.</span><span class="lang-de">Wagen steht rechts, aber Pendel fällt nach links $
+ightarrow$ NL schalten, um Schwerpunkt aufzufangen.</span></td></tr>
+                  <tr><td><strong>R04</strong></td><td>N</td><td>N</td><td>P</td><td>P</td><td><strong>NM</strong></td><td><span class="lang-en">Cart is on right moving right $
+ightarrow$ Adequate runway, apply moderate negative force ($-7	ext{N}$).</span><span class="lang-de">Wagen rechts und driftet nach rechts $
+ightarrow$ Sanfte Bremskraft ($-7	ext{N}$) gegen Rucken.</span></td></tr>
+                  <tr><td><strong>R05</strong></td><td>N</td><td>P</td><td>N</td><td>N</td><td><strong>NM</strong></td><td><span class="lang-en">Tilted left but <em>swinging back right</em> ($\dot{	heta} > 0$) $
+ightarrow$ Drop to NM for smooth damping.</span><span class="lang-de">Nach links geneigt, schwingt aber <em>selbsttätig nach rechts</em> $
+ightarrow$ Drosseln auf NM.</span></td></tr>
+                  <tr><td><strong>R06</strong></td><td>N</td><td>P</td><td>N</td><td>P</td><td><strong>NM</strong></td><td><span class="lang-en">Pendulum returning, cart heading toward center $
+ightarrow$ Apply moderate force NM.</span><span class="lang-de">Pendel kehrt zurück, Wagen steuert Schienenmitte an $
+ightarrow$ Moderate Stellkraft NM.</span></td></tr>
+                  <tr><td><strong>R07</strong></td><td>N</td><td>P</td><td>P</td><td>N</td><td><strong>NM</strong></td><td><span class="lang-en">Pendulum returning, cart on right $
+ightarrow$ Maintain mild negative force to damp oscillations.</span><span class="lang-de">Pendel kehrt zurück, Wagen rechts $
+ightarrow$ Leichte Gegenkraft zur Schwingungsdämpfung.</span></td></tr>
+                  <tr><td><strong>R08</strong></td><td>N</td><td>P</td><td>P</td><td>P</td><td><strong>NM</strong></td><td><span class="lang-en">Pendulum recovering, cart right $
+ightarrow$ Moderate negative force balances both states.</span><span class="lang-de">Pendel kehrt zurück, Wagen rechts $
+ightarrow$ Moderate Kraft balanciert beides aus.</span></td></tr>
+                  <tr><td><strong>R09</strong></td><td>P</td><td>N</td><td>N</td><td>N</td><td><strong>PM</strong></td><td><span class="lang-en">Tilted right but <em>swinging back left</em> ($\dot{	heta} < 0$) $
+ightarrow$ Moderate positive force ($+7	ext{N}$).</span><span class="lang-de">Nach rechts geneigt, schwingt aber <em>nach links</em> $
+ightarrow$ Moderate positive Kraft ($+7	ext{N}$).</span></td></tr>
+                  <tr><td><strong>R10</strong></td><td>P</td><td>N</td><td>N</td><td>P</td><td><strong>PM</strong></td><td><span class="lang-en">Pendulum self-recovering, cart heading right $
+ightarrow$ Soft capture with PM.</span><span class="lang-de">Pendel schwingt ein, Wagen fährt rechts $
+ightarrow$ Sanftes Abfangen mit PM.</span></td></tr>
+                  <tr><td><strong>R11</strong></td><td>P</td><td>N</td><td>P</td><td>N</td><td><strong>PM</strong></td><td><span class="lang-en">Pendulum self-recovering $
+ightarrow$ PM.</span><span class="lang-de">Pendel schwingt selbsttätig ein $
+ightarrow$ PM.</span></td></tr>
+                  <tr><td><strong>R12</strong></td><td>P</td><td>N</td><td>P</td><td>P</td><td><strong>PM</strong></td><td><span class="lang-en">Pendulum self-recovering, cart right $
+ightarrow$ Moderate positive force stabilizes without overshoot.</span><span class="lang-de">Pendel kehrt zurück, Wagen rechts $
+ightarrow$ Moderate positive Kraft stabilisiert ruckfrei.</span></td></tr>
+                  <tr><td><strong>R13</strong></td><td>P</td><td>P</td><td>N</td><td>N</td><td><strong>PL</strong></td><td><span class="lang-en">Right tilt + swinging right $
+ightarrow$ Maximum positive force ($+10	ext{N}$) to drive cart beneath.</span><span class="lang-de">Rechtsneigung + Drehimpuls rechts $
+ightarrow$ Maximale Vorwärtskraft ($+10	ext{N}$) zum Unterfahren.</span></td></tr>
+                  <tr><td><strong>R14</strong></td><td>P</td><td>P</td><td>N</td><td>P</td><td><strong>PL</strong></td><td><span class="lang-en">Falling right + swinging right $
+ightarrow$ Output maximal PL force to catch up with falling rate.</span><span class="lang-de">Kippt rechts + Drehimpuls rechts $
+ightarrow$ Maximale Kraft PL, um Fallgeschwindigkeit einzuholen.</span></td></tr>
                   <tr><td><strong>R15</strong></td><td>P</td><td>P</td><td>P</td><td>N</td><td><strong>PL</strong></td><td><span class="lang-en">Falling right + swinging right, tilt stabilization takes absolute priority over cart position.</span><span class="lang-de">Kippt rechts + Drehimpuls rechts: Pendelrettung hat absolute Priorität vor Wagenposition.</span></td></tr>
-                  <tr><td><strong>R16</strong></td><td>P</td><td>P</td><td>P</td><td>P</td><td><strong>PL</strong></td><td><span class="lang-en">Extreme emergency right: All 4 states positive $ightarrow$ Full positive thrust ($+10	ext{N}$).</span><span class="lang-de">Höchste Dringlichkeit rechts: Alle 4 Zustände positiv $ightarrow$ Voller Schub rechts ($+10	ext{N}$).</span></td></tr>
+                  <tr><td><strong>R16</strong></td><td>P</td><td>P</td><td>P</td><td>P</td><td><strong>PL</strong></td><td><span class="lang-en">Extreme emergency right: All 4 states positive $
+ightarrow$ Full positive thrust ($+10	ext{N}$).</span><span class="lang-de">Höchste Dringlichkeit rechts: Alle 4 Zustände positiv $
+ightarrow$ Voller Schub rechts ($+10	ext{N}$).</span></td></tr>
                 </tbody>
               </table>
             </div>
@@ -682,7 +727,8 @@ theta_norm = atan2(sin(theta), cos(theta));</code></pre>
               </li>
               <li>
                 <strong>"Fuzzy Logic Controller" Block:</strong><br>
-                Insert from Simulink Library $ightarrow$ <em>Fuzzy Logic Toolbox</em>. Double-click and specify <code>'cartpole_16rules.fis'</code>.
+                Insert from Simulink Library $
+ightarrow$ <em>Fuzzy Logic Toolbox</em>. Double-click and specify <code>'cartpole_16rules.fis'</code>.
               </li>
               <li>
                 <strong>Force Feedback & Manual Switch:</strong><br>
@@ -715,7 +761,8 @@ theta_norm = atan2(sin(theta), cos(theta));</code></pre>
               </li>
               <li>
                 <strong>"Fuzzy Logic Controller"-Block:</strong><br>
-                Aus der Simulink-Bibliothek $ightarrow$ <em>Fuzzy Logic Toolbox</em>. Dateiname: <code>'cartpole_16rules.fis'</code>.
+                Aus der Simulink-Bibliothek $
+ightarrow$ <em>Fuzzy Logic Toolbox</em>. Dateiname: <code>'cartpole_16rules.fis'</code>.
               </li>
               <li>
                 <strong>Manueller Umschalter (Manual Switch):</strong><br>
@@ -802,12 +849,16 @@ theta_norm = atan2(sin(theta), cos(theta));</code></pre>
                 <div class="lang-en">
                   <strong>Issue 1: "Undefined variable smiData" when clicking Run</strong><br>
                   <em>Root Cause:</em> Simulink was opened without executing the parameter DataFile into the base workspace.<br>
-                  <em>Fix:</em> Run <code>run('full_pendulum_assem_DataFile3.m')</code> in the Command Window, or assign it in <strong>Model Properties $ightarrow$ Callbacks $ightarrow$ InitFcn</strong> for automatic execution.
+                  <em>Fix:</em> Run <code>run('full_pendulum_assem_DataFile3.m')</code> in the Command Window, or assign it in <strong>Model Properties $
+ightarrow$ Callbacks $
+ightarrow$ InitFcn</strong> for automatic execution.
                 </div>
                 <div class="lang-de">
                   <strong>Problem 1: "Undefined variable smiData" beim Starten</strong><br>
                   <em>Ursache:</em> Das Modell wurde gestartet, bevor die physikalischen Parameter in den MATLAB-Workspace geladen wurden.<br>
-                  <em>Lösung:</em> Befehl <code>run('full_pendulum_assem_DataFile3.m')</code> im Command Window ausführen oder unter <strong>Model Properties $ightarrow$ Callbacks $ightarrow$ InitFcn</strong> eintragen.
+                  <em>Lösung:</em> Befehl <code>run('full_pendulum_assem_DataFile3.m')</code> im Command Window ausführen oder unter <strong>Model Properties $
+ightarrow$ Callbacks $
+ightarrow$ InitFcn</strong> eintragen.
                 </div>
               </div>
             </div>
@@ -887,7 +938,7 @@ theta_norm = atan2(sin(theta), cos(theta));</code></pre>
     <div>&copy; 2026 · Powered by GitHub Pages · Cyber-Tech Portfolio · Vinh Do (HUST)</div>
   </footer>
 
-  <script src="../../assets/js/search-data.js"></script>
-  <script src="../../assets/js/main.js"></script>
+  <script src="../../assets/js/search-data.js?v=3.2"></script>
+  <script src="../../assets/js/main.js?v=3.2"></script>
 </body>
 </html>

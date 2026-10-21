@@ -133,13 +133,22 @@ code, pre, .font-mono {
 }
 
 /* ==========================================================================
-   MULTILINGUAL SYSTEM (EN / DE)
+   MULTILINGUAL SYSTEM (EN / DE) - ENGLISH IS DEFAULT
    ========================================================================== */
-body[data-lang="en"] .lang-de {
+/* Default / English: hide German (covers data-lang="en", legacy "vi", or missing) */
+body:not([data-lang="de"]) .lang-de,
+body[data-lang="en"] .lang-de,
+body[data-lang="vi"] .lang-de {
   display: none !important;
 }
 
+/* German: hide English */
 body[data-lang="de"] .lang-en {
+  display: none !important;
+}
+
+/* Always hide legacy Vietnamese if any exists */
+.lang-vi {
   display: none !important;
 }
 

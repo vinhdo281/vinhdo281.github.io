@@ -95,14 +95,14 @@ const SEARCH_DATA = [
     title_en: "Comprehensive A-to-Z Guide: Reinforcement Learning for Wheeled-Bipedal Robot on MuJoCo Physics & Stable-Baselines3",
     title_de: "Umfassender A–Z Leitfaden: Reinforcement Learning für radgetriebene zweibeinige Roboter mit MuJoCo Physics & Stable-Baselines3",
     category: "Blog",
-    url: "posts/reinforcement-learning-wbr/",
+    url: "posts/reinforcement-learning-wbr/index.html",
     keywords: "reinforcement learning verstärkendes lernen rl ppo wheeled bipedal robot wbr zweibeiniger roboter mujoco physics stable baselines 3 sb3 vmc virtual model control reward shaping windows linux cuda gpu eval models"
   },
   {
     title_en: "A-to-Z Guide: Design a Fuzzy Logic Controller for Inverted Pendulum on Simscape Multibody & Simulink",
     title_de: "A–Z Leitfaden: Entwurf eines Fuzzy-Logic-Reglers für ein inverses Pendel mit Simscape Multibody & Simulink",
     category: "Blog",
-    url: "posts/fuzzy-inverted-pendulum/",
+    url: "posts/fuzzy-inverted-pendulum/index.html",
     keywords: "fuzzy logic fuzzy regler inverses pendel inverted pendulum simscape multibody smimport mamdani 16 regeln xml simulink solidworks cart pole"
   }
 ];

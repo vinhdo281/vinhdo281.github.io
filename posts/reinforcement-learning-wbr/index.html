@@ -5,11 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reinforcement Learning for Wheeled-Bipedal Robot | MuJoCo Physics & Stable-Baselines3</title>
   <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
-  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="../../assets/css/style.css?v=3.2">
   <!-- KaTeX CSS & JS for Math Equations -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('site_lang');
+        if (saved !== 'de') {
+          localStorage.setItem('site_lang', 'en');
+          document.documentElement.setAttribute('lang', 'en');
+          if (document.body) document.body.setAttribute('data-lang', 'en');
+        } else {
+          document.documentElement.setAttribute('lang', 'de');
+          if (document.body) document.body.setAttribute('data-lang', 'de');
+        }
+      } catch(e) {}
+    })();
+  </script>
 </head>
 <body data-lang="en">
 
@@ -332,7 +347,8 @@
             <p class="lang-de">
               Das Roboterbein wird als teleskopierbares Pendel mit Momentanlänge $L$ und Neigungswinkel $	heta_{leg}$ abstrahiert:
             </p>
-            $$L = \sqrt{x_{wheel}^2 + z_{wheel}^2}, \quad 	heta_{leg} = rctan\left(rac{x_{wheel}}{-z_{wheel}}ight)$$
+            $$L = \sqrt{x_{wheel}^2 + z_{wheel}^2}, \quad 	heta_{leg} = rctan\left(rac{x_{wheel}}{-z_{wheel}}
+ight)$$
             <p class="lang-en">
               The neural policy does not need to learn the intricate internal closed kinematics of each 5-bar linkage; it merely regulates hip height and wheel propulsion forces!
             </p>
@@ -418,7 +434,9 @@
               <span class="lang-en">PPO Clipped Objective Function:</span>
               <span class="lang-de">PPO Clipped Objective Zielfunktion:</span>
             </h3>
-            $$L^{CLIP}(	heta) = \hat{\mathbb{E}}_t \left[ \min\left( r_t(	heta)\hat{A}_t, \; 	ext{clip}(r_t(	heta), 1-\epsilon, 1+\epsilon)\hat{A}_t ight) ight]$$
+            $$L^{CLIP}(	heta) = \hat{\mathbb{E}}_t \left[ \min\left( r_t(	heta)\hat{A}_t, \; 	ext{clip}(r_t(	heta), 1-\epsilon, 1+\epsilon)\hat{A}_t 
+ight) 
+ight]$$
             <p class="lang-en">
               Where $r_t(	heta) = rac{\pi_	heta(a_t|s_t)}{\pi_{	heta_{old}}(a_t|s_t)}$ represents the probability ratio, and $\epsilon = 0.2$ is the clipping boundary. This prevents excessively large policy updates that cause catastrophic policy collapse.
             </p>
@@ -446,7 +464,8 @@
                 <tbody>
                   <tr>
                     <td><strong><span class="lang-en">Upright Balance ($R_{	ext{upright}}$)</span><span class="lang-de">Aufrechte Lage ($R_{	ext{upright}}$)</span></strong></td>
-                    <td>$\exp\left(-rac{	heta_{	ext{pitch}}^2}{2\sigma_	heta^2}ight)$</td>
+                    <td>$\exp\left(-rac{	heta_{	ext{pitch}}^2}{2\sigma_	heta^2}
+ight)$</td>
                     <td>
                       <span class="lang-en">Peak reward at upright attitude ($	heta = 0$). Gaussian kernel ensures smoother gradient than squared errors.</span>
                       <span class="lang-de">Maximaler Ertrag bei exakter Vertikalausrichtung ($	heta = 0$). Glatte Gradienten durch Gauß-Funktion.</span>
@@ -454,7 +473,8 @@
                   </tr>
                   <tr>
                     <td><strong><span class="lang-en">Velocity Tracking ($R_{	ext{tracking}}$)</span><span class="lang-de">Geschwindigkeitsfolge ($R_{	ext{tracking}}$)</span></strong></td>
-                    <td>$\exp\left(-rac{(v_x - v_x^*)^2}{2\sigma_v^2}ight)$</td>
+                    <td>$\exp\left(-rac{(v_x - v_x^*)^2}{2\sigma_v^2}
+ight)$</td>
                     <td>
                       <span class="lang-en">Rewards following commanded user velocity trajectories (e.g. $1.0\,	ext{m/s}$).</span>
                       <span class="lang-de">Belohnt das präzise Einhalten der vorgegebenen Fahrgeschwindigkeit ($1.0\,	ext{m/s}$).</span>
@@ -462,7 +482,8 @@
                   </tr>
                   <tr>
                     <td><strong><span class="lang-en">Yaw Heading Tracking ($R_{	ext{yaw}}$)</span><span class="lang-de">Gierratenfolge ($R_{	ext{yaw}}$)</span></strong></td>
-                    <td>$\exp\left(-rac{(\omega_z - \omega_z^*)^2}{2\sigma_\omega^2}ight)$</td>
+                    <td>$\exp\left(-rac{(\omega_z - \omega_z^*)^2}{2\sigma_\omega^2}
+ight)$</td>
                     <td>
                       <span class="lang-en">Rewards smooth differential steering tracking user turning commands.</span>
                       <span class="lang-de">Belohnt gleichmäßige Kurvenfahrten entsprechend dem Gier-Steuerbefehl.</span>
@@ -643,7 +664,8 @@
                   <span class="lang-de">⚡ Option 1: Automatische 1-Klick-Batch-Installation (Empfohlen)</span>
                 </div>
                 <pre class="code-pre"><code>:: Navigate to project directory
-cd d:\HUST\-n-1\Simulationl
+cd d:\HUST\-n-1\Simulation
+l
 
 :: Execute automated 1-click batch optimized for Windows & RTX GPU
 setup_windows.bat
@@ -742,7 +764,8 @@ chmod +x train.py eval.py</code></pre>
 train_windows.bat
 
 :: OPTION 2: Advanced PowerShell script
-.un_rl_windows.ps1 train -Scenario balance -Device cuda -Render
+.
+un_rl_windows.ps1 train -Scenario balance -Device cuda -Render
 
 :: OPTION 3: Direct CMD command (launches MuJoCo 3D Viewer on GPU)
 venv\Scripts\python.exe train.py --scenario balance --device cuda --render --timesteps 300000
@@ -1056,11 +1079,17 @@ python eval.py --scenario balance --model eval/best_model.zip --render --episode
               <div>
                 <div class="lang-en">
                   <strong>Golden Tip for Curriculum Progression:</strong><br>
-                  Do not jump straight into the full <code>all</code> environment! Follow Curriculum Learning: Begin with <code>balance</code> ($300,000$ steps) $ightarrow$ Resume into <code>drive</code> ($500,000$ steps) $ightarrow$ Resume into <code>yaw</code> ($500,000$ steps) $ightarrow$ Finally train <code>push</code> and <code>all</code>. You will witness a 5x faster convergence rate!
+                  Do not jump straight into the full <code>all</code> environment! Follow Curriculum Learning: Begin with <code>balance</code> ($300,000$ steps) $
+ightarrow$ Resume into <code>drive</code> ($500,000$ steps) $
+ightarrow$ Resume into <code>yaw</code> ($500,000$ steps) $
+ightarrow$ Finally train <code>push</code> and <code>all</code>. You will witness a 5x faster convergence rate!
                 </div>
                 <div class="lang-de">
                   <strong>Goldener Tipp zum Lerncurriculum:</strong><br>
-                  Beginnen Sie nicht direkt mit dem Gesamtszenario <code>all</code>! Nutzen Sie Curriculum Learning: Zuerst <code>balance</code> ($300.000$ Schritte) $ightarrow$ Resume in <code>drive</code> ($500.000$ Schritte) $ightarrow$ Resume in <code>yaw</code> ($500.000$ Schritte) $ightarrow$ Zum Schluss <code>push</code> und <code>all</code> trainieren für 5-fach schnellere Konvergenz!
+                  Beginnen Sie nicht direkt mit dem Gesamtszenario <code>all</code>! Nutzen Sie Curriculum Learning: Zuerst <code>balance</code> ($300.000$ Schritte) $
+ightarrow$ Resume in <code>drive</code> ($500.000$ Schritte) $
+ightarrow$ Resume in <code>yaw</code> ($500.000$ Schritte) $
+ightarrow$ Zum Schluss <code>push</code> und <code>all</code> trainieren für 5-fach schnellere Konvergenz!
                 </div>
               </div>
             </div>
@@ -1110,7 +1139,7 @@ python eval.py --scenario balance --model eval/best_model.zip --render --episode
     <div>&copy; 2026 · Powered by GitHub Pages · Cyber-Tech Portfolio · Vinh Do (HUST)</div>
   </footer>
 
-  <script src="../../assets/js/search-data.js"></script>
-  <script src="../../assets/js/main.js"></script>
+  <script src="../../assets/js/search-data.js?v=3.2"></script>
+  <script src="../../assets/js/main.js?v=3.2"></script>
 </body>
 </html>

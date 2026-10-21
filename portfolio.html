@@ -5,7 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Engineering Projects | Portfolio · Cyber-Tech Portfolio</title>
   <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/style.css?v=3.2">
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('site_lang');
+        if (saved !== 'de') {
+          localStorage.setItem('site_lang', 'en');
+          document.documentElement.setAttribute('lang', 'en');
+          if (document.body) document.body.setAttribute('data-lang', 'en');
+        } else {
+          document.documentElement.setAttribute('lang', 'de');
+          if (document.body) document.body.setAttribute('data-lang', 'de');
+        }
+      } catch(e) {}
+    })();
+  </script>
 </head>
 <body data-lang="en">
 
@@ -216,7 +231,7 @@
             <a href="https://github.com/vinhdo281/Fuzzy-Controller" target="_blank" rel="noopener" class="btn-tech">
               <span>GitHub</span>
             </a>
-            <a href="posts/fuzzy-inverted-pendulum/" class="btn-tech" style="border-color: rgba(56, 189, 248, 0.4);">
+            <a href="posts/fuzzy-inverted-pendulum/index.html" class="btn-tech" style="border-color: rgba(56, 189, 248, 0.4);">
               <span class="lang-en">Tutorial Guide</span><span class="lang-de">Leitfaden A–Z</span>
             </a>
           </div>
@@ -677,7 +692,7 @@
       </div>
 
       <div id="project-modal-body" class="project-modal-body">
-        <!-- Rendered dynamically via projects-modal.js -->
+        <!-- Rendered dynamically via projects-modal.js?v=3.2 -->
       </div>
 
       <div class="project-modal-footer">
@@ -717,9 +732,9 @@
   </footer>
 
   <!-- SCRIPTS -->
-  <script src="assets/js/search-data.js"></script>
-  <script src="assets/js/projects-data.js"></script>
-  <script src="assets/js/main.js"></script>
-  <script src="assets/js/projects-modal.js"></script>
+  <script src="assets/js/search-data.js?v=3.2"></script>
+  <script src="assets/js/projects-data.js?v=3.2"></script>
+  <script src="assets/js/main.js?v=3.2"></script>
+  <script src="assets/js/projects-modal.js?v=3.2"></script>
 </body>
 </html>
