@@ -349,8 +349,32 @@
     const navLinks = document.querySelector('.nav-links');
 
     if (mobileBtn && navLinks) {
-      mobileBtn.addEventListener('click', () => {
+      mobileBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
         navLinks.classList.toggle('mobile-open');
+      });
+
+      // Close when clicking any link inside mobile drawer
+      navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          navLinks.classList.remove('mobile-open');
+        });
+      });
+
+      // Close when tapping anywhere outside the mobile menu
+      document.addEventListener('click', (e) => {
+        if (navLinks.classList.contains('mobile-open')) {
+          if (!navLinks.contains(e.target) && !mobileBtn.contains(e.target)) {
+            navLinks.classList.remove('mobile-open');
+          }
+        }
+      });
+
+      // Close on ESC key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && navLinks.classList.contains('mobile-open')) {
+          navLinks.classList.remove('mobile-open');
+        }
       });
     }
   }
