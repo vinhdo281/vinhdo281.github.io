@@ -78,6 +78,13 @@ const SEARCH_DATA = [
     keywords: "python pokeapi pokemon finder encryption digital clock slot machine stopwatch algorithms algorithmen projekte"
   },
   {
+    title_en: "Estimating Pitch on a Balancing Robot: KF vs EKF vs UKF vs H-infinity, Measured on One Benchmark",
+    title_de: "Neigungsschätzung beim Balancierroboter: KF, EKF, UKF und H-infinity im Vergleich",
+    category: "Blog",
+    url: "posts/state-estimation-kf-ekf-ukf-hinf/index.html",
+    keywords: "kalman filter kf ekf ukf unscented extended h infinity h-inf hinf zustandsschätzung state estimation pitch neigungswinkel imu gyro accelerometer sigma points monte carlo python wheeled bipedal robot wbr balancing"
+  },
+  {
     title_en: "Comprehensive A-to-Z Guide: Reinforcement Learning for Wheeled-Bipedal Robot on MuJoCo Physics & Stable-Baselines3",
     title_de: "Umfassender A–Z Leitfaden: Reinforcement Learning für radgetriebene zweibeinige Roboter mit MuJoCo Physics & Stable-Baselines3",
     category: "Blog",
