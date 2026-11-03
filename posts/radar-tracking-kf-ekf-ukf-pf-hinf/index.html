@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tracking a Target with Radar: KF, EKF, UKF, Particle Filter and H∞ Side by Side · Cyber-Tech Portfolio</title>
+  <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
+  <link rel="stylesheet" href="../../assets/css/style.css?v=4.0">
+  <!-- KaTeX CSS & JS for Math Equations -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('site_lang');
+        if (saved !== 'de') {
+          localStorage.setItem('site_lang', 'en');
+          document.documentElement.setAttribute('lang', 'en');
+          if (document.body) document.body.setAttribute('data-lang', 'en');
+        } else {
+          document.documentElement.setAttribute('lang', 'de');
+          if (document.body) document.body.setAttribute('data-lang', 'de');
+        }
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body data-lang="en">
+
+  <!-- TOP MASTHEAD -->
+  <header class="masthead">
+    <div class="masthead__container">
+      <div class="masthead__brand">
+        <svg class="brand-icon" viewBox="0 0 32 32" fill="none">
+          <circle cx="16" cy="16" r="11" stroke="#00f2fe" stroke-width="2" stroke-dasharray="4 2"/>
+          <polygon points="16,8 23,20 9,20" stroke="#38bdf8" stroke-width="1.5" fill="rgba(56, 189, 248, 0.2)"/>
+          <circle cx="16" cy="16" r="2.5" fill="#00f2fe"/>
+        </svg>
+        <span class="lang-en">TECHNICAL ARTICLES</span>
+        <span class="lang-de">TECHNISCHE ARTIKEL</span>
+        <span class="brand-badge">BLOG</span>
+      </div>
+
+      <nav class="masthead__nav">
+        <ul class="nav-links">
+          <li><a href="../../index.html"><span class="lang-en">Home</span><span class="lang-de">Startseite</span></a></li>
+          <li><a href="../../research.html"><span class="lang-en">Research</span><span class="lang-de">Forschung</span></a></li>
+          <li><a href="../../portfolio.html"><span class="lang-en">Projects</span><span class="lang-de">Projekte</span></a></li>
+          <li><a href="../../blog.html" class="active"><span class="lang-en">Blog</span><span class="lang-de">Blog</span></a></li>
+          <li><a href="../../cv.html"><span>CV</span></a></li>
+        </ul>
+
+        <div class="masthead__tools">
+          <button id="site-search-btn" class="tool-btn" title="Search (Ctrl+K)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span class="kbd-shortcut">Ctrl K</span>
+          </button>
+          <!-- Language selector dropdown -->
+          <div class="lang-dropdown-wrapper">
+            <button id="lang-toggle-btn" class="tool-btn lang-tool-btn" title="Select language / Sprache wählen" aria-expanded="false">
+              <span id="lang-current-label">EN</span>
+              <svg class="lang-caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="lang-dropdown-menu" id="lang-dropdown-menu">
+              <button type="button" class="lang-dropdown-item active" data-lang-val="en">
+                <span class="lang-flag">🇬🇧</span>
+                <span class="lang-item-name">English</span>
+                <span class="lang-item-badge">EN</span>
+              </button>
+              <button type="button" class="lang-dropdown-item" data-lang-val="de">
+                <span class="lang-flag">🇩🇪</span>
+                <span class="lang-item-name">Deutsch</span>
+                <span class="lang-item-badge">DE</span>
+              </button>
+            </div>
+          </div>
+          <button id="theme-toggle-btn" class="tool-btn" title="Toggle light/dark mode">
+            <span id="theme-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            </span>
+          </button>
+          <button id="mobile-menu-btn" class="tool-btn mobile-menu-btn" aria-label="Menu">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- APP CONTAINER -->
+  <div class="app-container">
+    
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="profile-card">
+        <div class="avatar-wrapper">
+          <div class="avatar-pulse-ring"></div>
+          <img src="../../assets/images/1.jpg" alt="Avatar" class="avatar-img">
+        </div>
+        <div class="author-info">
+          <h2 class="author-name">
+            <span class="lang-en">Đỗ Hiểu Vinh</span>
+            <span class="lang-de">Đỗ Hiểu Vinh</span>
+          </h2>
+          <div class="author-handle">@vinhdo281 · HUST</div>
+          <div class="author-status">
+            <span class="status-dot"></span>
+            <span class="lang-en">POSTS: 12</span>
+            <span class="lang-de">BEITRÄGE: 12</span>
+          </div>
+        </div>
+        <div class="sidebar-divider"></div>
+
+        <div class="contact-location">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span><span class="lang-en">Hanoi, Vietnam</span><span class="lang-de">Hanoi, Vietnam</span></span>
+        </div>
+
+        <div class="social-icons-dock">
+          <a href="https://github.com/vinhdo281" target="_blank" rel="noopener" class="tech-icon-btn" data-tooltip="GitHub" aria-label="GitHub">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/in/vinhdo281" target="_blank" rel="noopener" class="tech-icon-btn" data-tooltip="LinkedIn" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="https://www.facebook.com/AlexDo281" target="_blank" rel="noopener" class="tech-icon-btn" data-tooltip="Facebook" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="mailto:dohieuvinh@gmail.com" class="tech-icon-btn" data-tooltip="Email" aria-label="Email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN ARTICLE CONTENT -->
+    <main class="main-content">
+      <div class="article-container">
+
+        <!-- ARTICLE HERO -->
+        <article class="article-hero">
+          <nav class="article-breadcrumb">
+            <a href="../../index.html"><span class="lang-en">Home</span><span class="lang-de">Startseite</span></a>
+            <span>/</span>
+            <a href="../../blog.html"><span class="lang-en">Blog</span><span class="lang-de">Blog</span></a>
+            <span>/</span>
+            <span><span class="lang-en">Radar Tracking: KF, EKF, UKF, PF, H∞</span><span class="lang-de">Radar-Tracking: KF, EKF, UKF, PF, H∞</span></span>
+          </nav>
+
+          <h1 class="article-title">
+            <span class="lang-en">Tracking a Target with Radar: KF, EKF, UKF, Particle Filter and H∞ Side by Side</span>
+            <span class="lang-de">Zielverfolgung mit Radar: KF, EKF, UKF, Partikelfilter und H∞ im direkten Vergleich</span>
+          </h1>
+
+          <div class="article-meta">
+            <span class="article-meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <span class="lang-en">November 3, 2026</span>
+              <span class="lang-de">3. November 2026</span>
+            </span>
+            <span class="article-meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span class="lang-en">Vinh Do · HUST</span>
+              <span class="lang-de">Vinh Do · HUST</span>
+            </span>
+            <span class="article-meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span class="lang-en">16 Min Read · Interactive Demo</span>
+              <span class="lang-de">16 Min Lesezeit · Interaktive Demo</span>
+            </span>
+            <span class="card-type">ESTIMATION // KF · EKF · UKF · PF · H∞ // INTERACTIVE</span>
+          </div>
+        </article>
+
+        <!-- TABLE OF CONTENTS -->
+        <div class="article-toc">
+          <div class="article-toc-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            <span class="lang-en">TABLE OF CONTENTS</span>
+            <span class="lang-de">INHALTSVERZEICHNIS</span>
+          </div>
+          <ul class="article-toc-list lang-en">
+            <li><a href="#sec-problem">1. The Problem: One Radar, One Moving Target</a></li>
+            <li><a href="#sec-kf">2. Kalman Filter (KF): Convert, Then Filter</a></li>
+            <li><a href="#sec-ekf">3. Extended Kalman Filter (EKF): Linearise Every Step</a></li>
+            <li><a href="#sec-ukf">4. Unscented Kalman Filter (UKF): Sigma Points</a></li>
+            <li><a href="#sec-pf">5. Particle Filter (PF): Weigh Many Guesses</a></li>
+            <li><a href="#sec-hinf">6. H∞ Filter: Bound the Worst Case</a></li>
+            <li><a href="#sec-demo">7. Interactive Demo</a></li>
+            <li><a href="#sec-results">8. Measured Results (100 Monte-Carlo Runs)</a></li>
+            <li><a href="#sec-choose">9. Which Filter Should You Use?</a></li>
+            <li><a href="#sec-limits">10. Limitations and Further Reading</a></li>
+          </ul>
+          <ul class="article-toc-list lang-de">
+            <li><a href="#de-problem">1. Das Problem: ein Radar, ein bewegtes Ziel</a></li>
+            <li><a href="#de-kf">2. Kalman-Filter (KF): erst umrechnen, dann filtern</a></li>
+            <li><a href="#de-ekf">3. Erweitertes Kalman-Filter (EKF): in jedem Schritt linearisieren</a></li>
+            <li><a href="#de-ukf">4. Unscented-Kalman-Filter (UKF): Sigma-Punkte</a></li>
+            <li><a href="#de-pf">5. Partikelfilter (PF): viele Hypothesen gewichten</a></li>
+            <li><a href="#de-hinf">6. H∞-Filter: den ungünstigsten Fall begrenzen</a></li>
+            <li><a href="#sec-demo">7. Interaktive Demo</a></li>
+            <li><a href="#de-results">8. Messergebnisse (100 Monte-Carlo-Läufe)</a></li>
+            <li><a href="#de-choose">9. Welchen Filter sollte man verwenden?</a></li>
+            <li><a href="#de-limits">10. Einschränkungen und weiterführende Literatur</a></li>
+          </ul>
+        </div>
+
+        <!-- ARTICLE BODY -->
+        <div class="article-content">
+          <div class="lang-en">
+      <section id="sec-problem">
+        <h2><span class="h2-badge">PART 1</span> The Problem: One Radar, One Moving Target</h2>
+        <p>A radar sits at the origin and watches a target moving in the plane. Every filter in this article estimates the same state, position and velocity, $x=[p_x,\ p_y,\ v_x,\ v_y]^\top$, with the same nearly-constant-velocity model and time step $\Delta t = 1$:</p>
+        <p>$$x_k = F\,x_{k-1} + w_k,\qquad F=\begin{bmatrix} I_2 & \Delta t\, I_2\\ 0 & I_2\end{bmatrix},\qquad Q = q^2\begin{bmatrix}\tfrac14 I_2 & \tfrac12 I_2\\ \tfrac12 I_2 & I_2\end{bmatrix}$$</p>
+        <p>$q$ is the standard deviation of the acceleration the model does not know about, in m/step². It turns out to be the most important tuning knob in the whole comparison.</p>
+        <p>The radar does not measure $(p_x, p_y)$. It measures range and bearing:</p>
+        <p>$$z_k = h(x_k) + v_k,\qquad h(x)=\begin{bmatrix}\sqrt{p_x^2+p_y^2}\\ \operatorname{atan2}(p_y,\ p_x)\end{bmatrix},\qquad R=\operatorname{diag}(\sigma_r^2,\ \sigma_\varphi^2)$$</p>
+        <p>with $\sigma_r = 10$&nbsp;m and $\sigma_\varphi = 4^\circ$ by default. The motion model is linear, so the <strong>only</strong> nonlinearity is $h$. That makes this a clean test: the five filters below differ only in how they treat the measurement.</p>
+        <p>The geometry is what makes it interesting. A 4° bearing error is about 14&nbsp;m across the line of sight at 200&nbsp;m range, and about 56&nbsp;m at 800&nbsp;m. One measurement's uncertainty is therefore a curved arc that grows with range, not a fixed circle.</p>
+        <p>The target follows one of three analytic paths, 200 steps each: a <strong>straight</strong> line about 880&nbsp;m long, a full <strong>circle</strong> of radius 260&nbsp;m, and a <strong>weave</strong> (a sine wave with 230&nbsp;m amplitude). The truth is not generated by the filter's own model, so on the circle and the weave the constant-velocity assumption is always somewhat wrong.</p>
+        <div class="callout callout-info"><div><strong>Scope:</strong> 2-D, one sensor, Gaussian noise, no clutter, no missed detections. The numbers in Part 8 hold for this setup; the demo in Part 7 lets you change it and watch the ranking move.</div></div>
+      </section>
+
+      <section id="sec-kf">
+        <h2><span class="h2-badge">PART 2</span> Kalman Filter (KF): Convert, Then Filter</h2>
+        <p>The Kalman filter is optimal (minimum mean squared error) for a linear model with Gaussian noise. One step is a prediction and an update:</p>
+        <p>$$\hat x_k^- = F\hat x_{k-1},\qquad P_k^- = F P_{k-1} F^\top + Q$$</p>
+        <p>$$S_k = H P_k^- H^\top + R,\quad K_k = P_k^- H^\top S_k^{-1},\quad \hat x_k = \hat x_k^- + K_k\,(z_k - H\hat x_k^-),\quad P_k = P_k^- - K_k S_k K_k^\top$$</p>
+        <p>The KF needs a linear measurement, so the radar reading is first converted to Cartesian coordinates, $z^c = [\,r\cos\varphi,\ r\sin\varphi\,]^\top$, which gives $H = [\,I_2\ \ 0\,]$. The catch is $R$. The true error of $z^c$ is stretched across the line of sight and grows with range, but a plain KF uses one fixed matrix. Here it is a circle sized for the average range $\bar r$ of the path:</p>
+        <p>$$R_c = \sigma_{eq}^2 I_2,\qquad \sigma_{eq}^2 = \tfrac12\left(\sigma_r^2 + (\bar r\,\sigma_\varphi)^2\right)$$</p>
+        <p>At long range this $R_c$ is too optimistic, at short range too pessimistic. That mismatch is the price of keeping the filter linear.</p>
+        <div class="callout callout-warning"><div><strong>A generous KF:</strong> $\bar r$ is computed from the <em>true</em> path, information a real tracker would not have in advance. Read the KF results as a well-tuned baseline, not a naive one.</div></div>
+      </section>
+
+      <section id="sec-ekf">
+        <h2><span class="h2-badge">PART 3</span> Extended Kalman Filter (EKF): Linearise Every Step</h2>
+        <p>The EKF keeps the nonlinear $h$ for the innovation and uses its Jacobian, evaluated at the predicted estimate, for the gain and the covariance:</p>
+        <p>$$H_k = \left.\frac{\partial h}{\partial x}\right|_{\hat x_k^-} = \begin{bmatrix} \dfrac{p_x}{r} & \dfrac{p_y}{r} & 0 & 0\\[6pt] -\dfrac{p_y}{r^2} & \dfrac{p_x}{r^2} & 0 & 0\end{bmatrix},\qquad r = \sqrt{p_x^2+p_y^2}$$</p>
+        <p>$$y_k = z_k - h(\hat x_k^-)\quad\text{(bearing component wrapped to } (-\pi,\pi]),\qquad R = \operatorname{diag}(\sigma_r^2,\ \sigma_\varphi^2)$$</p>
+        <p>Everything else is the KF update with $H_k$ in place of $H$. Because the EKF works in $(r,\varphi)$ directly, it uses the correct noise for each component at every range. The cost is one Jacobian per step and the assumption that $h$ is close to linear within the current uncertainty.</p>
+        <div class="code-terminal"><pre><code>// Jacobian of h(x) = (r, phi) at the current estimate (simplified from demo.html)
+function jacobian(px, py) {
+  const r2 = Math.max(px * px + py * py, 1e-6), r = Math.sqrt(r2);
+  return [px / r, py / r, -py / r2, px / r2];   // 2x2 block; velocity columns are 0
+}
+
+const H = jacobian(ekf.x[0], ekf.x[1]);
+const innov = [z.r - Math.hypot(ekf.x[0], ekf.x[1]),
+               wrap(z.phi - Math.atan2(ekf.x[1], ekf.x[0]))];   // wrap to (-pi, pi]
+update(ekf, innov, H, R);                                      // same linear update as the KF</code></pre></div>
+        <div class="callout callout-tip"><div><strong>Always wrap the bearing innovation.</strong> Without it, a target crossing the ±180° line produces an innovation of almost $2\pi$ and the estimate jumps across the map. The same applies to the UKF and the particle weights.</div></div>
+      </section>
+
+      <section id="sec-ukf">
+        <h2><span class="h2-badge">PART 4</span> Unscented Kalman Filter (UKF): Sigma Points</h2>
+        <p>The UKF avoids derivatives. It picks $2n+1$ deterministic sample points around the estimate, pushes each through $h$, and recovers the mean and covariance from the results. With $n = 4$ and the common choice $\alpha = 1$, $\beta = 2$, $\kappa = 1$ (so $\lambda = \alpha^2(n+\kappa) - n = 1$):</p>
+        <p>$$\mathcal X_0 = \hat x^-,\qquad \mathcal X_{\pm i} = \hat x^- \pm \left(\sqrt{(n+\lambda)P^-}\right)_i,\quad i = 1,\dots,4$$</p>
+        <p>$$W_0^{(m)} = \tfrac{\lambda}{n+\lambda} = 0.2,\qquad W_0^{(c)} = W_0^{(m)} + (1-\alpha^2+\beta) = 2.2,\qquad W_i = \tfrac{1}{2(n+\lambda)} = 0.1$$</p>
+        <p>$$\mathcal Z_i = h(\mathcal X_i),\quad \hat z = \textstyle\sum_i W_i^{(m)}\mathcal Z_i,\quad S = \sum_i W_i^{(c)}(\mathcal Z_i-\hat z)(\mathcal Z_i-\hat z)^\top + R,\quad P_{xz} = \sum_i W_i^{(c)}(\mathcal X_i-\hat x^-)(\mathcal Z_i-\hat z)^\top$$</p>
+        <p>$$K = P_{xz}S^{-1},\qquad \hat x = \hat x^- + K\,(z-\hat z),\qquad P = P^- - K S K^\top$$</p>
+        <p>The matrix square root is a Cholesky factor. That is 9 evaluations of $h$ per step and no Jacobian. The prediction stays the ordinary KF prediction, because $F$ is linear and sigma points would give exactly the same result there.</p>
+        <div class="callout callout-tip"><div><strong>Averaging angles:</strong> the arithmetic mean of bearings close to ±180° is wrong. Average $\sin\varphi$ and $\cos\varphi$ with the weights, then take $\operatorname{atan2}$. The demo does exactly that.</div></div>
+      </section>
+
+      <section id="sec-pf">
+        <h2><span class="h2-badge">PART 5</span> Particle Filter (PF): Weigh Many Guesses</h2>
+        <p>The particle filter makes no Gaussian assumption at all. It represents the belief by $N$ weighted samples (500 by default) and runs the bootstrap scheme:</p>
+        <ol>
+          <li><strong>Propagate</strong> every particle with the motion model and a random acceleration $a \sim \mathcal N(0, q^2 I)$: $\;p \leftarrow p + v + \tfrac12 a,\ \ v \leftarrow v + a$.</li>
+          <li><strong>Weigh</strong> each particle by the likelihood of the actual measurement:
+            $$w^{(i)} \propto w^{(i)}\exp\!\left(-\tfrac12\left[\frac{(r - \hat r^{(i)})^2}{\sigma_r^2} + \frac{\operatorname{wrap}(\varphi - \hat\varphi^{(i)})^2}{\sigma_\varphi^2}\right]\right)$$</li>
+          <li><strong>Estimate</strong> the position as the weighted mean of the particles.</li>
+          <li><strong>Resample</strong> (systematic resampling) when the effective sample size $N_{\text{eff}} = 1/\sum_i (w^{(i)})^2$ falls below $N/2$, then add a small "roughening" jitter: each state component gets Gaussian noise with standard deviation $N^{-1/4}$ times its spread across the particles.</li>
+        </ol>
+        <p>The cost is $N$ likelihood evaluations per step, about 55 times the UKF's 9 at $N = 500$.</p>
+        <div class="callout callout-warning"><div><strong>Degeneracy:</strong> when the motion model is wrong (for example $q$ far too small on a curving path), the particles do not spread far enough to cover the real target. Once all of them are far away, the weights collapse onto a few particles and the filter loses track. That is where the PF's 400–480&nbsp;m RMSE in Part 8 comes from.</div></div>
+      </section>
+
+      <section id="sec-hinf">
+        <h2><span class="h2-badge">PART 6</span> H∞ Filter: Bound the Worst Case</h2>
+        <p>The Kalman filter minimises the <em>expected</em> squared error, assuming $Q$ and $R$ are right. The H∞ filter makes no statistical assumption. It bounds the ratio between the estimation error and the total disturbance (initial error, process noise and measurement noise) by $\gamma^2 = 1/\theta$:</p>
+        <p>$$\frac{\sum_k \lVert x_k - \hat x_k\rVert_S^2}{\lVert x_0-\hat x_0\rVert_{P_0^{-1}}^2 + \sum_k\left(\lVert w_k\rVert_{Q^{-1}}^2 + \lVert v_k\rVert_{R^{-1}}^2\right)} \;&lt;\; \frac{1}{\theta}$$</p>
+        <p>The measurement update used here follows D.&nbsp;Simon, <em>Optimal State Estimation</em> (ch.&nbsp;11), with the same $H_k$ and $R$ as the EKF and $S = \operatorname{diag}(1,1,0,0)$ so that only the position error is weighted:</p>
+        <p>$$P_k = \left((P_k^-)^{-1} - \theta S + H_k^\top R^{-1} H_k\right)^{-1},\qquad K_k = P_k H_k^\top R^{-1}$$</p>
+        <p>With $\theta = 0$ this is exactly the EKF. A positive $\theta$ inflates the covariance, which raises the gain: the filter trusts the measurements more and its own model less. In the demo $\theta = \eta/\sigma_{eq}^2$ with a dimensionless $\eta \in [0,\ 0.1]$.</p>
+        <p>$\theta$ cannot grow freely. $P_k$ must stay positive definite, which requires $\theta &lt; 1/\lambda_{\max}$ of the position block of the Kalman posterior covariance. The demo caps $\theta$ at 90% of that limit whenever a step would violate it. Because the radar is nonlinear, this is the "extended" H∞ filter: the bound above is exact only for linear systems, and here it acts as a principled covariance inflation.</p>
+        <div class="callout callout-warning"><div><strong>Measured stability limit:</strong> with $\eta = 0.1$, none of the runs diverged in any setup we tried. With $\eta = 0.12$, 5 to 13 of 30 runs diverged in harsh setups (very small measurement noise such as $\sigma_r = 1$&nbsp;m, $\sigma_\varphi = 0.2^\circ$, together with $q = 3$). With $\eta \ge 0.15$, all 30 runs diverged in those setups. The 90% cap does not prevent it, which is why the demo's slider stops at 0.1.</div></div>
+      </section>
+          </div>
+          <div class="lang-de">
+      <section id="de-problem">
+        <h2><span class="h2-badge">TEIL 1</span> Das Problem: ein Radar, ein bewegtes Ziel</h2>
+        <p>Ein Radar steht im Ursprung und beobachtet ein Ziel, das sich in der Ebene bewegt. Alle Filter in diesem Beitrag schätzen denselben Zustand, Position und Geschwindigkeit, $x=[p_x,\ p_y,\ v_x,\ v_y]^\top$, mit demselben Modell nahezu konstanter Geschwindigkeit und dem Zeitschritt $\Delta t = 1$:</p>
+        <p>$$x_k = F\,x_{k-1} + w_k,\qquad F=\begin{bmatrix} I_2 & \Delta t\, I_2\\ 0 & I_2\end{bmatrix},\qquad Q = q^2\begin{bmatrix}\tfrac14 I_2 & \tfrac12 I_2\\ \tfrac12 I_2 & I_2\end{bmatrix}$$</p>
+        <p>$q$ ist die Standardabweichung der Beschleunigung, die das Modell nicht kennt, in m/Schritt². Sie erweist sich als der wichtigste Einstellparameter des gesamten Vergleichs.</p>
+        <p>Das Radar misst nicht $(p_x, p_y)$, sondern Entfernung und Peilwinkel:</p>
+        <p>$$z_k = h(x_k) + v_k,\qquad h(x)=\begin{bmatrix}\sqrt{p_x^2+p_y^2}\\ \operatorname{atan2}(p_y,\ p_x)\end{bmatrix},\qquad R=\operatorname{diag}(\sigma_r^2,\ \sigma_\varphi^2)$$</p>
+        <p>mit standardmäßig $\sigma_r = 10$&nbsp;m und $\sigma_\varphi = 4^\circ$. Das Bewegungsmodell ist linear, die <strong>einzige</strong> Nichtlinearität ist also $h$. Damit ist der Test sauber: Die fünf Filter unterscheiden sich nur darin, wie sie mit der Messung umgehen.</p>
+        <p>Interessant wird es durch die Geometrie. Ein Peilfehler von 4° entspricht bei 200&nbsp;m Entfernung etwa 14&nbsp;m quer zur Sichtlinie, bei 800&nbsp;m etwa 56&nbsp;m. Die Unsicherheit einer einzelnen Messung ist daher ein gekrümmter Bogen, der mit der Entfernung wächst, kein fester Kreis.</p>
+        <p>Das Ziel folgt einer von drei analytischen Bahnen mit je 200 Schritten: einer <strong>Geraden</strong> von etwa 880&nbsp;m Länge, einem vollen <strong>Kreis</strong> mit 260&nbsp;m Radius und einer <strong>Schlangenlinie</strong> (Sinus mit 230&nbsp;m Amplitude). Die Wahrheit wird nicht mit dem Modell des Filters erzeugt, auf Kreis und Schlangenlinie ist die Annahme konstanter Geschwindigkeit also immer etwas falsch.</p>
+        <div class="callout callout-info"><div><strong>Umfang:</strong> 2-D, ein Sensor, gaußsches Rauschen, keine Störechos, keine Fehldetektionen. Die Zahlen in Teil 8 gelten für dieses Setup; mit der Demo in Teil 7 lässt es sich ändern, und man sieht, wie sich die Rangfolge verschiebt.</div></div>
+      </section>
+
+      <section id="de-kf">
+        <h2><span class="h2-badge">TEIL 2</span> Kalman-Filter (KF): erst umrechnen, dann filtern</h2>
+        <p>Das Kalman-Filter ist für ein lineares Modell mit gaußschem Rauschen optimal (minimaler mittlerer quadratischer Fehler). Ein Schritt besteht aus Prädiktion und Korrektur:</p>
+        <p>$$\hat x_k^- = F\hat x_{k-1},\qquad P_k^- = F P_{k-1} F^\top + Q$$</p>
+        <p>$$S_k = H P_k^- H^\top + R,\quad K_k = P_k^- H^\top S_k^{-1},\quad \hat x_k = \hat x_k^- + K_k\,(z_k - H\hat x_k^-),\quad P_k = P_k^- - K_k S_k K_k^\top$$</p>
+        <p>Das KF braucht eine lineare Messung, deshalb wird der Radarwert zuerst in kartesische Koordinaten umgerechnet, $z^c = [\,r\cos\varphi,\ r\sin\varphi\,]^\top$, womit $H = [\,I_2\ \ 0\,]$ gilt. Der Haken ist $R$. Der wahre Fehler von $z^c$ ist quer zur Sichtlinie gestreckt und wächst mit der Entfernung, ein einfaches KF verwendet aber eine feste Matrix. Hier ist es ein Kreis, bemessen für die mittlere Entfernung $\bar r$ der Bahn:</p>
+        <p>$$R_c = \sigma_{eq}^2 I_2,\qquad \sigma_{eq}^2 = \tfrac12\left(\sigma_r^2 + (\bar r\,\sigma_\varphi)^2\right)$$</p>
+        <p>Bei großer Entfernung ist dieses $R_c$ zu optimistisch, bei kleiner zu pessimistisch. Diese Fehlanpassung ist der Preis dafür, dass das Filter linear bleibt.</p>
+        <div class="callout callout-warning"><div><strong>Ein großzügiges KF:</strong> $\bar r$ wird aus der <em>wahren</em> Bahn berechnet, also mit einer Information, die ein echter Tracker vorab nicht hätte. Die KF-Ergebnisse sind daher als gut eingestellte Referenz zu lesen, nicht als naive.</div></div>
+      </section>
+
+      <section id="de-ekf">
+        <h2><span class="h2-badge">TEIL 3</span> Erweitertes Kalman-Filter (EKF): in jedem Schritt linearisieren</h2>
+        <p>Das EKF behält das nichtlineare $h$ für die Innovation und verwendet für Verstärkung und Kovarianz dessen Jacobi-Matrix am prädizierten Schätzwert:</p>
+        <p>$$H_k = \left.\frac{\partial h}{\partial x}\right|_{\hat x_k^-} = \begin{bmatrix} \dfrac{p_x}{r} & \dfrac{p_y}{r} & 0 & 0\\[6pt] -\dfrac{p_y}{r^2} & \dfrac{p_x}{r^2} & 0 & 0\end{bmatrix},\qquad r = \sqrt{p_x^2+p_y^2}$$</p>
+        <p>$$y_k = z_k - h(\hat x_k^-)\quad\text{(Winkelanteil auf } (-\pi,\pi] \text{ normiert)},\qquad R = \operatorname{diag}(\sigma_r^2,\ \sigma_\varphi^2)$$</p>
+        <p>Der Rest ist die KF-Korrektur mit $H_k$ statt $H$. Weil das EKF direkt in $(r,\varphi)$ arbeitet, verwendet es in jeder Entfernung das richtige Rauschen für jede Komponente. Der Preis ist eine Jacobi-Matrix pro Schritt und die Annahme, dass $h$ innerhalb der aktuellen Unsicherheit nahezu linear ist.</p>
+        <div class="code-terminal"><pre><code>// Jacobi-Matrix von h(x) = (r, phi) am aktuellen Schätzwert (vereinfacht aus demo.html)
+function jacobian(px, py) {
+  const r2 = Math.max(px * px + py * py, 1e-6), r = Math.sqrt(r2);
+  return [px / r, py / r, -py / r2, px / r2];   // 2x2-Block; Geschwindigkeitsspalten sind 0
+}
+
+const H = jacobian(ekf.x[0], ekf.x[1]);
+const innov = [z.r - Math.hypot(ekf.x[0], ekf.x[1]),
+               wrap(z.phi - Math.atan2(ekf.x[1], ekf.x[0]))];   // auf (-pi, pi] normieren
+update(ekf, innov, H, R);                                      // dieselbe lineare Korrektur wie beim KF</code></pre></div>
+        <div class="callout callout-tip"><div><strong>Die Winkelinnovation immer normieren.</strong> Sonst erzeugt ein Ziel, das die ±180°-Linie überquert, eine Innovation von fast $2\pi$, und die Schätzung springt quer über die Karte. Dasselbe gilt für das UKF und die Partikelgewichte.</div></div>
+      </section>
+
+      <section id="de-ukf">
+        <h2><span class="h2-badge">TEIL 4</span> Unscented-Kalman-Filter (UKF): Sigma-Punkte</h2>
+        <p>Das UKF kommt ohne Ableitungen aus. Es wählt $2n+1$ deterministische Stützstellen um den Schätzwert, schickt jede durch $h$ und gewinnt daraus Mittelwert und Kovarianz zurück. Mit $n = 4$ und der üblichen Wahl $\alpha = 1$, $\beta = 2$, $\kappa = 1$ (also $\lambda = \alpha^2(n+\kappa) - n = 1$):</p>
+        <p>$$\mathcal X_0 = \hat x^-,\qquad \mathcal X_{\pm i} = \hat x^- \pm \left(\sqrt{(n+\lambda)P^-}\right)_i,\quad i = 1,\dots,4$$</p>
+        <p>$$W_0^{(m)} = \tfrac{\lambda}{n+\lambda} = 0.2,\qquad W_0^{(c)} = W_0^{(m)} + (1-\alpha^2+\beta) = 2.2,\qquad W_i = \tfrac{1}{2(n+\lambda)} = 0.1$$</p>
+        <p>$$\mathcal Z_i = h(\mathcal X_i),\quad \hat z = \textstyle\sum_i W_i^{(m)}\mathcal Z_i,\quad S = \sum_i W_i^{(c)}(\mathcal Z_i-\hat z)(\mathcal Z_i-\hat z)^\top + R,\quad P_{xz} = \sum_i W_i^{(c)}(\mathcal X_i-\hat x^-)(\mathcal Z_i-\hat z)^\top$$</p>
+        <p>$$K = P_{xz}S^{-1},\qquad \hat x = \hat x^- + K\,(z-\hat z),\qquad P = P^- - K S K^\top$$</p>
+        <p>Die Matrixwurzel ist ein Cholesky-Faktor. Das sind 9 Auswertungen von $h$ pro Schritt und keine Jacobi-Matrix. Die Prädiktion bleibt die gewöhnliche KF-Prädiktion, denn $F$ ist linear, und Sigma-Punkte lieferten dort genau dasselbe Ergebnis.</p>
+        <div class="callout callout-tip"><div><strong>Winkel mitteln:</strong> Das arithmetische Mittel von Peilwinkeln nahe ±180° ist falsch. Man mittelt $\sin\varphi$ und $\cos\varphi$ mit den Gewichten und nimmt dann $\operatorname{atan2}$. Genau so macht es die Demo.</div></div>
+      </section>
+
+      <section id="de-pf">
+        <h2><span class="h2-badge">TEIL 5</span> Partikelfilter (PF): viele Hypothesen gewichten</h2>
+        <p>Das Partikelfilter trifft überhaupt keine Gauß-Annahme. Es stellt die Verteilung durch $N$ gewichtete Stichproben dar (standardmäßig 500) und arbeitet nach dem Bootstrap-Schema:</p>
+        <ol>
+          <li><strong>Propagieren:</strong> jedes Partikel mit dem Bewegungsmodell und einer zufälligen Beschleunigung $a \sim \mathcal N(0, q^2 I)$: $\;p \leftarrow p + v + \tfrac12 a,\ \ v \leftarrow v + a$.</li>
+          <li><strong>Gewichten:</strong> jedes Partikel mit der Likelihood der tatsächlichen Messung:
+            $$w^{(i)} \propto w^{(i)}\exp\!\left(-\tfrac12\left[\frac{(r - \hat r^{(i)})^2}{\sigma_r^2} + \frac{\operatorname{wrap}(\varphi - \hat\varphi^{(i)})^2}{\sigma_\varphi^2}\right]\right)$$</li>
+          <li><strong>Schätzen:</strong> die Position als gewichteter Mittelwert der Partikel.</li>
+          <li><strong>Neu ziehen</strong> (systematisches Resampling), sobald die effektive Stichprobengröße $N_{\text{eff}} = 1/\sum_i (w^{(i)})^2$ unter $N/2$ fällt, danach ein kleines „Roughening“: Jede Zustandskomponente erhält gaußsches Rauschen mit der Standardabweichung $N^{-1/4}$ mal ihrer Streuung über die Partikel.</li>
+        </ol>
+        <p>Die Kosten sind $N$ Likelihood-Auswertungen pro Schritt, bei $N = 500$ etwa das 55-Fache der 9 Auswertungen des UKF.</p>
+        <div class="callout callout-warning"><div><strong>Degeneration:</strong> Ist das Bewegungsmodell falsch (etwa $q$ viel zu klein auf einer gekrümmten Bahn), streuen die Partikel nicht weit genug, um das echte Ziel abzudecken. Liegen alle weit daneben, konzentrieren sich die Gewichte auf wenige Partikel, und das Filter verliert das Ziel. Daher stammt der RMSE von 400–480&nbsp;m des PF in Teil 8.</div></div>
+      </section>
+
+      <section id="de-hinf">
+        <h2><span class="h2-badge">TEIL 6</span> H∞-Filter: den ungünstigsten Fall begrenzen</h2>
+        <p>Das Kalman-Filter minimiert den <em>erwarteten</em> quadratischen Fehler, vorausgesetzt $Q$ und $R$ stimmen. Das H∞-Filter trifft keine statistische Annahme. Es begrenzt das Verhältnis zwischen Schätzfehler und gesamter Störung (Anfangsfehler, Prozess- und Messrauschen) durch $\gamma^2 = 1/\theta$:</p>
+        <p>$$\frac{\sum_k \lVert x_k - \hat x_k\rVert_S^2}{\lVert x_0-\hat x_0\rVert_{P_0^{-1}}^2 + \sum_k\left(\lVert w_k\rVert_{Q^{-1}}^2 + \lVert v_k\rVert_{R^{-1}}^2\right)} \;&lt;\; \frac{1}{\theta}$$</p>
+        <p>Die hier verwendete Korrektur folgt D.&nbsp;Simon, <em>Optimal State Estimation</em> (Kap.&nbsp;11), mit denselben $H_k$ und $R$ wie beim EKF und $S = \operatorname{diag}(1,1,0,0)$, sodass nur der Positionsfehler gewichtet wird:</p>
+        <p>$$P_k = \left((P_k^-)^{-1} - \theta S + H_k^\top R^{-1} H_k\right)^{-1},\qquad K_k = P_k H_k^\top R^{-1}$$</p>
+        <p>Mit $\theta = 0$ ist das genau das EKF. Ein positives $\theta$ vergrößert die Kovarianz und damit die Verstärkung: Das Filter vertraut den Messungen mehr und seinem eigenen Modell weniger. In der Demo gilt $\theta = \eta/\sigma_{eq}^2$ mit einem dimensionslosen $\eta \in [0,\ 0.1]$.</p>
+        <p>$\theta$ lässt sich nicht beliebig erhöhen. $P_k$ muss positiv definit bleiben, was $\theta &lt; 1/\lambda_{\max}$ des Positionsblocks der Kalman-a-posteriori-Kovarianz verlangt. Die Demo begrenzt $\theta$ auf 90&nbsp;% dieser Grenze, sobald ein Schritt sie verletzen würde. Da das Radar nichtlinear ist, handelt es sich um das „erweiterte“ H∞-Filter: Die obige Schranke gilt exakt nur für lineare Systeme, hier wirkt sie als begründete Kovarianz-Aufblähung.</p>
+        <div class="callout callout-warning"><div><strong>Gemessene Stabilitätsgrenze:</strong> Mit $\eta = 0.1$ divergierte in keinem der getesteten Setups ein einziger Lauf. Mit $\eta = 0.12$ divergierten in harten Setups (sehr kleines Messrauschen wie $\sigma_r = 1$&nbsp;m, $\sigma_\varphi = 0.2^\circ$ zusammen mit $q = 3$) 5 bis 13 von 30 Läufen, mit $\eta \ge 0.15$ alle 30. Die 90-%-Begrenzung verhindert das nicht; deshalb endet der Schieberegler der Demo bei 0.1.</div></div>
+      </section>
+          </div>
+
+      <!-- SHARED: one demo instance for both languages -->
+      <section id="sec-demo">
+        <h2>
+          <span class="lang-en"><span class="h2-badge">PART 7</span> Interactive Demo</span>
+          <span class="lang-de"><span class="h2-badge">TEIL 7</span> Interaktive Demo</span>
+        </h2>
+        <p class="lang-en">All five filters below run in your browser on the same noise sequence. Press <strong>Replay</strong> to watch them track, drag the step slider, or change the sensor, the path and the noise. The <strong>Average of 100 runs</strong> panel uses seeds 1000–1099, so for any setup listed in Part 8 it reproduces the published numbers. They were computed with V8, the JavaScript engine in Chrome and Edge; another browser's math library can shift the last digits.</p>
+        <p class="lang-de">Alle fünf Filter laufen unten im Browser auf derselben Rauschfolge. Mit <strong>Replay</strong> sieht man sie verfolgen, mit dem Schieberegler springt man zu einem Schritt, außerdem lassen sich Sensor, Bahn und Rauschen ändern. Das Feld <strong>Average of 100 runs</strong> verwendet die Seeds 1000–1099 und reproduziert für jedes Setup aus Teil 8 die veröffentlichten Zahlen. Berechnet wurden sie mit V8, der JavaScript-Engine von Chrome und Edge; die Mathematikbibliothek eines anderen Browsers kann die letzten Stellen verschieben. Die Bedienoberfläche der Demo ist englisch.</p>
+        <div class="radar-demo-wrap">
+          <iframe id="radar-demo" class="radar-demo-frame" src="demo.html" title="Radar tracking demo: KF, EKF, UKF, PF and H-infinity" loading="lazy"></iframe>
+        </div>
+        <p style="text-align: right; margin-top: 0.5rem;">
+          <a href="demo.html" target="_blank" rel="noopener" class="btn-tech">
+            <span class="lang-en">Open the demo full screen ↗</span>
+            <span class="lang-de">Demo im Vollbild öffnen ↗</span>
+          </a>
+        </p>
+        <ul class="lang-en">
+          <li><strong>Default</strong> (radar, straight path): the EKF and UKF land about 9% below the KF.</li>
+          <li><strong>Sensor → Position (x, y):</strong> the measurement becomes linear and KF, EKF and UKF give identical numbers.</li>
+          <li><strong>Weave, then q = 0.1:</strong> every filter lags, the KF comes out on top, and the PF loses the target.</li>
+          <li><strong>PF particles = 50:</strong> the particle cloud thins out and the PF's error jumps.</li>
+          <li><strong>Circle, q = 0.1, then η from 0 to 0.1:</strong> H∞ recovers most of the EKF's loss.</li>
+        </ul>
+        <ul class="lang-de">
+          <li><strong>Standard</strong> (Radar, Gerade): EKF und UKF liegen etwa 9&nbsp;% unter dem KF.</li>
+          <li><strong>Sensor → Position (x, y):</strong> Die Messung wird linear, KF, EKF und UKF liefern identische Zahlen.</li>
+          <li><strong>Weave, dann q = 0.1:</strong> Alle Filter laufen hinterher, das KF liegt vorn, und das PF verliert das Ziel.</li>
+          <li><strong>PF particles = 50:</strong> Die Partikelwolke dünnt aus, der Fehler des PF springt nach oben.</li>
+          <li><strong>Circle, q = 0.1, dann η von 0 auf 0.1:</strong> H∞ holt den Großteil des EKF-Verlusts wieder herein.</li>
+        </ul>
+        <style>
+          .radar-demo-wrap { margin-top: 1rem; border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; background: var(--bg-card); }
+          .radar-demo-frame { display: block; width: 100%; height: 2600px; border: 0; }
+          @media (max-width: 640px) { .radar-demo-frame { height: 3000px; } }
+        </style>
+        <script>
+          (function () {
+            var frame = document.getElementById('radar-demo');
+            window.addEventListener('message', function (e) {
+              if (e.origin !== location.origin || !e.data || e.data.type !== 'radar-demo-height') return;
+              var h = Number(e.data.h);
+              if (h > 300 && h < 20000) frame.style.height = (h + 4) + 'px';
+            });
+          })();
+        </script>
+      </section>
+
+          <div class="lang-en">
+      <section id="sec-results">
+        <h2><span class="h2-badge">PART 8</span> Measured Results (100 Monte-Carlo Runs)</h2>
+        <p>Every number below is the position RMSE in metres over 100 runs with seeds 1000–1099, 200 steps each, all steps included: $\text{RMSE} = \sqrt{\tfrac{1}{100}\sum_{\text{runs}}\tfrac{1}{201}\sum_k \lVert \hat p_k - p_k\rVert^2}$. Unless stated otherwise: radar sensor, $\sigma_r = 10$&nbsp;m, $\sigma_\varphi = 4^\circ$, 500 particles, $\eta = 0.1$. "Raw" is the error of the converted measurement itself. The numbers come from the same JavaScript as the demo, run headless in V8.</p>
+
+        <h3>A. Motion noise $q$ matched to the path</h3>
+        <div class="table-wrap">
+          <table class="tech-table">
+            <thead><tr><th>Scenario</th><th>Raw</th><th>KF</th><th>EKF</th><th>UKF</th><th>PF</th><th>H∞</th></tr></thead>
+            <tbody>
+              <tr><td>Straight, $q = 0.2$</td><td>39.3</td><td>12.5</td><td><strong>11.4</strong></td><td><strong>11.4</strong></td><td>11.9</td><td>12.1</td></tr>
+              <tr><td>Circle, $q = 0.8$</td><td>39.0</td><td>17.8</td><td><strong>16.8</strong></td><td><strong>16.8</strong></td><td>17.1</td><td>17.5</td></tr>
+              <tr><td>Weave, $q = 1.3$</td><td>39.4</td><td>19.4</td><td><strong>19.2</strong></td><td><strong>19.2</strong></td><td>19.7</td><td>19.6</td></tr>
+              <tr><td>Position sensor $(x, y)$, straight, $q = 0.2$</td><td>14.2</td><td><strong>5.8</strong></td><td><strong>5.8</strong></td><td><strong>5.8</strong></td><td>6.1</td><td>6.0</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>B. Motion noise $q = 0.1$ (too small for the curving paths)</h3>
+        <div class="table-wrap">
+          <table class="tech-table">
+            <thead><tr><th>Scenario</th><th>Raw</th><th>KF</th><th>EKF</th><th>UKF</th><th>PF</th><th>H∞</th></tr></thead>
+            <tbody>
+              <tr><td>Straight</td><td>39.3</td><td>10.8</td><td><strong>9.9</strong></td><td><strong>9.9</strong></td><td>10.2</td><td>10.4</td></tr>
+              <tr><td>Circle</td><td>39.0</td><td><strong>53.3</strong></td><td>65.6</td><td>65.5</td><td>480.1</td><td>55.4</td></tr>
+              <tr><td>Weave</td><td>39.4</td><td><strong>69.9</strong></td><td>89.4</td><td>89.3</td><td>398.7</td><td>76.2</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>On the straight path $q = 0.1$ is not too small: the path really has constant velocity, so a smaller $q$ helps every filter. On the circle and the weave it is far too small.</p>
+
+        <h3>C. Sweeps (straight path, $q = 0.2$)</h3>
+        <div class="table-wrap">
+          <table class="tech-table">
+            <thead><tr><th>Bearing noise $\sigma_\varphi$</th><th>KF</th><th>EKF</th><th>UKF</th><th>EKF vs KF</th></tr></thead>
+            <tbody>
+              <tr><td>1°</td><td>5.6</td><td>5.5</td><td>5.5</td><td>−1.7%</td></tr>
+              <tr><td>4°</td><td>12.5</td><td>11.4</td><td>11.4</td><td>−8.8%</td></tr>
+              <tr><td>8°</td><td>21.3</td><td>18.4</td><td>18.4</td><td>−13.8%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-wrap">
+          <table class="tech-table">
+            <thead><tr><th>PF particles $N$</th><th>50</th><th>100</th><th>200</th><th>500</th><th>2000</th><th>EKF (reference)</th></tr></thead>
+            <tbody>
+              <tr><td>PF RMSE</td><td>48.0</td><td>20.2</td><td>12.5</td><td>11.9</td><td>11.6</td><td>11.4</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-wrap">
+          <table class="tech-table">
+            <thead><tr><th>H∞ on the circle</th><th>$\eta = 0$ (= EKF)</th><th>$\eta = 0.05$</th><th>$\eta = 0.1$</th><th>KF (reference)</th></tr></thead>
+            <tbody>
+              <tr><td>$q = 0.8$ (matched)</td><td>16.8</td><td>17.0</td><td>17.5</td><td>17.8</td></tr>
+              <tr><td>$q = 0.1$ (too small)</td><td>65.6</td><td>60.6</td><td>55.4</td><td>53.3</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>What the numbers say</h3>
+        <ol>
+          <li><strong>Handling the measurement properly pays, but modestly.</strong> With $q$ matched, the EKF and UKF beat the KF by 1–9% at the default noise and by 14% at 8° bearing noise. The gain grows with bearing noise because that is where the KF's single circular $R$ is most wrong.</li>
+          <li><strong>The UKF equals the EKF to within 0.1&nbsp;m everywhere.</strong> Over ranges of roughly 100–900&nbsp;m, $h$ bends only gently inside the filter's uncertainty, so a first-order Jacobian is already enough.</li>
+          <li><strong>The PF needs at least 200–500 particles</strong> to match the Kalman-type filters, and with Gaussian noise it never beat the EKF on average. Below 100 particles it regularly loses the target.</li>
+          <li><strong>A wrong $q$ dominates everything.</strong> On the weave the KF goes from 19.4&nbsp;m with $q = 1.3$ to 69.9&nbsp;m with $q = 0.1$, a factor of 3.6 (4.6 for the EKF and UKF). With the right $q$, choosing a different filter changed the error by at most 14% relative to the KF.</li>
+          <li><strong>With the wrong $q$ the ranking flips.</strong> The plain KF is best, the EKF and UKF are 23–28% worse, and the PF fails. We have not isolated why the EKF suffers more than the KF here; treat it as an observation for this setup.</li>
+          <li><strong>H∞ behaves like insurance.</strong> When $q$ is right it costs 2–7% against the EKF. When $q$ is too small it cuts the EKF's penalty relative to the KF from +23% to +4% on the circle and from +28% to +9% on the weave, but it does not beat the KF there.</li>
+        </ol>
+      </section>
+
+      <section id="sec-choose">
+        <h2><span class="h2-badge">PART 9</span> Which Filter Should You Use?</h2>
+        <div class="table-wrap">
+          <table class="tech-table">
+            <thead><tr><th>Filter</th><th>Use it when</th><th>Cost per step (here)</th><th>Main risk</th></tr></thead>
+            <tbody>
+              <tr><td><strong>KF</strong></td><td>The measurement is linear (position fix, encoder), or can be converted with a reasonable fixed $R$.</td><td>Matrix algebra only</td><td>A converted $R$ that is wrong at some operating points.</td></tr>
+              <tr><td><strong>EKF</strong></td><td>Mild nonlinearity and an easy Jacobian (range/bearing, IMU tilt). The default for embedded work.</td><td>1 evaluation of $h$ + Jacobian</td><td>Strong nonlinearity, or linearising far from the truth.</td></tr>
+              <tr><td><strong>UKF</strong></td><td>Strong nonlinearity, or a Jacobian that is hard to derive or discontinuous.</td><td>$2n+1 = 9$ evaluations of $h$ + Cholesky</td><td>Tuning $\alpha,\beta,\kappa$; a covariance that loses positive definiteness.</td></tr>
+              <tr><td><strong>PF</strong></td><td>Multi-modal or non-Gaussian beliefs, hard constraints, ambiguous measurements.</td><td>$N$ evaluations (500 here)</td><td>Too few particles; degeneracy when the model is wrong.</td></tr>
+              <tr><td><strong>H∞</strong></td><td>Noise statistics or the model are uncertain and the worst case matters more than the average.</td><td>EKF + a few extra 2×2 inversions</td><td>Divergence when $\theta$ is too large; 2–7% loss when the model is right.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout callout-tip"><div><strong>Tune before you switch.</strong> On the weave, a wrong $q$ multiplied the error by 3.6–4.6× for the Kalman-type filters and by about 20× for the PF. With the right $q$ and default settings, switching filters changed the error by at most 14% relative to the KF. Check $q$ and $R$ first (the demo's cumulative-RMSE chart and the 2σ ellipses help), then decide whether the nonlinearity is worth an EKF or UKF.</div></div>
+      </section>
+
+      <section id="sec-limits">
+        <h2><span class="h2-badge">PART 10</span> Limitations and Further Reading</h2>
+        <ul>
+          <li>One sensor in 2-D with Gaussian noise; no clutter, false alarms, missed detections or data association.</li>
+          <li>The KF's $R$ uses the mean range of the true path, which favours the KF.</li>
+          <li>H∞ uses a fixed $\theta$; we did not search for the smallest feasible $\gamma$.</li>
+          <li>The PF is a basic bootstrap filter. Better proposals (auxiliary or regularised PFs) would need fewer particles.</li>
+          <li>All filters share one constant-velocity model. Manoeuvring targets are usually handled with multiple-model filters (IMM), which this article does not cover.</li>
+          <li>No timings were measured; the cost column counts evaluations of $h$.</li>
+        </ul>
+        <p><strong>Related on this site:</strong> <a href="../state-estimation-kf-ekf-ukf-hinf/index.html">Estimating Pitch on a Balancing Robot: KF vs EKF vs UKF vs H∞</a> compares four of these filters on a different problem, IMU pitch estimation, with runnable Python code.</p>
+        <p><strong>References:</strong> R.&nbsp;E. Kalman (1960), <em>A New Approach to Linear Filtering and Prediction Problems</em>; S.&nbsp;J. Julier &amp; J.&nbsp;K. Uhlmann (2004), <em>Unscented Filtering and Nonlinear Estimation</em>, Proc. IEEE; N.&nbsp;J. Gordon, D.&nbsp;J. Salmond &amp; A.&nbsp;F.&nbsp;M. Smith (1993), <em>Novel approach to nonlinear/non-Gaussian Bayesian state estimation</em>; D. Simon (2006), <em>Optimal State Estimation</em>, Wiley; Y. Bar-Shalom, X.&nbsp;R. Li &amp; T. Kirubarajan (2001), <em>Estimation with Applications to Tracking and Navigation</em>, Wiley.</p>
+      </section>
+          </div>
+          <div class="lang-de">
+      <section id="de-results">
+        <h2><span class="h2-badge">TEIL 8</span> Messergebnisse (100 Monte-Carlo-Läufe)</h2>
+        <p>Jede Zahl unten ist der Positions-RMSE in Metern über 100 Läufe mit den Seeds 1000–1099, je 200 Schritte, alle Schritte eingeschlossen: $\text{RMSE} = \sqrt{\tfrac{1}{100}\sum_{\text{Läufe}}\tfrac{1}{201}\sum_k \lVert \hat p_k - p_k\rVert^2}$. Sofern nicht anders angegeben: Radarsensor, $\sigma_r = 10$&nbsp;m, $\sigma_\varphi = 4^\circ$, 500 Partikel, $\eta = 0.1$. „Roh“ ist der Fehler der umgerechneten Messung selbst. Die Zahlen stammen aus demselben JavaScript wie die Demo, ohne Oberfläche in V8 ausgeführt.</p>
+
+        <h3>A. Bewegungsrauschen $q$ passend zur Bahn</h3>
+        <div class="table-wrap">
+          <table class="tech-table">
+            <thead><tr><th>Szenario</th><th>Roh</th><th>KF</th><th>EKF</th><th>UKF</th><th>PF</th><th>H∞</th></tr></thead>
+            <tbody>
+              <tr><td>Gerade, $q = 0.2$</td><td>39.3</td><td>12.5</td><td><strong>11.4</strong></td><td><strong>11.4</strong></td><td>11.9</td><td>12.1</td></tr>
+              <tr><td>Kreis, $q = 0.8$</td><td>39.0</td><td>17.8</td><td><strong>16.8</strong></td><td><strong>16.8</strong></td><td>17.1</td><td>17.5</td></tr>
+              <tr><td>Schlangenlinie, $q = 1.3$</td><td>39.4</td><td>19.4</td><td><strong>19.2</strong></td><td><strong>19.2</strong></td><td>19.7</td><td>19.6</td></tr>
+              <tr><td>Positionssensor $(x, y)$, Gerade, $q = 0.2$</td><td>14.2</td><td><strong>5.8</strong></td><td><strong>5.8</strong></td><td><strong>5.8</strong></td><td>6.1</td><td>6.0</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>B. Bewegungsrauschen $q = 0.1$ (zu klein für die gekrümmten Bahnen)</h3>
+        <div class="table-wrap">
+          <table class="tech-table">
+            <thead><tr><th>Szenario</th><th>Roh</th><th>KF</th><th>EKF</th><th>UKF</th><th>PF</th><th>H∞</th></tr></thead>
+            <tbody>
+              <tr><td>Gerade</td><td>39.3</td><td>10.8</td><td><strong>9.9</strong></td><td><strong>9.9</strong></td><td>10.2</td><td>10.4</td></tr>
+              <tr><td>Kreis</td><td>39.0</td><td><strong>53.3</strong></td><td>65.6</td><td>65.5</td><td>480.1</td><td>55.4</td></tr>
+              <tr><td>Schlangenlinie</td><td>39.4</td><td><strong>69.9</strong></td><td>89.4</td><td>89.3</td><td>398.7</td><td>76.2</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Auf der Geraden ist $q = 0.1$ nicht zu klein: Die Bahn hat wirklich konstante Geschwindigkeit, ein kleineres $q$ hilft also jedem Filter. Auf Kreis und Schlangenlinie ist es viel zu klein.</p>
+
+        <h3>C. Parameterstudien (Gerade, $q = 0.2$)</h3>
+        <div class="table-wrap">
+          <table class="tech-table">
+            <thead><tr><th>Peilrauschen $\sigma_\varphi$</th><th>KF</th><th>EKF</th><th>UKF</th><th>EKF ggü. KF</th></tr></thead>
+            <tbody>
+              <tr><td>1°</td><td>5.6</td><td>5.5</td><td>5.5</td><td>−1.7&nbsp;%</td></tr>
+              <tr><td>4°</td><td>12.5</td><td>11.4</td><td>11.4</td><td>−8.8&nbsp;%</td></tr>
+              <tr><td>8°</td><td>21.3</td><td>18.4</td><td>18.4</td><td>−13.8&nbsp;%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-wrap">
+          <table class="tech-table">
+            <thead><tr><th>PF-Partikel $N$</th><th>50</th><th>100</th><th>200</th><th>500</th><th>2000</th><th>EKF (Referenz)</th></tr></thead>
+            <tbody>
+              <tr><td>PF-RMSE</td><td>48.0</td><td>20.2</td><td>12.5</td><td>11.9</td><td>11.6</td><td>11.4</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-wrap">
+          <table class="tech-table">
+            <thead><tr><th>H∞ auf dem Kreis</th><th>$\eta = 0$ (= EKF)</th><th>$\eta = 0.05$</th><th>$\eta = 0.1$</th><th>KF (Referenz)</th></tr></thead>
+            <tbody>
+              <tr><td>$q = 0.8$ (passend)</td><td>16.8</td><td>17.0</td><td>17.5</td><td>17.8</td></tr>
+              <tr><td>$q = 0.1$ (zu klein)</td><td>65.6</td><td>60.6</td><td>55.4</td><td>53.3</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Was die Zahlen zeigen</h3>
+        <ol>
+          <li><strong>Die Messung richtig zu behandeln lohnt sich, aber nur mäßig.</strong> Bei passendem $q$ schlagen EKF und UKF das KF um 1–9&nbsp;% beim Standardrauschen und um 14&nbsp;% bei 8° Peilrauschen. Der Gewinn wächst mit dem Peilrauschen, weil das einzelne kreisförmige $R$ des KF dort am stärksten danebenliegt.</li>
+          <li><strong>Das UKF entspricht überall dem EKF auf 0,1&nbsp;m genau.</strong> Bei Entfernungen von etwa 100–900&nbsp;m ist $h$ innerhalb der Unsicherheit des Filters nur schwach gekrümmt, eine Jacobi-Matrix erster Ordnung reicht also schon.</li>
+          <li><strong>Das PF braucht mindestens 200–500 Partikel</strong>, um mit den Kalman-Filtern gleichzuziehen, und bei gaußschem Rauschen schlug es das EKF im Mittel nie. Unter 100 Partikeln verliert es das Ziel regelmäßig.</li>
+          <li><strong>Ein falsches $q$ dominiert alles.</strong> Auf der Schlangenlinie steigt der Fehler des KF von 19,4&nbsp;m bei $q = 1.3$ auf 69,9&nbsp;m bei $q = 0.1$, also um den Faktor 3,6 (beim EKF und UKF 4,6). Bei richtigem $q$ änderte die Wahl eines anderen Filters den Fehler um höchstens 14&nbsp;% gegenüber dem KF.</li>
+          <li><strong>Mit falschem $q$ kehrt sich die Rangfolge um.</strong> Das einfache KF ist am besten, EKF und UKF sind 23–28&nbsp;% schlechter, und das PF versagt. Warum das EKF hier stärker leidet als das KF, haben wir nicht isoliert; es ist als Beobachtung für dieses Setup zu verstehen.</li>
+          <li><strong>H∞ verhält sich wie eine Versicherung.</strong> Bei richtigem $q$ kostet es 2–7&nbsp;% gegenüber dem EKF. Bei zu kleinem $q$ senkt es den Nachteil des EKF gegenüber dem KF von +23&nbsp;% auf +4&nbsp;% auf dem Kreis und von +28&nbsp;% auf +9&nbsp;% auf der Schlangenlinie, schlägt das KF dort aber nicht.</li>
+        </ol>
+      </section>
+
+      <section id="de-choose">
+        <h2><span class="h2-badge">TEIL 9</span> Welchen Filter sollte man verwenden?</h2>
+        <div class="table-wrap">
+          <table class="tech-table">
+            <thead><tr><th>Filter</th><th>Einsetzen, wenn</th><th>Aufwand pro Schritt (hier)</th><th>Hauptrisiko</th></tr></thead>
+            <tbody>
+              <tr><td><strong>KF</strong></td><td>Die Messung ist linear (Positionsfix, Encoder) oder lässt sich mit einem vernünftigen festen $R$ umrechnen.</td><td>Nur Matrixalgebra</td><td>Ein umgerechnetes $R$, das in manchen Arbeitspunkten falsch ist.</td></tr>
+              <tr><td><strong>EKF</strong></td><td>Schwache Nichtlinearität und eine einfache Jacobi-Matrix (Entfernung/Peilung, IMU-Neigung). Der Standard für Embedded-Systeme.</td><td>1 Auswertung von $h$ + Jacobi-Matrix</td><td>Starke Nichtlinearität oder Linearisierung weit von der Wahrheit.</td></tr>
+              <tr><td><strong>UKF</strong></td><td>Starke Nichtlinearität oder eine Jacobi-Matrix, die schwer herzuleiten oder unstetig ist.</td><td>$2n+1 = 9$ Auswertungen von $h$ + Cholesky</td><td>Einstellung von $\alpha,\beta,\kappa$; eine Kovarianz, die ihre positive Definitheit verliert.</td></tr>
+              <tr><td><strong>PF</strong></td><td>Mehrgipflige oder nicht-gaußsche Verteilungen, harte Nebenbedingungen, mehrdeutige Messungen.</td><td>$N$ Auswertungen (hier 500)</td><td>Zu wenige Partikel; Degeneration bei falschem Modell.</td></tr>
+              <tr><td><strong>H∞</strong></td><td>Rauschstatistik oder Modell sind unsicher, und der ungünstigste Fall zählt mehr als der Durchschnitt.</td><td>EKF + einige zusätzliche 2×2-Inversionen</td><td>Divergenz bei zu großem $\theta$; 2–7&nbsp;% Verlust bei richtigem Modell.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout callout-tip"><div><strong>Erst einstellen, dann wechseln.</strong> Auf der Schlangenlinie vervielfachte ein falsches $q$ den Fehler der Kalman-artigen Filter um das 3,6- bis 4,6-Fache und den des PF um etwa das 20-Fache. Mit richtigem $q$ und Standardeinstellungen änderte ein Filterwechsel den Fehler um höchstens 14&nbsp;% gegenüber dem KF. Zuerst $q$ und $R$ prüfen (das kumulative RMSE-Diagramm und die 2σ-Ellipsen der Demo helfen dabei), dann entscheiden, ob die Nichtlinearität ein EKF oder UKF rechtfertigt.</div></div>
+      </section>
+
+      <section id="de-limits">
+        <h2><span class="h2-badge">TEIL 10</span> Einschränkungen und weiterführende Literatur</h2>
+        <ul>
+          <li>Ein Sensor in 2-D mit gaußschem Rauschen; keine Störechos, Fehlalarme, Fehldetektionen oder Datenassoziation.</li>
+          <li>Das $R$ des KF verwendet die mittlere Entfernung der wahren Bahn, was das KF begünstigt.</li>
+          <li>H∞ verwendet ein festes $\theta$; nach dem kleinsten zulässigen $\gamma$ wurde nicht gesucht.</li>
+          <li>Das PF ist ein einfaches Bootstrap-Filter. Bessere Vorschlagsverteilungen (Auxiliary- oder regularisierte PF) kämen mit weniger Partikeln aus.</li>
+          <li>Alle Filter teilen ein Modell konstanter Geschwindigkeit. Manövrierende Ziele behandelt man meist mit Mehrmodell-Filtern (IMM), die hier nicht vorkommen.</li>
+          <li>Laufzeiten wurden nicht gemessen; die Aufwandsspalte zählt Auswertungen von $h$.</li>
+        </ul>
+        <p><strong>Verwandter Beitrag auf dieser Seite:</strong> <a href="../state-estimation-kf-ekf-ukf-hinf/index.html">Neigungsschätzung beim Balancierroboter: KF, EKF, UKF und H∞ im Vergleich</a> vergleicht vier dieser Filter an einem anderen Problem, der IMU-Neigungsschätzung, mit lauffähigem Python-Code.</p>
+        <p><strong>Literatur:</strong> R.&nbsp;E. Kalman (1960), <em>A New Approach to Linear Filtering and Prediction Problems</em>; S.&nbsp;J. Julier &amp; J.&nbsp;K. Uhlmann (2004), <em>Unscented Filtering and Nonlinear Estimation</em>, Proc. IEEE; N.&nbsp;J. Gordon, D.&nbsp;J. Salmond &amp; A.&nbsp;F.&nbsp;M. Smith (1993), <em>Novel approach to nonlinear/non-Gaussian Bayesian state estimation</em>; D. Simon (2006), <em>Optimal State Estimation</em>, Wiley; Y. Bar-Shalom, X.&nbsp;R. Li &amp; T. Kirubarajan (2001), <em>Estimation with Applications to Tracking and Navigation</em>, Wiley.</p>
+      </section>
+          </div>
+
+          <div class="sidebar-divider" style="margin: 3rem 0;"></div>
+
+          <div style="text-align: center; padding: 1.5rem; background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border-color);">
+            <h3 style="margin-top: 0; color: var(--accent-cyan);">
+              <span class="lang-en">Try the filters yourself</span>
+              <span class="lang-de">Die Filter selbst ausprobieren</span>
+            </h3>
+            <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.25rem;">
+              <span class="lang-en">The demo is a single self-contained HTML file: all five filters and the Monte-Carlo runner are in plain JavaScript, no libraries.</span>
+              <span class="lang-de">Die Demo ist eine einzelne, eigenständige HTML-Datei: alle fünf Filter und der Monte-Carlo-Lauf in reinem JavaScript, ohne Bibliotheken.</span>
+            </p>
+            <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+              <a href="../../blog.html" class="btn-tech btn-tech-primary">
+                <span class="lang-en">← Back to Blog List</span>
+                <span class="lang-de">← Zurück zur Blogliste</span>
+              </a>
+              <a href="demo.html" target="_blank" rel="noopener" class="btn-tech">
+                <span class="lang-en">Open the Demo ↗</span>
+                <span class="lang-de">Demo öffnen ↗</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- SEARCH MODAL -->
+  <div id="search-modal-backdrop" class="search-modal-backdrop">
+    <div class="search-modal">
+      <div class="search-input-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="search-input" class="search-input" placeholder="Type to search (Ctrl+K)..." autocomplete="off">
+        <span class="kbd-shortcut">ESC</span>
+      </div>
+      <div id="search-results" class="search-results"></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div>&copy; 2026 · Powered by GitHub Pages · Cyber-Tech Portfolio · Vinh Do (HUST)</div>
+  </footer>
+
+  <script src="../../assets/js/search-data.js?v=4.0"></script>
+  <script src="../../assets/js/main.js?v=4.0"></script>
+</body>
+</html>

@@ -1,0 +1,1155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Radar Tracking Lab: KF, EKF, UKF, PF and H∞</title>
+<meta name="description" content="Interactive comparison of KF, EKF, UKF, particle filter and H-infinity filter tracking a target with a range-bearing radar.">
+<script>
+  /* follow the site theme (same origin as the article that embeds this page) */
+  (function () {
+    try { document.documentElement.setAttribute('data-theme', localStorage.getItem('site_theme') || 'dark'); } catch (e) {}
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: large radar map and error chart on the left; setup, numbers and measurement handling on the right; read-out at the bottom.
+   Colour: cool blue-grey background; the five filters use five well-separated hues (orange, blue, green, purple, pink) and five marker shapes. */
+:root {
+  --bg: #f1f4f7;
+  --surface: #ffffff;
+  --surface-2: #e7ecf1;
+  --fg: #12202d;
+  --muted: #536373;
+  --line: #d2dae2;
+  --ring: #d3dbe3;
+  --truth: #12202d;
+  --meas: #7a8896;
+  --kf: #c4501a;
+  --ekf: #1565c0;
+  --ukf: #0f8a5f;
+  --pf: #8e3fb8;
+  --hinf: #d6336c;
+  --font-ui: 'Be Vietnam Pro', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-num: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d151d; --surface: #141e28; --surface-2: #1c2935; --fg: #e6edf3; --muted: #96a6b6;
+    --line: #263544; --ring: #24323f; --truth: #e6edf3; --meas: #738394; --kf: #ff8c55; --ekf: #62adff;
+    --ukf: #4cd1a1; --pf: #cc8ff2; --hinf: #ff7aa8;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d151d; --surface: #141e28; --surface-2: #1c2935; --fg: #e6edf3; --muted: #96a6b6;
+  --line: #263544; --ring: #24323f; --truth: #e6edf3; --meas: #738394; --kf: #ff8c55; --ekf: #62adff;
+  --ukf: #4cd1a1; --pf: #cc8ff2; --hinf: #ff7aa8;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 1.55;
+  padding-block: 24px 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1160px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+h1 { margin: 0 0 8px; font-size: clamp(1.45rem, 1.05rem + 1.5vw, 2rem); line-height: 1.2; font-weight: 700; letter-spacing: -0.01em; text-wrap: balance; }
+h2 { margin: 0; font-size: 14px; font-weight: 600; letter-spacing: 0.01em; }
+h3 { margin: 0 0 6px; font-size: 13px; font-weight: 600; }
+p { margin: 0; }
+.lede { max-width: 72ch; color: var(--muted); }
+.mono { font-family: var(--font-num); font-variant-numeric: tabular-nums; }
+
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 20px; align-items: start; }
+.col { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; min-width: 0; }
+.panel-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 16px; margin-bottom: 10px; }
+@media (max-width: 960px) {
+  .layout { display: flex; flex-direction: column; align-items: stretch; }
+  .col { display: contents; }
+  .p-map { order: 1; } .p-set { order: 2; } .p-res { order: 3; } .p-err { order: 4; } .p-mat { order: 5; }
+}
+
+canvas { display: block; width: 100%; }
+#map { aspect-ratio: 3 / 2; }
+#err { aspect-ratio: 16 / 6; min-height: 160px; }
+
+.legend { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12.5px; color: var(--muted); }
+.legend li { display: flex; align-items: center; gap: 6px; }
+.legend li::before { content: ""; width: 14px; height: 0; border-top: 3px solid var(--muted); }
+.legend .lg-truth::before { border-top-color: var(--truth); }
+.legend .lg-kf::before { border-top-color: var(--kf); }
+.legend .lg-ekf::before { border-top-color: var(--ekf); }
+.legend .lg-ukf::before { border-top-color: var(--ukf); }
+.legend .lg-pf::before { border-top-color: var(--pf); }
+.legend .lg-hinf::before { border-top-color: var(--hinf); }
+.legend .lg-meas::before { width: 6px; height: 6px; border: 0; border-radius: 50%; background: var(--meas); }
+.legend .lg-part::before { width: 6px; height: 6px; border: 0; border-radius: 1px; background: var(--pf); opacity: 0.55; }
+
+.note { margin-top: 8px; font-size: 12.5px; color: var(--muted); min-height: 1.55em; }
+.transport { display: flex; align-items: center; gap: 12px; margin-top: 10px; flex-wrap: wrap; }
+.transport input[type=range] { flex: 1 1 140px; min-width: 0; }
+.k-read { font-size: 13px; color: var(--muted); min-width: 9ch; text-align: right; }
+.toggles, .filters { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; margin-top: 12px; font-size: 13px; }
+.filters { margin-top: 8px; }
+.toggles label, .filters label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+.filters .lab { margin-right: -4px; }
+.chip i { display: inline-block; width: 10px; height: 10px; background: var(--c); }
+.chip i.sq { border-radius: 2px; }
+.chip i.dia { transform: rotate(45deg) scale(0.85); border-radius: 1px; }
+.chip i.tri { clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.chip i.circ { border-radius: 50%; }
+.chip i.hex { clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0 50%); }
+input[type=checkbox] { accent-color: var(--ekf); width: 15px; height: 15px; margin: 0; }
+input[type=range] { width: 100%; accent-color: var(--ekf); margin: 2px 0 0; }
+input:focus-visible { outline: 2px solid var(--ekf); outline-offset: 2px; }
+
+.btn { font: inherit; font-size: 13px; font-weight: 600; padding: 7px 12px; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer; }
+.btn:hover { background: var(--surface-2); }
+.btn.primary { background: var(--fg); color: var(--surface); border-color: var(--fg); min-width: 104px; }
+.btn.primary:hover { opacity: 0.9; }
+.btn:focus-visible { outline: 2px solid var(--ekf); outline-offset: 2px; }
+
+.field { display: flex; flex-direction: column; gap: 6px; margin-top: 14px; }
+.panel > h2 + .field { margin-top: 10px; }
+.lab { font-size: 13px; color: var(--muted); font-weight: 500; }
+.hint { font-size: 12.5px; color: var(--muted); }
+.seg { display: inline-flex; flex-wrap: wrap; align-self: flex-start; max-width: 100%; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: var(--surface-2); }
+.seg label { position: relative; cursor: pointer; }
+.seg input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+.seg span { display: block; padding: 6px 11px; font-size: 13px; font-weight: 500; color: var(--muted); white-space: nowrap; }
+.seg input:checked + span { background: var(--fg); color: var(--surface); }
+.seg input:focus-visible + span { outline: 2px solid var(--ekf); outline-offset: -3px; }
+.slider label { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: 13px; font-weight: 500; }
+.slider output { color: var(--muted); font-size: 12.5px; }
+.slider input:disabled { opacity: 0.4; }
+.btn-row { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+
+.sub { font-size: 12.5px; color: var(--muted); margin: 2px 0 10px; }
+.bars { display: flex; flex-direction: column; gap: 8px; }
+.row { display: grid; grid-template-columns: 62px minmax(0, 1fr) 64px; align-items: center; gap: 10px; font-size: 13px; }
+.bar { height: 8px; background: var(--surface-2); border-radius: 4px; overflow: hidden; }
+.bar i { display: block; height: 100%; width: 0; background: var(--meas); transition: width 0.15s; }
+.bar i.kf { background: var(--kf); }
+.bar i.ekf { background: var(--ekf); }
+.bar i.ukf { background: var(--ukf); }
+.bar i.pf { background: var(--pf); }
+.bar i.hinf { background: var(--hinf); }
+.val { text-align: right; }
+.verdict { margin-top: 10px; font-size: 13px; }
+.sep { border: 0; border-top: 1px solid var(--line); margin: 16px 0 12px; }
+.stale { opacity: 0.55; }
+
+.mats { display: grid; gap: 16px; }
+.mat { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px 6px; padding: 6px 10px; border-left: 2px solid var(--fg); border-right: 2px solid var(--fg); font-family: var(--font-num); font-size: 13px; text-align: right; font-variant-numeric: tabular-nums; }
+.mat .z { color: var(--muted); }
+.cap { margin-top: 6px; font-size: 12.5px; color: var(--muted); }
+
+.read { border-top: 1px solid var(--line); padding-top: 20px; }
+.read h2 { font-size: 16px; margin-bottom: 14px; }
+.read-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 40px; }
+.read-grid h3 { font-size: 14px; margin-bottom: 6px; }
+.read-grid p { font-size: 14px; color: var(--muted); max-width: 62ch; }
+@media (max-width: 860px) { .read-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (prefers-reduced-motion: reduce) { .bar i { transition: none; } }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>KF, EKF, UKF, PF and H∞ on the same target</h1>
+    <p class="lede">A radar at the origin measures the range and bearing of a moving target. Five filters receive the same measurements and use the same motion model. They differ only in how they handle the nonlinear measurement.</p>
+  </header>
+
+  <div class="layout">
+    <div class="col">
+      <section class="panel p-map" aria-labelledby="h-map">
+        <div class="panel-head">
+          <h2 id="h-map">Tracking map</h2>
+          <ul class="legend">
+            <li class="lg-truth">True path</li>
+            <li class="lg-meas">Radar measurement</li>
+            <li class="lg-part">PF particles</li>
+          </ul>
+        </div>
+        <canvas id="map" role="img" aria-label="Tracking map: true path, radar measurements and the KF, EKF, UKF, PF and H-infinity estimates around a radar at the origin"></canvas>
+        <p class="note" id="map-note"></p>
+        <div class="transport">
+          <button id="play" class="btn primary" type="button">Replay</button>
+          <input id="kslider" type="range" min="0" max="200" step="1" value="200" aria-label="Time step">
+          <span class="k-read mono" id="kread">k = 200 / 200</span>
+        </div>
+        <div class="filters" role="group" aria-label="Filters to show">
+          <span class="lab">Filters</span>
+          <label class="chip" style="--c: var(--kf)"><input type="checkbox" data-f="kf" checked><i class="sq"></i>KF</label>
+          <label class="chip" style="--c: var(--ekf)"><input type="checkbox" data-f="ekf" checked><i class="dia"></i>EKF</label>
+          <label class="chip" style="--c: var(--ukf)"><input type="checkbox" data-f="ukf" checked><i class="tri"></i>UKF</label>
+          <label class="chip" style="--c: var(--pf)"><input type="checkbox" data-f="pf" checked><i class="circ"></i>PF</label>
+          <label class="chip" style="--c: var(--hinf)"><input type="checkbox" data-f="hinf" checked><i class="hex"></i>H∞</label>
+        </div>
+        <div class="toggles">
+          <label><input type="checkbox" id="t-trail" checked> Measurements</label>
+          <label><input type="checkbox" id="t-wedge" checked> Measurement error region</label>
+          <label><input type="checkbox" id="t-parts" checked> PF particle cloud</label>
+          <label><input type="checkbox" id="t-ell"> 2σ error ellipses</label>
+        </div>
+      </section>
+
+      <section class="panel p-err" aria-labelledby="h-err">
+        <div class="panel-head">
+          <h2 id="h-err">Position error over time (m)</h2>
+          <ul class="legend">
+            <li class="lg-kf">KF</li><li class="lg-ekf">EKF</li><li class="lg-ukf">UKF</li><li class="lg-pf">PF</li><li class="lg-hinf">H∞</li>
+          </ul>
+        </div>
+        <div class="seg" role="radiogroup" aria-label="Chart type" style="margin-bottom:10px">
+          <label><input type="radio" name="chart" value="step" checked><span>Per step</span></label>
+          <label><input type="radio" name="chart" value="cum"><span>Cumulative RMSE</span></label>
+        </div>
+        <canvas id="err" role="img" aria-label="Position error of the five filters over the time steps"></canvas>
+      </section>
+    </div>
+
+    <div class="col">
+      <section class="panel p-set" aria-labelledby="h-set">
+        <h2 id="h-set">Setup</h2>
+        <div class="field">
+          <span class="lab">Sensor</span>
+          <div class="seg" role="radiogroup" aria-label="Sensor">
+            <label><input type="radio" name="mode" value="radar" checked><span>Radar (r, φ)</span></label>
+            <label><input type="radio" name="mode" value="linear"><span>Position (x, y)</span></label>
+          </div>
+          <p class="hint" id="mode-hint"></p>
+        </div>
+        <div class="field">
+          <span class="lab">Path</span>
+          <div class="seg" role="radiogroup" aria-label="Path">
+            <label><input type="radio" name="path" value="line" checked><span>Straight</span></label>
+            <label><input type="radio" name="path" value="circle"><span>Circle</span></label>
+            <label><input type="radio" name="path" value="weave"><span>Weave</span></label>
+          </div>
+        </div>
+        <div class="field slider">
+          <label for="sr"><span id="sr-lab">σ range</span><output id="sr-out" for="sr" class="mono"></output></label>
+          <input id="sr" type="range" min="1" max="30" step="1" value="10">
+        </div>
+        <div class="field slider">
+          <label for="sth"><span>σ bearing</span><output id="sth-out" for="sth" class="mono"></output></label>
+          <input id="sth" type="range" min="0.2" max="8" step="0.2" value="4">
+        </div>
+        <div class="field slider">
+          <label for="q"><span>q, model acceleration noise</span><output id="q-out" for="q" class="mono"></output></label>
+          <input id="q" type="range" min="0.05" max="3" step="0.05" value="0.2">
+          <p class="hint">All five filters assume nearly constant velocity. Each path selects its own suggested q.</p>
+        </div>
+        <div class="field slider">
+          <label for="np"><span>PF particles</span><output id="np-out" for="np" class="mono"></output></label>
+          <input id="np" type="range" min="50" max="2000" step="50" value="500">
+          <p class="hint">More particles make the PF more accurate but slower.</p>
+        </div>
+        <div class="field slider">
+          <label for="eta"><span>H∞ conservatism η</span><output id="eta-out" for="eta" class="mono"></output></label>
+          <input id="eta" type="range" min="0" max="0.1" step="0.005" value="0.1">
+          <p class="hint">η = 0 makes H∞ identical to the EKF (to the KF with the linear sensor). A larger η trusts the model less and follows the measurements more closely. The slider stops at 0.1 because from about 0.12 some setups (very small measurement noise, large q) diverge.</p>
+        </div>
+        <div class="btn-row">
+          <button id="newnoise" class="btn" type="button">New noise</button>
+          <button id="reset" class="btn" type="button">Reset</button>
+        </div>
+      </section>
+
+      <section class="panel p-res" aria-labelledby="h-res">
+        <h2 id="h-res">Position RMSE</h2>
+        <p class="sub" id="live-sub"></p>
+        <div class="bars">
+          <div class="row"><span>Raw</span><span class="bar"><i id="b-raw"></i></span><span class="val mono" id="v-raw"></span></div>
+          <div class="row"><span>KF</span><span class="bar"><i class="kf" id="b-kf"></i></span><span class="val mono" id="v-kf"></span></div>
+          <div class="row"><span>EKF</span><span class="bar"><i class="ekf" id="b-ekf"></i></span><span class="val mono" id="v-ekf"></span></div>
+          <div class="row"><span>UKF</span><span class="bar"><i class="ukf" id="b-ukf"></i></span><span class="val mono" id="v-ukf"></span></div>
+          <div class="row"><span>PF</span><span class="bar"><i class="pf" id="b-pf"></i></span><span class="val mono" id="v-pf"></span></div>
+          <div class="row"><span>H∞</span><span class="bar"><i class="hinf" id="b-hinf"></i></span><span class="val mono" id="v-hinf"></span></div>
+        </div>
+        <p class="verdict" id="verdict"></p>
+        <hr class="sep">
+        <div id="mc">
+          <h3>Average of 100 runs</h3>
+          <p class="sub" id="mc-sub"></p>
+          <div class="bars">
+            <div class="row"><span>Raw</span><span class="bar"><i id="mb-raw"></i></span><span class="val mono" id="mv-raw"></span></div>
+            <div class="row"><span>KF</span><span class="bar"><i class="kf" id="mb-kf"></i></span><span class="val mono" id="mv-kf"></span></div>
+            <div class="row"><span>EKF</span><span class="bar"><i class="ekf" id="mb-ekf"></i></span><span class="val mono" id="mv-ekf"></span></div>
+            <div class="row"><span>UKF</span><span class="bar"><i class="ukf" id="mb-ukf"></i></span><span class="val mono" id="mv-ukf"></span></div>
+            <div class="row"><span>PF</span><span class="bar"><i class="pf" id="mb-pf"></i></span><span class="val mono" id="mv-pf"></span></div>
+            <div class="row"><span>H∞</span><span class="bar"><i class="hinf" id="mb-hinf"></i></span><span class="val mono" id="mv-hinf"></span></div>
+          </div>
+          <p class="verdict" id="mc-verdict"></p>
+        </div>
+      </section>
+
+      <section class="panel p-mat" aria-labelledby="h-mat">
+        <div class="panel-head"><h2 id="h-mat">How each filter handles the measurement</h2></div>
+        <div class="mats">
+          <div>
+            <h3>KF: fixed H</h3>
+            <div class="mat" id="mat-kf"></div>
+            <p class="cap" id="cap-kf"></p>
+          </div>
+          <div>
+            <h3 id="h-ekf">EKF: H<sub>k</sub> at step k</h3>
+            <div class="mat" id="mat-ekf"></div>
+            <p class="cap" id="cap-ekf"></p>
+          </div>
+          <div>
+            <h3>UKF: sigma points</h3>
+            <p class="cap" id="cap-ukf" style="margin-top:0"></p>
+          </div>
+          <div>
+            <h3>PF: particle cloud</h3>
+            <p class="cap" id="cap-pf" style="margin-top:0"></p>
+          </div>
+          <div>
+            <h3>H∞: worst-case bound</h3>
+            <p class="cap" id="cap-hinf" style="margin-top:0"></p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <section class="read" aria-labelledby="h-read">
+    <h2 id="h-read">Reading the results</h2>
+    <div class="read-grid">
+      <article>
+        <h3>The nonlinearity is in the measurement</h3>
+        <p>The state is (x, y), but the radar measures (r, φ). The measurement function contains a square root and an arctangent, so the EKF's H<sub>k</sub> changes with the target position. A 4° bearing error is about 14 m across the line of sight at 200 m range and about 56 m at 800 m, so the measurement error region is an arc, not a circle.</p>
+      </article>
+      <article>
+        <h3>The KF has to use one shared R</h3>
+        <p>The KF converts (r, φ) to (x, y) and uses one fixed, circular R chosen from the mean range of the path. At long range it trusts the measurement too much, at short range too little. The other four filters use (r, φ) directly with the right noise for each, so the EKF, UKF and PF usually end up a few percent below the KF, and more when the bearing noise is large.</p>
+      </article>
+      <article>
+        <h3>The UKF almost matches the EKF here</h3>
+        <p>Over the ranges in this simulation the measurement function bends only gently, so the UKF's sigma points and the EKF's Jacobian give nearly the same error. The UKF pays off when the measurement function bends strongly or is hard to differentiate; in exchange it evaluates the measurement function 9 times per step.</p>
+      </article>
+      <article>
+        <h3>The PF needs enough particles</h3>
+        <p>With 500 particles the PF stays within about 5% of the EKF. With 100 particles its error is about 75% higher, and with 50 it regularly loses the target. Cost grows linearly with the number of particles. Where a PF really wins is a multi-modal or non-Gaussian distribution, which this simulation does not have.</p>
+      </article>
+      <article>
+        <h3>A wrong motion model dominates</h3>
+        <p>On the circle or the weave with q far too small (0.1), every filter lags behind the target, and that lag outweighs any nonlinearity effect. In that case the plain KF is the best of the five, the EKF and UKF are 20–30% worse, and the PF loses the target. Drag q down to 0.1 on the weave to see this, then raise it again.</p>
+      </article>
+      <article>
+        <h3>Linear sensor</h3>
+        <p>With the position (x, y) sensor the measurement is linear: KF, EKF and UKF give identical results. The PF only approximates them because it samples at random, and gets closer with more particles. H∞ equals the KF only at η = 0; with a larger η it is deliberately more conservative.</p>
+      </article>
+      <article>
+        <h3>H∞ is insurance against the worst case</h3>
+        <p>The Kalman filter minimises the mean squared error, provided q and R are right. H∞ needs no noise statistics and bounds the worst case instead, so it is more cautious: the update inflates the covariance by θ and the filter leans on the measurement more than on the model. At the default setting (σ bearing 4°, σ range 10 m, η = 0.1) with q matched, H∞ is 2–7% worse than the EKF. With q too small (q = 0.1 on the circle or the weave) it is clearly better than the EKF: about 55 m vs 66 m on the circle, 76 m vs 89 m on the weave. The plain KF is still slightly better in both cases (53 m and 70 m).</p>
+      </article>
+      <article>
+        <h3>H∞ does not replace tuning q</h3>
+        <p>With the right q (1.3 on the weave) the EKF reaches about 19 m, far better than H∞ with the wrong q (about 76 m). H∞ limits the damage when q is unknown; it does not replace tuning it. θ cannot be raised freely either: the updated covariance must stay positive definite, and beyond that limit the filter diverges. In the setups we tried, η = 0.1 never diverged, while from about 0.12 the harsh setups (very small measurement noise, large q) started to diverge.</p>
+      </article>
+    </div>
+  </section>
+</div>
+
+<script>
+(function () {
+'use strict';
+/* ===== CORE: paths, noise, KF, EKF, UKF, PF, H∞ (no DOM access) ===== */
+const N = 200;               // number of simulation steps, dt = 1
+const PATHS = {
+  line:   { name: 'Straight', f: t => [120 + 700 * t, -280 + 540 * t] },
+  circle: { name: 'Circle', f: t => { const a = Math.PI + 2 * Math.PI * t; return [470 + 260 * Math.cos(a), 260 * Math.sin(a)]; } },
+  weave:  { name: 'Weave',  f: t => [120 + 700 * t, 230 * Math.sin(2 * Math.PI * 1.5 * t)] }
+};
+
+function mulberry32(a) {
+  return function () {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function randn(rng) {
+  if (rng.spare !== undefined) { const v = rng.spare; rng.spare = undefined; return v; }
+  let u = 0;
+  while (u === 0) u = rng();
+  const v = rng(), r = Math.sqrt(-2 * Math.log(u)), a = 2 * Math.PI * v;
+  rng.spare = r * Math.sin(a);
+  return r * Math.cos(a);
+}
+function makeDraws(seed) {
+  const rng = mulberry32(seed), a = [], b = [];
+  for (let k = 0; k <= N; k++) { a.push(randn(rng)); b.push(randn(rng)); }
+  return { a, b, seed };
+}
+
+/* helpers */
+const TWO_PI = 2 * Math.PI;
+const wrap = a => a - TWO_PI * Math.round(a / TWO_PI);
+
+/* State x = [x, y, vx, vy]; P is a flat 4x4 array (row-major) */
+function qMatrix(s) {
+  const s2 = s * s;
+  return [s2 / 4, 0, s2 / 2, 0,  0, s2 / 4, 0, s2 / 2,  s2 / 2, 0, s2, 0,  0, s2 / 2, 0, s2];
+}
+/* P' = F P Fᵀ + Q with F = [[I, I], [0, I]] */
+function predict(f, Q) {
+  const [x, y, vx, vy] = f.x;
+  f.x = [x + vx, y + vy, vx, vy];
+  const P = f.P, T = new Array(16), Pn = new Array(16);
+  for (let j = 0; j < 4; j++) {
+    T[j] = P[j] + P[8 + j];
+    T[4 + j] = P[4 + j] + P[12 + j];
+    T[8 + j] = P[8 + j];
+    T[12 + j] = P[12 + j];
+  }
+  for (let i = 0; i < 4; i++) {
+    Pn[i * 4] = T[i * 4] + T[i * 4 + 2] + Q[i * 4];
+    Pn[i * 4 + 1] = T[i * 4 + 1] + T[i * 4 + 3] + Q[i * 4 + 1];
+    Pn[i * 4 + 2] = T[i * 4 + 2] + Q[i * 4 + 2];
+    Pn[i * 4 + 3] = T[i * 4 + 3] + Q[i * 4 + 3];
+  }
+  f.P = Pn;
+}
+/* H = [[a, b, 0, 0], [c, d, 0, 0]] (KF and EKF both measure position only), R = [[r00, r01], [r10, r11]] */
+function update(f, innov, H, R) {
+  const P = f.P;
+  const PHt = new Array(8);                      // 4x2
+  for (let i = 0; i < 4; i++) {
+    PHt[i * 2] = P[i * 4] * H[0] + P[i * 4 + 1] * H[1];
+    PHt[i * 2 + 1] = P[i * 4] * H[2] + P[i * 4 + 1] * H[3];
+  }
+  const s00 = H[0] * PHt[0] + H[1] * PHt[2] + R[0];
+  const s01 = H[0] * PHt[1] + H[1] * PHt[3] + R[1];
+  const s10 = H[2] * PHt[0] + H[3] * PHt[2] + R[2];
+  const s11 = H[2] * PHt[1] + H[3] * PHt[3] + R[3];
+  const det = s00 * s11 - s01 * s10;
+  const i00 = s11 / det, i01 = -s01 / det, i10 = -s10 / det, i11 = s00 / det;
+  const K = new Array(8);                        // 4x2 = PHt * S⁻¹
+  for (let i = 0; i < 4; i++) {
+    K[i * 2] = PHt[i * 2] * i00 + PHt[i * 2 + 1] * i10;
+    K[i * 2 + 1] = PHt[i * 2] * i01 + PHt[i * 2 + 1] * i11;
+  }
+  f.x = f.x.map((v, i) => v + K[i * 2] * innov[0] + K[i * 2 + 1] * innov[1]);
+  const Pn = new Array(16);                      // P - K S Kᵀ
+  for (let i = 0; i < 4; i++) {
+    const ks0 = K[i * 2] * s00 + K[i * 2 + 1] * s10, ks1 = K[i * 2] * s01 + K[i * 2 + 1] * s11;
+    for (let j = 0; j < 4; j++) Pn[i * 4 + j] = P[i * 4 + j] - (ks0 * K[j * 2] + ks1 * K[j * 2 + 1]);
+  }
+  f.P = Pn;
+}
+
+
+/* ---------- Extended H∞: same H_k and R as the EKF, plus a worst-case bound on the position error ----------
+   Filter form (Simon, Optimal State Estimation, ch. 11) with S = diag(1, 1, 0, 0):
+   P⁺ = (P⁻¹ − θS + HᵀR⁻¹H)⁻¹,  K = P⁺HᵀR⁻¹.  Fixed θ (θ = 1/γ²), as in the original formulation.
+   Existence condition: P⁺ must be positive definite, i.e. θ < 1/λmax(position block of P_KF). If θ exceeds that limit at a step,
+   it is capped at 90% of the limit and clamp = true is reported. θ = 0 gives exactly the EKF (or the KF for a linear measurement). */
+function hinfUpdate(f, innov, H, R, thetaFix) {
+  const tmp = { x: f.x, P: f.P };
+  update(tmp, innov, H, R);                         // tmp.P = Kalman-style posterior covariance
+  const Pk = tmp.P;
+  const a = Pk[0], b = Pk[1], c = Pk[4], d = Pk[5];
+  const half = (a - d) / 2;
+  const lmax = (a + d) / 2 + Math.sqrt(Math.max(half * half + b * c, 0));
+  const cap = 0.9 / lmax, clamp = thetaFix > cap, theta = clamp ? cap : thetaFix;
+  const m00 = 1 - theta * a, m01 = -theta * b, m10 = -theta * c, m11 = 1 - theta * d;   // A = I − θ·Ppp
+  const dA = m00 * m11 - m01 * m10;
+  const A00 = m11 / dA, A01 = -m01 / dA, A10 = -m10 / dA, A11 = m00 / dA;               // A⁻¹
+  const pv = [Pk[2], Pk[3], Pk[6], Pk[7]];                                              // Ppv
+  const vp = [Pk[8], Pk[9], Pk[12], Pk[13]];                                            // Pvp
+  const U = [theta * (A00 * pv[0] + A01 * pv[2]), theta * (A00 * pv[1] + A01 * pv[3]),
+             theta * (A10 * pv[0] + A11 * pv[2]), theta * (A10 * pv[1] + A11 * pv[3])]; // θ·A⁻¹·Ppv
+  const Pn = new Array(16);
+  const tl = [a * A00 + b * A10, a * A01 + b * A11, c * A00 + d * A10, c * A01 + d * A11];   // Ppp·A⁻¹
+  const bl = [vp[0] * A00 + vp[1] * A10, vp[0] * A01 + vp[1] * A11, vp[2] * A00 + vp[3] * A10, vp[2] * A01 + vp[3] * A11]; // Pvp·A⁻¹
+  const tr = [a * U[0] + b * U[2] + pv[0], a * U[1] + b * U[3] + pv[1], c * U[0] + d * U[2] + pv[2], c * U[1] + d * U[3] + pv[3]];
+  const br = [vp[0] * U[0] + vp[1] * U[2] + Pk[10], vp[0] * U[1] + vp[1] * U[3] + Pk[11],
+              vp[2] * U[0] + vp[3] * U[2] + Pk[14], vp[2] * U[1] + vp[3] * U[3] + Pk[15]];
+  Pn[0] = tl[0]; Pn[1] = tl[1]; Pn[4] = tl[2]; Pn[5] = tl[3];
+  Pn[2] = tr[0]; Pn[3] = tr[1]; Pn[6] = tr[2]; Pn[7] = tr[3];
+  Pn[8] = bl[0]; Pn[9] = bl[1]; Pn[12] = bl[2]; Pn[13] = bl[3];
+  Pn[10] = br[0]; Pn[11] = br[1]; Pn[14] = br[2]; Pn[15] = br[3];
+  const det = R[0] * R[3] - R[1] * R[2];
+  const r00 = R[3] / det, r01 = -R[1] / det, r10 = -R[2] / det, r11 = R[0] / det;        // R⁻¹
+  const g0 = [H[0] * r00 + H[2] * r10, H[0] * r01 + H[2] * r11];                         // row 0 of HᵀR⁻¹
+  const g1 = [H[1] * r00 + H[3] * r10, H[1] * r01 + H[3] * r11];                         // row 1 of HᵀR⁻¹
+  const K = new Array(8);
+  for (let i = 0; i < 4; i++) {
+    K[i * 2] = Pn[i * 4] * g0[0] + Pn[i * 4 + 1] * g1[0];
+    K[i * 2 + 1] = Pn[i * 4] * g0[1] + Pn[i * 4 + 1] * g1[1];
+  }
+  f.x = f.x.map((v, i) => v + K[i * 2] * innov[0] + K[i * 2 + 1] * innov[1]);
+  f.P = Pn;
+  return { theta, clamp, used: thetaFix * lmax, infl: (Pn[0] + Pn[5]) / Math.max(Pk[0] + Pk[5], 1e-12) };
+}
+
+/* ---------- UKF: 2n+1 sigma points, n = 4 ---------- */
+const UKF_N = 4, UKF_ALPHA = 1, UKF_BETA = 2, UKF_KAPPA = 1;
+const UKF_LAMBDA = UKF_ALPHA * UKF_ALPHA * (UKF_N + UKF_KAPPA) - UKF_N;
+const UKF_C = UKF_N + UKF_LAMBDA;
+const UKF_WM0 = UKF_LAMBDA / UKF_C;
+const UKF_WC0 = UKF_WM0 + (1 - UKF_ALPHA * UKF_ALPHA + UKF_BETA);
+const UKF_WI = 1 / (2 * UKF_C);
+const UKF_POINTS = 2 * UKF_N + 1;
+
+function chol4(A) {
+  const L = new Array(16).fill(0);
+  for (let i = 0; i < 4; i++) {
+    for (let j = 0; j <= i; j++) {
+      let s = A[i * 4 + j];
+      for (let k = 0; k < j; k++) s -= L[i * 4 + k] * L[j * 4 + k];
+      if (i === j) L[i * 4 + i] = Math.sqrt(Math.max(s, 1e-12));
+      else L[i * 4 + j] = s / L[j * 4 + j];
+    }
+  }
+  return L;
+}
+/* UKF update with a radar measurement (r, φ); R = [r00, r01, r10, r11] */
+function ukfUpdateRadar(f, m, R) {
+  const L = chol4(f.P.map(v => v * UKF_C));
+  const pts = [f.x.slice()];
+  for (let i = 0; i < 4; i++) {
+    const a = f.x.slice(), b = f.x.slice();
+    for (let r = 0; r < 4; r++) { a[r] += L[r * 4 + i]; b[r] -= L[r * 4 + i]; }
+    pts.push(a); pts.push(b);
+  }
+  const Z = pts.map(p => [Math.hypot(p[0], p[1]), Math.atan2(p[1], p[0])]);
+  let zr = 0, sn = 0, cs = 0;
+  Z.forEach((z, i) => {
+    const w = i === 0 ? UKF_WM0 : UKF_WI;
+    zr += w * z[0]; sn += w * Math.sin(z[1]); cs += w * Math.cos(z[1]);
+  });
+  const zt = Math.atan2(sn, cs);
+  let s00 = R[0], s01 = R[1], s10 = R[2], s11 = R[3];
+  const Pxz = new Array(8).fill(0);
+  Z.forEach((z, i) => {
+    const w = i === 0 ? UKF_WC0 : UKF_WI;
+    const d0 = z[0] - zr, d1 = wrap(z[1] - zt);
+    s00 += w * d0 * d0; s01 += w * d0 * d1; s10 += w * d1 * d0; s11 += w * d1 * d1;
+    for (let r = 0; r < 4; r++) {
+      const dx = pts[i][r] - f.x[r];
+      Pxz[r * 2] += w * dx * d0; Pxz[r * 2 + 1] += w * dx * d1;
+    }
+  });
+  const det = s00 * s11 - s01 * s10;
+  const i00 = s11 / det, i01 = -s01 / det, i10 = -s10 / det, i11 = s00 / det;
+  const K = new Array(8);
+  for (let r = 0; r < 4; r++) {
+    K[r * 2] = Pxz[r * 2] * i00 + Pxz[r * 2 + 1] * i10;
+    K[r * 2 + 1] = Pxz[r * 2] * i01 + Pxz[r * 2 + 1] * i11;
+  }
+  const y0 = m.r - zr, y1 = wrap(m.th - zt);
+  const Pn = new Array(16);
+  for (let i = 0; i < 4; i++) {
+    const ks0 = K[i * 2] * s00 + K[i * 2 + 1] * s10, ks1 = K[i * 2] * s01 + K[i * 2 + 1] * s11;
+    for (let j = 0; j < 4; j++) Pn[i * 4 + j] = f.P[i * 4 + j] - (ks0 * K[j * 2] + ks1 * K[j * 2 + 1]);
+  }
+  f.x = f.x.map((v, i) => v + K[i * 2] * y0 + K[i * 2 + 1] * y1);
+  f.P = Pn;
+}
+
+/* ---------- Particle filter (bootstrap, systematic resampling) ---------- */
+function makePF(np, m0, s0, rng) {
+  const sd = Math.sqrt(s0);
+  const pf = { n: np, px: new Float64Array(np), py: new Float64Array(np), vx: new Float64Array(np), vy: new Float64Array(np),
+               w: new Float64Array(np).fill(1 / np), neff: np };
+  for (let i = 0; i < np; i++) {
+    pf.px[i] = m0.x + sd * randn(rng); pf.py[i] = m0.y + sd * randn(rng);
+    pf.vx[i] = 10 * randn(rng); pf.vy[i] = 10 * randn(rng);
+  }
+  return pf;
+}
+function pfPredict(pf, q, rng) {
+  const n = pf.n, px = pf.px, py = pf.py, vx = pf.vx, vy = pf.vy;
+  for (let i = 0; i < n; i++) {
+    let u = rng(); if (u < 1e-12) u = 1e-12;
+    const r = q * Math.sqrt(-2 * Math.log(u)), a = TWO_PI * rng();   // one Box–Muller pair for (ax, ay)
+    const ax = r * Math.cos(a), ay = r * Math.sin(a);
+    px[i] += vx[i] + 0.5 * ax; py[i] += vy[i] + 0.5 * ay;
+    vx[i] += ax; vy[i] += ay;
+  }
+}
+function pfWeight(pf, m, mode, sr, sth) {
+  const n = pf.n, lg = pf.lg || (pf.lg = new Float64Array(n));
+  let mx = -Infinity;
+  for (let i = 0; i < n; i++) {
+    let l;
+    if (mode === 'radar') {
+      const dr = m.r - Math.sqrt(pf.px[i] * pf.px[i] + pf.py[i] * pf.py[i]);
+      const dt = wrap(m.th - Math.atan2(pf.py[i], pf.px[i]));
+      l = -0.5 * (dr * dr / (sr * sr) + dt * dt / (sth * sth));
+    } else {
+      const dx = m.x - pf.px[i], dy = m.y - pf.py[i];
+      l = -0.5 * (dx * dx + dy * dy) / (sr * sr);
+    }
+    lg[i] = l; if (l > mx) mx = l;
+  }
+  let sum = 0;
+  for (let i = 0; i < n; i++) { pf.w[i] *= Math.exp(lg[i] - mx); sum += pf.w[i]; }
+  let s2 = 0;
+  for (let i = 0; i < n; i++) { pf.w[i] /= sum; s2 += pf.w[i] * pf.w[i]; }
+  pf.neff = 1 / s2;
+}
+function pfEstimate(pf) {
+  let x = 0, y = 0;
+  for (let i = 0; i < pf.n; i++) { x += pf.w[i] * pf.px[i]; y += pf.w[i] * pf.py[i]; }
+  let pxx = 0, pxy = 0, pyy = 0;
+  for (let i = 0; i < pf.n; i++) {
+    const dx = pf.px[i] - x, dy = pf.py[i] - y;
+    pxx += pf.w[i] * dx * dx; pxy += pf.w[i] * dx * dy; pyy += pf.w[i] * dy * dy;
+  }
+  return { x, y, pxx, pxy, pyy };
+}
+const PF_ROUGH = 1.0;   // roughening factor after resampling
+function pfResample(pf, rng) {
+  const n = pf.n, nx = new Float64Array(n), ny = new Float64Array(n), nvx = new Float64Array(n), nvy = new Float64Array(n);
+  const u0 = rng() / n;
+  let c = pf.w[0], j = 0;
+  for (let i = 0; i < n; i++) {
+    const u = u0 + i / n;
+    while (u > c && j < n - 1) { j++; c += pf.w[j]; }
+    nx[i] = pf.px[j]; ny[i] = pf.py[j]; nvx[i] = pf.vx[j]; nvy[i] = pf.vy[j];
+  }
+  const arrs = [nx, ny, nvx, nvy], scale = PF_ROUGH * Math.pow(n, -0.25);
+  for (const a of arrs) {
+    let m = 0; for (let i = 0; i < n; i++) m += a[i];
+    m /= n;
+    let v = 0; for (let i = 0; i < n; i++) v += (a[i] - m) * (a[i] - m);
+    const sd = scale * Math.sqrt(v / n);
+    for (let i = 0; i < n; i++) a[i] += sd * randn(rng);
+  }
+  pf.px = nx; pf.py = ny; pf.vx = nvx; pf.vy = nvy; pf.w.fill(1 / n);
+}
+function pfSnapshot(pf) {
+  const a = new Float32Array(pf.n * 3);
+  for (let i = 0; i < pf.n; i++) { a[i * 3] = pf.px[i]; a[i * 3 + 1] = pf.py[i]; a[i * 3 + 2] = pf.w[i]; }
+  return a;
+}
+
+/* cfg: { mode:'radar'|'linear', path, sr (m), sth (rad), q (m/step²), np (PF particles), keepParticles, eta (H∞ conservatism: θ = η/σ_eq²) } */
+function simulate(cfg, draws) {
+  const { mode, path, sr, sth, q } = cfg;
+  const np = cfg.np || 500;
+  const eta = cfg.eta === undefined ? 0.5 : cfg.eta;
+  const fn = PATHS[path].f;
+  const pos = [];
+  for (let k = 0; k <= N; k++) pos.push(fn(k / N));
+  const truth = pos.map((p, k) => {
+    const a = k < N ? pos[k] : pos[N - 1], b = k < N ? pos[k + 1] : pos[N];
+    return [p[0], p[1], b[0] - a[0], b[1] - a[1]];
+  });
+  const meas = truth.map((s, k) => {
+    if (mode === 'radar') {
+      const r = Math.hypot(s[0], s[1]), th = Math.atan2(s[1], s[0]);
+      const rm = r + sr * draws.a[k], tm = th + sth * draws.b[k];
+      return { r: rm, th: tm, x: rm * Math.cos(tm), y: rm * Math.sin(tm) };
+    }
+    const x = s[0] + sr * draws.a[k], y = s[1] + sr * draws.b[k];
+    return { r: Math.hypot(x, y), th: Math.atan2(y, x), x, y };
+  });
+
+  let rRef = 0;
+  truth.forEach(s => { rRef += Math.hypot(s[0], s[1]); });
+  rRef /= truth.length;
+  const sigEq = mode === 'radar' ? Math.sqrt((sr * sr + (rRef * sth) * (rRef * sth)) / 2) : sr;
+  const Rkf = [sigEq * sigEq, 0, 0, sigEq * sigEq];
+  const Rekf = mode === 'radar' ? [sr * sr, 0, 0, sth * sth] : Rkf;
+  const HLIN = [1, 0, 0, 1];
+  const Q = qMatrix(q);
+
+  const s0 = sigEq * sigEq;
+  const thetaFix = eta / s0;                // fixed H∞ θ, unit 1/m²
+  const mk = () => ({
+    x: [meas[0].x, meas[0].y, 0, 0],
+    P: [s0, 0, 0, 0,  0, s0, 0, 0,  0, 0, 100, 0,  0, 0, 0, 100]
+  });
+  const kf = mk(), ekf = mk(), ukf = mk(), hinf = mk();
+  const rng = mulberry32((draws.seed || 1) * 7919 + 104729);
+  const pf = makePF(np, meas[0], s0, rng);
+
+  const out = { truth, meas, kf: [], ekf: [], ukf: [], pf: [], hinf: [], raw: [], hk: [], hth: [], hinfl: [], hcl: [], hused: [], neff: [], parts: [], np, eta, sigEq, rRef, Rkf, Rekf,
+                cum: { raw: [], kf: [], ekf: [], ukf: [], pf: [], hinf: [] } };
+  const snap = (f, s) => ({
+    x: f.x[0], y: f.x[1], pxx: f.P[0], pxy: f.P[1], pyy: f.P[5],
+    err: Math.hypot(f.x[0] - s[0], f.x[1] - s[1])
+  });
+  const hkOf = f => {
+    const px = f.x[0], py = f.x[1], r2 = Math.max(px * px + py * py, 1e-6), r = Math.sqrt(r2);
+    return [px / r, py / r, -py / r2, px / r2];
+  };
+  const push = k => {
+    const s = truth[k];
+    const a = snap(kf, s), b = snap(ekf, s), u = snap(ukf, s), hi = snap(hinf, s), c = Math.hypot(meas[k].x - s[0], meas[k].y - s[1]);
+    const e = pfEstimate(pf);
+    e.err = Math.hypot(e.x - s[0], e.y - s[1]);
+    out.kf.push(a); out.ekf.push(b); out.ukf.push(u); out.pf.push(e); out.hinf.push(hi); out.raw.push(c);
+    out.neff.push(pf.neff);
+    out.parts.push(cfg.keepParticles ? pfSnapshot(pf) : null);
+    const pk = k ? k - 1 : null;
+    const acc = (key, v) => out.cum[key].push((pk === null ? 0 : out.cum[key][pk]) + v * v);
+    acc('kf', a.err); acc('ekf', b.err); acc('ukf', u.err); acc('pf', e.err); acc('hinf', hi.err); acc('raw', c);
+  };
+  out.hk.push(hkOf(ekf));
+  out.hth.push(0); out.hinfl.push(1); out.hcl.push(false); out.hused.push(0);
+  push(0);
+  for (let k = 1; k <= N; k++) {
+    predict(kf, Q); predict(ekf, Q); predict(ukf, Q); predict(hinf, Q);
+    pfPredict(pf, q, rng);
+    const m = meas[k];
+    update(kf, [m.x - kf.x[0], m.y - kf.x[1]], HLIN, Rkf);
+    if (mode === 'radar') {
+      const h = hkOf(ekf);
+      const px = ekf.x[0], py = ekf.x[1];
+      update(ekf, [m.r - Math.hypot(px, py), wrap(m.th - Math.atan2(py, px))], h, Rekf);
+      out.hk.push(h);
+      ukfUpdateRadar(ukf, m, Rekf);
+      const hh = hkOf(hinf), hx = hinf.x[0], hy = hinf.x[1];
+      const hr = hinfUpdate(hinf, [m.r - Math.hypot(hx, hy), wrap(m.th - Math.atan2(hy, hx))], hh, Rekf, thetaFix);
+      out.hth.push(hr.theta); out.hinfl.push(hr.infl); out.hcl.push(hr.clamp); out.hused.push(hr.used);
+    } else {
+      update(ekf, [m.x - ekf.x[0], m.y - ekf.x[1]], HLIN, Rkf);
+      out.hk.push([1, 0, 0, 1]);
+      update(ukf, [m.x - ukf.x[0], m.y - ukf.x[1]], HLIN, Rkf);
+      const hr = hinfUpdate(hinf, [m.x - hinf.x[0], m.y - hinf.x[1]], HLIN, Rkf, thetaFix);
+      out.hth.push(hr.theta); out.hinfl.push(hr.infl); out.hcl.push(hr.clamp); out.hused.push(hr.used);
+    }
+    pfWeight(pf, m, mode, sr, sth);
+    push(k);                                   // estimate and particle snapshot taken before resampling
+    if (pf.neff < pf.n / 2) pfResample(pf, rng);
+  }
+  return out;
+}
+
+function rmseAt(out, key, k) { return Math.sqrt(out.cum[key][k] / (k + 1)); }
+
+const FILTERS = ['kf', 'ekf', 'ukf', 'pf', 'hinf'];
+function mcNew(cfg) {
+  return { cfg, i: 0, sum: { raw: 0, kf: 0, ekf: 0, ukf: 0, pf: 0, hinf: 0 }, best: { kf: 0, ekf: 0, ukf: 0, pf: 0, hinf: 0 }, ekfWins: 0 };
+}
+function mcStep(acc, n, seed0) {
+  for (let j = 0; j < n; j++) {
+    const o = simulate(acc.cfg, makeDraws(seed0 + acc.i));
+    const mse = {};
+    ['raw'].concat(FILTERS).forEach(key => { mse[key] = o.cum[key][N] / (N + 1); acc.sum[key] += mse[key]; });
+    const lo = Math.min.apply(null, FILTERS.map(key => mse[key]));
+    FILTERS.forEach(key => { if (mse[key] <= lo * (1 + 1e-9)) acc.best[key]++; });
+    if (mse.ekf < mse.kf) acc.ekfWins++;
+    acc.i++;
+  }
+}
+function mcResult(acc) {
+  const n = Math.max(acc.i, 1), r = { n: acc.i, best: {}, ekfWins: acc.ekfWins / n };
+  ['raw'].concat(FILTERS).forEach(key => { r[key] = Math.sqrt(acc.sum[key] / n); });
+  FILTERS.forEach(key => { r.best[key] = acc.best[key]; });
+  return r;
+}
+function monteCarlo(cfg, runs, seed0) {
+  const acc = mcNew(cfg);
+  mcStep(acc, runs, seed0);
+  return mcResult(acc);
+}
+/* ===== END OF CORE ===== */
+
+
+const $ = id => document.getElementById(id);
+const DEG = Math.PI / 180;
+const MC_RUNS = 100;
+const QDEF = { line: 0.2, circle: 0.8, weave: 1.3 };
+const DEFAULTS = { mode: 'radar', path: 'line', sr: 10, sthDeg: 4, q: QDEF.line, np: 500, eta: 0.1 };
+const FDEF = [
+  { key: 'kf',  name: 'KF',  shape: 'sq',   w: 3.6 },
+  { key: 'ekf', name: 'EKF', shape: 'dia',  w: 2.9 },
+  { key: 'hinf', name: 'H∞', shape: 'hex',  w: 2.2 },
+  { key: 'ukf', name: 'UKF', shape: 'tri',  w: 1.6 },
+  { key: 'pf',  name: 'PF',  shape: 'circ', w: 1.0 }
+];
+const NAMES = { kf: 'KF', ekf: 'EKF', ukf: 'UKF', pf: 'PF', hinf: 'H∞' };
+const st = Object.assign({}, DEFAULTS, {
+  seed: 7, k: N, playing: false, trail: true, ell: false, wedge: true, parts: true, chart: 'step',
+  show: { kf: true, ekf: true, ukf: true, pf: true, hinf: true }
+});
+let draws = makeDraws(st.seed), run = null, mc = null, mcAcc = null, mcTimer = 0, mcToken = 0;
+
+const cMap = $('map'), cErr = $('err');
+const size = { map: { w: 1, h: 1 }, err: { w: 1, h: 1 } };
+
+function theme() {
+  const cs = getComputedStyle(document.documentElement);
+  const v = n => cs.getPropertyValue(n).trim();
+  return { fg: v('--fg'), muted: v('--muted'), ring: v('--ring'), truth: v('--truth'), meas: v('--meas'),
+           kf: v('--kf'), ekf: v('--ekf'), ukf: v('--ukf'), pf: v('--pf'), hinf: v('--hinf'), surface: v('--surface'), mono: v('--font-num') };
+}
+function fit(c, key) {
+  const r = c.getBoundingClientRect();
+  const dpr = Math.min(window.devicePixelRatio || 1, 3);
+  const w = Math.max(1, Math.round(r.width)), h = Math.max(1, Math.round(r.height));
+  const pw = Math.round(w * dpr), ph = Math.round(h * dpr);
+  if (c.width !== pw || c.height !== ph) { c.width = pw; c.height = ph; }
+  const g = c.getContext('2d');
+  g.setTransform(dpr, 0, 0, dpr, 0, 0);
+  size[key] = { w, h };
+  return g;
+}
+const cfgOf = () => ({ mode: st.mode, path: st.path, sr: st.sr, sth: st.sthDeg * DEG, q: st.q, np: st.np, eta: st.eta });
+
+/* ---------- Map ---------- */
+function marker(g, shape, x, y, col, edge) {
+  g.fillStyle = col; g.strokeStyle = edge; g.lineWidth = 1.5; g.beginPath();
+  if (shape === 'sq') g.rect(x - 4, y - 4, 8, 8);
+  else if (shape === 'dia') { g.moveTo(x, y - 5.5); g.lineTo(x + 5.5, y); g.lineTo(x, y + 5.5); g.lineTo(x - 5.5, y); g.closePath(); }
+  else if (shape === 'tri') { g.moveTo(x, y - 5.5); g.lineTo(x + 5, y + 4); g.lineTo(x - 5, y + 4); g.closePath(); }
+  else if (shape === 'hex') {
+    for (let i = 0; i < 6; i++) {
+      const a = Math.PI / 6 + i * Math.PI / 3, px = x + 5.2 * Math.cos(a), py = y + 5.2 * Math.sin(a);
+      if (i) g.lineTo(px, py); else g.moveTo(px, py);
+    }
+    g.closePath();
+  }
+  else g.arc(x, y, 4.2, 0, Math.PI * 2);
+  g.fill(); g.stroke();
+}
+function drawMap() {
+  if (!run) return;
+  const g = fit(cMap, 'map'), { w, h } = size.map, t = theme(), k = st.k;
+  g.clearRect(0, 0, w, h);
+  const s = w / 960, ox = 80 * s, oy = h / 2;
+  const X = x => ox + x * s, Y = y => oy - y * s;
+
+  g.lineWidth = 1; g.strokeStyle = t.ring;
+  for (let R = 200; R <= 1000; R += 200) { g.beginPath(); g.arc(ox, oy, R * s, 0, Math.PI * 2); g.stroke(); }
+  g.beginPath(); g.moveTo(ox, oy); g.lineTo(w, oy); g.stroke();
+  g.fillStyle = t.muted; g.font = '10px ' + t.mono; g.textAlign = 'left'; g.textBaseline = 'top';
+  for (let R = 200; R <= 800; R += 200) g.fillText(R + ' m', X(R) + 3, oy + 3);
+
+  const poly = (pts, upTo) => { g.beginPath(); for (let i = 0; i <= upTo; i++) { const p = pts[i]; if (i) g.lineTo(X(p[0]), Y(p[1])); else g.moveTo(X(p[0]), Y(p[1])); } };
+  g.save(); g.setLineDash([3, 5]); g.globalAlpha = 0.35; g.strokeStyle = t.truth; g.lineWidth = 1;
+  poly(run.truth, N); g.stroke(); g.restore();
+  g.save(); g.globalAlpha = 0.85; g.strokeStyle = t.truth; g.lineWidth = 1.5; g.lineJoin = 'round';
+  poly(run.truth, k); g.stroke(); g.restore();
+
+  if (st.trail) {
+    g.fillStyle = t.meas; g.globalAlpha = 0.6;
+    for (let i = 0; i <= k; i++) { const m = run.meas[i]; g.beginPath(); g.arc(X(m.x), Y(m.y), 2, 0, Math.PI * 2); g.fill(); }
+    g.globalAlpha = 1;
+  }
+
+  const m = run.meas[k];
+  if (st.wedge) {
+    if (st.mode === 'radar') {
+      const dth = st.sthDeg * DEG;
+      g.beginPath();
+      g.arc(ox, oy, (m.r + st.sr) * s, -(m.th + dth), -(m.th - dth));
+      g.arc(ox, oy, Math.max(m.r - st.sr, 0) * s, -(m.th - dth), -(m.th + dth), true);
+      g.closePath();
+      g.save(); g.globalAlpha = 0.18; g.fillStyle = t.ekf; g.fill(); g.restore();
+      g.strokeStyle = t.ekf; g.lineWidth = 1.2; g.stroke();
+    }
+    g.save(); g.setLineDash([4, 3]); g.strokeStyle = st.mode === 'radar' ? t.kf : t.fg; g.lineWidth = 1.2;
+    g.beginPath(); g.arc(X(m.x), Y(m.y), run.sigEq * s, 0, Math.PI * 2); g.stroke(); g.restore();
+  }
+
+  if (st.parts && st.show.pf) {
+    const P = run.parts[k];
+    if (P) {
+      g.fillStyle = t.pf;
+      for (let i = 0; i < run.np; i++) {
+        const wt = P[i * 3 + 2] * run.np;
+        g.globalAlpha = 0.1 + 0.4 * Math.min(1, wt);
+        g.fillRect(X(P[i * 3]) - 1, Y(P[i * 3 + 1]) - 1, 2, 2);
+      }
+      g.globalAlpha = 1;
+    }
+  }
+
+  FDEF.forEach(f => {
+    if (!st.show[f.key]) return;
+    const arr = run[f.key];
+    g.beginPath();
+    for (let i = 0; i <= k; i++) { if (i) g.lineTo(X(arr[i].x), Y(arr[i].y)); else g.moveTo(X(arr[i].x), Y(arr[i].y)); }
+    g.strokeStyle = t[f.key]; g.lineWidth = f.w; g.lineJoin = 'round'; g.stroke();
+  });
+
+  if (st.ell) {
+    FDEF.forEach(f => {
+      if (!st.show[f.key]) return;
+      const r = run[f.key][k];
+      const a = (r.pxx + r.pyy) / 2, b = Math.sqrt(Math.max(Math.pow((r.pxx - r.pyy) / 2, 2) + r.pxy * r.pxy, 0));
+      const l1 = a + b, l2 = Math.max(a - b, 0), ang = 0.5 * Math.atan2(2 * r.pxy, r.pxx - r.pyy);
+      g.beginPath(); g.ellipse(X(r.x), Y(r.y), 2 * Math.sqrt(l1) * s, 2 * Math.sqrt(l2) * s, -ang, 0, Math.PI * 2);
+      g.save(); g.globalAlpha = 0.12; g.fillStyle = t[f.key]; g.fill(); g.restore();
+      g.strokeStyle = t[f.key]; g.lineWidth = 1; g.stroke();
+    });
+  }
+
+  const tp = run.truth[k];
+  g.strokeStyle = t.truth; g.lineWidth = 1.5; g.beginPath(); g.arc(X(tp[0]), Y(tp[1]), 8, 0, Math.PI * 2); g.stroke();
+  FDEF.forEach(f => {
+    if (!st.show[f.key]) return;
+    const r = run[f.key][k];
+    marker(g, f.shape, X(r.x), Y(r.y), t[f.key], t.surface);
+  });
+
+  g.fillStyle = t.fg; g.beginPath(); g.arc(ox, oy, 4.5, 0, Math.PI * 2); g.fill();
+  g.font = '600 11px ' + getComputedStyle(document.body).fontFamily; g.textBaseline = 'bottom';
+  g.fillText('Radar', ox + 8, oy - 6);
+}
+
+/* ---------- Error chart ---------- */
+function drawErr() {
+  if (!run) return;
+  const g = fit(cErr, 'err'), { w, h } = size.err, t = theme(), k = st.k;
+  g.clearRect(0, 0, w, h);
+  const pl = 38, pr = 10, pt = 8, pb = 22, iw = w - pl - pr, ih = h - pt - pb;
+  const cum = st.chart === 'cum';
+  const series = {};
+  FDEF.forEach(f => { series[f.key] = run[f.key].map((r, i) => cum ? rmseAt(run, f.key, i) : r.err); });
+  let mx = 0;
+  FDEF.forEach(f => { if (!st.show[f.key]) return; for (let i = 0; i <= N; i++) { const v = series[f.key][i]; if (Number.isFinite(v) && v < 1e4) mx = Math.max(mx, v); } });
+  const steps = [1, 2, 5, 10, 20, 25, 50, 100, 200, 500];
+  let step = steps[steps.length - 1];
+  for (const sv of steps) { if (mx * 1.05 / sv <= 5) { step = sv; break; } }
+  const top = Math.max(step, Math.ceil(mx * 1.05 / step) * step);
+  const X = i => pl + i / N * iw, Y = v => pt + ih - (v / top) * ih;
+
+  g.font = '10px ' + t.mono; g.lineWidth = 1;
+  g.textAlign = 'right'; g.textBaseline = 'middle';
+  for (let v = 0; v <= top + 1e-9; v += step) {
+    g.strokeStyle = t.ring; g.beginPath(); g.moveTo(pl, Y(v)); g.lineTo(pl + iw, Y(v)); g.stroke();
+    g.fillStyle = t.muted; g.fillText(String(v), pl - 6, Y(v));
+  }
+  g.textAlign = 'center'; g.textBaseline = 'top';
+  for (let i = 0; i <= N; i += 50) { g.fillStyle = t.muted; g.fillText(String(i), X(i), pt + ih + 6); }
+
+  g.save(); g.setLineDash([3, 3]); g.strokeStyle = t.muted; g.beginPath(); g.moveTo(X(k), pt); g.lineTo(X(k), pt + ih); g.stroke(); g.restore();
+  const wd = { kf: 2.6, ekf: 2.0, hinf: 1.7, ukf: 1.4, pf: 1.1 };
+  FDEF.forEach(f => {
+    if (!st.show[f.key]) return;
+    const arr = series[f.key];
+    g.beginPath();
+    for (let i = 0; i <= k; i++) { if (i) g.lineTo(X(i), Y(arr[i])); else g.moveTo(X(i), Y(arr[i])); }
+    g.strokeStyle = t[f.key]; g.lineWidth = wd[f.key]; g.lineJoin = 'round'; g.stroke();
+  });
+}
+
+/* ---------- Numbers and text ---------- */
+const OK = v => Number.isFinite(v) && v < 1e4;
+const fmtM = v => OK(v) ? v.toFixed(1) + ' m' : 'diverged';
+const pct = (base, v) => { if (!OK(v)) return 'diverged'; const d = (v - base) / base * 100; return (d < 0 ? '−' : '+') + Math.abs(d).toFixed(1) + '%'; };
+function summary(v) {
+  if (st.mode === 'linear') {
+    return 'KF, EKF and UKF give identical results because the measurement is linear. PF (' + pct(v.kf, v.pf) + ') and H∞ (' + pct(v.kf, v.hinf) +
+           ') differ slightly from the KF: the PF because it samples at random, H∞ because it is deliberately more conservative.';
+  }
+  let best = 'kf';
+  ['ekf', 'ukf', 'pf', 'hinf'].forEach(key => { if (OK(v[key]) && v[key] < v[best] - 1e-9) best = key; });
+  return 'Lowest: ' + NAMES[best] + ' (' + v[best].toFixed(1) + ' m). Relative to the KF: EKF ' + pct(v.kf, v.ekf) +
+         ', UKF ' + pct(v.kf, v.ukf) + ', PF ' + pct(v.kf, v.pf) + ', H∞ ' + pct(v.kf, v.hinf) + '.';
+}
+const KEYS = ['raw', 'kf', 'ekf', 'ukf', 'pf', 'hinf'];
+function setBars(prefix, v) {
+  const mx = Math.max.apply(null, KEYS.map(key => OK(v[key]) ? v[key] : 0)) || 1;
+  KEYS.forEach(key => {
+    $(prefix + 'b-' + key).style.width = (OK(v[key]) ? v[key] / mx * 100 : 0) + '%';
+    $(prefix + 'v-' + key).textContent = fmtM(v[key]);
+  });
+}
+function renderLive() {
+  const k = st.k, v = {};
+  KEYS.forEach(key => { v[key] = rmseAt(run, key, k); });
+  setBars('', v);
+  $('live-sub').textContent = 'Current run, from step 0 to step ' + k;
+  $('verdict').textContent = summary(v);
+}
+function renderMC() {
+  if (!mc) return;
+  const done = mc.n >= MC_RUNS;
+  setBars('m', mc);
+  $('mc-sub').textContent = done ? 'Same setup, a different noise sequence for each run.' : 'Computing… ' + mc.n + ' / ' + MC_RUNS;
+  $('mc-verdict').textContent = done ? summary(mc) : '';
+  $('mc').classList.toggle('stale', !done);
+}
+function startMC() {
+  clearTimeout(mcTimer);
+  const token = ++mcToken;
+  mcAcc = mcNew(cfgOf());
+  const chunk = () => {
+    if (token !== mcToken) return;
+    const t0 = performance.now();
+    do { mcStep(mcAcc, 1, 1000); } while (mcAcc.i < MC_RUNS && performance.now() - t0 < 14);
+    mc = mcResult(mcAcc);
+    renderMC();
+    if (mcAcc.i < MC_RUNS) setTimeout(chunk, 0);
+  };
+  chunk();
+}
+function scheduleMC() {
+  clearTimeout(mcTimer);
+  $('mc').classList.add('stale');
+  mcTimer = setTimeout(startMC, 200);
+}
+
+const fmtH = v => v === 0 ? '0' : (Math.abs(v) < 0.01 ? v.toExponential(1).replace('e-', 'e−').replace('e+', 'e') : v.toFixed(3));
+function fillMat(id, rows) {
+  $(id).innerHTML = rows.map(r => r.map(v => '<span' + (v === '0' ? ' class="z"' : '') + '>' + v + '</span>').join('')).join('');
+}
+function renderMats() {
+  const k = st.k, h = run.hk[k];
+  fillMat('mat-kf', [['1', '0', '0', '0'], ['0', '1', '0', '0']]);
+  $('h-ekf').innerHTML = 'EKF: H<sub>k</sub> at step ' + k;
+  const wm0 = UKF_WM0.toFixed(2), wi = UKF_WI.toFixed(2);
+  if (st.mode === 'radar') {
+    fillMat('mat-ekf', [[fmtH(h[0]), fmtH(h[1]), '0', '0'], [fmtH(h[2]), fmtH(h[3]), '0', '0']]);
+    $('cap-kf').textContent = 'Measures (x, y) after converting from (r, φ). R = σ²·I with σ = ' + run.sigEq.toFixed(1) + ' m, fixed.';
+    $('cap-ekf').textContent = 'Measures (r, φ) directly. Row 1 is ∂r/∂(x, y), row 2 is ∂φ/∂(x, y) in rad/m. R = diag(σ_r², σ_φ²).';
+    $('cap-ukf').textContent = 'No H. ' + UKF_POINTS + ' sigma points (2n + 1, n = 4) pass through h(x) = (r, φ) and are averaged with weights (W₀ = ' + wm0 + ', the others ' + wi + '). The bearing φ is averaged on the circle.';
+    $('cap-pf').textContent = 'No H. ' + run.np + ' particles, each weighted by the likelihood of the measured (r, φ). Step ' + k + ': N_eff = ' + Math.round(run.neff[k]) + ' / ' + run.np + '. Resampled when N_eff drops below half.';
+  } else {
+    fillMat('mat-ekf', [['1', '0', '0', '0'], ['0', '1', '0', '0']]);
+    $('cap-kf').textContent = 'Measures (x, y). R = σ²·I with σ = ' + st.sr + ' m.';
+    $('cap-ekf').textContent = 'H does not change between steps, so the EKF is the KF.';
+    $('cap-ukf').textContent = 'The measurement is linear, so the sigma points give exactly the KF result.';
+    $('cap-pf').textContent = run.np + ' particles weighted by a Gaussian likelihood around the measured (x, y). Step ' + k + ': N_eff = ' + Math.round(run.neff[k]) + ' / ' + run.np + '. It only approximates the KF.';
+  }
+}
+function renderHinfCap() {
+  const k = st.k, lin = st.mode !== 'radar', ref = lin ? 'KF' : 'EKF';
+  const theta = st.eta / (run.sigEq * run.sigEq), grow = (run.hinfl[k] - 1) * 100, clamps = run.hcl.filter(Boolean).length;
+  let s = 'Uses the same ' + (lin ? 'H and R as the KF' : 'H_k and R as the EKF') + '. ';
+  if (st.eta === 0) s += 'η = 0, so H∞ is identical to the ' + ref + '.';
+  else {
+    s += 'The covariance update adds θ = ' + fmtH(theta) + ' m⁻² (η / σ², σ = ' + run.sigEq.toFixed(1) + ' m) on the position error: P⁺ = (P⁻¹ − θS + HᵀR⁻¹H)⁻¹. Step ' + k +
+         ': the position covariance is ' + grow.toFixed(0) + '% larger than after a Kalman update.';
+    if (clamps) s += ' θ had to be capped at ' + clamps + ' steps because it was about to violate the existence condition.';
+  }
+  $('cap-hinf').textContent = s;
+}
+function renderNote() {
+  $('map-note').textContent = !st.wedge ? ''
+    : st.mode === 'radar'
+      ? 'The blue arc is the true measurement error (±1σ in range and bearing) used by the EKF, UKF, PF and H∞. The dashed orange circle is the fixed circular R used by the KF.'
+      : 'The dashed circle is the ±1σ measurement error, shared by all five filters.';
+}
+function renderTransport() {
+  $('kslider').value = st.k;
+  $('kread').textContent = 'k = ' + st.k + ' / ' + N;
+  $('play').textContent = st.playing ? 'Pause' : (st.k >= N ? 'Replay' : 'Resume');
+}
+function renderOutputs() {
+  $('sr-out').textContent = st.sr + ' m';
+  $('sth-out').textContent = st.sthDeg.toFixed(1) + '°';
+  $('q-out').textContent = st.q.toFixed(2) + ' m/step²';
+  $('np-out').textContent = st.np + ' particles';
+  $('eta-out').textContent = st.eta.toFixed(3);
+  $('sr-lab').textContent = st.mode === 'radar' ? 'σ range' : 'σ position (x and y)';
+  $('sth').disabled = st.mode !== 'radar';
+  $('mode-hint').textContent = st.mode === 'radar'
+    ? 'The radar at the origin measures range r and bearing φ. Converting to (x, y) is nonlinear.'
+    : 'The sensor measures (x, y) directly. The measurement is linear, so the EKF and UKF reduce to the KF.';
+}
+function renderAll() { drawMap(); drawErr(); renderLive(); renderMats(); renderHinfCap(); renderTransport(); }
+function recompute() {
+  run = simulate(Object.assign(cfgOf(), { keepParticles: true }), draws);
+  renderOutputs(); renderNote(); renderAll(); scheduleMC();
+}
+
+/* ---------- Playback ---------- */
+let last = 0, acc = 0;
+const SPS = 40;
+function tick(ts) {
+  if (!st.playing) return;
+  acc += (ts - last) / 1000 * SPS; last = ts;
+  while (acc >= 1 && st.k < N) { acc -= 1; st.k++; }
+  if (st.k >= N) st.playing = false;
+  renderAll();
+  if (st.playing) requestAnimationFrame(tick);
+}
+$('play').addEventListener('click', () => {
+  if (st.playing) { st.playing = false; renderTransport(); return; }
+  if (st.k >= N) st.k = 0;
+  st.playing = true; last = performance.now(); acc = 0;
+  renderAll();
+  requestAnimationFrame(tick);
+});
+$('kslider').addEventListener('input', e => { st.playing = false; st.k = +e.target.value; renderAll(); });
+
+/* ---------- Controls ---------- */
+function radio(name, fn) {
+  document.querySelectorAll('input[name="' + name + '"]').forEach(el => el.addEventListener('change', () => { if (el.checked) fn(el.value); }));
+}
+function setRadio(name, val) {
+  document.querySelectorAll('input[name="' + name + '"]').forEach(el => { el.checked = el.value === val; });
+}
+function syncSliders() { $('sr').value = st.sr; $('sth').value = st.sthDeg; $('q').value = st.q; $('np').value = st.np; $('eta').value = st.eta; }
+radio('mode', v => { st.mode = v; recompute(); });
+radio('path', v => { st.path = v; st.q = QDEF[v]; syncSliders(); recompute(); });
+radio('chart', v => { st.chart = v; drawErr(); });
+$('sr').addEventListener('input', e => { st.sr = +e.target.value; recompute(); });
+$('sth').addEventListener('input', e => { st.sthDeg = +e.target.value; recompute(); });
+$('q').addEventListener('input', e => { st.q = +e.target.value; recompute(); });
+$('np').addEventListener('input', e => { st.np = +e.target.value; recompute(); });
+$('eta').addEventListener('input', e => { st.eta = +e.target.value; recompute(); });
+$('newnoise').addEventListener('click', () => { st.seed += 1; draws = makeDraws(st.seed); st.playing = false; st.k = N; recompute(); });
+$('reset').addEventListener('click', () => {
+  Object.assign(st, DEFAULTS, { k: N, playing: false });
+  setRadio('mode', st.mode); setRadio('path', st.path); syncSliders(); recompute();
+});
+[['t-trail', 'trail'], ['t-wedge', 'wedge'], ['t-ell', 'ell'], ['t-parts', 'parts']].forEach(([id, key]) => {
+  $(id).addEventListener('change', e => { st[key] = e.target.checked; renderNote(); drawMap(); });
+});
+document.querySelectorAll('input[data-f]').forEach(el => {
+  el.addEventListener('change', () => { st.show[el.dataset.f] = el.checked; drawMap(); drawErr(); });
+});
+
+/* ---------- Start-up ---------- */
+if (window.ResizeObserver) {
+  const ro = new ResizeObserver(() => { drawMap(); drawErr(); });
+  ro.observe(cMap); ro.observe(cErr);
+}
+if (window.matchMedia) {
+  const mq = window.matchMedia('(prefers-color-scheme: dark)');
+  if (mq.addEventListener) mq.addEventListener('change', () => { drawMap(); drawErr(); });
+}
+new MutationObserver(() => { drawMap(); drawErr(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { drawMap(); drawErr(); });
+
+syncSliders();
+recompute();
+startMC();
+})();
+</script>
+<script>
+/* When embedded in the article: report the page height so the iframe can fit it, and follow the site's theme toggle. */
+(function () {
+  if (window.parent === window) return;
+  var last = 0;
+  function report() {
+    var h = Math.ceil(document.documentElement.scrollHeight);
+    if (Math.abs(h - last) > 2) { last = h; try { window.parent.postMessage({ type: 'radar-demo-height', h: h }, location.origin); } catch (e) {} }
+  }
+  if (window.ResizeObserver) new ResizeObserver(report).observe(document.body);
+  window.addEventListener('load', report);
+  report();
+  window.addEventListener('storage', function (e) {
+    if (e.key === 'site_theme' && e.newValue) document.documentElement.setAttribute('data-theme', e.newValue);
+  });
+})();
+</script>
+
+</body></html>
