@@ -78,13 +78,6 @@ const SEARCH_DATA = [
     keywords: "python pokeapi pokemon finder encryption digital clock slot machine stopwatch algorithms algorithmen projekte"
   },
   {
-    title_en: "Tracking a Target with Radar: KF, EKF, UKF, Particle Filter and H-infinity Side by Side",
-    title_de: "Zielverfolgung mit Radar: KF, EKF, UKF, Partikelfilter und H-infinity im direkten Vergleich",
-    category: "Blog",
-    url: "posts/radar-tracking-kf-ekf-ukf-pf-hinf/index.html",
-    keywords: "radar tracking target range bearing kalman filter kf ekf ukf unscented extended particle filter pf sequential monte carlo h infinity h-inf hinf zielverfolgung partikelfilter zustandsschätzung state estimation interactive demo sigma points jacobian monte carlo rmse"
-  },
-  {
     title_en: "Estimating Pitch on a Balancing Robot: KF vs EKF vs UKF vs H-infinity, Measured on One Benchmark",
     title_de: "Neigungsschätzung beim Balancierroboter: KF, EKF, UKF und H-infinity im Vergleich",
     category: "Blog",
