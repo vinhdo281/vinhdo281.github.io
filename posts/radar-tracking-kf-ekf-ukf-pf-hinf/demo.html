@@ -6,9 +6,15 @@
 <title>Radar Tracking Lab: KF, EKF, UKF, PF and H∞</title>
 <meta name="description" content="Interactive comparison of KF, EKF, UKF, particle filter and H-infinity filter tracking a target with a range-bearing radar.">
 <script>
-  /* follow the site theme (same origin as the article that embeds this page) */
+  /* follow the site theme and language (same origin as the article that embeds this page).
+     Language: ?lang=en|de, else the embedding article's body[data-lang], else the saved site language. */
   (function () {
-    try { document.documentElement.setAttribute('data-theme', localStorage.getItem('site_theme') || 'dark'); } catch (e) {}
+    var d = document.documentElement, lang = null, m = /[?&]lang=(en|de)\b/.exec(location.search);
+    try { d.setAttribute('data-theme', localStorage.getItem('site_theme') || 'dark'); } catch (e) {}
+    if (m) lang = m[1];
+    if (!lang) { try { if (window.parent !== window) lang = window.parent.document.body.getAttribute('data-lang'); } catch (e) {} }
+    if (!lang) { try { lang = localStorage.getItem('site_lang'); } catch (e) {} }
+    d.setAttribute('lang', lang === 'de' ? 'de' : 'en');
   })();
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -131,7 +137,7 @@ input:focus-visible { outline: 2px solid var(--ekf); outline-offset: 2px; }
 .seg input:checked + span { background: var(--fg); color: var(--surface); }
 .seg input:focus-visible + span { outline: 2px solid var(--ekf); outline-offset: -3px; }
 .slider label { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: 13px; font-weight: 500; }
-.slider output { color: var(--muted); font-size: 12.5px; }
+.slider output { color: var(--muted); font-size: 12.5px; white-space: nowrap; }
 .slider input:disabled { opacity: 0.4; }
 .btn-row { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
 
@@ -168,30 +174,30 @@ input:focus-visible { outline: 2px solid var(--ekf); outline-offset: 2px; }
 <body>
 <div class="wrap">
   <header>
-    <h1>KF, EKF, UKF, PF and H∞ on the same target</h1>
-    <p class="lede">A radar at the origin measures the range and bearing of a moving target. Five filters receive the same measurements and use the same motion model. They differ only in how they handle the nonlinear measurement.</p>
+    <h1 data-i18n="h1">KF, EKF, UKF, PF and H∞ on the same target</h1>
+    <p class="lede" data-i18n="lede">A radar at the origin measures the range and bearing of a moving target. Five filters receive the same measurements and use the same motion model. They differ only in how they handle the nonlinear measurement.</p>
   </header>
 
   <div class="layout">
     <div class="col">
       <section class="panel p-map" aria-labelledby="h-map">
         <div class="panel-head">
-          <h2 id="h-map">Tracking map</h2>
+          <h2 id="h-map" data-i18n="hMap">Tracking map</h2>
           <ul class="legend">
-            <li class="lg-truth">True path</li>
-            <li class="lg-meas">Radar measurement</li>
-            <li class="lg-part">PF particles</li>
+            <li class="lg-truth" data-i18n="lgTruth">True path</li>
+            <li class="lg-meas" data-i18n="lgMeas">Radar measurement</li>
+            <li class="lg-part" data-i18n="lgPart">PF particles</li>
           </ul>
         </div>
-        <canvas id="map" role="img" aria-label="Tracking map: true path, radar measurements and the KF, EKF, UKF, PF and H-infinity estimates around a radar at the origin"></canvas>
+        <canvas id="map" role="img" data-i18n-aria="ariaMap" aria-label="Tracking map: true path, radar measurements and the KF, EKF, UKF, PF and H-infinity estimates around a radar at the origin"></canvas>
         <p class="note" id="map-note"></p>
         <div class="transport">
           <button id="play" class="btn primary" type="button">Replay</button>
-          <input id="kslider" type="range" min="0" max="200" step="1" value="200" aria-label="Time step">
+          <input id="kslider" type="range" min="0" max="200" step="1" value="200" data-i18n-aria="ariaK" aria-label="Time step">
           <span class="k-read mono" id="kread">k = 200 / 200</span>
         </div>
-        <div class="filters" role="group" aria-label="Filters to show">
-          <span class="lab">Filters</span>
+        <div class="filters" role="group" data-i18n-aria="ariaFilters" aria-label="Filters to show">
+          <span class="lab" data-i18n="labFilters">Filters</span>
           <label class="chip" style="--c: var(--kf)"><input type="checkbox" data-f="kf" checked><i class="sq"></i>KF</label>
           <label class="chip" style="--c: var(--ekf)"><input type="checkbox" data-f="ekf" checked><i class="dia"></i>EKF</label>
           <label class="chip" style="--c: var(--ukf)"><input type="checkbox" data-f="ukf" checked><i class="tri"></i>UKF</label>
@@ -199,31 +205,31 @@ input:focus-visible { outline: 2px solid var(--ekf); outline-offset: 2px; }
           <label class="chip" style="--c: var(--hinf)"><input type="checkbox" data-f="hinf" checked><i class="hex"></i>H∞</label>
         </div>
         <div class="toggles">
-          <label><input type="checkbox" id="t-trail" checked> Measurements</label>
-          <label><input type="checkbox" id="t-wedge" checked> Measurement error region</label>
-          <label><input type="checkbox" id="t-parts" checked> PF particle cloud</label>
-          <label><input type="checkbox" id="t-ell"> 2σ error ellipses</label>
+          <label><input type="checkbox" id="t-trail" checked> <span data-i18n="tTrail">Measurements</span></label>
+          <label><input type="checkbox" id="t-wedge" checked> <span data-i18n="tWedge">Measurement error region</span></label>
+          <label><input type="checkbox" id="t-parts" checked> <span data-i18n="tParts">PF particle cloud</span></label>
+          <label><input type="checkbox" id="t-ell"> <span data-i18n="tEll">2σ error ellipses</span></label>
         </div>
       </section>
 
       <section class="panel p-err" aria-labelledby="h-err">
         <div class="panel-head">
-          <h2 id="h-err">Position error over time (m)</h2>
+          <h2 id="h-err" data-i18n="hErr">Position error over time (m)</h2>
           <ul class="legend">
             <li class="lg-kf">KF</li><li class="lg-ekf">EKF</li><li class="lg-ukf">UKF</li><li class="lg-pf">PF</li><li class="lg-hinf">H∞</li>
           </ul>
         </div>
-        <div class="seg" role="radiogroup" aria-label="Chart type" style="margin-bottom:10px">
-          <label><input type="radio" name="chart" value="step" checked><span>Per step</span></label>
-          <label><input type="radio" name="chart" value="cum"><span>Cumulative RMSE</span></label>
+        <div class="seg" role="radiogroup" data-i18n-aria="ariaChart" aria-label="Chart type" style="margin-bottom:10px">
+          <label><input type="radio" name="chart" value="step" checked><span data-i18n="chartStep">Per step</span></label>
+          <label><input type="radio" name="chart" value="cum"><span data-i18n="chartCum">Cumulative RMSE</span></label>
         </div>
-        <canvas id="err" role="img" aria-label="Position error of the five filters over the time steps"></canvas>
+        <canvas id="err" role="img" data-i18n-aria="ariaErr" aria-label="Position error of the five filters over the time steps"></canvas>
       </section>
     </div>
 
     <div class="col">
       <section class="panel p-set" aria-labelledby="h-set">
-        <h2 id="h-set">Setup</h2>
+        <h2 id="h-set" data-i18n="hSet">Setup</h2>
         <div class="field">
           <span class="lab">Sensor</span>
           <div class="seg" role="radiogroup" aria-label="Sensor">
@@ -233,11 +239,11 @@ input:focus-visible { outline: 2px solid var(--ekf); outline-offset: 2px; }
           <p class="hint" id="mode-hint"></p>
         </div>
         <div class="field">
-          <span class="lab">Path</span>
-          <div class="seg" role="radiogroup" aria-label="Path">
-            <label><input type="radio" name="path" value="line" checked><span>Straight</span></label>
-            <label><input type="radio" name="path" value="circle"><span>Circle</span></label>
-            <label><input type="radio" name="path" value="weave"><span>Weave</span></label>
+          <span class="lab" data-i18n="labPath">Path</span>
+          <div class="seg" role="radiogroup" data-i18n-aria="ariaPath" aria-label="Path">
+            <label><input type="radio" name="path" value="line" checked><span data-i18n="pathLine">Straight</span></label>
+            <label><input type="radio" name="path" value="circle"><span data-i18n="pathCircle">Circle</span></label>
+            <label><input type="radio" name="path" value="weave"><span data-i18n="pathWeave">Weave</span></label>
           </div>
         </div>
         <div class="field slider">
@@ -245,35 +251,35 @@ input:focus-visible { outline: 2px solid var(--ekf); outline-offset: 2px; }
           <input id="sr" type="range" min="1" max="30" step="1" value="10">
         </div>
         <div class="field slider">
-          <label for="sth"><span>σ bearing</span><output id="sth-out" for="sth" class="mono"></output></label>
+          <label for="sth"><span data-i18n="labSth">σ bearing</span><output id="sth-out" for="sth" class="mono"></output></label>
           <input id="sth" type="range" min="0.2" max="8" step="0.2" value="4">
         </div>
         <div class="field slider">
-          <label for="q"><span>q, model acceleration noise</span><output id="q-out" for="q" class="mono"></output></label>
+          <label for="q"><span data-i18n="labQ">q, model acceleration noise</span><output id="q-out" for="q" class="mono"></output></label>
           <input id="q" type="range" min="0.05" max="3" step="0.05" value="0.2">
-          <p class="hint">All five filters assume nearly constant velocity. Each path selects its own suggested q.</p>
+          <p class="hint" data-i18n="hintQ">All five filters assume nearly constant velocity. Each path selects its own suggested q.</p>
         </div>
         <div class="field slider">
-          <label for="np"><span>PF particles</span><output id="np-out" for="np" class="mono"></output></label>
+          <label for="np"><span data-i18n="labNp">PF particles</span><output id="np-out" for="np" class="mono"></output></label>
           <input id="np" type="range" min="50" max="2000" step="50" value="500">
-          <p class="hint">More particles make the PF more accurate but slower.</p>
+          <p class="hint" data-i18n="hintNp">More particles make the PF more accurate but slower.</p>
         </div>
         <div class="field slider">
-          <label for="eta"><span>H∞ conservatism η</span><output id="eta-out" for="eta" class="mono"></output></label>
+          <label for="eta"><span data-i18n="labEta">H∞ conservatism η</span><output id="eta-out" for="eta" class="mono"></output></label>
           <input id="eta" type="range" min="0" max="0.1" step="0.005" value="0.1">
-          <p class="hint">η = 0 makes H∞ identical to the EKF (to the KF with the linear sensor). A larger η trusts the model less and follows the measurements more closely. The slider stops at 0.1 because from about 0.12 some setups (very small measurement noise, large q) diverge.</p>
+          <p class="hint" data-i18n="hintEta">η = 0 makes H∞ identical to the EKF (to the KF with the linear sensor). A larger η trusts the model less and follows the measurements more closely. The slider stops at 0.1 because from about 0.12 some setups (very small measurement noise, large q) diverge.</p>
         </div>
         <div class="btn-row">
-          <button id="newnoise" class="btn" type="button">New noise</button>
-          <button id="reset" class="btn" type="button">Reset</button>
+          <button id="newnoise" class="btn" type="button" data-i18n="btnNoise">New noise</button>
+          <button id="reset" class="btn" type="button" data-i18n="btnReset">Reset</button>
         </div>
       </section>
 
       <section class="panel p-res" aria-labelledby="h-res">
-        <h2 id="h-res">Position RMSE</h2>
+        <h2 id="h-res" data-i18n="hRes">Position RMSE</h2>
         <p class="sub" id="live-sub"></p>
         <div class="bars">
-          <div class="row"><span>Raw</span><span class="bar"><i id="b-raw"></i></span><span class="val mono" id="v-raw"></span></div>
+          <div class="row"><span data-i18n="raw">Raw</span><span class="bar"><i id="b-raw"></i></span><span class="val mono" id="v-raw"></span></div>
           <div class="row"><span>KF</span><span class="bar"><i class="kf" id="b-kf"></i></span><span class="val mono" id="v-kf"></span></div>
           <div class="row"><span>EKF</span><span class="bar"><i class="ekf" id="b-ekf"></i></span><span class="val mono" id="v-ekf"></span></div>
           <div class="row"><span>UKF</span><span class="bar"><i class="ukf" id="b-ukf"></i></span><span class="val mono" id="v-ukf"></span></div>
@@ -283,10 +289,10 @@ input:focus-visible { outline: 2px solid var(--ekf); outline-offset: 2px; }
         <p class="verdict" id="verdict"></p>
         <hr class="sep">
         <div id="mc">
-          <h3>Average of 100 runs</h3>
+          <h3 data-i18n="hMc">Average of 100 runs</h3>
           <p class="sub" id="mc-sub"></p>
           <div class="bars">
-            <div class="row"><span>Raw</span><span class="bar"><i id="mb-raw"></i></span><span class="val mono" id="mv-raw"></span></div>
+            <div class="row"><span data-i18n="raw">Raw</span><span class="bar"><i id="mb-raw"></i></span><span class="val mono" id="mv-raw"></span></div>
             <div class="row"><span>KF</span><span class="bar"><i class="kf" id="mb-kf"></i></span><span class="val mono" id="mv-kf"></span></div>
             <div class="row"><span>EKF</span><span class="bar"><i class="ekf" id="mb-ekf"></i></span><span class="val mono" id="mv-ekf"></span></div>
             <div class="row"><span>UKF</span><span class="bar"><i class="ukf" id="mb-ukf"></i></span><span class="val mono" id="mv-ukf"></span></div>
@@ -298,10 +304,10 @@ input:focus-visible { outline: 2px solid var(--ekf); outline-offset: 2px; }
       </section>
 
       <section class="panel p-mat" aria-labelledby="h-mat">
-        <div class="panel-head"><h2 id="h-mat">How each filter handles the measurement</h2></div>
+        <div class="panel-head"><h2 id="h-mat" data-i18n="hMat">How each filter handles the measurement</h2></div>
         <div class="mats">
           <div>
-            <h3>KF: fixed H</h3>
+            <h3 data-i18n="hMatKf">KF: fixed H</h3>
             <div class="mat" id="mat-kf"></div>
             <p class="cap" id="cap-kf"></p>
           </div>
@@ -311,15 +317,15 @@ input:focus-visible { outline: 2px solid var(--ekf); outline-offset: 2px; }
             <p class="cap" id="cap-ekf"></p>
           </div>
           <div>
-            <h3>UKF: sigma points</h3>
+            <h3 data-i18n="hMatUkf">UKF: sigma points</h3>
             <p class="cap" id="cap-ukf" style="margin-top:0"></p>
           </div>
           <div>
-            <h3>PF: particle cloud</h3>
+            <h3 data-i18n="hMatPf">PF: particle cloud</h3>
             <p class="cap" id="cap-pf" style="margin-top:0"></p>
           </div>
           <div>
-            <h3>H∞: worst-case bound</h3>
+            <h3 data-i18n="hMatHinf">H∞: worst-case bound</h3>
             <p class="cap" id="cap-hinf" style="margin-top:0"></p>
           </div>
         </div>
@@ -328,39 +334,39 @@ input:focus-visible { outline: 2px solid var(--ekf); outline-offset: 2px; }
   </div>
 
   <section class="read" aria-labelledby="h-read">
-    <h2 id="h-read">Reading the results</h2>
+    <h2 id="h-read" data-i18n="hRead">Reading the results</h2>
     <div class="read-grid">
       <article>
-        <h3>The nonlinearity is in the measurement</h3>
-        <p>The state is (x, y), but the radar measures (r, φ). The measurement function contains a square root and an arctangent, so the EKF's H<sub>k</sub> changes with the target position. A 4° bearing error is about 14 m across the line of sight at 200 m range and about 56 m at 800 m, so the measurement error region is an arc, not a circle.</p>
+        <h3 data-i18n="r1h">The nonlinearity is in the measurement</h3>
+        <p data-i18n="r1p">The state is (x, y), but the radar measures (r, φ). The measurement function contains a square root and an arctangent, so the EKF's H<sub>k</sub> changes with the target position. A 4° bearing error is about 14 m across the line of sight at 200 m range and about 56 m at 800 m, so the measurement error region is an arc, not a circle.</p>
       </article>
       <article>
-        <h3>The KF has to use one shared R</h3>
-        <p>The KF converts (r, φ) to (x, y) and uses one fixed, circular R chosen from the mean range of the path. At long range it trusts the measurement too much, at short range too little. The other four filters use (r, φ) directly with the right noise for each, so the EKF, UKF and PF usually end up a few percent below the KF, and more when the bearing noise is large.</p>
+        <h3 data-i18n="r2h">The KF has to use one shared R</h3>
+        <p data-i18n="r2p">The KF converts (r, φ) to (x, y) and uses one fixed, circular R chosen from the mean range of the path. At long range it trusts the measurement too much, at short range too little. The other four filters use (r, φ) directly with the right noise for each, so the EKF, UKF and PF usually end up a few percent below the KF, and more when the bearing noise is large.</p>
       </article>
       <article>
-        <h3>The UKF almost matches the EKF here</h3>
-        <p>Over the ranges in this simulation the measurement function bends only gently, so the UKF's sigma points and the EKF's Jacobian give nearly the same error. The UKF pays off when the measurement function bends strongly or is hard to differentiate; in exchange it evaluates the measurement function 9 times per step.</p>
+        <h3 data-i18n="r3h">The UKF almost matches the EKF here</h3>
+        <p data-i18n="r3p">Over the ranges in this simulation the measurement function bends only gently, so the UKF's sigma points and the EKF's Jacobian give nearly the same error. The UKF pays off when the measurement function bends strongly or is hard to differentiate; in exchange it evaluates the measurement function 9 times per step.</p>
       </article>
       <article>
-        <h3>The PF needs enough particles</h3>
-        <p>With 500 particles the PF stays within about 5% of the EKF. With 100 particles its error is about 75% higher, and with 50 it regularly loses the target. Cost grows linearly with the number of particles. Where a PF really wins is a multi-modal or non-Gaussian distribution, which this simulation does not have.</p>
+        <h3 data-i18n="r4h">The PF needs enough particles</h3>
+        <p data-i18n="r4p">With 500 particles the PF stays within about 5% of the EKF. With 100 particles its error is about 75% higher, and with 50 it regularly loses the target. Cost grows linearly with the number of particles. Where a PF really wins is a multi-modal or non-Gaussian distribution, which this simulation does not have.</p>
       </article>
       <article>
-        <h3>A wrong motion model dominates</h3>
-        <p>On the circle or the weave with q far too small (0.1), every filter lags behind the target, and that lag outweighs any nonlinearity effect. In that case the plain KF is the best of the five, the EKF and UKF are 20–30% worse, and the PF loses the target. Drag q down to 0.1 on the weave to see this, then raise it again.</p>
+        <h3 data-i18n="r5h">A wrong motion model dominates</h3>
+        <p data-i18n="r5p">On the circle or the weave with q far too small (0.1), every filter lags behind the target, and that lag outweighs any nonlinearity effect. In that case the plain KF is the best of the five, the EKF and UKF are 20–30% worse, and the PF loses the target. Drag q down to 0.1 on the weave to see this, then raise it again.</p>
       </article>
       <article>
-        <h3>Linear sensor</h3>
-        <p>With the position (x, y) sensor the measurement is linear: KF, EKF and UKF give identical results. The PF only approximates them because it samples at random, and gets closer with more particles. H∞ equals the KF only at η = 0; with a larger η it is deliberately more conservative.</p>
+        <h3 data-i18n="r6h">Linear sensor</h3>
+        <p data-i18n="r6p">With the position (x, y) sensor the measurement is linear: KF, EKF and UKF give identical results. The PF only approximates them because it samples at random, and gets closer with more particles. H∞ equals the KF only at η = 0; with a larger η it is deliberately more conservative.</p>
       </article>
       <article>
-        <h3>H∞ is insurance against the worst case</h3>
-        <p>The Kalman filter minimises the mean squared error, provided q and R are right. H∞ needs no noise statistics and bounds the worst case instead, so it is more cautious: the update inflates the covariance by θ and the filter leans on the measurement more than on the model. At the default setting (σ bearing 4°, σ range 10 m, η = 0.1) with q matched, H∞ is 2–7% worse than the EKF. With q too small (q = 0.1 on the circle or the weave) it is clearly better than the EKF: about 55 m vs 66 m on the circle, 76 m vs 89 m on the weave. The plain KF is still slightly better in both cases (53 m and 70 m).</p>
+        <h3 data-i18n="r7h">H∞ is insurance against the worst case</h3>
+        <p data-i18n="r7p">The Kalman filter minimises the mean squared error, provided q and R are right. H∞ needs no noise statistics and bounds the worst case instead, so it is more cautious: the update inflates the covariance by θ and the filter leans on the measurement more than on the model. At the default setting (σ bearing 4°, σ range 10 m, η = 0.1) with q matched, H∞ is 2–7% worse than the EKF. With q too small (q = 0.1 on the circle or the weave) it is clearly better than the EKF: about 55 m vs 66 m on the circle, 76 m vs 89 m on the weave. The plain KF is still slightly better in both cases (53 m and 70 m).</p>
       </article>
       <article>
-        <h3>H∞ does not replace tuning q</h3>
-        <p>With the right q (1.3 on the weave) the EKF reaches about 19 m, far better than H∞ with the wrong q (about 76 m). H∞ limits the damage when q is unknown; it does not replace tuning it. θ cannot be raised freely either: the updated covariance must stay positive definite, and beyond that limit the filter diverges. In the setups we tried, η = 0.1 never diverged, while from about 0.12 the harsh setups (very small measurement noise, large q) started to diverge.</p>
+        <h3 data-i18n="r8h">H∞ does not replace tuning q</h3>
+        <p data-i18n="r8p">With the right q (1.3 on the weave) the EKF reaches about 19 m, far better than H∞ with the wrong q (about 76 m). H∞ limits the damage when q is unknown; it does not replace tuning it. θ cannot be raised freely either: the updated covariance must stay positive definite, and beyond that limit the filter diverges. In the setups we tried, η = 0.1 never diverged, while from about 0.12 the harsh setups (very small measurement noise, large q) started to diverge.</p>
       </article>
     </div>
   </section>
@@ -948,19 +954,145 @@ function drawErr() {
   });
 }
 
+/* ---------- Language (EN / DE) ----------
+   The English text stays in the HTML. data-i18n (innerHTML) and data-i18n-aria (aria-label) name its German
+   replacement in UI_DE; text built at run time comes from MSG[LANG]. Numbers keep the decimal point in both
+   languages, as in the article's tables. */
+const UI_DE = {
+  title: 'Radar-Zielverfolgung: KF, EKF, UKF, PF und H∞',
+  h1: 'KF, EKF, UKF, PF und H∞ am selben Ziel',
+  lede: 'Ein Radar im Ursprung misst Entfernung und Peilwinkel eines bewegten Ziels. Fünf Filter erhalten dieselben Messungen und nutzen dasselbe Bewegungsmodell. Sie unterscheiden sich nur darin, wie sie die nichtlineare Messung verarbeiten.',
+  hMap: 'Zielverfolgung',
+  lgTruth: 'Wahre Bahn', lgMeas: 'Radarmessung', lgPart: 'PF-Partikel',
+  ariaMap: 'Karte der Zielverfolgung: wahre Bahn, Radarmessungen und die Schätzungen von KF, EKF, UKF, PF und H-unendlich um ein Radar im Ursprung',
+  ariaK: 'Zeitschritt',
+  ariaFilters: 'Angezeigte Filter', labFilters: 'Filter',
+  tTrail: 'Messungen', tWedge: 'Messfehlerbereich', tParts: 'PF-Partikelwolke', tEll: '2σ-Fehlerellipsen',
+  hErr: 'Positionsfehler im Zeitverlauf (m)',
+  ariaChart: 'Diagrammtyp', chartStep: 'Pro Schritt', chartCum: 'Kumulativer RMSE',
+  ariaErr: 'Positionsfehler der fünf Filter über die Zeitschritte',
+  hSet: 'Einstellungen',
+  labPath: 'Bahn', ariaPath: 'Bahn', pathLine: 'Gerade', pathCircle: 'Kreis', pathWeave: 'Schlangenlinie',
+  labSth: 'σ Peilwinkel',
+  labQ: 'q, Bewegungsrauschen des Modells',
+  hintQ: 'Alle fünf Filter nehmen eine nahezu konstante Geschwindigkeit an. Jede Bahn setzt ihr eigenes empfohlenes q.',
+  labNp: 'PF-Partikel',
+  hintNp: 'Mehr Partikel machen das PF genauer, aber langsamer.',
+  labEta: 'H∞-Konservativität η',
+  hintEta: 'Mit η = 0 ist H∞ identisch mit dem EKF (beim linearen Sensor mit dem KF). Ein größeres η vertraut dem Modell weniger und folgt den Messungen enger. Der Schieberegler endet bei 0.1, weil ab etwa 0.12 manche Setups (sehr kleines Messrauschen, großes q) divergieren.',
+  btnNoise: 'Neues Rauschen', btnReset: 'Zurücksetzen',
+  hRes: 'Positions-RMSE', raw: 'Roh', hMc: 'Mittel aus 100 Läufen',
+  hMat: 'Wie jedes Filter die Messung verarbeitet',
+  hMatKf: 'KF: festes H', hMatUkf: 'UKF: Sigma-Punkte', hMatPf: 'PF: Partikelwolke', hMatHinf: 'H∞: Schranke für den ungünstigsten Fall',
+  hRead: 'Die Ergebnisse einordnen',
+  r1h: 'Die Nichtlinearität steckt in der Messung',
+  r1p: 'Der Zustand ist (x, y), das Radar misst aber (r, φ). Die Messfunktion enthält eine Wurzel und einen Arkustangens, deshalb ändert sich H<sub>k</sub> des EKF mit der Zielposition. Ein Peilfehler von 4° entspricht bei 200 m Entfernung etwa 14 m quer zur Sichtlinie, bei 800 m etwa 56 m. Der Messfehlerbereich ist daher ein Bogen und kein Kreis.',
+  r2h: 'Das KF muss mit einem einzigen R auskommen',
+  r2p: 'Das KF rechnet (r, φ) in (x, y) um und verwendet ein festes, kreisförmiges R, gewählt nach der mittleren Entfernung der Bahn. Auf große Entfernung vertraut es der Messung zu sehr, auf kurze zu wenig. Die anderen vier Filter verwenden (r, φ) direkt, jeweils mit dem passenden Rauschen. Deshalb liegen EKF, UKF und PF meist einige Prozent unter dem KF, bei großem Peilrauschen mehr.',
+  r3h: 'Das UKF liegt hier fast gleichauf mit dem EKF',
+  r3p: 'Im Entfernungsbereich dieser Simulation ist die Messfunktion nur schwach gekrümmt, daher liefern die Sigma-Punkte des UKF und die Jacobi-Matrix des EKF fast denselben Fehler. Das UKF lohnt sich, wenn die Messfunktion stark gekrümmt oder schwer abzuleiten ist; dafür wertet es die Messfunktion 9-mal pro Schritt aus.',
+  r4h: 'Das PF braucht genug Partikel',
+  r4p: 'Mit 500 Partikeln liegt das PF höchstens etwa 5&nbsp;% über dem EKF. Mit 100 Partikeln ist sein Fehler etwa 75&nbsp;% höher, mit 50 verliert es regelmäßig das Ziel. Der Aufwand wächst linear mit der Partikelzahl. Wirklich im Vorteil ist ein PF bei multimodalen oder nicht-gaußschen Verteilungen, die in dieser Simulation nicht vorkommen.',
+  r5h: 'Ein falsches Bewegungsmodell dominiert',
+  r5p: 'Auf dem Kreis oder der Schlangenlinie mit viel zu kleinem q (0.1) hinkt jedes Filter dem Ziel hinterher, und dieser Rückstand überwiegt jeden Effekt der Nichtlinearität. Dann ist das einfache KF das beste der fünf, EKF und UKF sind 20–30&nbsp;% schlechter, und das PF verliert das Ziel. Zum Ausprobieren auf der Schlangenlinie q auf 0.1 senken und danach wieder erhöhen.',
+  r6h: 'Linearer Sensor',
+  r6p: 'Mit dem Positionssensor (x, y) ist die Messung linear: KF, EKF und UKF liefern identische Ergebnisse. Das PF nähert sie nur an, weil es zufällig abtastet, und kommt mit mehr Partikeln näher heran. H∞ gleicht dem KF nur bei η = 0; mit größerem η ist es bewusst konservativer.',
+  r7h: 'H∞ ist eine Versicherung gegen den ungünstigsten Fall',
+  r7p: 'Das Kalman-Filter minimiert den mittleren quadratischen Fehler, sofern q und R stimmen. H∞ braucht keine Rauschstatistik und begrenzt stattdessen den ungünstigsten Fall, ist also vorsichtiger: Das Update vergrößert die Kovarianz über θ, und das Filter stützt sich stärker auf die Messung als auf das Modell. In der Standardeinstellung (σ Peilwinkel 4°, σ Entfernung 10 m, η = 0.1) mit passendem q ist H∞ 2–7&nbsp;% schlechter als das EKF. Mit zu kleinem q (q = 0.1 auf Kreis oder Schlangenlinie) ist es deutlich besser als das EKF: etwa 55 m statt 66 m auf dem Kreis, 76 m statt 89 m auf der Schlangenlinie. Das einfache KF ist in beiden Fällen noch etwas besser (53 m und 70 m).',
+  r8h: 'H∞ ersetzt nicht das Einstellen von q',
+  r8p: 'Mit dem richtigen q (1.3 auf der Schlangenlinie) erreicht das EKF etwa 19 m, weit besser als H∞ mit falschem q (etwa 76 m). H∞ begrenzt den Schaden, wenn q unbekannt ist, ersetzt aber nicht dessen Einstellung. Auch θ lässt sich nicht beliebig erhöhen: Die aktualisierte Kovarianz muss positiv definit bleiben, jenseits dieser Grenze divergiert das Filter. In den getesteten Setups divergierte das Filter mit η = 0.1 nie; ab etwa 0.12 begannen die harten Setups (sehr kleines Messrauschen, großes q) zu divergieren.'
+};
+const MSG = {
+  en: {
+    diverged: 'diverged', pct: '%', qUnit: ' m/step²', particles: ' particles',
+    pause: 'Pause', replay: 'Replay', resume: 'Resume',
+    srRadar: 'σ range', srLin: 'σ position (x and y)',
+    hintRadar: 'The radar at the origin measures range r and bearing φ. Converting to (x, y) is nonlinear.',
+    hintLin: 'The sensor measures (x, y) directly. The measurement is linear, so the EKF and UKF reduce to the KF.',
+    linSummary: (pf, hinf) => 'KF, EKF and UKF give identical results because the measurement is linear. PF (' + pf + ') and H∞ (' + hinf +
+      ') differ slightly from the KF: the PF because it samples at random, H∞ because it is deliberately more conservative.',
+    lowest: (name, val, e, u, p, h) => 'Lowest: ' + name + ' (' + val + ' m). Relative to the KF: EKF ' + e + ', UKF ' + u + ', PF ' + p + ', H∞ ' + h + '.',
+    liveSub: k => 'Current run, from step 0 to step ' + k,
+    mcDone: 'Same setup, a different noise sequence for each run.',
+    mcBusy: (n, total) => 'Computing… ' + n + ' / ' + total,
+    hEkf: k => 'EKF: H<sub>k</sub> at step ' + k,
+    capKfRadar: sig => 'Measures (x, y) after converting from (r, φ). R = σ²·I with σ = ' + sig + ' m, fixed.',
+    capEkfRadar: 'Measures (r, φ) directly. Row 1 is ∂r/∂(x, y), row 2 is ∂φ/∂(x, y) in rad/m. R = diag(σ_r², σ_φ²).',
+    capUkfRadar: (pts, wm0, wi) => 'No H. ' + pts + ' sigma points (2n + 1, n = 4) pass through h(x) = (r, φ) and are averaged with weights (W₀ = ' + wm0 + ', the others ' + wi + '). The bearing φ is averaged on the circle.',
+    capPfRadar: (np, k, neff) => 'No H. ' + np + ' particles, each weighted by the likelihood of the measured (r, φ). Step ' + k + ': N_eff = ' + neff + ' / ' + np + '. Resampled when N_eff drops below half.',
+    capKfLin: sr => 'Measures (x, y). R = σ²·I with σ = ' + sr + ' m.',
+    capEkfLin: 'H does not change between steps, so the EKF is the KF.',
+    capUkfLin: 'The measurement is linear, so the sigma points give exactly the KF result.',
+    capPfLin: (np, k, neff) => np + ' particles weighted by a Gaussian likelihood around the measured (x, y). Step ' + k + ': N_eff = ' + neff + ' / ' + np + '. It only approximates the KF.',
+    hinfUses: lin => 'Uses the same ' + (lin ? 'H and R as the KF' : 'H_k and R as the EKF') + '. ',
+    hinfZero: ref => 'η = 0, so H∞ is identical to the ' + ref + '.',
+    hinfTheta: (theta, sig, k, grow) => 'The covariance update adds θ = ' + theta + ' m⁻² (η / σ², σ = ' + sig + ' m) on the position error: P⁺ = (P⁻¹ − θS + HᵀR⁻¹H)⁻¹. Step ' + k +
+      ': the position covariance is ' + grow + '% larger than after a Kalman update.',
+    hinfClamp: n => ' θ had to be capped at ' + n + (n === 1 ? ' step' : ' steps') + ' because it was about to violate the existence condition.',
+    noteRadar: 'The blue arc is the true measurement error (±1σ in range and bearing) used by the EKF, UKF, PF and H∞. The dashed orange circle is the fixed circular R used by the KF.',
+    noteLin: 'The dashed circle is the ±1σ measurement error, shared by all five filters.'
+  },
+  de: {
+    diverged: 'divergiert', pct: ' %', qUnit: ' m/Schritt²', particles: ' Partikel',
+    pause: 'Pause', replay: 'Abspielen', resume: 'Fortsetzen',
+    srRadar: 'σ Entfernung', srLin: 'σ Position (x und y)',
+    hintRadar: 'Das Radar im Ursprung misst die Entfernung r und den Peilwinkel φ. Die Umrechnung in (x, y) ist nichtlinear.',
+    hintLin: 'Der Sensor misst (x, y) direkt. Die Messung ist linear, daher reduzieren sich EKF und UKF auf das KF.',
+    linSummary: (pf, hinf) => 'KF, EKF und UKF liefern identische Ergebnisse, weil die Messung linear ist. PF (' + pf + ') und H∞ (' + hinf +
+      ') weichen leicht vom KF ab: das PF, weil es zufällig abtastet, H∞, weil es bewusst konservativer ist.',
+    lowest: (name, val, e, u, p, h) => 'Am niedrigsten: ' + name + ' (' + val + ' m). Relativ zum KF: EKF ' + e + ', UKF ' + u + ', PF ' + p + ', H∞ ' + h + '.',
+    liveSub: k => 'Aktueller Lauf, von Schritt 0 bis Schritt ' + k,
+    mcDone: 'Gleiches Setup, für jeden Lauf eine andere Rauschfolge.',
+    mcBusy: (n, total) => 'Wird berechnet … ' + n + ' / ' + total,
+    hEkf: k => 'EKF: H<sub>k</sub> im Schritt ' + k,
+    capKfRadar: sig => 'Misst (x, y) nach Umrechnung aus (r, φ). R = σ²·I mit σ = ' + sig + ' m, fest.',
+    capEkfRadar: 'Misst (r, φ) direkt. Zeile 1 ist ∂r/∂(x, y), Zeile 2 ist ∂φ/∂(x, y) in rad/m. R = diag(σ_r², σ_φ²).',
+    capUkfRadar: (pts, wm0, wi) => 'Kein H. ' + pts + ' Sigma-Punkte (2n + 1, n = 4) laufen durch h(x) = (r, φ) und werden gewichtet gemittelt (W₀ = ' + wm0 + ', die übrigen ' + wi + '). Der Peilwinkel φ wird auf dem Kreis gemittelt.',
+    capPfRadar: (np, k, neff) => 'Kein H. ' + np + ' Partikel, jedes gewichtet mit der Likelihood des gemessenen (r, φ). Schritt ' + k + ': N_eff = ' + neff + ' / ' + np + '. Resampling, sobald N_eff unter die Hälfte fällt.',
+    capKfLin: sr => 'Misst (x, y). R = σ²·I mit σ = ' + sr + ' m.',
+    capEkfLin: 'H ändert sich zwischen den Schritten nicht, daher ist das EKF hier das KF.',
+    capUkfLin: 'Die Messung ist linear, daher liefern die Sigma-Punkte genau das Ergebnis des KF.',
+    capPfLin: (np, k, neff) => np + ' Partikel, gewichtet mit einer gaußschen Likelihood um das gemessene (x, y). Schritt ' + k + ': N_eff = ' + neff + ' / ' + np + '. Es nähert das KF nur an.',
+    hinfUses: lin => 'Verwendet ' + (lin ? 'H und R des KF' : 'H_k und R des EKF') + '. ',
+    hinfZero: ref => 'η = 0, daher ist H∞ identisch mit dem ' + ref + '.',
+    hinfTheta: (theta, sig, k, grow) => 'Im Kovarianz-Update wirkt θ = ' + theta + ' m⁻² (η / σ², σ = ' + sig + ' m) auf den Positionsfehler: P⁺ = (P⁻¹ − θS + HᵀR⁻¹H)⁻¹. Schritt ' + k +
+      ': Die Positionskovarianz ist ' + grow + ' % größer als nach einem Kalman-Update.',
+    hinfClamp: n => ' θ musste in ' + (n === 1 ? 'einem Schritt' : n + ' Schritten') + ' begrenzt werden, weil sonst die Existenzbedingung verletzt worden wäre.',
+    noteRadar: 'Der blaue Bogen ist der wahre Messfehler (±1σ in Entfernung und Peilwinkel), den EKF, UKF, PF und H∞ verwenden. Der gestrichelte orange Kreis ist das feste, kreisförmige R des KF.',
+    noteLin: 'Der gestrichelte Kreis ist der Messfehler von ±1σ, gemeinsam für alle fünf Filter.'
+  }
+};
+const LANG_FIXED = /[?&]lang=(en|de)\b/.test(location.search);
+let LANG = document.documentElement.getAttribute('lang') === 'de' ? 'de' : 'en';
+let L = MSG[LANG];
+const EN_TITLE = document.title, EN_HTML = new Map(), EN_ARIA = new Map();
+document.querySelectorAll('[data-i18n]').forEach(el => EN_HTML.set(el, el.innerHTML));
+document.querySelectorAll('[data-i18n-aria]').forEach(el => EN_ARIA.set(el, el.getAttribute('aria-label')));
+function applyStatic() {
+  const de = LANG === 'de';
+  document.documentElement.setAttribute('lang', LANG);
+  document.title = de ? UI_DE.title : EN_TITLE;
+  EN_HTML.forEach((en, el) => { el.innerHTML = de ? UI_DE[el.dataset.i18n] : en; });
+  EN_ARIA.forEach((en, el) => { el.setAttribute('aria-label', de ? UI_DE[el.dataset.i18nAria] : en); });
+}
+function setLang(lang) {
+  if ((lang !== 'en' && lang !== 'de') || lang === LANG) return;
+  LANG = lang; L = MSG[LANG];
+  applyStatic();
+  if (!run) return;
+  renderOutputs(); renderNote(); renderAll();
+  if (mc) { const stale = $('mc').classList.contains('stale'); renderMC(); $('mc').classList.toggle('stale', stale); }
+}
+
 /* ---------- Numbers and text ---------- */
 const OK = v => Number.isFinite(v) && v < 1e4;
-const fmtM = v => OK(v) ? v.toFixed(1) + ' m' : 'diverged';
-const pct = (base, v) => { if (!OK(v)) return 'diverged'; const d = (v - base) / base * 100; return (d < 0 ? '−' : '+') + Math.abs(d).toFixed(1) + '%'; };
+const fmtM = v => OK(v) ? v.toFixed(1) + ' m' : L.diverged;
+const pct = (base, v) => { if (!OK(v)) return L.diverged; const d = (v - base) / base * 100; return (d < 0 ? '−' : '+') + Math.abs(d).toFixed(1) + L.pct; };
 function summary(v) {
-  if (st.mode === 'linear') {
-    return 'KF, EKF and UKF give identical results because the measurement is linear. PF (' + pct(v.kf, v.pf) + ') and H∞ (' + pct(v.kf, v.hinf) +
-           ') differ slightly from the KF: the PF because it samples at random, H∞ because it is deliberately more conservative.';
-  }
+  if (st.mode === 'linear') return L.linSummary(pct(v.kf, v.pf), pct(v.kf, v.hinf));
   let best = 'kf';
   ['ekf', 'ukf', 'pf', 'hinf'].forEach(key => { if (OK(v[key]) && v[key] < v[best] - 1e-9) best = key; });
-  return 'Lowest: ' + NAMES[best] + ' (' + v[best].toFixed(1) + ' m). Relative to the KF: EKF ' + pct(v.kf, v.ekf) +
-         ', UKF ' + pct(v.kf, v.ukf) + ', PF ' + pct(v.kf, v.pf) + ', H∞ ' + pct(v.kf, v.hinf) + '.';
+  return L.lowest(NAMES[best], v[best].toFixed(1), pct(v.kf, v.ekf), pct(v.kf, v.ukf), pct(v.kf, v.pf), pct(v.kf, v.hinf));
 }
 const KEYS = ['raw', 'kf', 'ekf', 'ukf', 'pf', 'hinf'];
 function setBars(prefix, v) {
@@ -974,14 +1106,14 @@ function renderLive() {
   const k = st.k, v = {};
   KEYS.forEach(key => { v[key] = rmseAt(run, key, k); });
   setBars('', v);
-  $('live-sub').textContent = 'Current run, from step 0 to step ' + k;
+  $('live-sub').textContent = L.liveSub(k);
   $('verdict').textContent = summary(v);
 }
 function renderMC() {
   if (!mc) return;
   const done = mc.n >= MC_RUNS;
   setBars('m', mc);
-  $('mc-sub').textContent = done ? 'Same setup, a different noise sequence for each run.' : 'Computing… ' + mc.n + ' / ' + MC_RUNS;
+  $('mc-sub').textContent = done ? L.mcDone : L.mcBusy(mc.n, MC_RUNS);
   $('mc-verdict').textContent = done ? summary(mc) : '';
   $('mc').classList.toggle('stale', !done);
 }
@@ -1012,56 +1144,50 @@ function fillMat(id, rows) {
 function renderMats() {
   const k = st.k, h = run.hk[k];
   fillMat('mat-kf', [['1', '0', '0', '0'], ['0', '1', '0', '0']]);
-  $('h-ekf').innerHTML = 'EKF: H<sub>k</sub> at step ' + k;
+  $('h-ekf').innerHTML = L.hEkf(k);
   const wm0 = UKF_WM0.toFixed(2), wi = UKF_WI.toFixed(2);
   if (st.mode === 'radar') {
     fillMat('mat-ekf', [[fmtH(h[0]), fmtH(h[1]), '0', '0'], [fmtH(h[2]), fmtH(h[3]), '0', '0']]);
-    $('cap-kf').textContent = 'Measures (x, y) after converting from (r, φ). R = σ²·I with σ = ' + run.sigEq.toFixed(1) + ' m, fixed.';
-    $('cap-ekf').textContent = 'Measures (r, φ) directly. Row 1 is ∂r/∂(x, y), row 2 is ∂φ/∂(x, y) in rad/m. R = diag(σ_r², σ_φ²).';
-    $('cap-ukf').textContent = 'No H. ' + UKF_POINTS + ' sigma points (2n + 1, n = 4) pass through h(x) = (r, φ) and are averaged with weights (W₀ = ' + wm0 + ', the others ' + wi + '). The bearing φ is averaged on the circle.';
-    $('cap-pf').textContent = 'No H. ' + run.np + ' particles, each weighted by the likelihood of the measured (r, φ). Step ' + k + ': N_eff = ' + Math.round(run.neff[k]) + ' / ' + run.np + '. Resampled when N_eff drops below half.';
+    $('cap-kf').textContent = L.capKfRadar(run.sigEq.toFixed(1));
+    $('cap-ekf').textContent = L.capEkfRadar;
+    $('cap-ukf').textContent = L.capUkfRadar(UKF_POINTS, wm0, wi);
+    $('cap-pf').textContent = L.capPfRadar(run.np, k, Math.round(run.neff[k]));
   } else {
     fillMat('mat-ekf', [['1', '0', '0', '0'], ['0', '1', '0', '0']]);
-    $('cap-kf').textContent = 'Measures (x, y). R = σ²·I with σ = ' + st.sr + ' m.';
-    $('cap-ekf').textContent = 'H does not change between steps, so the EKF is the KF.';
-    $('cap-ukf').textContent = 'The measurement is linear, so the sigma points give exactly the KF result.';
-    $('cap-pf').textContent = run.np + ' particles weighted by a Gaussian likelihood around the measured (x, y). Step ' + k + ': N_eff = ' + Math.round(run.neff[k]) + ' / ' + run.np + '. It only approximates the KF.';
+    $('cap-kf').textContent = L.capKfLin(st.sr);
+    $('cap-ekf').textContent = L.capEkfLin;
+    $('cap-ukf').textContent = L.capUkfLin;
+    $('cap-pf').textContent = L.capPfLin(run.np, k, Math.round(run.neff[k]));
   }
 }
 function renderHinfCap() {
   const k = st.k, lin = st.mode !== 'radar', ref = lin ? 'KF' : 'EKF';
   const theta = st.eta / (run.sigEq * run.sigEq), grow = (run.hinfl[k] - 1) * 100, clamps = run.hcl.filter(Boolean).length;
-  let s = 'Uses the same ' + (lin ? 'H and R as the KF' : 'H_k and R as the EKF') + '. ';
-  if (st.eta === 0) s += 'η = 0, so H∞ is identical to the ' + ref + '.';
+  let s = L.hinfUses(lin);
+  if (st.eta === 0) s += L.hinfZero(ref);
   else {
-    s += 'The covariance update adds θ = ' + fmtH(theta) + ' m⁻² (η / σ², σ = ' + run.sigEq.toFixed(1) + ' m) on the position error: P⁺ = (P⁻¹ − θS + HᵀR⁻¹H)⁻¹. Step ' + k +
-         ': the position covariance is ' + grow.toFixed(0) + '% larger than after a Kalman update.';
-    if (clamps) s += ' θ had to be capped at ' + clamps + ' steps because it was about to violate the existence condition.';
+    s += L.hinfTheta(fmtH(theta), run.sigEq.toFixed(1), k, grow.toFixed(0));
+    if (clamps) s += L.hinfClamp(clamps);
   }
   $('cap-hinf').textContent = s;
 }
 function renderNote() {
-  $('map-note').textContent = !st.wedge ? ''
-    : st.mode === 'radar'
-      ? 'The blue arc is the true measurement error (±1σ in range and bearing) used by the EKF, UKF, PF and H∞. The dashed orange circle is the fixed circular R used by the KF.'
-      : 'The dashed circle is the ±1σ measurement error, shared by all five filters.';
+  $('map-note').textContent = !st.wedge ? '' : st.mode === 'radar' ? L.noteRadar : L.noteLin;
 }
 function renderTransport() {
   $('kslider').value = st.k;
   $('kread').textContent = 'k = ' + st.k + ' / ' + N;
-  $('play').textContent = st.playing ? 'Pause' : (st.k >= N ? 'Replay' : 'Resume');
+  $('play').textContent = st.playing ? L.pause : (st.k >= N ? L.replay : L.resume);
 }
 function renderOutputs() {
   $('sr-out').textContent = st.sr + ' m';
   $('sth-out').textContent = st.sthDeg.toFixed(1) + '°';
-  $('q-out').textContent = st.q.toFixed(2) + ' m/step²';
-  $('np-out').textContent = st.np + ' particles';
+  $('q-out').textContent = st.q.toFixed(2) + L.qUnit;
+  $('np-out').textContent = st.np + L.particles;
   $('eta-out').textContent = st.eta.toFixed(3);
-  $('sr-lab').textContent = st.mode === 'radar' ? 'σ range' : 'σ position (x and y)';
+  $('sr-lab').textContent = st.mode === 'radar' ? L.srRadar : L.srLin;
   $('sth').disabled = st.mode !== 'radar';
-  $('mode-hint').textContent = st.mode === 'radar'
-    ? 'The radar at the origin measures range r and bearing φ. Converting to (x, y) is nonlinear.'
-    : 'The sensor measures (x, y) directly. The measurement is linear, so the EKF and UKF reduce to the KF.';
+  $('mode-hint').textContent = st.mode === 'radar' ? L.hintRadar : L.hintLin;
 }
 function renderAll() { drawMap(); drawErr(); renderLive(); renderMats(); renderHinfCap(); renderTransport(); }
 function recompute() {
@@ -1128,6 +1254,19 @@ if (window.matchMedia) {
 }
 new MutationObserver(() => { drawMap(); drawErr(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { drawMap(); drawErr(); });
+
+/* follow the article's language switch when embedded, or the saved site language in full screen (unless ?lang= is given) */
+if (LANG === 'de') applyStatic();
+if (!LANG_FIXED) {
+  window.addEventListener('storage', e => { if (e.key === 'site_lang') setLang(e.newValue); });
+  try {
+    if (window.parent !== window) {
+      const pb = window.parent.document.body;
+      new MutationObserver(() => setLang(pb.getAttribute('data-lang'))).observe(pb, { attributes: true, attributeFilter: ['data-lang'] });
+      setLang(pb.getAttribute('data-lang'));
+    }
+  } catch (e) {}
+}
 
 syncSliders();
 recompute();

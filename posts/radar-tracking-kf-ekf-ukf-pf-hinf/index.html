@@ -376,7 +376,7 @@ update(ekf, innov, H, R);                                      // dieselbe linea
           <span class="lang-de"><span class="h2-badge">TEIL 7</span> Interaktive Demo</span>
         </h2>
         <p class="lang-en">All five filters below run in your browser on the same noise sequence. Press <strong>Replay</strong> to watch them track, drag the step slider, or change the sensor, the path and the noise. The <strong>Average of 100 runs</strong> panel uses seeds 1000–1099, so for any setup listed in Part 8 it reproduces the published numbers. They were computed with V8, the JavaScript engine in Chrome and Edge; another browser's math library can shift the last digits.</p>
-        <p class="lang-de">Alle fünf Filter laufen unten im Browser auf derselben Rauschfolge. Mit <strong>Replay</strong> sieht man sie verfolgen, mit dem Schieberegler springt man zu einem Schritt, außerdem lassen sich Sensor, Bahn und Rauschen ändern. Das Feld <strong>Average of 100 runs</strong> verwendet die Seeds 1000–1099 und reproduziert für jedes Setup aus Teil 8 die veröffentlichten Zahlen. Berechnet wurden sie mit V8, der JavaScript-Engine von Chrome und Edge; die Mathematikbibliothek eines anderen Browsers kann die letzten Stellen verschieben. Die Bedienoberfläche der Demo ist englisch.</p>
+        <p class="lang-de">Alle fünf Filter laufen unten im Browser auf derselben Rauschfolge. Mit <strong>Abspielen</strong> sieht man sie verfolgen, mit dem Schieberegler springt man zu einem Schritt, außerdem lassen sich Sensor, Bahn und Rauschen ändern. Das Feld <strong>Mittel aus 100 Läufen</strong> verwendet die Seeds 1000–1099 und reproduziert für jedes Setup aus Teil 8 die veröffentlichten Zahlen. Berechnet wurden sie mit V8, der JavaScript-Engine von Chrome und Edge; die Mathematikbibliothek eines anderen Browsers kann die letzten Stellen verschieben.</p>
         <div class="radar-demo-wrap">
           <iframe id="radar-demo" class="radar-demo-frame" src="demo.html" title="Radar tracking demo: KF, EKF, UKF, PF and H-infinity" loading="lazy"></iframe>
         </div>
@@ -396,9 +396,9 @@ update(ekf, innov, H, R);                                      // dieselbe linea
         <ul class="lang-de">
           <li><strong>Standard</strong> (Radar, Gerade): EKF und UKF liegen etwa 9&nbsp;% unter dem KF.</li>
           <li><strong>Sensor → Position (x, y):</strong> Die Messung wird linear, KF, EKF und UKF liefern identische Zahlen.</li>
-          <li><strong>Weave, dann q = 0.1:</strong> Alle Filter laufen hinterher, das KF liegt vorn, und das PF verliert das Ziel.</li>
-          <li><strong>PF particles = 50:</strong> Die Partikelwolke dünnt aus, der Fehler des PF springt nach oben.</li>
-          <li><strong>Circle, q = 0.1, dann η von 0 auf 0.1:</strong> H∞ holt den Großteil des EKF-Verlusts wieder herein.</li>
+          <li><strong>Schlangenlinie, dann q = 0.1:</strong> Alle Filter laufen hinterher, das KF liegt vorn, und das PF verliert das Ziel.</li>
+          <li><strong>PF-Partikel = 50:</strong> Die Partikelwolke dünnt aus, der Fehler des PF springt nach oben.</li>
+          <li><strong>Kreis, q = 0.1, dann η von 0 auf 0.1:</strong> H∞ holt den Großteil des EKF-Verlusts wieder herein.</li>
         </ul>
         <style>
           .radar-demo-wrap { margin-top: 1rem; border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; background: var(--bg-card); }
@@ -408,6 +408,11 @@ update(ekf, innov, H, R);                                      // dieselbe linea
         <script>
           (function () {
             var frame = document.getElementById('radar-demo');
+            /* the demo follows the page language by itself; keep the iframe's accessible name in step */
+            var titles = { en: frame.title, de: 'Radar-Demo: KF, EKF, UKF, PF und H-unendlich' };
+            function syncTitle() { frame.title = titles[document.body.getAttribute('data-lang') === 'de' ? 'de' : 'en']; }
+            syncTitle();
+            new MutationObserver(syncTitle).observe(document.body, { attributes: true, attributeFilter: ['data-lang'] });
             window.addEventListener('message', function (e) {
               if (e.origin !== location.origin || !e.data || e.data.type !== 'radar-demo-height') return;
               var h = Number(e.data.h);
