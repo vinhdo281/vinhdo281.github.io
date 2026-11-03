@@ -106,8 +106,8 @@
           <div class="author-handle">@vinhdo281 · HUST</div>
           <div class="author-status">
             <span class="status-dot"></span>
-            <span class="lang-en">POSTS: 2</span>
-            <span class="lang-de">BEITRÄGE: 2</span>
+            <span class="lang-en">POSTS: 12</span>
+            <span class="lang-de">BEITRÄGE: 12</span>
           </div>
           <p class="author-bio lang-en">
             Specializing in Wheeled-Bipedal Robotics, Reinforcement Learning (PPO), MuJoCo physics, and intelligent control algorithms.
@@ -289,10 +289,10 @@
             </h2>
 
             <p class="lang-en">
-              Having a neural network directly output raw joint torques $	au$ for each BLDC motor is dangerous and takes tens of millions of steps to converge. In this project, we employ a <strong>Hybrid Control Hierarchy</strong>:
+              Having a neural network directly output raw joint torques $\tau$ for each BLDC motor is dangerous and takes tens of millions of steps to converge. In this project, we employ a <strong>Hybrid Control Hierarchy</strong>:
             </p>
             <p class="lang-de">
-              Das direkte Lernen von Rohmomenten $	au$ für jeden BLDC-Motor ist instabil und erfordert Millionen Trainingsschritte. Wir verwenden daher eine mehrstufige <strong>hybride Regelungshierarchie (Hybrid Control Hierarchy)</strong>:
+              Das direkte Lernen von Rohmomenten $\tau$ für jeden BLDC-Motor ist instabil und erfordert Millionen Trainingsschritte. Wir verwenden daher eine mehrstufige <strong>hybride Regelungshierarchie (Hybrid Control Hierarchy)</strong>:
             </p>
 
             <div class="table-wrap">
@@ -310,19 +310,19 @@
                     <td><span class="tech-badge-inline">High-Level (RL Policy)</span></td>
                     <td>PPO Neural Network (Actor-Critic)</td>
                     <td>
-                      <span class="lang-en">Strategic policy: Target leg length $L_0^*$, virtual leg angle $	heta_0^*$, and wheel drive/brake torque $T_w$</span>
-                      <span class="lang-de">Strategische Sollwertvorgabe: Beinlänge $L_0^*$, virtueller Beinwinkel $	heta_0^*$ und Radmoment $T_w$</span>
+                      <span class="lang-en">Strategic policy: Target leg length $L_0^*$, virtual leg angle $\theta_0^*$, and wheel drive/brake torque $T_w$</span>
+                      <span class="lang-de">Strategische Sollwertvorgabe: Beinlänge $L_0^*$, virtueller Beinwinkel $\theta_0^*$ und Radmoment $T_w$</span>
                     </td>
-                    <td>$50\,	ext{Hz} - 100\,	ext{Hz}$</td>
+                    <td>$50\,\text{Hz} - 100\,\text{Hz}$</td>
                   </tr>
                   <tr>
                     <td><span class="tech-badge-inline">Mid-Level (Kinematics / VMC)</span></td>
                     <td>Virtual Model Controller & Jacobian</td>
                     <td>
-                      <span class="lang-en">Maps virtual foot forces $(\Delta F, \Delta 	au)$ to 5-bar linkage joint commands via Jacobian transpose $J^T$</span>
-                      <span class="lang-de">Transformiert virtuelle Fußkräfte $(\Delta F, \Delta 	au)$ über die transponierte Jacobi-Matrix $J^T$ in Gelenkwinkel</span>
+                      <span class="lang-en">Maps virtual foot forces $(\Delta F, \Delta \tau)$ to 5-bar linkage joint commands via Jacobian transpose $J^T$</span>
+                      <span class="lang-de">Transformiert virtuelle Fußkräfte $(\Delta F, \Delta \tau)$ über die transponierte Jacobi-Matrix $J^T$ in Gelenkwinkel</span>
                     </td>
-                    <td>$200\,	ext{Hz} - 500\,	ext{Hz}$</td>
+                    <td>$200\,\text{Hz} - 500\,\text{Hz}$</td>
                   </tr>
                   <tr>
                     <td><span class="tech-badge-inline">Low-Level (Actuator PD)</span></td>
@@ -331,7 +331,7 @@
                       <span class="lang-en">Executes high-frequency torque tracking and FOC current loops on actuator joints</span>
                       <span class="lang-de">Führt hochfrequente Strom- und Drehmoment-Regelkreise (FOC) an den Antriebsmotoren aus</span>
                     </td>
-                    <td>$1000\,	ext{Hz}$ ($1\,	ext{kHz}$)</td>
+                    <td>$1000\,\text{Hz}$ ($1\,\text{kHz}$)</td>
                   </tr>
                 </tbody>
               </table>
@@ -342,13 +342,12 @@
               <span class="lang-de">Virtuelles Beinmodell (Virtual Leg Model):</span>
             </h3>
             <p class="lang-en">
-              The robot leg mechanism is abstracted into an extensible pendulum with instantaneous length $L$ and inclination $	heta_{leg}$:
+              The robot leg mechanism is abstracted into an extensible pendulum with instantaneous length $L$ and inclination $\theta_{leg}$:
             </p>
             <p class="lang-de">
-              Das Roboterbein wird als teleskopierbares Pendel mit Momentanlänge $L$ und Neigungswinkel $	heta_{leg}$ abstrahiert:
+              Das Roboterbein wird als teleskopierbares Pendel mit Momentanlänge $L$ und Neigungswinkel $\theta_{leg}$ abstrahiert:
             </p>
-            $$L = \sqrt{x_{wheel}^2 + z_{wheel}^2}, \quad 	heta_{leg} = rctan\left(rac{x_{wheel}}{-z_{wheel}}
-ight)$$
+            $$L = \sqrt{x_{wheel}^2 + z_{wheel}^2}, \quad \theta_{leg} = \arctan\left(\frac{x_{wheel}}{-z_{wheel}}\right)$$
             <p class="lang-en">
               The neural policy does not need to learn the intricate internal closed kinematics of each 5-bar linkage; it merely regulates hip height and wheel propulsion forces!
             </p>
@@ -379,19 +378,19 @@ ight)$$
             <p class="lang-de">Bei jedem Zeitschritt $t$ erhält das Netzwerk den Zustandsvektor $s_t \in \mathbb{R}^{18}$:</p>
 
             <ul class="lang-en">
-              <li><strong>Base Orientation:</strong> Pitch tilt $(	heta)$ and roll tilt $(\phi)$ fused from IMU filter.</li>
+              <li><strong>Base Orientation:</strong> Pitch tilt $(\theta)$ and roll tilt $(\phi)$ fused from IMU filter.</li>
               <li><strong>Body Angular Velocities:</strong> Rotation rates $\omega_{pitch}, \omega_{roll}, \omega_{yaw}$ from 3-axis gyroscope.</li>
               <li><strong>Body Linear Velocities:</strong> Forward velocity $v_x$ and lateral velocity $v_y$.</li>
-              <li><strong>Wheel Odometry:</strong> Left wheel velocity $\dot{	heta}_{w,L}$ and right wheel velocity $\dot{	heta}_{w,R}$.</li>
+              <li><strong>Wheel Odometry:</strong> Left wheel velocity $\dot{\theta}_{w,L}$ and right wheel velocity $\dot{\theta}_{w,R}$.</li>
               <li><strong>Leg Kinematic States:</strong> Instantaneous leg lengths $L_L, L_R$ and expansion rates $\dot{L}_L, \dot{L}_R$.</li>
               <li><strong>User Target Commands:</strong> Commanded forward velocity $v_x^*$, yaw rate $\omega_z^*$, and target height $h^*$.</li>
               <li><strong>Previous Action History ($a_{t-1}$):</strong> Empowers the policy to cultivate action smoothness and suppress jerky chattering.</li>
             </ul>
             <ul class="lang-de">
-              <li><strong>Körperorientierung:</strong> Nickwinkel $(	ext{Pitch } 	heta)$ und Wankwinkel $(	ext{Roll } \phi)$ aus der IMU-Fusion.</li>
+              <li><strong>Körperorientierung:</strong> Nickwinkel $(\text{Pitch } \theta)$ und Wankwinkel $(\text{Roll } \phi)$ aus der IMU-Fusion.</li>
               <li><strong>Winkelgeschwindigkeiten:</strong> Drehraten $\omega_{pitch}, \omega_{roll}, \omega_{yaw}$ aus dem 3-Achs-Gyroskop.</li>
               <li><strong>Translationsgeschwindigkeiten:</strong> Vorwärtsgeschwindigkeit $v_x$ und Quergeschwindigkeit $v_y$.</li>
-              <li><strong>Radodometrie:</strong> Winkelgeschwindigkeit linkes Rad $\dot{	heta}_{w,L}$ und rechtes Rad $\dot{	heta}_{w,R}$.</li>
+              <li><strong>Radodometrie:</strong> Winkelgeschwindigkeit linkes Rad $\dot{\theta}_{w,L}$ und rechtes Rad $\dot{\theta}_{w,R}$.</li>
               <li><strong>Beinzustände:</strong> Momentane Beinlängen $L_L, L_R$ sowie Streckgeschwindigkeiten $\dot{L}_L, \dot{L}_R$.</li>
               <li><strong>Solltrajektorien:</strong> Soll-Vorwärtsgeschwindigkeit $v_x^*$, Soll-Gierrate $\omega_z^*$ und Soll-Körperhöhe $h^*$.</li>
               <li><strong>Vorherige Aktion ($a_{t-1}$):</strong> Dient dem Erlernen stetiger, ruckfreier Stellgrößenverläufe.</li>
@@ -405,14 +404,14 @@ ight)$$
             <p class="lang-de">Das neuronale Netz liefert einen kontinuierlichen Aktionsvektor $a_t \in [-1, 1]^6$, skaliert auf physische Einheiten:</p>
 
             <ul class="lang-en">
-              <li>$a_0, a_1$: Drive torques for left & right active wheels $T_{w,L}, T_{w,R} \in [-5.0, 5.0]\,	ext{Nm}$.</li>
-              <li>$a_2, a_3$: Target leg lengths for left & right legs $L_{L}^*, L_{R}^* \in [0.15, 0.32]\,	ext{m}$.</li>
-              <li>$a_4, a_5$: Virtual leg inclination trim angles $\Delta 	heta_{L}, \Delta 	heta_{R} \in [-10^\circ, +10^\circ]$.</li>
+              <li>$a_0, a_1$: Drive torques for left & right active wheels $T_{w,L}, T_{w,R} \in [-5.0, 5.0]\,\text{Nm}$.</li>
+              <li>$a_2, a_3$: Target leg lengths for left & right legs $L_{L}^*, L_{R}^* \in [0.15, 0.32]\,\text{m}$.</li>
+              <li>$a_4, a_5$: Virtual leg inclination trim angles $\Delta \theta_{L}, \Delta \theta_{R} \in [-10^\circ, +10^\circ]$.</li>
             </ul>
             <ul class="lang-de">
-              <li>$a_0, a_1$: Antriebsmomente linkes & rechtes Rad $T_{w,L}, T_{w,R} \in [-5.0, 5.0]\,	ext{Nm}$.</li>
-              <li>$a_2, a_3$: Soll-Beinlängen links & rechts $L_{L}^*, L_{R}^* \in [0.15, 0.32]\,	ext{m}$.</li>
-              <li>$a_4, a_5$: Virtuelle Korrektur-Beinwinkel $\Delta 	heta_{L}, \Delta 	heta_{R} \in [-10^\circ, +10^\circ]$.</li>
+              <li>$a_0, a_1$: Antriebsmomente linkes & rechtes Rad $T_{w,L}, T_{w,R} \in [-5.0, 5.0]\,\text{Nm}$.</li>
+              <li>$a_2, a_3$: Soll-Beinlängen links & rechts $L_{L}^*, L_{R}^* \in [0.15, 0.32]\,\text{m}$.</li>
+              <li>$a_4, a_5$: Virtuelle Korrektur-Beinwinkel $\Delta \theta_{L}, \Delta \theta_{R} \in [-10^\circ, +10^\circ]$.</li>
             </ul>
           </section>
 
@@ -434,14 +433,12 @@ ight)$$
               <span class="lang-en">PPO Clipped Objective Function:</span>
               <span class="lang-de">PPO Clipped Objective Zielfunktion:</span>
             </h3>
-            $$L^{CLIP}(	heta) = \hat{\mathbb{E}}_t \left[ \min\left( r_t(	heta)\hat{A}_t, \; 	ext{clip}(r_t(	heta), 1-\epsilon, 1+\epsilon)\hat{A}_t 
-ight) 
-ight]$$
+            $$L^{CLIP}(\theta) = \hat{\mathbb{E}}_t \left[ \min\left( r_t(\theta)\hat{A}_t, \; \text{clip}(r_t(\theta), 1-\epsilon, 1+\epsilon)\hat{A}_t \right) \right]$$
             <p class="lang-en">
-              Where $r_t(	heta) = rac{\pi_	heta(a_t|s_t)}{\pi_{	heta_{old}}(a_t|s_t)}$ represents the probability ratio, and $\epsilon = 0.2$ is the clipping boundary. This prevents excessively large policy updates that cause catastrophic policy collapse.
+              Where $r_t(\theta) = \frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_{old}}(a_t|s_t)}$ represents the probability ratio, and $\epsilon = 0.2$ is the clipping boundary. This prevents excessively large policy updates that cause catastrophic policy collapse.
             </p>
             <p class="lang-de">
-              Hierbei ist $r_t(	heta) = rac{\pi_	heta(a_t|s_t)}{\pi_{	heta_{old}}(a_t|s_t)}$ das Wahrscheinlichkeitsverhältnis und $\epsilon = 0.2$ das Clipping-Intervall. Dies schützt vor destruktiven Parametersprüngen (Catastrophic Collapsing).
+              Hierbei ist $r_t(\theta) = \frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_{old}}(a_t|s_t)}$ das Wahrscheinlichkeitsverhältnis und $\epsilon = 0.2$ das Clipping-Intervall. Dies schützt vor destruktiven Parametersprüngen (Catastrophic Collapsing).
             </p>
 
             <h3>
@@ -450,7 +447,7 @@ ight]$$
             </h3>
             <p class="lang-en">The scalar reward at step $t$ balances weighted positive objectives against penalty terms:</p>
             <p class="lang-de">Die Belohnung zu Zeitschritt $t$ kombiniert gewichtete positive Zielgrößen und Strafannahmen:</p>
-            $$R_t = w_1 R_{	ext{upright}} + w_2 R_{	ext{tracking}} + w_3 R_{	ext{yaw}} + w_4 R_{	ext{height}} - w_5 P_{	ext{torque}} - w_6 P_{	ext{jerk}} - w_7 P_{	ext{roll}}$$
+            $$R_t = w_1 R_{\text{upright}} + w_2 R_{\text{tracking}} + w_3 R_{\text{yaw}} + w_4 R_{\text{height}} - w_5 P_{\text{torque}} - w_6 P_{\text{jerk}} - w_7 P_{\text{roll}}$$
 
             <div class="table-wrap">
               <table class="tech-table">
@@ -463,42 +460,39 @@ ight]$$
                 </thead>
                 <tbody>
                   <tr>
-                    <td><strong><span class="lang-en">Upright Balance ($R_{	ext{upright}}$)</span><span class="lang-de">Aufrechte Lage ($R_{	ext{upright}}$)</span></strong></td>
-                    <td>$\exp\left(-rac{	heta_{	ext{pitch}}^2}{2\sigma_	heta^2}
-ight)$</td>
+                    <td><strong><span class="lang-en">Upright Balance ($R_{\text{upright}}$)</span><span class="lang-de">Aufrechte Lage ($R_{\text{upright}}$)</span></strong></td>
+                    <td>$\exp\left(-\frac{\theta_{\text{pitch}}^2}{2\sigma_\theta^2}\right)$</td>
                     <td>
-                      <span class="lang-en">Peak reward at upright attitude ($	heta = 0$). Gaussian kernel ensures smoother gradient than squared errors.</span>
-                      <span class="lang-de">Maximaler Ertrag bei exakter Vertikalausrichtung ($	heta = 0$). Glatte Gradienten durch Gauß-Funktion.</span>
+                      <span class="lang-en">Peak reward at upright attitude ($\theta = 0$). Gaussian kernel ensures smoother gradient than squared errors.</span>
+                      <span class="lang-de">Maximaler Ertrag bei exakter Vertikalausrichtung ($\theta = 0$). Glatte Gradienten durch Gauß-Funktion.</span>
                     </td>
                   </tr>
                   <tr>
-                    <td><strong><span class="lang-en">Velocity Tracking ($R_{	ext{tracking}}$)</span><span class="lang-de">Geschwindigkeitsfolge ($R_{	ext{tracking}}$)</span></strong></td>
-                    <td>$\exp\left(-rac{(v_x - v_x^*)^2}{2\sigma_v^2}
-ight)$</td>
+                    <td><strong><span class="lang-en">Velocity Tracking ($R_{\text{tracking}}$)</span><span class="lang-de">Geschwindigkeitsfolge ($R_{\text{tracking}}$)</span></strong></td>
+                    <td>$\exp\left(-\frac{(v_x - v_x^*)^2}{2\sigma_v^2}\right)$</td>
                     <td>
-                      <span class="lang-en">Rewards following commanded user velocity trajectories (e.g. $1.0\,	ext{m/s}$).</span>
-                      <span class="lang-de">Belohnt das präzise Einhalten der vorgegebenen Fahrgeschwindigkeit ($1.0\,	ext{m/s}$).</span>
+                      <span class="lang-en">Rewards following commanded user velocity trajectories (e.g. $1.0\,\text{m/s}$).</span>
+                      <span class="lang-de">Belohnt das präzise Einhalten der vorgegebenen Fahrgeschwindigkeit ($1.0\,\text{m/s}$).</span>
                     </td>
                   </tr>
                   <tr>
-                    <td><strong><span class="lang-en">Yaw Heading Tracking ($R_{	ext{yaw}}$)</span><span class="lang-de">Gierratenfolge ($R_{	ext{yaw}}$)</span></strong></td>
-                    <td>$\exp\left(-rac{(\omega_z - \omega_z^*)^2}{2\sigma_\omega^2}
-ight)$</td>
+                    <td><strong><span class="lang-en">Yaw Heading Tracking ($R_{\text{yaw}}$)</span><span class="lang-de">Gierratenfolge ($R_{\text{yaw}}$)</span></strong></td>
+                    <td>$\exp\left(-\frac{(\omega_z - \omega_z^*)^2}{2\sigma_\omega^2}\right)$</td>
                     <td>
                       <span class="lang-en">Rewards smooth differential steering tracking user turning commands.</span>
                       <span class="lang-de">Belohnt gleichmäßige Kurvenfahrten entsprechend dem Gier-Steuerbefehl.</span>
                     </td>
                   </tr>
                   <tr>
-                    <td><strong><span class="lang-en">Energy Penalty ($P_{	ext{torque}}$)</span><span class="lang-de">Energiestrafe ($P_{	ext{torque}}$)</span></strong></td>
-                    <td>$\sum (T_{w,i}^2 + 	au_{joint,j}^2)$</td>
+                    <td><strong><span class="lang-en">Energy Penalty ($P_{\text{torque}}$)</span><span class="lang-de">Energiestrafe ($P_{\text{torque}}$)</span></strong></td>
+                    <td>$\sum (T_{w,i}^2 + \tau_{joint,j}^2)$</td>
                     <td>
                       <span class="lang-en">Prevents continuous motor current saturation, safeguarding actuator hardware.</span>
                       <span class="lang-de">Verhindert thermische Überlastung der Motoren an der Drehmomentsättigungsgrenze.</span>
                     </td>
                   </tr>
                   <tr>
-                    <td><strong><span class="lang-en">Action Jerk Penalty ($P_{	ext{jerk}}$)</span><span class="lang-de">Ruckstrafe ($P_{	ext{jerk}}$)</span></strong></td>
+                    <td><strong><span class="lang-en">Action Jerk Penalty ($P_{\text{jerk}}$)</span><span class="lang-de">Ruckstrafe ($P_{\text{jerk}}$)</span></strong></td>
                     <td>$\|a_t - a_{t-1}\|^2$</td>
                     <td>
                       <span class="lang-en">Suppresses high-frequency chatter and vibrations, promoting fluid biological-like movements.</span>
@@ -514,11 +508,11 @@ ight)$</td>
               <div>
                 <div class="lang-en">
                   <strong>Early Termination Conditions:</strong><br>
-                  The episode immediately terminates with negative penalty if safety margins are exceeded: $|	heta_{	ext{pitch}}| > 35^\circ$ or $|\phi_{	ext{roll}}| > 30^\circ$, or if hip height drops below $0.12\,	ext{m}$ (chassis hits floor). This conserves computational cycles once recovery is physically impossible.
+                  The episode immediately terminates with negative penalty if safety margins are exceeded: $|\theta_{\text{pitch}}| > 35^\circ$ or $|\phi_{\text{roll}}| > 30^\circ$, or if hip height drops below $0.12\,\text{m}$ (chassis hits floor). This conserves computational cycles once recovery is physically impossible.
                 </div>
                 <div class="lang-de">
                   <strong>Vorzeitige Abbruchbedingungen (Early Termination):</strong><br>
-                  Die Episode bricht sofort mit Strafpunkte ab, wenn Grenzwerte überschritten werden: $|	heta_{	ext{pitch}}| > 35^\circ$, $|\phi_{	ext{roll}}| > 30^\circ$ oder Hüfthöhe $< 0.12\,	ext{m}$ (Bodenkontakt des Chassis). Dies spart Rechenzeit bei unrettbaren Stürzen.
+                  Die Episode bricht sofort mit Strafpunkte ab, wenn Grenzwerte überschritten werden: $|\theta_{\text{pitch}}| > 35^\circ$, $|\phi_{\text{roll}}| > 30^\circ$ oder Hüfthöhe $< 0.12\,\text{m}$ (Bodenkontakt des Chassis). Dies spart Rechenzeit bei unrettbaren Stürzen.
                 </div>
               </div>
             </div>
@@ -573,15 +567,15 @@ ight)$</td>
               </li>
               <li>
                 <strong><code>wbr_env_drive.py</code> (Drive Scenario):</strong><br>
-                Trains longitudinal traversal with randomized command speeds $v_x^* \in [-1.5, +1.5]\,	ext{m/s}$, alternating targets every $5\,	ext{s}$ to teach acceleration and braking dynamics.
+                Trains longitudinal traversal with randomized command speeds $v_x^* \in [-1.5, +1.5]\,\text{m/s}$, alternating targets every $5\,\text{s}$ to teach acceleration and braking dynamics.
               </li>
               <li>
                 <strong><code>wbr_env_yaw.py</code> (Yaw & Steer Scenario):</strong><br>
-                Introduces yaw turning commands $\omega_z^* \in [-1.0, +1.0]\,	ext{rad/s}$, guiding the policy to apply differential wheel torques while preventing roll rollover.
+                Introduces yaw turning commands $\omega_z^* \in [-1.0, +1.0]\,\text{rad/s}$, guiding the policy to apply differential wheel torques while preventing roll rollover.
               </li>
               <li>
                 <strong><code>wbr_env_push.py</code> (Push Recovery Scenario):</strong><br>
-                Injects randomized external pulse impulses from $20\,	ext{N}$ to $80\,	ext{N}$ at unexpected intervals, teaching the robot to flex legs and sprint wheels beneath the tumbling body.
+                Injects randomized external pulse impulses from $20\,\text{N}$ to $80\,\text{N}$ at unexpected intervals, teaching the robot to flex legs and sprint wheels beneath the tumbling body.
               </li>
               <li>
                 <strong><code>wbr_env_all.py</code> (Curriculum All-in-One):</strong><br>
@@ -596,15 +590,15 @@ ight)$</td>
               </li>
               <li>
                 <strong><code>wbr_env_drive.py</code> (Fahrszenario):</strong><br>
-                Vorwärts- und Rückwärtsfahrt mit variablen Sollgeschwindigkeiten $v_x^* \in [-1.5, +1.5]\,	ext{m/s}$ im $5\,	ext{s}$-Takt zum Erlernen von Beschleunigungs- und Bremsdynamiken.
+                Vorwärts- und Rückwärtsfahrt mit variablen Sollgeschwindigkeiten $v_x^* \in [-1.5, +1.5]\,\text{m/s}$ im $5\,\text{s}$-Takt zum Erlernen von Beschleunigungs- und Bremsdynamiken.
               </li>
               <li>
                 <strong><code>wbr_env_yaw.py</code> (Kurven- und Lenkszenario):</strong><br>
-                Trainiert Drehung um die Hochachse $\omega_z^* \in [-1.0, +1.0]\,	ext{rad/s}$ via Differenzialantrieb ohne Kippen.
+                Trainiert Drehung um die Hochachse $\omega_z^* \in [-1.0, +1.0]\,\text{rad/s}$ via Differenzialantrieb ohne Kippen.
               </li>
               <li>
                 <strong><code>wbr_env_push.py</code> (Stoßstörungs-Kompensation):</strong><br>
-                Zufällige Kraftstöße ($20\,	ext{N}$ bis $80\,	ext{N}$) fordern Beineinfederung und Radbeschleunigung zum Abfangen des Schwerpunkts.
+                Zufällige Kraftstöße ($20\,\text{N}$ bis $80\,\text{N}$) fordern Beineinfederung und Radbeschleunigung zum Abfangen des Schwerpunkts.
               </li>
               <li>
                 <strong><code>wbr_env_all.py</code> (Gesamtcurriculum):</strong><br>
@@ -664,15 +658,14 @@ ight)$</td>
                   <span class="lang-de">⚡ Option 1: Automatische 1-Klick-Batch-Installation (Empfohlen)</span>
                 </div>
                 <pre class="code-pre"><code>:: Navigate to project directory
-cd d:\HUST\-n-1\Simulation
-l
+cd d:\HUST\-n-1\Simulation\rl
 
 :: Execute automated 1-click batch optimized for Windows & RTX GPU
 setup_windows.bat
 
 :: Alternatively, setup manually if preferred:
 python -m venv venv
-call venv\Scriptsctivate.bat
+call venv\Scripts\activate.bat
 
 :: Install PyTorch with CUDA 12.4 support
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cu124
@@ -764,8 +757,7 @@ chmod +x train.py eval.py</code></pre>
 train_windows.bat
 
 :: OPTION 2: Advanced PowerShell script
-.
-un_rl_windows.ps1 train -Scenario balance -Device cuda -Render
+.\run_rl_windows.ps1 train -Scenario balance -Device cuda -Render
 
 :: OPTION 3: Direct CMD command (launches MuJoCo 3D Viewer on GPU)
 venv\Scripts\python.exe train.py --scenario balance --device cuda --render --timesteps 300000
@@ -936,7 +928,7 @@ python train.py --scenario drive --device cuda --resume eval/best_model.zip --ti
 tensorboard_windows.bat
 
 :: Or launch via CMD directly:
-venv\Scripts	ensorboard.exe --logdir=./tensorboard_logs/ --port=6006</code></pre>
+venv\Scripts\tensorboard.exe --logdir=./tensorboard_logs/ --port=6006</code></pre>
               </div>
 
               <!-- PANE LINUX -->
@@ -1065,11 +1057,11 @@ python eval.py --scenario balance --model eval/best_model.zip --render --episode
               <div>
                 <div class="lang-en">
                   <strong>Question 3: How to fix high-frequency leg jittering?</strong><br>
-                  <em>Remedy:</em> Increase action jerk penalty weight $w_6 P_{	ext{jerk}} = \|a_t - a_{t-1}\|^2$ in environment configs, or apply a first-order low-pass filter ($lpha = 0.8$) on policy outputs before routing into PD controllers.
+                  <em>Remedy:</em> Increase action jerk penalty weight $w_6 P_{\text{jerk}} = \|a_t - a_{t-1}\|^2$ in environment configs, or apply a first-order low-pass filter ($\alpha = 0.8$) on policy outputs before routing into PD controllers.
                 </div>
                 <div class="lang-de">
                   <strong>Frage 3: Wie wird hochfrequentes Beinflattern (Jittering) behoben?</strong><br>
-                  <em>Abhilfe:</em> Den Ruckstrafen-Koeffizienten $w_6 P_{	ext{jerk}} = \|a_t - a_{t-1}\|^2$ erhöhen oder einen Tiefpassfilter 1. Ordnung ($lpha = 0.8$) am Netzausgang vorschalten.
+                  <em>Abhilfe:</em> Den Ruckstrafen-Koeffizienten $w_6 P_{\text{jerk}} = \|a_t - a_{t-1}\|^2$ erhöhen oder einen Tiefpassfilter 1. Ordnung ($\alpha = 0.8$) am Netzausgang vorschalten.
                 </div>
               </div>
             </div>
@@ -1079,17 +1071,11 @@ python eval.py --scenario balance --model eval/best_model.zip --render --episode
               <div>
                 <div class="lang-en">
                   <strong>Golden Tip for Curriculum Progression:</strong><br>
-                  Do not jump straight into the full <code>all</code> environment! Follow Curriculum Learning: Begin with <code>balance</code> ($300,000$ steps) $
-ightarrow$ Resume into <code>drive</code> ($500,000$ steps) $
-ightarrow$ Resume into <code>yaw</code> ($500,000$ steps) $
-ightarrow$ Finally train <code>push</code> and <code>all</code>. You will witness a 5x faster convergence rate!
+                  Do not jump straight into the full <code>all</code> environment! Follow Curriculum Learning: Begin with <code>balance</code> ($300,000$ steps) $\rightarrow$ Resume into <code>drive</code> ($500,000$ steps) $\rightarrow$ Resume into <code>yaw</code> ($500,000$ steps) $\rightarrow$ Finally train <code>push</code> and <code>all</code>. You will witness a 5x faster convergence rate!
                 </div>
                 <div class="lang-de">
                   <strong>Goldener Tipp zum Lerncurriculum:</strong><br>
-                  Beginnen Sie nicht direkt mit dem Gesamtszenario <code>all</code>! Nutzen Sie Curriculum Learning: Zuerst <code>balance</code> ($300.000$ Schritte) $
-ightarrow$ Resume in <code>drive</code> ($500.000$ Schritte) $
-ightarrow$ Resume in <code>yaw</code> ($500.000$ Schritte) $
-ightarrow$ Zum Schluss <code>push</code> und <code>all</code> trainieren für 5-fach schnellere Konvergenz!
+                  Beginnen Sie nicht direkt mit dem Gesamtszenario <code>all</code>! Nutzen Sie Curriculum Learning: Zuerst <code>balance</code> ($300.000$ Schritte) $\rightarrow$ Resume in <code>drive</code> ($500.000$ Schritte) $\rightarrow$ Resume in <code>yaw</code> ($500.000$ Schritte) $\rightarrow$ Zum Schluss <code>push</code> und <code>all</code> trainieren für 5-fach schnellere Konvergenz!
                 </div>
               </div>
             </div>

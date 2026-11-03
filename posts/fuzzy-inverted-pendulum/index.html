@@ -106,8 +106,8 @@
           <div class="author-handle">@vinhdo281 · HUST</div>
           <div class="author-status">
             <span class="status-dot"></span>
-            <span class="lang-en">POSTS: 2</span>
-            <span class="lang-de">BEITRÄGE: 2</span>
+            <span class="lang-en">POSTS: 12</span>
+            <span class="lang-de">BEITRÄGE: 12</span>
           </div>
           <p class="author-bio lang-en">
             Specializing in intelligent control theory, fuzzy logic systems, Simscape Multibody robotics, and MuJoCo physics.
@@ -216,11 +216,11 @@
             </p>
 
             <ul class="lang-en">
-              <li><strong>2 Degrees of Freedom (2-DOF):</strong> Cart translational position $x(t)$ and pendulum tilt angle $	heta(t)$.</li>
+              <li><strong>2 Degrees of Freedom (2-DOF):</strong> Cart translational position $x(t)$ and pendulum tilt angle $\theta(t)$.</li>
               <li><strong>Single Control Input:</strong> Horizontal force $F(t)$ applied directly to the cart body. The pendulum rotational joint is completely passive (no actuator).</li>
             </ul>
             <ul class="lang-de">
-              <li><strong>2 Freiheitsgrade (2-DOF):</strong> Translationsposition des Wagens $x(t)$ und Auslenkungswinkel des Pendels $	heta(t)$.</li>
+              <li><strong>2 Freiheitsgrade (2-DOF):</strong> Translationsposition des Wagens $x(t)$ und Auslenkungswinkel des Pendels $\theta(t)$.</li>
               <li><strong>Einziger Steuereingang:</strong> Horizontale Stellkraft $F(t)$ direkt auf den Wagen. Das Drehgelenk des Pendels ist völlig passiv (kein Motor).</li>
             </ul>
 
@@ -229,13 +229,13 @@
               <div>
                 <div class="lang-en">
                   <strong>The Pitfall of Linear Controllers (PID / LQR):</strong><br>
-                  When designing PID or LQR, dynamic equations must be linearized around the upright equilibrium point $	heta pprox 0$ based on small-angle assumptions: $\sin	heta pprox 	heta$, $\cos	heta pprox 1$, and $\dot{	heta}^2 pprox 0$.<br>
-                  However, in practice when the initial tilt angle is large ($	heta_0 \ge 15^\circ - 20^\circ$) or under strong external disturbances, nonlinear terms explode, the fixed Jacobian matrix loses validity, pushing the pendulum outside its basin of attraction and causing catastrophic collapse!
+                  When designing PID or LQR, dynamic equations must be linearized around the upright equilibrium point $\theta \approx 0$ based on small-angle assumptions: $\sin\theta \approx \theta$, $\cos\theta \approx 1$, and $\dot{\theta}^2 \approx 0$.<br>
+                  However, in practice when the initial tilt angle is large ($\theta_0 \ge 15^\circ - 20^\circ$) or under strong external disturbances, nonlinear terms explode, the fixed Jacobian matrix loses validity, pushing the pendulum outside its basin of attraction and causing catastrophic collapse!
                 </div>
                 <div class="lang-de">
                   <strong>Die Falle linearer Regler (PID / LQR):</strong><br>
-                  Beim Entwurf von PID oder LQR müssen die Bewegungsgleichungen um die aufrechte Ruhelage $	heta pprox 0$ unter der Kleinwinkelnäherung linearisiert werden: $\sin	heta pprox 	heta$, $\cos	heta pprox 1$ und $\dot{	heta}^2 pprox 0$.<br>
-                  In der Praxis jedoch, bei großen Anfangswinkeln ($	heta_0 \ge 15^\circ - 20^\circ$) oder starken Stoßeinwirkungen, dominieren Nichtlinearitäten, die konstante Jacobi-Matrix verliert ihre Gültigkeit und das Pendel kippt unweigerlich um!
+                  Beim Entwurf von PID oder LQR müssen die Bewegungsgleichungen um die aufrechte Ruhelage $\theta \approx 0$ unter der Kleinwinkelnäherung linearisiert werden: $\sin\theta \approx \theta$, $\cos\theta \approx 1$ und $\dot{\theta}^2 \approx 0$.<br>
+                  In der Praxis jedoch, bei großen Anfangswinkeln ($\theta_0 \ge 15^\circ - 20^\circ$) oder starken Stoßeinwirkungen, dominieren Nichtlinearitäten, die konstante Jacobi-Matrix verliert ihre Gültigkeit und das Pendel kippt unweigerlich um!
                 </div>
               </div>
             </div>
@@ -250,12 +250,12 @@
             <ul class="lang-en">
               <li>No need to solve complex nonlinear differential equations or rely on local linearization.</li>
               <li>Automatically ramps up maximal corrective force at critical tilts, while smoothly throttling down when the pendulum returns under momentum.</li>
-              <li>Intelligently coordinates all 4 state variables $(	heta, \dot{	heta}, x, \dot{x})$ to stabilize the pendulum upright while returning the cart precisely to center (<strong>Zero Cart Drift</strong>).</li>
+              <li>Intelligently coordinates all 4 state variables $(\theta, \dot{\theta}, x, \dot{x})$ to stabilize the pendulum upright while returning the cart precisely to center (<strong>Zero Cart Drift</strong>).</li>
             </ul>
             <ul class="lang-de">
               <li>Keine Notwendigkeit zur Lösung komplexer nichtlinearer Differentialgleichungen oder lokalen Linearisierung.</li>
               <li>Regelt in kritischen Kipplagen automatisch mit maximaler Stellkraft gegen und drosselt sanft ab, sobald das Pendel zurückschwingt.</li>
-              <li>Kombiniert geschickt alle 4 Zustandsgrößen $(	heta, \dot{	heta}, x, \dot{x})$ zur perfekten Aufrichtung und Rückführung des Wagens zur Schienenmitte (<strong>Zero Cart Drift</strong>).</li>
+              <li>Kombiniert geschickt alle 4 Zustandsgrößen $(\theta, \dot{\theta}, x, \dot{x})$ zur perfekten Aufrichtung und Rückführung des Wagens zur Schienenmitte (<strong>Zero Cart Drift</strong>).</li>
             </ul>
           </section>
 
@@ -378,14 +378,14 @@ disp('=== IMPORT SUCCESSFUL! smiData VARIABLE READY IN WORKSPACE ===');</code></
             <p class="lang-de">In <strong>Abbildung 2 (pole_1_RIGID)</strong> ist die Drehbewegung der Pendelstange definiert:</p>
 
             <ul class="lang-en">
-              <li><strong>Solid Block:</strong> Physical pendulum pole parametrized from <code>smiData.Solid(1)</code> ($m = 0.01963	ext{ kg}$, $I_{	ext{com}} = 1.9733 	imes 10^{-4}	ext{ kg}\cdot	ext{m}^2$).</li>
+              <li><strong>Solid Block:</strong> Physical pendulum pole parametrized from <code>smiData.Solid(1)</code> ($m = 0.01963\text{ kg}$, $I_{\text{com}} = 1.9733 \times 10^{-4}\text{ kg}\cdot\text{m}^2$).</li>
               <li><strong>Revolute Joint:</strong> Connects cart body (Base) and pole (Follower). Port <code>q</code> senses angle, port <code>w</code> senses angular rate. Actuation torque port <code>t</code> receives disturbance from port <code>Disturb</code> via a <em>Simulink-PS Converter</em>.</li>
-              <li><strong>Addition Block <code>+pi</code>:</strong> Vital implementation detail! CAD models typically draw the pendulum hanging vertically downward ($-\pi$). This <code>+pi</code> sum block shifts coordinates so the <strong>upright equilibrium</strong> corresponds exactly to $0	ext{ rad}$.</li>
+              <li><strong>Addition Block <code>+pi</code>:</strong> Vital implementation detail! CAD models typically draw the pendulum hanging vertically downward ($-\pi$). This <code>+pi</code> sum block shifts coordinates so the <strong>upright equilibrium</strong> corresponds exactly to $0\text{ rad}$.</li>
             </ul>
             <ul class="lang-de">
-              <li><strong>Solid-Block:</strong> Physische Pendelstange aus <code>smiData.Solid(1)</code> ($m = 0.01963	ext{ kg}$, $I_{	ext{com}} = 1.9733 	imes 10^{-4}	ext{ kg}\cdot	ext{m}^2$).</li>
+              <li><strong>Solid-Block:</strong> Physische Pendelstange aus <code>smiData.Solid(1)</code> ($m = 0.01963\text{ kg}$, $I_{\text{com}} = 1.9733 \times 10^{-4}\text{ kg}\cdot\text{m}^2$).</li>
               <li><strong>Revolute Joint:</strong> Drehgelenk zwischen Wagen (Base) und Stange (Follower). Port <code>q</code> misst den Winkel, Port <code>w</code> die Winkelgeschwindigkeit. Port <code>t</code> empfängt Störmomente über <em>Simulink-PS Converter</em>.</li>
-              <li><strong>Additionsblock <code>+pi</code>:</strong> Entscheidendes Detail! In CAD hängt das Pendel nach unten ($-\pi$). Der <code>+pi</code>-Summierer verschiebt das Koordinatensystem, sodass die <strong>aufrechte Ruhelage</strong> bei exakt $0	ext{ rad}$ liegt.</li>
+              <li><strong>Additionsblock <code>+pi</code>:</strong> Entscheidendes Detail! In CAD hängt das Pendel nach unten ($-\pi$). Der <code>+pi</code>-Summierer verschiebt das Koordinatensystem, sodass die <strong>aufrechte Ruhelage</strong> bei exakt $0\text{ rad}$ liegt.</li>
             </ul>
 
             <!-- FIGURE 3 -->
@@ -401,11 +401,11 @@ disp('=== IMPORT SUCCESSFUL! smiData VARIABLE READY IN WORKSPACE ===');</code></
             <p class="lang-de">In <strong>Abbildung 3 (cart_1_RIGID)</strong>:</p>
 
             <ul class="lang-en">
-              <li><strong>Solid Block:</strong> Aluminum carriage cart body parametrized from <code>smiData.Solid(2)</code> ($M = 0.05912	ext{ kg}$).</li>
+              <li><strong>Solid Block:</strong> Aluminum carriage cart body parametrized from <code>smiData.Solid(2)</code> ($M = 0.05912\text{ kg}$).</li>
               <li><strong>Prismatic Joint:</strong> Constrains 1D linear sliding along the rail axis. Force input port <code>f</code> accepts control force $F$. Sensing ports <code>p</code> and <code>v</code> monitor cart displacement and linear velocity, routed via <em>PS-Simulink Converters</em>.</li>
             </ul>
             <ul class="lang-de">
-              <li><strong>Solid-Block:</strong> Aluminium-Schlittenkörper aus <code>smiData.Solid(2)</code> ($M = 0.05912	ext{ kg}$).</li>
+              <li><strong>Solid-Block:</strong> Aluminium-Schlittenkörper aus <code>smiData.Solid(2)</code> ($M = 0.05912\text{ kg}$).</li>
               <li><strong>Prismatic Joint:</strong> Führt die 1D-Translationsbewegung entlang der Schiene. Kraftport <code>f</code> empfängt Stellkraft $F$. Sensorports <code>p</code> und <code>v</code> messen Position und Geschwindigkeit.</li>
             </ul>
 
@@ -460,8 +460,8 @@ disp('=== IMPORT SUCCESSFUL! smiData VARIABLE READY IN WORKSPACE ===');</code></
                   <tr>
                     <td><strong><span class="lang-en">Tilt Angle</span><span class="lang-de">Neigungswinkel</span></strong></td>
                     <td><code>Theta</code></td>
-                    <td>$[-\pi, +\pi]\ 	ext{rad}$</td>
-                    <td>$[-0.20, +0.20]\ 	ext{rad}\ (pprox \pm 11.5^\circ)$</td>
+                    <td>$[-\pi, +\pi]\ \text{rad}$</td>
+                    <td>$[-0.20, +0.20]\ \text{rad}\ (\approx \pm 11.5^\circ)$</td>
                     <td><span class="tech-badge-inline">zmf / smf</span></td>
                     <td>
                       <span class="lang-en">Priority 1: Cart moves toward the falling direction of pendulum</span>
@@ -471,8 +471,8 @@ disp('=== IMPORT SUCCESSFUL! smiData VARIABLE READY IN WORKSPACE ===');</code></
                   <tr>
                     <td><strong><span class="lang-en">Angular Velocity</span><span class="lang-de">Winkelgeschwindigkeit</span></strong></td>
                     <td><code>Theta_dot</code></td>
-                    <td>$[-15, +15]\ 	ext{rad/s}$</td>
-                    <td>$[-3.50, +3.50]\ 	ext{rad/s}$</td>
+                    <td>$[-15, +15]\ \text{rad/s}$</td>
+                    <td>$[-3.50, +3.50]\ \text{rad/s}$</td>
                     <td><span class="tech-badge-inline">zmf / smf</span></td>
                     <td>
                       <span class="lang-en">Trend tracking: Detects rapidly tipping vs. self-recovering momentum</span>
@@ -482,8 +482,8 @@ disp('=== IMPORT SUCCESSFUL! smiData VARIABLE READY IN WORKSPACE ===');</code></
                   <tr>
                     <td><strong><span class="lang-en">Cart Position</span><span class="lang-de">Wagenposition</span></strong></td>
                     <td><code>X</code></td>
-                    <td>$[-0.50, +0.50]\ 	ext{m}$</td>
-                    <td>$[-0.25, +0.25]\ 	ext{m}$</td>
+                    <td>$[-0.50, +0.50]\ \text{m}$</td>
+                    <td>$[-0.25, +0.25]\ \text{m}$</td>
                     <td><span class="tech-badge-inline">zmf / smf</span></td>
                     <td>
                       <span class="lang-en">Monitors left/right cart deviation relative to rail origin</span>
@@ -493,8 +493,8 @@ disp('=== IMPORT SUCCESSFUL! smiData VARIABLE READY IN WORKSPACE ===');</code></
                   <tr>
                     <td><strong><span class="lang-en">Cart Velocity</span><span class="lang-de">Wagengeschwindigkeit</span></strong></td>
                     <td><code>X_dot</code></td>
-                    <td>$[-2.0, +2.0]\ 	ext{m/s}$</td>
-                    <td>$[-0.50, +0.50]\ 	ext{m/s}$</td>
+                    <td>$[-2.0, +2.0]\ \text{m/s}$</td>
+                    <td>$[-0.50, +0.50]\ \text{m/s}$</td>
                     <td><span class="tech-badge-inline">zmf / smf</span></td>
                     <td>
                       <span class="lang-en">Actively dampens uncontrolled drifting (Cart Drift Suppression)</span>
@@ -510,23 +510,23 @@ disp('=== IMPORT SUCCESSFUL! smiData VARIABLE READY IN WORKSPACE ===');</code></
               <span class="lang-de">4.2 Ausgangskonfiguration (Stellkraft $F$)</span>
             </h3>
             <p class="lang-en">
-              The output control force $F$ operates within $[-12, +12]\ 	ext{N}$, defined using 4 generalized bell-shaped functions (<strong>`gbellmf`</strong>):
+              The output control force $F$ operates within $[-12, +12]\ \text{N}$, defined using 4 generalized bell-shaped functions (<strong>`gbellmf`</strong>):
             </p>
             <p class="lang-de">
-              Die Ausgangsstellkraft $F$ liegt im Bereich $[-12, +12]\ 	ext{N}$ und wird durch 4 Glockenkurven (<strong>`gbellmf`</strong>) moduliert:
+              Die Ausgangsstellkraft $F$ liegt im Bereich $[-12, +12]\ \text{N}$ und wird durch 4 Glockenkurven (<strong>`gbellmf`</strong>) moduliert:
             </p>
 
             <ul class="lang-en">
-              <li><strong>NL (Negative Large):</strong> Center $c = -10	ext{ N}$, width $a = 3.0	ext{ N}$, slope $b = 2$.</li>
-              <li><strong>NM (Negative Medium):</strong> Center $c = -7	ext{ N}$, width $a = 2.5	ext{ N}$, slope $b = 2$.</li>
-              <li><strong>PM (Positive Medium):</strong> Center $c = +7	ext{ N}$, width $a = 2.5	ext{ N}$, slope $b = 2$.</li>
-              <li><strong>PL (Positive Large):</strong> Center $c = +10	ext{ N}$, width $a = 3.0	ext{ N}$, slope $b = 2$.</li>
+              <li><strong>NL (Negative Large):</strong> Center $c = -10\text{ N}$, width $a = 3.0\text{ N}$, slope $b = 2$.</li>
+              <li><strong>NM (Negative Medium):</strong> Center $c = -7\text{ N}$, width $a = 2.5\text{ N}$, slope $b = 2$.</li>
+              <li><strong>PM (Positive Medium):</strong> Center $c = +7\text{ N}$, width $a = 2.5\text{ N}$, slope $b = 2$.</li>
+              <li><strong>PL (Positive Large):</strong> Center $c = +10\text{ N}$, width $a = 3.0\text{ N}$, slope $b = 2$.</li>
             </ul>
             <ul class="lang-de">
-              <li><strong>NL (Negativ Groß):</strong> Zentrum $c = -10	ext{ N}$, Breite $a = 3.0	ext{ N}$, Steigung $b = 2$.</li>
-              <li><strong>NM (Negativ Mittel):</strong> Zentrum $c = -7	ext{ N}$, Breite $a = 2.5	ext{ N}$, Steigung $b = 2$.</li>
-              <li><strong>PM (Positiv Mittel):</strong> Zentrum $c = +7	ext{ N}$, Breite $a = 2.5	ext{ N}$, Steigung $b = 2$.</li>
-              <li><strong>PL (Positiv Groß):</strong> Zentrum $c = +10	ext{ N}$, Breite $a = 3.0	ext{ N}$, Steigung $b = 2$.</li>
+              <li><strong>NL (Negativ Groß):</strong> Zentrum $c = -10\text{ N}$, Breite $a = 3.0\text{ N}$, Steigung $b = 2$.</li>
+              <li><strong>NM (Negativ Mittel):</strong> Zentrum $c = -7\text{ N}$, Breite $a = 2.5\text{ N}$, Steigung $b = 2$.</li>
+              <li><strong>PM (Positiv Mittel):</strong> Zentrum $c = +7\text{ N}$, Breite $a = 2.5\text{ N}$, Steigung $b = 2$.</li>
+              <li><strong>PL (Positiv Groß):</strong> Zentrum $c = +10\text{ N}$, Breite $a = 3.0\text{ N}$, Steigung $b = 2$.</li>
             </ul>
 
             <h3>
@@ -534,10 +534,10 @@ disp('=== IMPORT SUCCESSFUL! smiData VARIABLE READY IN WORKSPACE ===');</code></
               <span class="lang-de">4.3 Vollständige 16-Regeln-Mamdani-Matrix ($2^4 = 16$)</span>
             </h3>
             <p class="lang-en">
-              With 4 inputs $	imes$ 2 fuzzy partitions, the state space encompasses exactly $2^4 = 16$ combinations, eliminating dead zones entirely:
+              With 4 inputs $\times$ 2 fuzzy partitions, the state space encompasses exactly $2^4 = 16$ combinations, eliminating dead zones entirely:
             </p>
             <p class="lang-de">
-              Mit 4 Eingängen $	imes$ 2 Fuzzy-Mengen umfasst die Regelbasis exakt $2^4 = 16$ Regeln ohne tote Zonen im gesamten Zustandsraum:
+              Mit 4 Eingängen $\times$ 2 Fuzzy-Mengen umfasst die Regelbasis exakt $2^4 = 16$ Regeln ohne tote Zonen im gesamten Zustandsraum:
             </p>
 
             <div class="table-wrap">
@@ -545,8 +545,8 @@ disp('=== IMPORT SUCCESSFUL! smiData VARIABLE READY IN WORKSPACE ===');</code></
                 <thead>
                   <tr>
                     <th>STT</th>
-                    <th>$	heta$</th>
-                    <th>$\dot{	heta}$</th>
+                    <th>$\theta$</th>
+                    <th>$\dot{\theta}$</th>
                     <th>$x$</th>
                     <th>$\dot{x}$</th>
                     <th><span class="lang-en">Force $F$</span><span class="lang-de">Kraft $F$</span></th>
@@ -554,52 +554,22 @@ disp('=== IMPORT SUCCESSFUL! smiData VARIABLE READY IN WORKSPACE ===');</code></
                   </tr>
                 </thead>
                 <tbody>
-                  <tr><td><strong>R01</strong></td><td>N</td><td>N</td><td>N</td><td>N</td><td><strong>NL</strong></td><td><span class="lang-en">Extreme emergency: Left tilt, swinging left, cart displaced left $
-ightarrow$ Full left force ($-10	ext{N}$).</span><span class="lang-de">Höchste Dringlichkeit: Linksauslenkung, Drehimpuls links, Wagen links $
-ightarrow$ Volle Kraft links ($-10	ext{N}$).</span></td></tr>
-                  <tr><td><strong>R02</strong></td><td>N</td><td>N</td><td>N</td><td>P</td><td><strong>NL</strong></td><td><span class="lang-en">Left tilt + swinging left $
-ightarrow$ Top priority is saving the tilt angle, output NL.</span><span class="lang-de">Linksauslenkung + Drehimpuls links $
-ightarrow$ Höchste Priorität hat Pendelaufrichtung, NL ausgeben.</span></td></tr>
-                  <tr><td><strong>R03</strong></td><td>N</td><td>N</td><td>P</td><td>N</td><td><strong>NL</strong></td><td><span class="lang-en">Although cart is right, pole is falling left $
-ightarrow$ Apply NL to catch the center of gravity.</span><span class="lang-de">Wagen steht rechts, aber Pendel fällt nach links $
-ightarrow$ NL schalten, um Schwerpunkt aufzufangen.</span></td></tr>
-                  <tr><td><strong>R04</strong></td><td>N</td><td>N</td><td>P</td><td>P</td><td><strong>NM</strong></td><td><span class="lang-en">Cart is on right moving right $
-ightarrow$ Adequate runway, apply moderate negative force ($-7	ext{N}$).</span><span class="lang-de">Wagen rechts und driftet nach rechts $
-ightarrow$ Sanfte Bremskraft ($-7	ext{N}$) gegen Rucken.</span></td></tr>
-                  <tr><td><strong>R05</strong></td><td>N</td><td>P</td><td>N</td><td>N</td><td><strong>NM</strong></td><td><span class="lang-en">Tilted left but <em>swinging back right</em> ($\dot{	heta} > 0$) $
-ightarrow$ Drop to NM for smooth damping.</span><span class="lang-de">Nach links geneigt, schwingt aber <em>selbsttätig nach rechts</em> $
-ightarrow$ Drosseln auf NM.</span></td></tr>
-                  <tr><td><strong>R06</strong></td><td>N</td><td>P</td><td>N</td><td>P</td><td><strong>NM</strong></td><td><span class="lang-en">Pendulum returning, cart heading toward center $
-ightarrow$ Apply moderate force NM.</span><span class="lang-de">Pendel kehrt zurück, Wagen steuert Schienenmitte an $
-ightarrow$ Moderate Stellkraft NM.</span></td></tr>
-                  <tr><td><strong>R07</strong></td><td>N</td><td>P</td><td>P</td><td>N</td><td><strong>NM</strong></td><td><span class="lang-en">Pendulum returning, cart on right $
-ightarrow$ Maintain mild negative force to damp oscillations.</span><span class="lang-de">Pendel kehrt zurück, Wagen rechts $
-ightarrow$ Leichte Gegenkraft zur Schwingungsdämpfung.</span></td></tr>
-                  <tr><td><strong>R08</strong></td><td>N</td><td>P</td><td>P</td><td>P</td><td><strong>NM</strong></td><td><span class="lang-en">Pendulum recovering, cart right $
-ightarrow$ Moderate negative force balances both states.</span><span class="lang-de">Pendel kehrt zurück, Wagen rechts $
-ightarrow$ Moderate Kraft balanciert beides aus.</span></td></tr>
-                  <tr><td><strong>R09</strong></td><td>P</td><td>N</td><td>N</td><td>N</td><td><strong>PM</strong></td><td><span class="lang-en">Tilted right but <em>swinging back left</em> ($\dot{	heta} < 0$) $
-ightarrow$ Moderate positive force ($+7	ext{N}$).</span><span class="lang-de">Nach rechts geneigt, schwingt aber <em>nach links</em> $
-ightarrow$ Moderate positive Kraft ($+7	ext{N}$).</span></td></tr>
-                  <tr><td><strong>R10</strong></td><td>P</td><td>N</td><td>N</td><td>P</td><td><strong>PM</strong></td><td><span class="lang-en">Pendulum self-recovering, cart heading right $
-ightarrow$ Soft capture with PM.</span><span class="lang-de">Pendel schwingt ein, Wagen fährt rechts $
-ightarrow$ Sanftes Abfangen mit PM.</span></td></tr>
-                  <tr><td><strong>R11</strong></td><td>P</td><td>N</td><td>P</td><td>N</td><td><strong>PM</strong></td><td><span class="lang-en">Pendulum self-recovering $
-ightarrow$ PM.</span><span class="lang-de">Pendel schwingt selbsttätig ein $
-ightarrow$ PM.</span></td></tr>
-                  <tr><td><strong>R12</strong></td><td>P</td><td>N</td><td>P</td><td>P</td><td><strong>PM</strong></td><td><span class="lang-en">Pendulum self-recovering, cart right $
-ightarrow$ Moderate positive force stabilizes without overshoot.</span><span class="lang-de">Pendel kehrt zurück, Wagen rechts $
-ightarrow$ Moderate positive Kraft stabilisiert ruckfrei.</span></td></tr>
-                  <tr><td><strong>R13</strong></td><td>P</td><td>P</td><td>N</td><td>N</td><td><strong>PL</strong></td><td><span class="lang-en">Right tilt + swinging right $
-ightarrow$ Maximum positive force ($+10	ext{N}$) to drive cart beneath.</span><span class="lang-de">Rechtsneigung + Drehimpuls rechts $
-ightarrow$ Maximale Vorwärtskraft ($+10	ext{N}$) zum Unterfahren.</span></td></tr>
-                  <tr><td><strong>R14</strong></td><td>P</td><td>P</td><td>N</td><td>P</td><td><strong>PL</strong></td><td><span class="lang-en">Falling right + swinging right $
-ightarrow$ Output maximal PL force to catch up with falling rate.</span><span class="lang-de">Kippt rechts + Drehimpuls rechts $
-ightarrow$ Maximale Kraft PL, um Fallgeschwindigkeit einzuholen.</span></td></tr>
+                  <tr><td><strong>R01</strong></td><td>N</td><td>N</td><td>N</td><td>N</td><td><strong>NL</strong></td><td><span class="lang-en">Extreme emergency: Left tilt, swinging left, cart displaced left $\rightarrow$ Full left force ($-10\text{N}$).</span><span class="lang-de">Höchste Dringlichkeit: Linksauslenkung, Drehimpuls links, Wagen links $\rightarrow$ Volle Kraft links ($-10\text{N}$).</span></td></tr>
+                  <tr><td><strong>R02</strong></td><td>N</td><td>N</td><td>N</td><td>P</td><td><strong>NL</strong></td><td><span class="lang-en">Left tilt + swinging left $\rightarrow$ Top priority is saving the tilt angle, output NL.</span><span class="lang-de">Linksauslenkung + Drehimpuls links $\rightarrow$ Höchste Priorität hat Pendelaufrichtung, NL ausgeben.</span></td></tr>
+                  <tr><td><strong>R03</strong></td><td>N</td><td>N</td><td>P</td><td>N</td><td><strong>NL</strong></td><td><span class="lang-en">Although cart is right, pole is falling left $\rightarrow$ Apply NL to catch the center of gravity.</span><span class="lang-de">Wagen steht rechts, aber Pendel fällt nach links $\rightarrow$ NL schalten, um Schwerpunkt aufzufangen.</span></td></tr>
+                  <tr><td><strong>R04</strong></td><td>N</td><td>N</td><td>P</td><td>P</td><td><strong>NM</strong></td><td><span class="lang-en">Cart is on right moving right $\rightarrow$ Adequate runway, apply moderate negative force ($-7\text{N}$).</span><span class="lang-de">Wagen rechts und driftet nach rechts $\rightarrow$ Sanfte Bremskraft ($-7\text{N}$) gegen Rucken.</span></td></tr>
+                  <tr><td><strong>R05</strong></td><td>N</td><td>P</td><td>N</td><td>N</td><td><strong>NM</strong></td><td><span class="lang-en">Tilted left but <em>swinging back right</em> ($\dot{\theta} > 0$) $\rightarrow$ Drop to NM for smooth damping.</span><span class="lang-de">Nach links geneigt, schwingt aber <em>selbsttätig nach rechts</em> $\rightarrow$ Drosseln auf NM.</span></td></tr>
+                  <tr><td><strong>R06</strong></td><td>N</td><td>P</td><td>N</td><td>P</td><td><strong>NM</strong></td><td><span class="lang-en">Pendulum returning, cart heading toward center $\rightarrow$ Apply moderate force NM.</span><span class="lang-de">Pendel kehrt zurück, Wagen steuert Schienenmitte an $\rightarrow$ Moderate Stellkraft NM.</span></td></tr>
+                  <tr><td><strong>R07</strong></td><td>N</td><td>P</td><td>P</td><td>N</td><td><strong>NM</strong></td><td><span class="lang-en">Pendulum returning, cart on right $\rightarrow$ Maintain mild negative force to damp oscillations.</span><span class="lang-de">Pendel kehrt zurück, Wagen rechts $\rightarrow$ Leichte Gegenkraft zur Schwingungsdämpfung.</span></td></tr>
+                  <tr><td><strong>R08</strong></td><td>N</td><td>P</td><td>P</td><td>P</td><td><strong>NM</strong></td><td><span class="lang-en">Pendulum recovering, cart right $\rightarrow$ Moderate negative force balances both states.</span><span class="lang-de">Pendel kehrt zurück, Wagen rechts $\rightarrow$ Moderate Kraft balanciert beides aus.</span></td></tr>
+                  <tr><td><strong>R09</strong></td><td>P</td><td>N</td><td>N</td><td>N</td><td><strong>PM</strong></td><td><span class="lang-en">Tilted right but <em>swinging back left</em> ($\dot{\theta} < 0$) $\rightarrow$ Moderate positive force ($+7\text{N}$).</span><span class="lang-de">Nach rechts geneigt, schwingt aber <em>nach links</em> $\rightarrow$ Moderate positive Kraft ($+7\text{N}$).</span></td></tr>
+                  <tr><td><strong>R10</strong></td><td>P</td><td>N</td><td>N</td><td>P</td><td><strong>PM</strong></td><td><span class="lang-en">Pendulum self-recovering, cart heading right $\rightarrow$ Soft capture with PM.</span><span class="lang-de">Pendel schwingt ein, Wagen fährt rechts $\rightarrow$ Sanftes Abfangen mit PM.</span></td></tr>
+                  <tr><td><strong>R11</strong></td><td>P</td><td>N</td><td>P</td><td>N</td><td><strong>PM</strong></td><td><span class="lang-en">Pendulum self-recovering $\rightarrow$ PM.</span><span class="lang-de">Pendel schwingt selbsttätig ein $\rightarrow$ PM.</span></td></tr>
+                  <tr><td><strong>R12</strong></td><td>P</td><td>N</td><td>P</td><td>P</td><td><strong>PM</strong></td><td><span class="lang-en">Pendulum self-recovering, cart right $\rightarrow$ Moderate positive force stabilizes without overshoot.</span><span class="lang-de">Pendel kehrt zurück, Wagen rechts $\rightarrow$ Moderate positive Kraft stabilisiert ruckfrei.</span></td></tr>
+                  <tr><td><strong>R13</strong></td><td>P</td><td>P</td><td>N</td><td>N</td><td><strong>PL</strong></td><td><span class="lang-en">Right tilt + swinging right $\rightarrow$ Maximum positive force ($+10\text{N}$) to drive cart beneath.</span><span class="lang-de">Rechtsneigung + Drehimpuls rechts $\rightarrow$ Maximale Vorwärtskraft ($+10\text{N}$) zum Unterfahren.</span></td></tr>
+                  <tr><td><strong>R14</strong></td><td>P</td><td>P</td><td>N</td><td>P</td><td><strong>PL</strong></td><td><span class="lang-en">Falling right + swinging right $\rightarrow$ Output maximal PL force to catch up with falling rate.</span><span class="lang-de">Kippt rechts + Drehimpuls rechts $\rightarrow$ Maximale Kraft PL, um Fallgeschwindigkeit einzuholen.</span></td></tr>
                   <tr><td><strong>R15</strong></td><td>P</td><td>P</td><td>P</td><td>N</td><td><strong>PL</strong></td><td><span class="lang-en">Falling right + swinging right, tilt stabilization takes absolute priority over cart position.</span><span class="lang-de">Kippt rechts + Drehimpuls rechts: Pendelrettung hat absolute Priorität vor Wagenposition.</span></td></tr>
-                  <tr><td><strong>R16</strong></td><td>P</td><td>P</td><td>P</td><td>P</td><td><strong>PL</strong></td><td><span class="lang-en">Extreme emergency right: All 4 states positive $
-ightarrow$ Full positive thrust ($+10	ext{N}$).</span><span class="lang-de">Höchste Dringlichkeit rechts: Alle 4 Zustände positiv $
-ightarrow$ Voller Schub rechts ($+10	ext{N}$).</span></td></tr>
+                  <tr><td><strong>R16</strong></td><td>P</td><td>P</td><td>P</td><td>P</td><td><strong>PL</strong></td><td><span class="lang-en">Extreme emergency right: All 4 states positive $\rightarrow$ Full positive thrust ($+10\text{N}$).</span><span class="lang-de">Höchste Dringlichkeit rechts: Alle 4 Zustände positiv $\rightarrow$ Voller Schub rechts ($+10\text{N}$).</span></td></tr>
                 </tbody>
               </table>
             </div>
@@ -718,7 +688,7 @@ disp('=== FIS BUILT & SAVED: cartpole_16rules.fis READY! ===');</code></pre>
 % Normalize angle into principal interval [-pi, +pi] to prevent phase winding
 theta_norm = atan2(sin(theta), cos(theta));</code></pre>
                 </div>
-                Guarantees the angle strictly stays within $[-\pi, +\pi]\ 	ext{rad}$, preventing integer winding issues during multi-turn swings.
+                Guarantees the angle strictly stays within $[-\pi, +\pi]\ \text{rad}$, preventing integer winding issues during multi-turn swings.
               </li>
               <li>
                 <strong>Multiplexer (Mux Block):</strong><br>
@@ -727,8 +697,7 @@ theta_norm = atan2(sin(theta), cos(theta));</code></pre>
               </li>
               <li>
                 <strong>"Fuzzy Logic Controller" Block:</strong><br>
-                Insert from Simulink Library $
-ightarrow$ <em>Fuzzy Logic Toolbox</em>. Double-click and specify <code>'cartpole_16rules.fis'</code>.
+                Insert from Simulink Library $\rightarrow$ <em>Fuzzy Logic Toolbox</em>. Double-click and specify <code>'cartpole_16rules.fis'</code>.
               </li>
               <li>
                 <strong>Force Feedback & Manual Switch:</strong><br>
@@ -752,7 +721,7 @@ ightarrow$ <em>Fuzzy Logic Toolbox</em>. Double-click and specify <code>'cartpol
 % Normierung in das Hauptintervall [-pi, +pi] zur Vermeidung von Phasenüberlauf
 theta_norm = atan2(sin(theta), cos(theta));</code></pre>
                 </div>
-                Garantiert die Winkelbeschränkung auf $[-\pi, +\pi]\ 	ext{rad}$ ohne Phasenüberlauf.
+                Garantiert die Winkelbeschränkung auf $[-\pi, +\pi]\ \text{rad}$ ohne Phasenüberlauf.
               </li>
               <li>
                 <strong>Multiplexer (Mux):</strong><br>
@@ -761,8 +730,7 @@ theta_norm = atan2(sin(theta), cos(theta));</code></pre>
               </li>
               <li>
                 <strong>"Fuzzy Logic Controller"-Block:</strong><br>
-                Aus der Simulink-Bibliothek $
-ightarrow$ <em>Fuzzy Logic Toolbox</em>. Dateiname: <code>'cartpole_16rules.fis'</code>.
+                Aus der Simulink-Bibliothek $\rightarrow$ <em>Fuzzy Logic Toolbox</em>. Dateiname: <code>'cartpole_16rules.fis'</code>.
               </li>
               <li>
                 <strong>Manueller Umschalter (Manual Switch):</strong><br>
@@ -783,10 +751,10 @@ ightarrow$ <em>Fuzzy Logic Toolbox</em>. Dateiname: <code>'cartpole_16rules.fis'
             </h2>
 
             <p class="lang-en">
-              To validate the superior capability of the fuzzy controller, we impose an extreme initial condition of <strong>$20^\circ$ ($0.349	ext{ rad}$)</strong> — a regime where classical linear PID and LQR controllers destabilize and drop the pendulum.
+              To validate the superior capability of the fuzzy controller, we impose an extreme initial condition of <strong>$20^\circ$ ($0.349\text{ rad}$)</strong> — a regime where classical linear PID and LQR controllers destabilize and drop the pendulum.
             </p>
             <p class="lang-de">
-              Um die Leistungsfähigkeit des Fuzzy-Reglers zu verifizieren, setzen wir einen extremen Anfangswinkel von <strong>$20^\circ$ ($0.349	ext{ rad}$)</strong> — ein Bereich, in dem klassische lineare PID- und LQR-Regler instabil werden und das Pendel fallen lassen.
+              Um die Leistungsfähigkeit des Fuzzy-Reglers zu verifizieren, setzen wir einen extremen Anfangswinkel von <strong>$20^\circ$ ($0.349\text{ rad}$)</strong> — ein Bereich, in dem klassische lineare PID- und LQR-Regler instabil werden und das Pendel fallen lassen.
             </p>
 
             <!-- FIGURE 6 -->
@@ -806,25 +774,25 @@ ightarrow$ <em>Fuzzy Logic Toolbox</em>. Dateiname: <code>'cartpole_16rules.fis'
 
             <ul class="lang-en">
               <li>
-                <strong>Instantaneous Tilt Reversal (Channels 1 & 2):</strong> During the first $0.4	ext{s}$, control force hits the saturation boundary $+10	ext{N}$, dashing the cart rightwards beneath the falling center of gravity. Angle $	heta$ converges to $0^\circ$ within $1.2	ext{s}$ with oscillations fully damped by $1.82	ext{s}$ (residual error $< 0.15^\circ$).
+                <strong>Instantaneous Tilt Reversal (Channels 1 & 2):</strong> During the first $0.4\text{s}$, control force hits the saturation boundary $+10\text{N}$, dashing the cart rightwards beneath the falling center of gravity. Angle $\theta$ converges to $0^\circ$ within $1.2\text{s}$ with oscillations fully damped by $1.82\text{s}$ (residual error $< 0.15^\circ$).
               </li>
               <li>
-                <strong>Zero Cart Drift Suppression (Channels 3 & 4):</strong> The crowning achievement of the unified 16-rule matrix. Driven by rules $R04, R08, R09, R12$, as soon as upright posture is captured, the fuzzy engine identifies cart displacement and applies gentle braking, returning the cart precisely to $x pprox 0.001	ext{m}$ ($0.1	ext{cm}$).
+                <strong>Zero Cart Drift Suppression (Channels 3 & 4):</strong> The crowning achievement of the unified 16-rule matrix. Driven by rules $R04, R08, R09, R12$, as soon as upright posture is captured, the fuzzy engine identifies cart displacement and applies gentle braking, returning the cart precisely to $x \approx 0.001\text{m}$ ($0.1\text{cm}$).
               </li>
               <li>
-                <strong>Asymptotic Phase Portrait (Channel 6):</strong> The state trajectory in the phase plane $(	heta, x)$ spirals smoothly into the origin $(0, 0)$, confirming robust asymptotic stability across the operating envelope.
+                <strong>Asymptotic Phase Portrait (Channel 6):</strong> The state trajectory in the phase plane $(\theta, x)$ spirals smoothly into the origin $(0, 0)$, confirming robust asymptotic stability across the operating envelope.
               </li>
             </ul>
 
             <ul class="lang-de">
               <li>
-                <strong>Sofortige Auslenkungskompensation (Kanäle 1 & 2):</strong> In den ersten $0.4	ext{s}$ geht die Stellkraft in die Sättigung ($+10	ext{N}$) und fährt den Wagen unter den Schwerpunkt. Der Winkel $	heta$ konvergiert bereits nach $1.2	ext{s}$ gegen $0^\circ$, Schwingungen klingen nach $1.82	ext{s}$ vollständig ab (Restfehler $< 0.15^\circ$).
+                <strong>Sofortige Auslenkungskompensation (Kanäle 1 & 2):</strong> In den ersten $0.4\text{s}$ geht die Stellkraft in die Sättigung ($+10\text{N}$) und fährt den Wagen unter den Schwerpunkt. Der Winkel $\theta$ konvergiert bereits nach $1.2\text{s}$ gegen $0^\circ$, Schwingungen klingen nach $1.82\text{s}$ vollständig ab (Restfehler $< 0.15^\circ$).
               </li>
               <li>
-                <strong>Vollständige Driftunterdrückung (Zero Cart Drift - Kanäle 3 & 4):</strong> Das Kern-Highlight der 16-Regeln-Architektur. Regeln $R04, R08, R09, R12$ erkennen die Wagenabweichung und führen den Wagen exakt zum Ursprung zurück ($x pprox 0.001	ext{m}$).
+                <strong>Vollständige Driftunterdrückung (Zero Cart Drift - Kanäle 3 & 4):</strong> Das Kern-Highlight der 16-Regeln-Architektur. Regeln $R04, R08, R09, R12$ erkennen die Wagenabweichung und führen den Wagen exakt zum Ursprung zurück ($x \approx 0.001\text{m}$).
               </li>
               <li>
-                <strong>Konvergentes Phasenporträt (Kanal 6):</strong> Die Phasenbahn im Raum $(	heta, x)$ konvergiert spiralförmig in den Ursprung $(0, 0)$, was die globale asymptotische Stabilität belegt.
+                <strong>Konvergentes Phasenporträt (Kanal 6):</strong> Die Phasenbahn im Raum $(\theta, x)$ konvergiert spiralförmig in den Ursprung $(0, 0)$, was die globale asymptotische Stabilität belegt.
               </li>
             </ul>
           </section>
@@ -849,16 +817,12 @@ ightarrow$ <em>Fuzzy Logic Toolbox</em>. Dateiname: <code>'cartpole_16rules.fis'
                 <div class="lang-en">
                   <strong>Issue 1: "Undefined variable smiData" when clicking Run</strong><br>
                   <em>Root Cause:</em> Simulink was opened without executing the parameter DataFile into the base workspace.<br>
-                  <em>Fix:</em> Run <code>run('full_pendulum_assem_DataFile3.m')</code> in the Command Window, or assign it in <strong>Model Properties $
-ightarrow$ Callbacks $
-ightarrow$ InitFcn</strong> for automatic execution.
+                  <em>Fix:</em> Run <code>run('full_pendulum_assem_DataFile3.m')</code> in the Command Window, or assign it in <strong>Model Properties $\rightarrow$ Callbacks $\rightarrow$ InitFcn</strong> for automatic execution.
                 </div>
                 <div class="lang-de">
                   <strong>Problem 1: "Undefined variable smiData" beim Starten</strong><br>
                   <em>Ursache:</em> Das Modell wurde gestartet, bevor die physikalischen Parameter in den MATLAB-Workspace geladen wurden.<br>
-                  <em>Lösung:</em> Befehl <code>run('full_pendulum_assem_DataFile3.m')</code> im Command Window ausführen oder unter <strong>Model Properties $
-ightarrow$ Callbacks $
-ightarrow$ InitFcn</strong> eintragen.
+                  <em>Lösung:</em> Befehl <code>run('full_pendulum_assem_DataFile3.m')</code> im Command Window ausführen oder unter <strong>Model Properties $\rightarrow$ Callbacks $\rightarrow$ InitFcn</strong> eintragen.
                 </div>
               </div>
             </div>
