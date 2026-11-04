@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Engineering & Robotics Portfolio | Tech Cyber Theme</title>
+  <title>Đỗ Hiểu Vinh · Robotics & Control</title>
   <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
-  <link rel="stylesheet" href="assets/css/style.css?v=4.0">
+  <link rel="stylesheet" href="assets/css/style.css?v=5.0">
+  <link rel="stylesheet" href="assets/css/swiss.css?v=5.0">
   <script>
     (function() {
       try {
@@ -35,7 +36,7 @@
         </svg>
         <span class="lang-en">ROBOTICS & CONTROL</span>
         <span class="lang-de">ROBOTIK & REGELUNG</span>
-        <span class="brand-badge">v2.4.0</span>
+        
       </div>
 
       <nav class="masthead__nav">
@@ -90,212 +91,180 @@
     </div>
   </header>
 
-  <!-- MAIN CONTAINER -->
-  <div class="app-container">
-    
-    <!-- LEFT SIDEBAR -->
-    <aside class="sidebar">
-      <div class="profile-card">
-        <div class="avatar-wrapper">
-          <div class="avatar-pulse-ring"></div>
-          <img src="assets/images/1.jpg" alt="Avatar" class="avatar-img">
-        </div>
+  <!-- MAIN: SWISS INDEX -->
+  <main class="sw-home">
 
-        <div class="author-info">
-          <h2 class="author-name">
-            <span class="lang-en">Đỗ Hiểu Vinh</span>
-            <span class="lang-de">Đỗ Hiểu Vinh</span>
-          </h2>
-          <div class="author-handle">@vinhdo281 · HUST</div>
+    <div class="sw-meta">
+      <span><strong>Đỗ Hiểu Vinh</strong> · @vinhdo281 · HUST</span>
+      <span><span class="lang-en">Hanoi, Vietnam · Index 2026</span><span class="lang-de">Hanoi, Vietnam · Index 2026</span></span>
+    </div>
 
-          <div class="author-status">
-            <span class="status-dot"></span>
-            <span class="lang-en">SYSTEM: OPERATIONAL</span>
-            <span class="lang-de">SYSTEM: BEREIT</span>
-          </div>
+    <h1 class="sw-title">
+      <span class="lang-en">
+        <span class="sw-line"><span style="--i:0">Control, robots,</span></span>
+        <span class="sw-line"><span style="--i:1">and the code that</span></span>
+        <span class="sw-line"><span style="--i:2">keeps them upright<span class="sw-dot">.</span></span></span>
+      </span>
+      <span class="lang-de">
+        <span class="sw-line"><span style="--i:0">Regelung, Roboter</span></span>
+        <span class="sw-line"><span style="--i:1">und der Code, der</span></span>
+        <span class="sw-line"><span style="--i:2">sie aufrecht hält<span class="sw-dot">.</span></span></span>
+      </span>
+    </h1>
 
-          <p class="author-bio lang-en">
-            Mechatronics & Control Systems Engineer. Focusing on Wheeled-Bipedal Robotics, MuJoCo & Simscape Multibody physics simulation, control theory, and STM32 / ESP32 embedded systems.
-          </p>
-          <p class="author-bio lang-de">
-            Ingenieur für Mechatronik & Regelungstechnik. Schwerpunkt auf radgetriebenen zweibeinigen Robotern (Wheeled-Bipedal Robot), Physiksimulation mit MuJoCo & Simscape Multibody, Regelungstechnik und STM32 / ESP32 Embedded-Systemen.
-          </p>
-        </div>
+    <div class="sw-lede">
+      <p class="lang-en">Mechatronics &amp; control systems engineer. I design nonlinear and optimal controllers (LQR, MPC, adaptive PID), estimate state with Kalman filters, and build wheeled-bipedal robots, manipulators and vision-guided AGVs.</p>
+      <p class="lang-de">Ingenieur für Mechatronik &amp; Regelungstechnik. Ich entwerfe nichtlineare und optimale Regler (LQR, MPC, adaptiver PID), schätze Zustände mit Kalman-Filtern und entwickle radgetriebene Zweibeiner, Manipulatoren und bildgeführte FTS (AGVs).</p>
+      <dl class="sw-facts">
+        <dt><span class="lang-en">Hardware</span><span class="lang-de">Hardware</span></dt><dd>STM32 / ESP32 / Arduino</dd>
+        <dt><span class="lang-en">Control</span><span class="lang-de">Regelung</span></dt><dd>LQR, MPC, Fuzzy Logic, Reinforcement Learning</dd>
+        <dt><span class="lang-en">Simulation</span><span class="lang-de">Simulation</span></dt><dd>MuJoCo, MATLAB/Simulink, Simscape, ROS 2/Gazebo</dd>
+      </dl>
+    </div>
 
-        <div class="sidebar-divider"></div>
+    <nav class="sw-index" aria-label="Sections">
+      <a href="research.html" class="sw-row" style="--i:0">
+        <span class="sw-num">01</span>
+        <span class="sw-name"><span class="lang-en">Research</span><span class="lang-de">Forschung</span></span>
+        <span class="sw-desc"><span class="lang-en">Control theory, state estimation and robotics.</span><span class="lang-de">Regelungstheorie, Zustandsschätzung und Robotik.</span></span>
+        <svg class="sw-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a href="portfolio.html" class="sw-row" style="--i:1">
+        <span class="sw-num">02</span>
+        <span class="sw-name"><span class="lang-en">Projects</span><span class="lang-de">Projekte</span></span>
+        <span class="sw-desc"><span class="lang-en">Wheeled-bipedal robots, simulation and vision systems.</span><span class="lang-de">Radgetriebene Zweibeiner, Simulation und Bildverarbeitung.</span></span>
+        <svg class="sw-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a href="blog.html" class="sw-row" style="--i:2">
+        <span class="sw-num">03</span>
+        <span class="sw-name"><span class="lang-en">Blog</span><span class="lang-de">Blog</span></span>
+        <span class="sw-desc"><span class="lang-en">Technical articles with runnable code.</span><span class="lang-de">Technische Artikel mit lauffähigem Code.</span></span>
+        <svg class="sw-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a href="publications.html" class="sw-row" style="--i:3">
+        <span class="sw-num">04</span>
+        <span class="sw-name"><span class="lang-en">Publications</span><span class="lang-de">Publikationen</span></span>
+        <span class="sw-desc"><span class="lang-en">Papers and BibTeX citations.</span><span class="lang-de">Veröffentlichungen und BibTeX-Zitate.</span></span>
+        <svg class="sw-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a href="cv.html" class="sw-row" style="--i:4">
+        <span class="sw-num">05</span>
+        <span class="sw-name"><span class="lang-en">CV</span><span class="lang-de">Lebenslauf</span></span>
+        <span class="sw-desc"><span class="lang-en">Education, awards and skills.</span><span class="lang-de">Ausbildung, Auszeichnungen und Kompetenzen.</span></span>
+        <svg class="sw-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </nav>
 
-        <div class="contact-location">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          <span><span class="lang-en">Hanoi, Vietnam</span><span class="lang-de">Hanoi, Vietnam</span></span>
-        </div>
-
-        <!-- Tech Social Icons Dock -->
-        <div class="social-icons-dock">
-          <a href="https://github.com/vinhdo281" target="_blank" rel="noopener" class="tech-icon-btn" data-tooltip="GitHub" aria-label="GitHub">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-          </a>
-          <a href="https://www.linkedin.com/in/vinh-hiểu-638387305" target="_blank" rel="noopener" class="tech-icon-btn" data-tooltip="LinkedIn" aria-label="LinkedIn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-          </a>
-          <a href="https://www.facebook.com/AlexDo281" target="_blank" rel="noopener" class="tech-icon-btn" data-tooltip="Facebook" aria-label="Facebook">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-          </a>
-          <a href="mailto:dohieuvinh@gmail.com" class="tech-icon-btn" data-tooltip="Email" aria-label="Email">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          </a>
-        </div>
+    <section class="sw-work">
+      <div class="section-title-wrap">
+        <h2 class="section-title">
+          <span class="section-prefix">#</span>
+          <span class="lang-en">Selected work</span>
+          <span class="lang-de">Ausgewählte Arbeiten</span>
+        </h2>
+        <a href="portfolio.html" class="section-link">
+          <span class="lang-en">View all &rarr;</span>
+          <span class="lang-de">Alle ansehen &rarr;</span>
+        </a>
       </div>
-    </aside>
-
-    <!-- RIGHT MAIN CONTENT -->
-    <main class="main-content">
-      
-      <!-- HERO TECH SECTION -->
-      <section class="hero-card">
-        <div class="hero-header">
-          <span class="terminal-badge">KERNEL v5.19 // SYS_ACTIVE</span>
-          <span class="card-date font-mono">2026.10</span>
-        </div>
-
-        <h1 class="hero-title">
-          <span class="lang-en">Robotics Science & Control Systems</span>
-          <span class="lang-de">Robotik & Regelungssysteme</span>
-        </h1>
-
-        <div class="hero-subtitle font-mono">
-          <span class="lang-en">&gt; Hierarchical Control · Real-time Embedded · AI Simulation</span>
-          <span class="lang-de">&gt; Hierarchische Regelung · Echtzeit-Embedded · KI-Simulation</span>
-        </div>
-
-        <p class="hero-desc lang-en">
-          Welcome to my digital research space. I specialize in designing non-linear and optimal control algorithms (LQR, MPC, Adaptive PID), state estimation via Extended Kalman Filter, and developing wheeled-bipedal robots, manipulators, and vision-guided AGVs.
-        </p>
-        <p class="hero-desc lang-de">
-          Willkommen in meinem digitalen Forschungsbereich. Ich spezialisiere mich auf den Entwurf nichtlinearer und optimaler Regelungsalgorithmen (LQR, MPC, adaptiver PID), Zustandsschätzung mittels Extended Kalman Filter sowie die Entwicklung von radgetriebenen zweibeinigen Robotern, Manipulatoren und bildgeführten FTS (AGVs).
-        </p>
-
-        <!-- INTERACTIVE HUD TERMINAL -->
-        <div class="tech-terminal">
-          <div class="terminal-bar">
-            <span class="term-dot red"></span>
-            <span class="term-dot yellow"></span>
-            <span class="term-dot green"></span>
-            <span class="term-title">telemetry@node-01: ~/environment</span>
+      <div class="cards-grid">
+            <!-- Featured 1: Fuzzy Controller -->
+            <article class="tech-card">
+              <div class="card-top">
+                <span class="card-type">CONTROL // SIMULATION</span>
+                <span class="card-date font-mono">10/2026</span>
+              </div>
+              <h3 class="card-title">
+                <a href="portfolio.html#fuzzy-controller" style="color: inherit; text-decoration: none;">
+                  <span class="lang-en">Mamdani FIS Inverted Pendulum Controller in MuJoCo & Simulink</span>
+                  <span class="lang-de">Mamdani-FIS-Regler für Inverses Pendel in MuJoCo & Simulink</span>
+                </a>
+              </h3>
+              <p class="card-desc">
+                <span class="lang-en">16-rule Mamdani FIS stabilizing inverted pendulum from 22° tilt with zero cart drift.</span>
+                <span class="lang-de">16-Regeln-Mamdani-FIS zur Stabilisierung des inversen Pendels ab 22° Neigung ohne Wagendrift.</span>
+              </p>
+              <div class="card-tags">
+                <span class="tag-badge" style="border-color: var(--accent-cyan); color: var(--accent-cyan);">Fuzzy Logic</span>
+                <span class="tag-badge">MuJoCo</span>
+                <span class="tag-badge">Simulink</span>
+              </div>
+              <div style="margin-top: 1rem;">
+                <a href="portfolio.html#fuzzy-controller" class="btn-tech btn-tech-primary">
+                  <span class="lang-en">View Details & Demo &rarr;</span>
+                  <span class="lang-de">Details & Demo ansehen &rarr;</span>
+                </a>
+              </div>
+            </article>
+  
+            <!-- Featured 2: Cascade PID -->
+            <article class="tech-card">
+              <div class="card-top">
+                <span class="card-type">CONTROL // DUAL-LOOP</span>
+                <span class="card-date font-mono">08/2026</span>
+              </div>
+              <h3 class="card-title">
+                <a href="portfolio.html#cascade-pid" style="color: inherit; text-decoration: none;">
+                  <span class="lang-en">Cascade PID for Two-Wheeled Self-Balancing Robot</span>
+                  <span class="lang-de">Kaskadierter PID-Regler für Zweirad-Balancierroboter</span>
+                </a>
+              </h3>
+              <p class="card-desc">
+                <span class="lang-en">Dual-loop architecture separating tilt angle and translational position dynamics.</span>
+                <span class="lang-de">Zweikreis-Architektur zur getrennten Regelung von Neigungswinkel und Translationsposition.</span>
+              </p>
+              <div class="card-tags">
+                <span class="tag-badge">Cascade PID</span>
+                <span class="tag-badge">Self-Balancing</span>
+                <span class="tag-badge">Simulink</span>
+              </div>
+              <div style="margin-top: 1rem;">
+                <a href="portfolio.html#cascade-pid" class="btn-tech">
+                  <span class="lang-en">View Details & Demo &rarr;</span>
+                  <span class="lang-de">Details & Demo ansehen &rarr;</span>
+                </a>
+              </div>
+            </article>
+  
+            <!-- Featured 3: Car Counter YOLO -->
+            <article class="tech-card">
+              <div class="card-top">
+                <span class="card-type">VISION // YOLO11 & SORT</span>
+                <span class="card-date font-mono">09/2025</span>
+              </div>
+              <h3 class="card-title">
+                <a href="portfolio.html#carcounter-yolo" style="color: inherit; text-decoration: none;">
+                  <span class="lang-en">Real-Time Highway Vehicle Counter & Tracker</span>
+                  <span class="lang-de">Echtzeit-Fahrzeugzähler & Tracker für Autobahnen</span>
+                </a>
+              </h3>
+              <p class="card-desc">
+                <span class="lang-en">Multi-class vehicle tracking with Kalman filter and virtual line counting at 60 FPS.</span>
+                <span class="lang-de">Mehrklassen-Fahrzeugverfolgung mit Kalman-Filter und Zählung an virtueller Linie bei 60 FPS.</span>
+              </p>
+              <div class="card-tags">
+                <span class="tag-badge">YOLOv11</span>
+                <span class="tag-badge">SORT Tracker</span>
+                <span class="tag-badge">OpenCV</span>
+              </div>
+              <div style="margin-top: 1rem;">
+                <a href="portfolio.html#carcounter-yolo" class="btn-tech">
+                  <span class="lang-en">View Details & Demo &rarr;</span>
+                  <span class="lang-de">Details & Demo ansehen &rarr;</span>
+                </a>
+              </div>
+            </article>
           </div>
-          <div class="term-line"><span class="term-prompt">$</span> status --diagnostics</div>
-          <div class="term-line">&gt; Core: <span class="term-val">STM32 / ESP32 / Arduino</span></div>
-          <div class="term-line">&gt; Control Theory: <span class="term-val">LQR, MPC, Fuzzy Logic, Reinforcement Learning</span></div>
-          <div class="term-line">&gt; Sim Engines: <span class="term-val">MuJoCo Physics, MATLAB/Simulink, Simscape, ROS 2/Gazebo</span></div>
-          <div class="term-line">&gt; Status: <span class="term-val" style="color: var(--accent-emerald);">System Stable (100% nominal)</span></div>
-        </div>
-      </section>
+    </section>
 
-      <!-- FEATURED PROJECTS -->
-      <section>
-        <div class="section-title-wrap">
-          <h2 class="section-title">
-            <span class="section-prefix">#01</span>
-            <span class="lang-en">Featured Engineering Projects</span>
-            <span class="lang-de">Hervorgehobene Ingenieurprojekte</span>
-          </h2>
-          <a href="portfolio.html" class="section-link">
-            <span class="lang-en">View all &rarr;</span>
-            <span class="lang-de">Alle ansehen &rarr;</span>
-          </a>
-        </div>
+    <div class="sw-social">
+      <a href="https://github.com/vinhdo281" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/vinh-hiểu-638387305" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://www.facebook.com/AlexDo281" target="_blank" rel="noopener">Facebook</a>
+      <a href="mailto:dohieuvinh@gmail.com">Email</a>
+    </div>
 
-        <div class="cards-grid">
-          <!-- Featured 1: Fuzzy Controller -->
-          <article class="tech-card" style="border-color: rgba(0, 242, 254, 0.4);">
-            <div class="card-top">
-              <span class="card-type">CONTROL // SIMULATION</span>
-              <span class="card-date font-mono">10/2026</span>
-            </div>
-            <h3 class="card-title">
-              <a href="portfolio.html#fuzzy-controller" style="color: inherit; text-decoration: none;">
-                <span class="lang-en">Mamdani FIS Inverted Pendulum Controller in MuJoCo & Simulink</span>
-                <span class="lang-de">Mamdani-FIS-Regler für Inverses Pendel in MuJoCo & Simulink</span>
-              </a>
-            </h3>
-            <p class="card-desc">
-              <span class="lang-en">16-rule Mamdani FIS stabilizing inverted pendulum from 22° tilt with zero cart drift.</span>
-              <span class="lang-de">16-Regeln-Mamdani-FIS zur Stabilisierung des inversen Pendels ab 22° Neigung ohne Wagendrift.</span>
-            </p>
-            <div class="card-tags">
-              <span class="tag-badge" style="border-color: var(--accent-cyan); color: var(--accent-cyan);">Fuzzy Logic</span>
-              <span class="tag-badge">MuJoCo</span>
-              <span class="tag-badge">Simulink</span>
-            </div>
-            <div style="margin-top: 1rem;">
-              <a href="portfolio.html#fuzzy-controller" class="btn-tech btn-tech-primary">
-                <span class="lang-en">View Details & Demo &rarr;</span>
-                <span class="lang-de">Details & Demo ansehen &rarr;</span>
-              </a>
-            </div>
-          </article>
-
-          <!-- Featured 2: Cascade PID -->
-          <article class="tech-card">
-            <div class="card-top">
-              <span class="card-type">CONTROL // DUAL-LOOP</span>
-              <span class="card-date font-mono">08/2026</span>
-            </div>
-            <h3 class="card-title">
-              <a href="portfolio.html#cascade-pid" style="color: inherit; text-decoration: none;">
-                <span class="lang-en">Cascade PID for Two-Wheeled Self-Balancing Robot</span>
-                <span class="lang-de">Kaskadierter PID-Regler für Zweirad-Balancierroboter</span>
-              </a>
-            </h3>
-            <p class="card-desc">
-              <span class="lang-en">Dual-loop architecture separating tilt angle and translational position dynamics.</span>
-              <span class="lang-de">Zweikreis-Architektur zur getrennten Regelung von Neigungswinkel und Translationsposition.</span>
-            </p>
-            <div class="card-tags">
-              <span class="tag-badge">Cascade PID</span>
-              <span class="tag-badge">Self-Balancing</span>
-              <span class="tag-badge">Simulink</span>
-            </div>
-            <div style="margin-top: 1rem;">
-              <a href="portfolio.html#cascade-pid" class="btn-tech">
-                <span class="lang-en">View Details & Demo &rarr;</span>
-                <span class="lang-de">Details & Demo ansehen &rarr;</span>
-              </a>
-            </div>
-          </article>
-
-          <!-- Featured 3: Car Counter YOLO -->
-          <article class="tech-card">
-            <div class="card-top">
-              <span class="card-type">VISION // YOLO11 & SORT</span>
-              <span class="card-date font-mono">09/2025</span>
-            </div>
-            <h3 class="card-title">
-              <a href="portfolio.html#carcounter-yolo" style="color: inherit; text-decoration: none;">
-                <span class="lang-en">Real-Time Highway Vehicle Counter & Tracker</span>
-                <span class="lang-de">Echtzeit-Fahrzeugzähler & Tracker für Autobahnen</span>
-              </a>
-            </h3>
-            <p class="card-desc">
-              <span class="lang-en">Multi-class vehicle tracking with Kalman filter and virtual line counting at 60 FPS.</span>
-              <span class="lang-de">Mehrklassen-Fahrzeugverfolgung mit Kalman-Filter und Zählung an virtueller Linie bei 60 FPS.</span>
-            </p>
-            <div class="card-tags">
-              <span class="tag-badge">YOLOv11</span>
-              <span class="tag-badge">SORT Tracker</span>
-              <span class="tag-badge">OpenCV</span>
-            </div>
-            <div style="margin-top: 1rem;">
-              <a href="portfolio.html#carcounter-yolo" class="btn-tech">
-                <span class="lang-en">View Details & Demo &rarr;</span>
-                <span class="lang-de">Details & Demo ansehen &rarr;</span>
-              </a>
-            </div>
-          </article>
-        </div>
-      </section>
-
-    </main>
-  </div>
+  </main>
 
   <!-- SEARCH MODAL (Ctrl + K) -->
   <div id="search-modal-backdrop" class="search-modal-backdrop">
@@ -314,11 +283,11 @@
 
   <!-- FOOTER -->
   <footer class="site-footer">
-    <div>&copy; 2026 · Powered by GitHub Pages · Crafted with Cyber-Tech Aesthetic</div>
+    <div>&copy; 2026 · Powered by GitHub Pages · Set in Space Grotesk</div>
     <div class="footer-quote font-mono">&gt; "Engineering the future through feedback & control."</div>
   </footer>
 
-  <script src="assets/js/search-data.js?v=4.0"></script>
-  <script src="assets/js/main.js?v=4.0"></script>
+  <script src="assets/js/search-data.js?v=5.0"></script>
+  <script src="assets/js/main.js?v=5.0"></script>
 </body>
 </html>

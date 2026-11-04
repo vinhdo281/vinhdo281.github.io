@@ -453,6 +453,51 @@
     });
   }
 
+  // --- MOTION: scroll reveal + article reading progress ---
+  function initMotion() {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce || !('IntersectionObserver' in window)) return;
+    var root = document.documentElement;
+    root.classList.add('sw-js');
+
+    var targets = document.querySelectorAll(
+      '.tech-card, .project-card, .pub-item, .figure-card, .callout, .code-box, .table-wrap, ' +
+      '.article-content > h2, .article-content > h3, .article-toc, .section-title-wrap'
+    );
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+
+    targets.forEach(function (el) {
+      // stagger siblings in the same grid/list
+      var sibs = el.parentElement ? Array.prototype.filter.call(el.parentElement.children, function (c) { return c.classList.contains('tech-card') || c.classList.contains('project-card') || c.classList.contains('pub-item'); }) : [];
+      var idx = sibs.indexOf(el);
+      if (idx > 0) el.style.setProperty('--d', Math.min(idx, 6) * 0.07 + 's');
+      el.classList.add('sw-reveal');
+      io.observe(el);
+    });
+
+    // Reading progress rule (articles only)
+    if (document.querySelector('.article-content')) {
+      var bar = document.createElement('div');
+      bar.className = 'sw-progress';
+      bar.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(bar);
+      var ticking = false;
+      var update = function () {
+        var h = document.documentElement.scrollHeight - window.innerHeight;
+        bar.style.transform = 'scaleX(' + (h > 0 ? Math.min(1, window.scrollY / h) : 0) + ')';
+        ticking = false;
+      };
+      window.addEventListener('scroll', function () {
+        if (!ticking) { ticking = true; requestAnimationFrame(update); }
+      }, { passive: true });
+      update();
+    }
+  }
+
   // --- INITIALIZE ALL MODULES ---
   document.addEventListener('DOMContentLoaded', () => {
     initTheme();
@@ -462,6 +507,7 @@
     initFilterTabs();
     initMobileMenu();
     initOSTabs();
+    initMotion();
   });
 })();
 

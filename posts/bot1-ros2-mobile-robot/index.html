@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>End-to-End Guide: Building a ROS 2 Differential Drive Mobile Robot from Scratch in Gazebo, ros2_control & Nav2 · Cyber-Tech Portfolio</title>
+  <title>End-to-End Guide: Building a ROS 2 Differential Drive Mobile Robot from Scratch in Gazebo, ros2_control & Nav2 · Đỗ Hiểu Vinh</title>
   <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
-  <link rel="stylesheet" href="../../assets/css/style.css?v=4.0">
+  <link rel="stylesheet" href="../../assets/css/style.css?v=5.0">
+  <link rel="stylesheet" href="../../assets/css/swiss.css?v=5.0">
   <!-- KaTeX CSS & JS for Math Equations -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
@@ -181,7 +182,14 @@
             <span class="lang-de">INHALTSVERZEICHNIS</span>
           </div>
           <ul class="article-toc-list">
-            <li><a href="#sec-kinematics"><span class="lang-en">1. Differential Drive Kinematics & Non-Holonomic Constraints</span><span class="lang-de">1. Differenzielle Kinematik & Nichtholonomische Zwangsbedingungen</span></a></li>\n            <li><a href="#sec-urdf-physics"><span class="lang-en">2. URDF/Xacro Physics: Why Caster Friction & Inertia Blow Up Gazebo</span><span class="lang-de">2. URDF/Xacro-Physik: Warum Stützradreibung Gazebo instabil macht</span></a></li>\n            <li><a href="#sec-ros2-control"><span class="lang-en">3. Annotated ros2_control & diff_drive_controller Architecture</span><span class="lang-de">3. Kommentierte ros2_control & diff_drive_controller Architektur</span></a></li>\n            <li><a href="#sec-tf-tree"><span class="lang-en">4. Coordinate Transforms (TF2): map -> odom -> base_link</span><span class="lang-de">4. Koordinatentransformationen (TF2): map -> odom -> base_link</span></a></li>\n            <li><a href="#sec-slam"><span class="lang-en">5. Graph-Based LiDAR SLAM with SLAM Toolbox (Ceres Scan Matcher)</span><span class="lang-de">5. Graphenbasiertes LiDAR SLAM mit SLAM Toolbox</span></a></li>\n            <li><a href="#sec-nav2-planners"><span class="lang-en">6. Nav2 Navigation Stack: Global NavFn & Local DWB Planner</span><span class="lang-de">6. Nav2 Navigation Stack: Globaler NavFn & Lokaler DWB Planner</span></a></li>\n            <li><a href="#sec-cli-guide"><span class="lang-en">7. Complete Step-by-Step CLI Execution & Verification</span><span class="lang-de">7. Vollständige Schritt-für-Schritt CLI-Ausführung & Verifikation</span></a></li>\n            <li><a href="#sec-diagnostics"><span class="lang-en">8. Practical Debugging Checklist (TF Drift, Lidar Time Jitter)</span><span class="lang-de">8. Praktische Fehlerdiagnose (TF-Drift, Lidar-Zeit-Jitter)</span></a></li>
+            <li><a href="#sec-kinematics"><span class="lang-en">1. Differential Drive Kinematics & Non-Holonomic Constraints</span><span class="lang-de">1. Differenzielle Kinematik & Nichtholonomische Zwangsbedingungen</span></a></li>
+            <li><a href="#sec-urdf-physics"><span class="lang-en">2. URDF/Xacro Physics: Why Caster Friction & Inertia Blow Up Gazebo</span><span class="lang-de">2. URDF/Xacro-Physik: Warum Stützradreibung Gazebo instabil macht</span></a></li>
+            <li><a href="#sec-ros2-control"><span class="lang-en">3. Annotated ros2_control & diff_drive_controller Architecture</span><span class="lang-de">3. Kommentierte ros2_control & diff_drive_controller Architektur</span></a></li>
+            <li><a href="#sec-tf-tree"><span class="lang-en">4. Coordinate Transforms (TF2): map -> odom -> base_link</span><span class="lang-de">4. Koordinatentransformationen (TF2): map -> odom -> base_link</span></a></li>
+            <li><a href="#sec-slam"><span class="lang-en">5. Graph-Based LiDAR SLAM with SLAM Toolbox (Ceres Scan Matcher)</span><span class="lang-de">5. Graphenbasiertes LiDAR SLAM mit SLAM Toolbox</span></a></li>
+            <li><a href="#sec-nav2-planners"><span class="lang-en">6. Nav2 Navigation Stack: Global NavFn & Local DWB Planner</span><span class="lang-de">6. Nav2 Navigation Stack: Globaler NavFn & Lokaler DWB Planner</span></a></li>
+            <li><a href="#sec-cli-guide"><span class="lang-en">7. Complete Step-by-Step CLI Execution & Verification</span><span class="lang-de">7. Vollständige Schritt-für-Schritt CLI-Ausführung & Verifikation</span></a></li>
+            <li><a href="#sec-diagnostics"><span class="lang-en">8. Practical Debugging Checklist (TF Drift, Lidar Time Jitter)</span><span class="lang-de">8. Praktische Fehlerdiagnose (TF-Drift, Lidar-Zeit-Jitter)</span></a></li>
           </ul>
         </div>
 
@@ -462,10 +470,10 @@ evince frames.pdf</code></pre></div>
   </div>
 
   <footer class="site-footer">
-    <div>&copy; 2026 · Powered by GitHub Pages · Cyber-Tech Portfolio · Vinh Do (HUST)</div>
+    <div>&copy; 2026 · Powered by GitHub Pages · Đỗ Hiểu Vinh (HUST)</div>
   </footer>
 
-  <script src="../../assets/js/search-data.js?v=4.0"></script>
-  <script src="../../assets/js/main.js?v=4.0"></script>
+  <script src="../../assets/js/search-data.js?v=5.0"></script>
+  <script src="../../assets/js/main.js?v=5.0"></script>
 </body>
 </html>

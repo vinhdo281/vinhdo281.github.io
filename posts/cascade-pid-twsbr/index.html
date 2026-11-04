@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Comprehensive Engineering Guide: Dual-Loop Cascade PID Controller for Two-Wheeled Self-Balancing Robot (TWSBR) · Cyber-Tech Portfolio</title>
+  <title>Comprehensive Engineering Guide: Dual-Loop Cascade PID Controller for Two-Wheeled Self-Balancing Robot (TWSBR) · Đỗ Hiểu Vinh</title>
   <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
-  <link rel="stylesheet" href="../../assets/css/style.css?v=4.0">
+  <link rel="stylesheet" href="../../assets/css/style.css?v=5.0">
+  <link rel="stylesheet" href="../../assets/css/swiss.css?v=5.0">
   <!-- KaTeX CSS & JS for Math Equations -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
@@ -181,7 +182,14 @@
             <span class="lang-de">INHALTSVERZEICHNIS</span>
           </div>
           <ul class="article-toc-list">
-            <li><a href="#sec-physics"><span class="lang-en">1. Physics & Lagrangian Equations: Why is TWSBR Underactuated?</span><span class="lang-de">1. Physik & Lagrange-Gleichungen: Warum ist das System unteraktuiert?</span></a></li>\n            <li><a href="#sec-why-single-fails"><span class="lang-en">2. Theoretical Dilemma: Why Single-Loop PID Catastrophically Fails</span><span class="lang-de">2. Theoretisches Dilemma: Warum einkreisige PID-Regler versagen</span></a></li>\n            <li><a href="#sec-cascade-arch"><span class="lang-en">3. Cascade Architecture & Bandwidth Decoupling (500Hz vs 50Hz)</span><span class="lang-de">3. Kaskadenarchitektur & Bandbreitenentkopplung (500Hz vs 50Hz)</span></a></li>\n            <li><a href="#sec-simulink"><span class="lang-en">4. Detailed MATLAB / Simulink Nonlinear Plant Modeling</span><span class="lang-de">4. Detaillierte MATLAB / Simulink Modellierung</span></a></li>\n            <li><a href="#sec-firmware"><span class="lang-en">5. Line-by-Line ESP32 FreeRTOS Firmware Implementation</span><span class="lang-de">5. Zeilenweise Analyse der ESP32 FreeRTOS Firmware</span></a></li>\n            <li><a href="#sec-filter"><span class="lang-en">6. Complementary Filter Derivation: Why Alpha = 0.98?</span><span class="lang-de">6. Komplementärfilter-Herleitung: Warum Alpha = 0.98?</span></a></li>\n            <li><a href="#sec-tuning"><span class="lang-en">7. Systematic Gain Tuning Protocol & Anti-Windup Strategy</span><span class="lang-de">7. Systematisches Tuning-Protokoll & Anti-Windup-Strategie</span></a></li>\n            <li><a href="#sec-troubleshooting"><span class="lang-en">8. Engineering Diagnostics & Common Failure Modes</span><span class="lang-de">8. Technische Fehlerdiagnose & Häufige Ursachen</span></a></li>
+            <li><a href="#sec-physics"><span class="lang-en">1. Physics & Lagrangian Equations: Why is TWSBR Underactuated?</span><span class="lang-de">1. Physik & Lagrange-Gleichungen: Warum ist das System unteraktuiert?</span></a></li>
+            <li><a href="#sec-why-single-fails"><span class="lang-en">2. Theoretical Dilemma: Why Single-Loop PID Catastrophically Fails</span><span class="lang-de">2. Theoretisches Dilemma: Warum einkreisige PID-Regler versagen</span></a></li>
+            <li><a href="#sec-cascade-arch"><span class="lang-en">3. Cascade Architecture & Bandwidth Decoupling (500Hz vs 50Hz)</span><span class="lang-de">3. Kaskadenarchitektur & Bandbreitenentkopplung (500Hz vs 50Hz)</span></a></li>
+            <li><a href="#sec-simulink"><span class="lang-en">4. Detailed MATLAB / Simulink Nonlinear Plant Modeling</span><span class="lang-de">4. Detaillierte MATLAB / Simulink Modellierung</span></a></li>
+            <li><a href="#sec-firmware"><span class="lang-en">5. Line-by-Line ESP32 FreeRTOS Firmware Implementation</span><span class="lang-de">5. Zeilenweise Analyse der ESP32 FreeRTOS Firmware</span></a></li>
+            <li><a href="#sec-filter"><span class="lang-en">6. Complementary Filter Derivation: Why Alpha = 0.98?</span><span class="lang-de">6. Komplementärfilter-Herleitung: Warum Alpha = 0.98?</span></a></li>
+            <li><a href="#sec-tuning"><span class="lang-en">7. Systematic Gain Tuning Protocol & Anti-Windup Strategy</span><span class="lang-de">7. Systematisches Tuning-Protokoll & Anti-Windup-Strategie</span></a></li>
+            <li><a href="#sec-troubleshooting"><span class="lang-en">8. Engineering Diagnostics & Common Failure Modes</span><span class="lang-de">8. Technische Fehlerdiagnose & Häufige Ursachen</span></a></li>
           </ul>
         </div>
 
@@ -478,10 +486,10 @@ void BalanceTask(void *pvParameters) {
   </div>
 
   <footer class="site-footer">
-    <div>&copy; 2026 · Powered by GitHub Pages · Cyber-Tech Portfolio · Vinh Do (HUST)</div>
+    <div>&copy; 2026 · Powered by GitHub Pages · Đỗ Hiểu Vinh (HUST)</div>
   </footer>
 
-  <script src="../../assets/js/search-data.js?v=4.0"></script>
-  <script src="../../assets/js/main.js?v=4.0"></script>
+  <script src="../../assets/js/search-data.js?v=5.0"></script>
+  <script src="../../assets/js/main.js?v=5.0"></script>
 </body>
 </html>
