@@ -102,12 +102,31 @@
     if (status === 409 || status === 422) return 'File đã thay đổi trên GitHub. Hãy tải lại trang rồi sửa lại.';
     return fallback || ('Lỗi GitHub (' + status + ').');
   }
+  var NO_WRITE = 'Token chỉ đọc được, chưa ghi được vào repo. Tạo lại token: ở mục Repository access chọn "Only select repositories" và chọn ' + REPO + ', Contents = Read and write.';
+  // 403 can mean a read-only token or a rate limit; the response body tells them apart.
+  function explain403(r) {
+    return r.clone().json().then(function (j) {
+      var m = (j && j.message) || '';
+      if (/rate limit/i.test(m)) return 'GitHub đang giới hạn tốc độ, hãy thử lại sau ít phút.';
+      return NO_WRITE;
+    }, function () { return NO_WRITE; });
+  }
   function verifyToken(t) {
     return gh('/repos/' + OWNER + '/' + REPO, { token: t }).then(function (r) {
       if (!r.ok) return { ok: false, msg: explain(r.status) };
       return r.json().then(function (j) {
         if (j.permissions && !j.permissions.push) return { ok: false, msg: 'Token chỉ có quyền đọc, cần quyền ghi (Contents: Read and write).' };
-        return { ok: true };
+        // Fine-grained tokens report the user's own role above, not the token's scope.
+        // Probe write access without changing anything: a PUT with a bogus sha is rejected
+        // with 409/422 when writing is allowed, and with 403 when the token is read-only.
+        return gh('/repos/' + OWNER + '/' + REPO + '/contents/README.md', {
+          token: t, method: 'PUT',
+          body: { message: 'write check (rejected, no change)', content: 'eA==', sha: '0000000000000000000000000000000000000000', branch: BRANCH }
+        }).then(function (w) {
+          if (w.status === 403) return explain403(w).then(function (msg) { return { ok: false, msg: msg }; });
+          if (w.status === 401) return { ok: false, msg: explain(401) };
+          return { ok: true };
+        });
       });
     }).catch(function () { return { ok: false, msg: 'Không kết nối được tới GitHub.' }; });
   }
@@ -326,6 +345,7 @@
         });
       })
       .then(function (r) {
+        if (r.status === 403) return explain403(r).then(function (msg) { throw Object.assign(new Error(msg), { status: 403 }); });
         if (!r.ok) throw Object.assign(new Error(explain(r.status)), { status: r.status });
         items.forEach(function (it) { it.base = cleanInner(it.el); it.text = it.el.textContent; it.el.classList.remove('adm-dirty'); });
         say('Đã lưu. Site sẽ cập nhật sau khoảng 1 phút (Ctrl+Shift+R để xem bản mới).');

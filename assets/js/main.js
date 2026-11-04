@@ -508,7 +508,7 @@
     css.href = base + 'css/admin.css?v=5.8';
     document.head.appendChild(css);
     const js = document.createElement('script');
-    js.src = base + 'js/admin.js?v=5.8';
+    js.src = base + 'js/admin.js?v=6.2';
     js.onload = () => cb(window.SiteAdmin);
     document.head.appendChild(js);
   }
