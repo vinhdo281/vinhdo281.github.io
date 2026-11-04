@@ -6,7 +6,7 @@
   <title>End-to-End Guide: Building a ROS 2 Differential Drive Mobile Robot from Scratch in Gazebo, ros2_control & Nav2 · Đỗ Hiểu Vinh</title>
   <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
   <link rel="stylesheet" href="../../assets/css/style.css?v=5.7">
-  <link rel="stylesheet" href="../../assets/css/swiss.css?v=6.0">
+  <link rel="stylesheet" href="../../assets/css/swiss.css?v=6.1">
   <!-- KaTeX CSS & JS for Math Equations -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
@@ -182,83 +182,148 @@
             <span class="lang-de">INHALTSVERZEICHNIS</span>
           </div>
           <ul class="article-toc-list">
-            <li><a href="#sec-kinematics"><span class="lang-en">1. Differential Drive Kinematics & Non-Holonomic Constraints</span><span class="lang-de">1. Differenzielle Kinematik & Nichtholonomische Zwangsbedingungen</span></a></li>
-            <li><a href="#sec-urdf-physics"><span class="lang-en">2. URDF/Xacro Physics: Why Caster Friction & Inertia Blow Up Gazebo</span><span class="lang-de">2. URDF/Xacro-Physik: Warum Stützradreibung Gazebo instabil macht</span></a></li>
-            <li><a href="#sec-ros2-control"><span class="lang-en">3. Annotated ros2_control & diff_drive_controller Architecture</span><span class="lang-de">3. Kommentierte ros2_control & diff_drive_controller Architektur</span></a></li>
-            <li><a href="#sec-tf-tree"><span class="lang-en">4. Coordinate Transforms (TF2): map -> odom -> base_link</span><span class="lang-de">4. Koordinatentransformationen (TF2): map -> odom -> base_link</span></a></li>
-            <li><a href="#sec-slam"><span class="lang-en">5. Graph-Based LiDAR SLAM with SLAM Toolbox (Ceres Scan Matcher)</span><span class="lang-de">5. Graphenbasiertes LiDAR SLAM mit SLAM Toolbox</span></a></li>
-            <li><a href="#sec-nav2-planners"><span class="lang-en">6. Nav2 Navigation Stack: Global NavFn & Local DWB Planner</span><span class="lang-de">6. Nav2 Navigation Stack: Globaler NavFn & Lokaler DWB Planner</span></a></li>
-            <li><a href="#sec-cli-guide"><span class="lang-en">7. Complete Step-by-Step CLI Execution & Verification</span><span class="lang-de">7. Vollständige Schritt-für-Schritt CLI-Ausführung & Verifikation</span></a></li>
-            <li><a href="#sec-diagnostics"><span class="lang-en">8. Practical Debugging Checklist (TF Drift, Lidar Time Jitter)</span><span class="lang-de">8. Praktische Fehlerdiagnose (TF-Drift, Lidar-Zeit-Jitter)</span></a></li>
+            <li><a href="#sec-overview"><span class="lang-en">0. What You Will Build</span><span class="lang-de">0. Was Sie bauen</span></a></li>
+            <li><a href="#sec-kinematics"><span class="lang-en">1. Differential Drive Kinematics &amp; Non-Holonomic Constraints</span><span class="lang-de">1. Differenzielle Kinematik &amp; Nichtholonomische Zwangsbedingungen</span></a></li>
+            <li><a href="#sec-urdf-physics"><span class="lang-en">2. URDF/Xacro Model: Footprint, Caster Friction &amp; Inertia</span><span class="lang-de">2. URDF/Xacro-Modell: Footprint, Stützradreibung &amp; Trägheit</span></a></li>
+            <li><a href="#sec-ros2-control"><span class="lang-en">3. ros2_control, diff_drive_controller &amp; LiDAR</span><span class="lang-de">3. ros2_control, diff_drive_controller &amp; LiDAR</span></a></li>
+            <li><a href="#sec-tf-tree"><span class="lang-en">4. Coordinate Transforms (TF2): map -&gt; odom -&gt; base_footprint</span><span class="lang-de">4. Koordinatentransformationen (TF2): map -&gt; odom -&gt; base_footprint</span></a></li>
+            <li><a href="#sec-slam"><span class="lang-en">5. Graph-Based LiDAR SLAM with SLAM Toolbox</span><span class="lang-de">5. Graphenbasiertes LiDAR SLAM mit SLAM Toolbox</span></a></li>
+            <li><a href="#sec-nav2-planners"><span class="lang-en">6. Nav2: Global NavFn, Local DWB &amp; Costmap Inflation</span><span class="lang-de">6. Nav2: Globaler NavFn, Lokaler DWB &amp; Costmap-Inflation</span></a></li>
+            <li><a href="#sec-cli-guide"><span class="lang-en">7. Complete Step-by-Step CLI Execution &amp; Verification</span><span class="lang-de">7. Vollständige Schritt-für-Schritt CLI-Ausführung &amp; Verifikation</span></a></li>
+            <li><a href="#sec-diagnostics"><span class="lang-en">8. Practical Debugging Checklist</span><span class="lang-de">8. Praktische Fehlerdiagnose</span></a></li>
           </ul>
         </div>
 
         <!-- ARTICLE BODY -->
         <div class="article-content">
           <div class="lang-en">
-            <section id="sec-kinematics">
-        <h2><span class="h2-badge">PART 1</span> Differential Drive Kinematics & Non-Holonomic Constraints</h2>
-        <p>A differential drive mobile robot consists of two coaxial actuated drive wheels of radius $R$ separated by track width $W$, complemented by one or two passive caster wheels for vertical balance. It is subject to a fundamental <strong>non-holonomic kinematic constraint</strong>:</p>
-        
-        <p>$$\dot{y}\cos\theta - \dot{x}\sin\theta = 0$$</p>
-        <p>This equation dictates that the robot cannot instantaneously translate sideways (along its lateral body y-axis). Lateral motion requires rotating first. The relationship between Cartesian velocities $(\dot{x}, \dot{y}, \dot{\theta})$ and wheel angular velocities $(\omega_R, \omega_L)$ is expressed by forward kinematics:</p>
-        
-        <p>$$v = \frac{R}{2}(\omega_R + \omega_L), \quad \omega = \frac{R}{W}(\omega_R - \omega_L)$$</p>
-        
-        <p>Conversely, when a navigation node commands linear velocity $v$ and angular velocity $\omega$ via topic <code>/cmd_vel</code>, the inverse kinematics calculates required individual wheel speeds:</p>
-        <p>$$\omega_R = \frac{v + \frac{W}{2}\omega}{R}, \quad \omega_L = \frac{v - \frac{W}{2}\omega}{R}$$</p>
-        
-        <div class="callout callout-info">
-          <strong>Why Track Width Calibration Matters:</strong> If the effective track width $W$ in software deviates from physical reality by even $3\%$, calculating heading angle from wheel encoder odometry ($d\theta = \frac{R}{W}(\Delta \phi_R - \Delta \phi_L)$) accumulates severe rotational errors, causing map distortion during SLAM.
-        </div>
-      </section>
+<section id="sec-overview">
+<h2><span class="h2-badge">START</span> What You Will Build</h2>
+<p>This guide builds <code>bot1</code>, a small differential-drive robot, from an empty ROS 2 package to a robot that maps a room with LiDAR SLAM and drives to goals with Nav2. Every file shown below is in the open-source repository, and every snippet is taken from the real files, so you can follow along or just clone it.</p>
+<p><strong>Target:</strong> Ubuntu 22.04, ROS 2 Humble and Gazebo Classic 11 (the simulator that ships with Humble). The newer Gazebo Sim uses different plugins and is not covered here.</p><div class="figure-card">
+<img src="../../assets/images/posts/bot1/fig01-system-overview.svg" alt="System overview of the bot1 simulation stack" class="figure-img">
+<div class="figure-caption"><strong>Figure 1:</strong> Data flow of the finished system. Gazebo publishes <code>/scan</code> and odometry, SLAM Toolbox builds the map, Nav2 plans and follows a path, and the velocity command returns to the wheels through <code>diff_cont</code>.</div>
+</div><h4>Install and build</h4><div class="code-terminal"><pre><code>sudo apt update &amp;&amp; sudo apt install -y \
+  ros-humble-desktop \
+  ros-humble-gazebo-ros-pkgs ros-humble-gazebo-ros2-control \
+  ros-humble-ros2-control ros-humble-ros2-controllers \
+  ros-humble-xacro ros-humble-topic-tools \
+  ros-humble-slam-toolbox ros-humble-nav2-bringup \
+  ros-humble-teleop-twist-keyboard
 
-      <section id="sec-urdf-physics">
-        <h2><span class="h2-badge">PART 2</span> URDF/Xacro Physics: Why Caster Friction & Inertia Blow Up Gazebo</h2>
-        <p>A common pitfall in Gazebo simulation is when the robot bounces violently, shakes uncontrollably, or tips over during turns. This is caused by <strong>improper caster wheel friction parameters and incorrect inertia tensors</strong>.</p>
-        
-        <h4>1. Caster Contact Friction Dilemma:</h4>
-        <p>In standard Gazebo ODE physics, default surface friction is $\mu_1 = \mu_2 = 1.0$. If a caster wheel ball is given default friction, it creates strong lateral frictional resistance whenever the robot tries to yaw, causing the wheels to drag, slip, and vibrate violently. We must explicitly set friction to near-zero:</p>
+mkdir -p ~/ros2_ws/src &amp;&amp; cd ~/ros2_ws/src
+git clone https://github.com/vinhdo281/bot1.git
+cd ~/ros2_ws &amp;&amp; colcon build --symlink-install --packages-select bot1
+source install/setup.bash</code></pre></div><h4>Package layout</h4><div class="code-terminal"><pre><code>bot1/
+├── description/   robot.urdf.xacro  robot_core.xacro  ros2_control.xacro
+│                  lidar.xacro       inertial_macros.xacro
+├── config/        my_controllers.yaml  mapper_params_online_sync.yaml  nav2_params.yaml
+├── launch/        rsp.launch.py  launch_sim.launch.py  rviz.launch.py
+├── worlds/        obstacles.world  empty.world
+├── rviz/          view_bot.rviz
+└── maps/          saved maps</code></pre></div>
+</section>
+<section id="sec-kinematics">
+<h2><span class="h2-badge">PART 1</span> Differential Drive Kinematics &amp; Non-Holonomic Constraints</h2>
+<p>A differential drive mobile robot consists of two coaxial actuated drive wheels of radius $R$ separated by track width $W$, complemented by one passive caster wheel for balance. It is subject to a fundamental <strong>non-holonomic kinematic constraint</strong>:</p>
+<p>$$\dot{y}\cos\theta - \dot{x}\sin\theta = 0$$</p>
+<p>This equation dictates that the robot cannot instantaneously translate sideways (along its lateral body y-axis). Lateral motion requires rotating first. The relationship between the body velocities and the wheel angular velocities $(\omega_R, \omega_L)$ is expressed by forward kinematics:</p>
+<p>$$v = \frac{R}{2}(\omega_R + \omega_L), \quad \omega = \frac{R}{W}(\omega_R - \omega_L)$$</p>
+<div class="figure-card">
+<img src="../../assets/images/posts/bot1/fig02-diff-drive-geometry.svg" alt="Top view of the robot with wheel speeds, v, omega and the track width" class="figure-img">
+<div class="figure-caption"><strong>Figure 2:</strong> Top view of <code>bot1</code>, drawn from the numbers in the URDF. The track width is $W = 0.297\,\text{m}$ and the wheel radius is $R = 0.033\,\text{m}$.</div>
+</div>
+<p>Conversely, when a navigation node commands linear velocity $v$ and angular velocity $\omega$ via topic <code>/cmd_vel</code>, the inverse kinematics calculates the required individual wheel speeds:</p>
+<p>$$\omega_R = \frac{v + \frac{W}{2}\omega}{R}, \quad \omega_L = \frac{v - \frac{W}{2}\omega}{R}$$</p>
+<p>Figure 3 puts numbers on this. Four constant commands are integrated for 6 seconds with the kinematic model, and the table lists the wheel speeds that <code>diff_cont</code> would send for each of them. A pure rotation ($v = 0$) makes the wheels turn in opposite directions, and a gentle turn is just a small speed difference.</p>
+<div class="figure-card">
+<img src="../../assets/images/posts/bot1/fig03-cmd-vel-trajectories.svg" alt="Computed paths for four constant velocity commands with the wheel speeds" class="figure-img">
+<div class="figure-caption"><strong>Figure 3:</strong> Paths computed from the kinematic model for four constant <code>/cmd_vel</code> commands. This is a calculation, not a Gazebo recording.</div>
+</div>
+<div class="callout callout-info">
+<strong>Speed limit from the hardware interface:</strong> <code>ros2_control.xacro</code> clamps each wheel command to $\pm 10\,\text{rad/s}$. With $R = 0.033\,\text{m}$ that is a straight-line maximum of $10 \times 0.033 = 0.33\,\text{m/s}$, and any turn lowers it because one wheel has to run faster. The Nav2 limit used later ($0.26\,\text{m/s}$) stays below this.
+</div>
+<div class="callout callout-info">
+<strong>Why track width calibration matters:</strong> If the effective track width $W$ in software deviates from physical reality by even $3\%$, calculating heading from wheel odometry ($d\theta = \frac{R}{W}(\Delta \phi_R - \Delta \phi_L)$) accumulates rotational errors, causing map distortion during SLAM.
+</div>
+</section>
+<section id="sec-urdf-physics">
+<h2><span class="h2-badge">PART 2</span> URDF/Xacro Physics: Why Caster Friction &amp; Inertia Blow Up Gazebo</h2>
+<p>The model is split into small xacro files so each concern can change on its own. <code>robot.urdf.xacro</code> only declares the two numbers shared with the controller and includes the rest:</p><div class="code-terminal"><pre><code>&lt;robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="bot1"&gt;
+  &lt;!-- shared with config/my_controllers.yaml: keep them in sync --&gt;
+  &lt;xacro:property name="wheel_radius" value="0.033"/&gt;
+  &lt;xacro:property name="wheel_separation" value="0.297"/&gt;
 
-        <div class="code-terminal"><pre><code><!-- caster_wheel.xacro -->
-<gazebo reference="caster_wheel">
-  <material>Gazebo/Black</material>
-  <!-- CRITICAL: Near-zero friction allows omnidirectional sliding without dragging -->
-  <mu1 value="0.001"/>
-  <mu2 value="0.001"/>
-  <!-- Contact stiffness and damping coefficients -->
-  <kp value="1000000.0"/>
-  <kd value="1.0"/>
-</gazebo></code></pre></div>
-
-        <h4>2. Rigid Body Rotational Inertia Tensors:</h4>
-        <p>If inertia values are set to zero or physically inconsistent values (violating the triangle inequality $I_{xx} + I_{yy} \ge I_{zz}$), the Gazebo Open Dynamics Engine (ODE) matrix solver produces infinite accelerations, resulting in <code>NaN</code> velocity vectors and robot disassembly.</p>
-
-        <div class="code-terminal"><pre><code><!-- Solid Cylinder Wheel Inertia Macro -->
-<!-- Mass = m, Radius = r, Width = h -->
-<xacro:macro name="inertial_cylinder" params="mass length radius *origin">
-  <inertial>
-    <xacro:insert_block name="origin"/>
-    <mass value="${mass}"/>
-    <!-- Ixx = Iyy = (1/12)*m*(3*r^2 + h^2) -->
-    <!-- Izz = (1/2)*m*r^2 (axis of rotation) -->
-    <inertia ixx="${(1/12) * mass * (3*radius*radius + length*length)}" ixy="0.0" ixz="0.0"
+  &lt;xacro:include filename="inertial_macros.xacro"/&gt;
+  &lt;xacro:include filename="robot_core.xacro"/&gt;
+  &lt;xacro:include filename="ros2_control.xacro"/&gt;
+  &lt;xacro:include filename="lidar.xacro"/&gt;
+&lt;/robot&gt;</code></pre></div>
+<p>The chassis is a $0.30 \times 0.24 \times 0.08\,\text{m}$ box of 1 kg, each wheel is a 50 g cylinder, and the caster is a small ball. <code>base_footprint</code> is the root of the tree and sits on the ground, <code>base_link</code> is on the wheel axle:</p><div class="code-terminal"><pre><code>&lt;!-- base_footprint is the URDF root: the robot projected onto the ground --&gt;
+&lt;link name="base_footprint"/&gt;
+&lt;link name="base_link"/&gt;
+&lt;joint name="base_footprint_joint" type="fixed"&gt;
+  &lt;parent link="base_footprint"/&gt;
+  &lt;child link="base_link"/&gt;
+  &lt;origin xyz="0 0 ${wheel_radius}" rpy="0 0 0"/&gt;
+&lt;/joint&gt;</code></pre></div><div class="figure-card">
+<img src="../../assets/images/posts/bot1/fig04-robot-layout.svg" alt="Top and side view of bot1 with frames and dimensions" class="figure-img">
+<div class="figure-caption"><strong>Figure 4:</strong> Top and side view of <code>bot1</code> with its frames, drawn from the URDF numbers. The caster ball reaches the ground exactly: its centre is at $z = -R + r_{caster}$ relative to <code>base_link</code>.</div>
+</div>
+<p>A common pitfall in Gazebo simulation is when the robot bounces violently, shakes, or tips over during turns. This is caused by <strong>improper caster friction and incorrect inertia tensors</strong>.</p>
+<h4>1. Caster contact friction:</h4>
+<p>In standard Gazebo ODE physics, default surface friction is $\mu_1 = \mu_2 = 1.0$. A caster ball with default friction creates strong lateral resistance whenever the robot tries to yaw, so the wheels drag, slip and vibrate. Set the friction of the ball to near zero:</p><div class="code-terminal"><pre><code>&lt;!-- robot_core.xacro: the caster is a ball that touches the ground --&gt;
+&lt;gazebo reference="caster_wheel"&gt;
+  &lt;material&gt;Gazebo/Black&lt;/material&gt;
+  &lt;!-- CRITICAL: near-zero friction lets the ball slide without dragging --&gt;
+  &lt;mu1 value="0.001"/&gt;
+  &lt;mu2 value="0.001"/&gt;
+  &lt;!-- contact stiffness and damping --&gt;
+  &lt;kp value="1000000.0"/&gt;
+  &lt;kd value="1.0"/&gt;
+&lt;/gazebo&gt;</code></pre></div>
+<h4>2. Rigid body inertia tensors:</h4>
+<p>If inertia values are zero or physically inconsistent (violating the triangle inequality $I_{xx} + I_{yy} \ge I_{zz}$), the ODE solver can produce <code>NaN</code> velocities and the robot falls apart. The macros in <code>inertial_macros.xacro</code> compute valid tensors from mass and dimensions, so you never type them by hand:</p><div class="code-terminal"><pre><code>&lt;!-- inertial_macros.xacro: solid cylinder, rotation axis = local z --&gt;
+&lt;xacro:macro name="inertial_cylinder" params="mass length radius *origin"&gt;
+  &lt;inertial&gt;
+    &lt;xacro:insert_block name="origin"/&gt;
+    &lt;mass value="${mass}"/&gt;
+    &lt;!-- Ixx = Iyy = (1/12) m (3 r^2 + h^2),  Izz = (1/2) m r^2 --&gt;
+    &lt;inertia ixx="${(1/12) * mass * (3*radius*radius + length*length)}" ixy="0.0" ixz="0.0"
              iyy="${(1/12) * mass * (3*radius*radius + length*length)}" iyz="0.0"
-             izz="${(1/2) * mass * (radius*radius)}" />
-  </inertial>
-</xacro:macro></code></pre></div>
-      </section>
+             izz="${(1/2) * mass * (radius*radius)}"/&gt;
+  &lt;/inertial&gt;
+&lt;/xacro:macro&gt;</code></pre></div>
+</section>
+<section id="sec-ros2-control">
+<h2><span class="h2-badge">PART 3</span> Annotated ros2_control &amp; diff_drive_controller Architecture</h2>
+<p>Rather than custom Gazebo plugins that couple software to the simulator, we use <code>ros2_control</code> with <code>diff_drive_controller</code>. The same controller configuration then runs on real hardware; only the hardware plugin in the URDF changes.</p>
+<h4>1. Declare the hardware interface in the URDF:</h4><div class="code-terminal"><pre><code>&lt;!-- ros2_control.xacro --&gt;
+&lt;ros2_control name="GazeboSystem" type="system"&gt;
+  &lt;hardware&gt;
+    &lt;plugin&gt;gazebo_ros2_control/GazeboSystem&lt;/plugin&gt;
+  &lt;/hardware&gt;
+  &lt;joint name="left_wheel_joint"&gt;
+    &lt;command_interface name="velocity"&gt;
+      &lt;param name="min"&gt;-10&lt;/param&gt;
+      &lt;param name="max"&gt;10&lt;/param&gt;
+    &lt;/command_interface&gt;
+    &lt;state_interface name="velocity"/&gt;
+    &lt;state_interface name="position"/&gt;
+  &lt;/joint&gt;
+  &lt;!-- right_wheel_joint is identical --&gt;
+&lt;/ros2_control&gt;
 
-      <section id="sec-ros2-control">
-        <h2><span class="h2-badge">PART 3</span> Annotated ros2_control & diff_drive_controller Architecture</h2>
-        <p>Rather than using custom Gazebo plugins that couple software to simulation, we use <code>ros2_control</code> with the <code>diff_drive_controller</code> plugin. This architecture guarantees that the exact same ROS 2 controller runs on real embedded hardware with zero code alterations:</p>
-
-        <div class="code-terminal"><pre><code># config/my_controllers.yaml
+&lt;gazebo&gt;
+  &lt;plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so"&gt;
+    &lt;parameters&gt;$(find bot1)/config/my_controllers.yaml&lt;/parameters&gt;
+  &lt;/plugin&gt;
+&lt;/gazebo&gt;</code></pre></div>
+<h4>2. Configure the controllers:</h4><div class="code-terminal"><pre><code># config/my_controllers.yaml
 controller_manager:
   ros__parameters:
-    update_rate: 50 # 50 Hz control loop frequency
+    update_rate: 50 # 50 Hz control loop
 
-    # Declare active controller plugins
     diff_cont:
       type: diff_drive_controller/DiffDriveController
     joint_broad:
@@ -266,163 +331,296 @@ controller_manager:
 
 diff_cont:
   ros__parameters:
-    # Joint names matching URDF revolute joints:
     left_wheel_names: ["left_wheel_joint"]
     right_wheel_names: ["right_wheel_joint"]
 
-    # Mechanical geometry:
-    wheel_separation: 0.297 # Effective track width in meters
-    wheel_radius: 0.033     # Wheel radius in meters
+    wheel_separation: 0.297 # effective track width, m
+    wheel_radius: 0.033     # m
 
-    # Velocity command settings:
-    wheel_separation_multiplier: 1.0
-    left_wheel_radius_multiplier: 1.0
-    right_wheel_radius_multiplier: 1.0
-
-    # Publish odometry feedback at 50 Hz
     publish_rate: 50.0
     odom_frame_id: odom
     base_frame_id: base_footprint
-    pose_covariance_diagonal: [0.001, 0.001, 1.0e-3, 1.0e-3, 1.0e-3, 0.01]
-    twist_covariance_diagonal: [0.001, 0.001, 1.0e-3, 1.0e-3, 1.0e-3, 0.01]
 
-    # Open loop vs Closed loop odometry
-    open_loop: false # Closed-loop integration from wheel encoders
-    enable_odom_tf: true # Publishes odom -> base_footprint transform</code></pre></div>
-      </section>
-
-      <section id="sec-tf-tree">
-        <h2><span class="h2-badge">PART 4</span> Coordinate Transforms (TF2): map -> odom -> base_link</h2>
-        <p>Understanding ROS 2 transform frames is vital for navigation:</p>
-        
-        <ul>
-          <li><code>map</code>: Globally fixed spatial coordinate frame. Non-continuous (jumps instantaneously when SLAM detects a loop closure). Broadcast by <strong>SLAM Toolbox / AMCL</strong>.</li>
-          <li><code>odom</code>: World-fixed coordinate frame that is continuous and locally smooth. Drifts over time due to wheel slip, but contains no discontinuities. Broadcast by <strong>diff_drive_controller</strong>.</li>
-          <li><code>base_footprint</code>: 2D projection of robot chassis center onto the ground plane ($z = 0$).</li>
-          <li><code>base_link</code>: Rigid origin coordinate of the robot chassis body. Broadcast by <strong>robot_state_publisher</strong> from URDF joint offsets.</li>
-          <li><code>laser_frame</code>: 2D planar LiDAR sensor origin. Broadcast by <strong>robot_state_publisher</strong>.</li>
-        </ul>
-        
-        <div class="callout callout-info">
-          <strong>The Golden Rule of Mobile TF Trees:</strong> There must be exactly one parent frame for each child frame. If both SLAM and odometry attempt to publish <code>odom -> base_link</code> simultaneously, TF tree corruption occurs and navigation crashes.
-        </div>
-      </section>
-
-      <section id="sec-slam">
-        <h2><span class="h2-badge">PART 5</span> Graph-Based LiDAR SLAM with SLAM Toolbox (Ceres Scan Matcher)</h2>
-        <p>Unlike legacy Gmapping (particle filter) which demands high computational overhead and struggles with large maps, <strong>SLAM Toolbox</strong> uses a pose-graph optimization approach powered by the Ceres solver:</p>
-        
-        <p>As the robot explores, each 2D laser scan is matched against local submaps using a scan-to-map correlative matcher. When the robot revisits a previously mapped corridor, loop closures are recognized, and a non-linear least squares optimization adjusts the entire trajectory history to eliminate drift.</p>
-
-        <div class="code-terminal"><pre><code># config/mapper_params_online_sync.yaml
+    open_loop: false      # integrate the measured wheel joint states
+    enable_odom_tf: true  # publishes odom -&gt; base_footprint
+    use_stamped_vel: false # Humble: plain Twist on ~/cmd_vel_unstamped</code></pre></div><div class="figure-card">
+<img src="../../assets/images/posts/bot1/fig05-ros2-control-flow.svg" alt="Data flow through ros2_control" class="figure-img">
+<div class="figure-caption"><strong>Figure 5:</strong> Data flow inside Gazebo. <code>controller_manager</code> runs both controllers at 50 Hz; <code>diff_cont</code> turns the velocity command into wheel commands and publishes odometry, <code>joint_broad</code> publishes the wheel joint states.</div>
+</div>
+<h4>3. One velocity entry point</h4>
+<p>In Humble, <code>diff_cont</code> listens on <code>/diff_cont/cmd_vel_unstamped</code>. Teleop and Nav2 both publish plain <code>/cmd_vel</code>, so <code>launch_sim.launch.py</code> starts a relay between the two. Then neither tool needs a remapping argument:</p><div class="code-terminal"><pre><code># launch_sim.launch.py: one entry point for teleop AND Nav2
+cmd_vel_relay = Node(
+    package='topic_tools',
+    executable='relay',
+    arguments=['/cmd_vel', '/diff_cont/cmd_vel_unstamped'],
+    parameters=[{'use_sim_time': True}],
+)</code></pre></div>
+<h4>4. The 2D LiDAR</h4>
+<p>The scanner is a Gazebo ray sensor on <code>laser_frame</code>, 360 samples over a full circle at 30 Hz, published as <code>sensor_msgs/LaserScan</code> on <code>/scan</code>:</p><div class="code-terminal"><pre><code>&lt;!-- lidar.xacro (excerpt) --&gt;
+&lt;sensor name="laser" type="ray"&gt;
+  &lt;update_rate&gt;30&lt;/update_rate&gt;
+  &lt;ray&gt;
+    &lt;scan&gt;&lt;horizontal&gt;
+      &lt;samples&gt;360&lt;/samples&gt;
+      &lt;min_angle&gt;-3.14159&lt;/min_angle&gt;
+      &lt;max_angle&gt;3.14159&lt;/max_angle&gt;
+    &lt;/horizontal&gt;&lt;/scan&gt;
+    &lt;range&gt;&lt;min&gt;0.15&lt;/min&gt;&lt;max&gt;12&lt;/max&gt;&lt;/range&gt;
+  &lt;/ray&gt;
+  &lt;plugin name="laser_controller" filename="libgazebo_ros_ray_sensor.so"&gt;
+    &lt;ros&gt;&lt;remapping&gt;~/out:=scan&lt;/remapping&gt;&lt;/ros&gt;
+    &lt;output_type&gt;sensor_msgs/LaserScan&lt;/output_type&gt;
+    &lt;frame_name&gt;laser_frame&lt;/frame_name&gt;
+  &lt;/plugin&gt;
+&lt;/sensor&gt;</code></pre></div>
+</section>
+<section id="sec-tf-tree">
+<h2><span class="h2-badge">PART 4</span> Coordinate Transforms (TF2): map -&gt; odom -&gt; base_footprint</h2>
+<p>Understanding ROS 2 transform frames is vital for navigation:</p>
+<ul>
+<li><code>map</code>: globally fixed frame. It jumps when SLAM detects a loop closure. Published by <strong>SLAM Toolbox</strong> as <code>map -> odom</code>.</li>
+<li><code>odom</code>: continuous, locally smooth frame that drifts over time because of wheel slip. Published by <strong>diff_cont</strong> as <code>odom -> base_footprint</code>.</li>
+<li><code>base_footprint</code>: the robot projected onto the ground plane ($z = 0$). It is the root of the URDF tree.</li>
+<li><code>base_link</code>: rigid body origin on the wheel axle, $0.033\,\text{m}$ above <code>base_footprint</code>. Published by <strong>robot_state_publisher</strong>, like <code>chassis</code>, <code>caster_wheel</code> and <code>laser_frame</code>.</li>
+<li><code>left_wheel</code>, <code>right_wheel</code>: move with the wheel joint states, also through <strong>robot_state_publisher</strong>.</li>
+</ul><div class="figure-card">
+<img src="../../assets/images/posts/bot1/fig06-tf-tree.svg" alt="TF tree of the robot" class="figure-img">
+<div class="figure-caption"><strong>Figure 6:</strong> The TF tree and who publishes each edge.</div>
+</div>
+<div class="callout callout-info">
+<strong>The golden rule of mobile TF trees:</strong> every frame has exactly one parent. That is why <code>base_footprint</code> is the URDF root and the controller's <code>base_frame_id</code>: <code>diff_cont</code> adds the single parent <code>odom</code>. If the URDF made <code>base_footprint</code> a child of <code>base_link</code> while the controller also published <code>odom -> base_footprint</code>, the frame would have two parents and the tree would be corrupted.
+</div>
+</section>
+<section id="sec-slam">
+<h2><span class="h2-badge">PART 5</span> Graph-Based LiDAR SLAM with SLAM Toolbox (Ceres Scan Matcher)</h2>
+<p>Unlike legacy Gmapping (particle filter), <strong>SLAM Toolbox</strong> uses pose-graph optimization with the Ceres solver. Each 2D scan is matched against the local map by a correlative scan matcher. When the robot returns to a place it has seen, a loop closure is recognized and a non-linear least-squares optimization adjusts the whole trajectory to remove drift.</p>
+<p>The package ships the upstream Humble parameters for the online synchronous mode. The frames match our robot: <code>base_frame</code> is <code>base_footprint</code>, so SLAM Toolbox publishes <code>map -> odom</code> on top of the odometry tree from Part 4:</p><div class="code-terminal"><pre><code># config/mapper_params_online_sync.yaml (excerpt)
 solver_plugin: solver_plugins::CeresSolver
 ceres_linear_solver: SPARSE_NORMAL_CHOLESKY
 ceres_preconditioner: SCHUR_JACOBI
 
-# Scan Matcher parameters:
-distance_variance_penalty: 0.5
-angle_variance_penalty: 1.0
-fine_search_angle_offset: 0.00349 # ~0.2 deg resolution
-coarse_search_angle_offset: 0.349
-coarse_angle_resolution: 0.0349
-minimum_time_interval: 0.2
-minimum_travel_distance: 0.2
-minimum_travel_heading: 0.2</code></pre></div>
-      </section>
+odom_frame: odom
+map_frame: map
+base_frame: base_footprint
+scan_topic: /scan
+mode: mapping
 
-      <section id="sec-nav2-planners">
-        <h2><span class="h2-badge">PART 6</span> Nav2 Navigation Stack: Global NavFn & Local DWB Planner</h2>
-        <p>Autonomous navigation coordinates global pathfinding with real-time dynamic obstacle avoidance:</p>
-        
-        <ul>
-          <li><strong>Global Costmap & NavFn Planner:</strong> Builds a global grid from the SLAM map. NavFn uses Dijkstra / A* search to calculate the shortest path from current location to target pose.</li>
-          <li><strong>Local Costmap & Dynamic Window Approach (DWB):</strong> Maintains a $3\text{m} \times 3\text{m}$ rolling costmap populated by real-time laser scan points. The DWB controller samples circular trajectory arcs in $(v, \omega)$ velocity space, evaluates obstacle distance penalties and goal-heading costs, and outputs the optimal collision-free command velocity.</li>
-        </ul>
+resolution: 0.05
+minimum_time_interval: 0.5
+minimum_travel_distance: 0.5
+minimum_travel_heading: 0.5
+do_loop_closing: true
+loop_match_minimum_response_fine: 0.45</code></pre></div>
+</section>
+<section id="sec-nav2-planners">
+<h2><span class="h2-badge">PART 6</span> Nav2 Navigation Stack: Global NavFn &amp; Local DWB Planner</h2>
+<p>Autonomous navigation coordinates global path planning with real-time obstacle avoidance:</p>
+<ul>
+<li><strong>Global costmap and NavFn:</strong> builds a grid from the SLAM map. NavFn runs Dijkstra / A* to find the shortest path to the goal pose.</li>
+<li><strong>Local costmap and DWB:</strong> a $3\,\text{m} \times 3\,\text{m}$ rolling window filled by the laser scan. DWB samples arcs in $(v, \omega)$ space, scores obstacle distance and goal heading, and outputs the best collision-free command. The limits are $v \le 0.26\,\text{m/s}$ and $\omega \le 1.0\,\text{rad/s}$.</li>
+</ul>
+<p>The package uses the Nav2 Humble defaults. Only the lines that depend on this robot differ: the footprint radius, and the odometry topic, which here is <code>/diff_cont/odom</code>.</p><div class="code-terminal"><pre><code># config/nav2_params.yaml (the lines that differ from the Nav2 Humble defaults)
+bt_navigator:
+  ros__parameters:
+    odom_topic: /diff_cont/odom
 
-        <div class="code-terminal"><pre><code># Costmap inflation formula:
-# Cost(d) = exp(-beta * (d - r_inscribed)) * max_cost
-# Prevents robot from hugging obstacle boundaries too closely</code></pre></div>
-      </section>
+local_costmap:
+  local_costmap:
+    ros__parameters:
+      robot_radius: 0.20
+      inflation_layer:
+        cost_scaling_factor: 3.0
+        inflation_radius: 0.55
 
-      <section id="sec-cli-guide">
-        <h2><span class="h2-badge">PART 7</span> Complete Step-by-Step CLI Execution & Verification</h2>
-        <div class="code-terminal"><pre><code># 1. Source ROS 2 environment and build workspace
+velocity_smoother:
+  ros__parameters:
+    odom_topic: "/diff_cont/odom"</code></pre></div>
+<p>The controller's output is smoothed by <code>velocity_smoother</code> and ends up on <code>/cmd_vel</code>, so it goes through the same relay as the keyboard commands.</p>
+<h4>Costmap inflation</h4>
+<p>Inflation keeps the path away from walls. The cost around an obstacle depends only on the distance $d$ to it:</p><div class="code-terminal"><pre><code>cost(d) = 254                                  d = 0        (lethal)
+cost(d) = 253                                  0 &lt; d &lt;= robot_radius (inscribed)
+cost(d) = 252 * exp(-k * (d - robot_radius))   robot_radius &lt; d &lt;= inflation_radius
+cost(d) = 0                                    d &gt; inflation_radius
+# k = cost_scaling_factor = 3.0, robot_radius = 0.20 m, inflation_radius = 0.55 m</code></pre></div><div class="figure-card">
+<img src="../../assets/images/posts/bot1/fig07-costmap-inflation.svg" alt="Costmap inflation cost versus distance" class="figure-img">
+<div class="figure-caption"><strong>Figure 7:</strong> The Nav2 inflation cost curve, computed from the values in <code>nav2_params.yaml</code>. Inside <code>robot_radius</code> a cell is lethal for the robot, outside <code>inflation_radius</code> it is free.</div>
+</div>
+</section>
+<section id="sec-cli-guide">
+<h2><span class="h2-badge">PART 7</span> Complete Step-by-Step CLI Execution &amp; Verification</h2>
+<p>The whole stack runs in five terminals. Source the workspace in each one (<code>source ~/ros2_ws/install/setup.bash</code>).</p><div class="code-terminal"><pre><code># 0. Build once
 source /opt/ros/humble/setup.bash
-cd ~/ros2_ws
-colcon build --symlink-install --packages-select bot1
-
-# 2. Terminal 1: Launch Gazebo world with bot1 and ros2_control
+cd ~/ros2_ws &amp;&amp; colcon build --symlink-install --packages-select bot1
 source install/setup.bash
-ros2 launch bot1 launch_sim.launch.py world:=./src/bot1/worlds/obstacles.world
 
-# 3. Terminal 2: Launch online synchronous SLAM Toolbox
-source install/setup.bash
-ros2 launch slam_toolbox online_sync_launch.py use_sim_time:=true
+# Terminal 1: Gazebo + robot + controllers + /cmd_vel relay
+ros2 launch bot1 launch_sim.launch.py
+#   another world:  ros2 launch bot1 launch_sim.launch.py world:=$HOME/ros2_ws/src/bot1/worlds/empty.world
 
-# 4. Terminal 3: Keyboard Teleoperation
-ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r /cmd_vel:=/diff_cont/cmd_vel_unstamped
+# Terminal 2: RViz2 (robot model, TF, /scan, /map)
+ros2 launch bot1 rviz.launch.py
 
-# 5. Terminal 4: Save completed 2D map to disk
-ros2 run nav2_map_server map_saver_cli -f ~/ros2_ws/src/bot1/maps/my_world_map</code></pre></div>
-      </section>
+# Terminal 3: keyboard teleoperation (publishes /cmd_vel)
+ros2 run teleop_twist_keyboard teleop_twist_keyboard
 
-      <section id="sec-diagnostics">
-        <h2><span class="h2-badge">PART 8</span> Practical Debugging Checklist (TF Drift, Lidar Time Jitter)</h2>
-        <div class="callout callout-warning">
-          <strong>Debugging Issue 1: "TF_OLD_DATA" warnings in RViz:</strong><br>
-          <em>Root Cause:</em> Nodes are running with system wall-clock time rather than Gazebo simulated time. Solution: Ensure <code>use_sim_time:=true</code> is passed into every launch file and node configuration.
-        </div>
-        <div class="callout callout-tip">
-          <strong>Debugging Issue 2: Verify TF tree health via CLI:</strong><br>
-          <div class="code-terminal"><pre><code># Check live transform latency between odom and base_link:
+# Terminal 4: online SLAM with the package parameters
+ros2 launch slam_toolbox online_sync_launch.py use_sim_time:=true \
+  slam_params_file:=$HOME/ros2_ws/src/bot1/config/mapper_params_online_sync.yaml
+
+# Terminal 5: save the map when the room is covered
+ros2 run nav2_map_server map_saver_cli -f ~/ros2_ws/src/bot1/maps/my_world_map
+
+# Terminal 5 (instead): autonomous navigation while SLAM keeps running
+ros2 launch nav2_bringup navigation_launch.py use_sim_time:=true \
+  params_file:=$HOME/ros2_ws/src/bot1/config/nav2_params.yaml
+# then click "2D Goal Pose" in RViz and drop a goal in free space</code></pre></div>
+<h4>Check that everything is alive</h4><div class="code-terminal"><pre><code>ros2 control list_controllers          # diff_cont and joint_broad must be "active"
+ros2 topic hz /scan                    # about 30 Hz
+ros2 topic hz /diff_cont/odom          # about 50 Hz
+ros2 topic pub --once /cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0.1}}"
+ros2 run tf2_ros tf2_echo odom base_footprint   # position changes while the robot moves</code></pre></div>
+</section>
+<section id="sec-diagnostics">
+<h2><span class="h2-badge">PART 8</span> Practical Debugging Checklist (TF Drift, Lidar Time Jitter)</h2>
+<div class="callout callout-warning">
+<strong>Issue 1: "TF_OLD_DATA" warnings in RViz.</strong><br>
+<em>Root cause:</em> some node runs on wall-clock time instead of Gazebo time. Pass <code>use_sim_time:=true</code> to every launch file and node, including RViz and SLAM Toolbox.
+</div>
+<div class="callout callout-warning">
+<strong>Issue 2: the robot does not move.</strong><br>
+Run <code>ros2 control list_controllers</code>. If <code>diff_cont</code> is not <code>active</code>, the spawner ran before the controller manager was ready: check the Gazebo terminal for plugin errors. If it is active, confirm the relay is running with <code>ros2 topic info /diff_cont/cmd_vel_unstamped</code>.
+</div>
+<div class="callout callout-warning">
+<strong>Issue 3: the robot shudders or drifts when it turns.</strong><br>
+Check the caster friction (<code>mu1</code>, <code>mu2</code> near zero) and that <code>wheel_separation</code> and <code>wheel_radius</code> in <code>my_controllers.yaml</code> equal the values in the URDF.
+</div>
+<div class="callout callout-tip">
+<strong>Issue 4: verify the TF tree.</strong><br><div class="code-terminal"><pre><code># Check live transform latency between odom and base_footprint:
 ros2 run tf2_ros tf2_echo odom base_footprint
 
-# Generate visual PDF diagram of full TF tree:
+# Generate a PDF diagram of the full TF tree:
 ros2 run tf2_tools view_frames
 evince frames.pdf</code></pre></div>
-        </div>
-      </section>
+</div>
+</section>
           </div>
           <div class="lang-de">
-            <section id="sec-kinematics">
-        <h2><span class="h2-badge">TEIL 1</span> Differenzielle Kinematik & Nichtholonomische Zwangsbedingungen</h2>
-        <p>Ein fahrbarer Roboter mit Differentialantrieb unterliegt der nichtholonomischen Zwangsbedingung $\dot{y}\cos\theta - \dot{x}\sin\theta = 0$. Direkte seitliche Translation ist unmöglich. Die Vorwärtskinematik verknüpft Raddrehzahlen mit linearen und rotatorischen Geschwindigkeiten: $v = \frac{R}{2}(\omega_R + \omega_L)$ und $\omega = \frac{R}{W}(\omega_R - \omega_L)$.</p>
-      </section>
+<section id="sec-overview">
+<h2><span class="h2-badge">START</span> Was Sie bauen</h2>
+<p>Dieser Leitfaden baut <code>bot1</code>, einen kleinen Roboter mit Differentialantrieb, von einem leeren ROS-2-Paket bis zu einem Roboter, der einen Raum per LiDAR-SLAM kartiert und mit Nav2 Ziele anfährt. Jede gezeigte Datei liegt im quelloffenen Repository.</p>
+<p><strong>Zielplattform:</strong> Ubuntu 22.04, ROS 2 Humble und Gazebo Classic 11. Das neuere Gazebo Sim nutzt andere Plugins und wird hier nicht behandelt.</p><div class="figure-card">
+<img src="../../assets/images/posts/bot1/fig01-system-overview.svg" alt="System overview of the bot1 simulation stack" class="figure-img">
+<div class="figure-caption"><strong>Abbildung 1:</strong> Datenfluss des fertigen Systems. Gazebo liefert <code>/scan</code> und Odometrie, SLAM Toolbox erstellt die Karte, Nav2 plant und folgt dem Pfad, und der Geschwindigkeitsbefehl erreicht die Räder über <code>diff_cont</code>.</div>
+</div><h4>Installation und Build</h4><div class="code-terminal"><pre><code>sudo apt update &amp;&amp; sudo apt install -y \
+  ros-humble-desktop \
+  ros-humble-gazebo-ros-pkgs ros-humble-gazebo-ros2-control \
+  ros-humble-ros2-control ros-humble-ros2-controllers \
+  ros-humble-xacro ros-humble-topic-tools \
+  ros-humble-slam-toolbox ros-humble-nav2-bringup \
+  ros-humble-teleop-twist-keyboard
 
-      <section id="sec-urdf-physics">
-        <h2><span class="h2-badge">TEIL 2</span> URDF/Xacro-Physik: Warum Stützradreibung Gazebo instabil macht</h2>
-        <p>Mit der Standard-Haftreibung von $\mu = 1.0$ verhakt sich das Stützrad bei Drehungen und führt zu schweren Oszillationen. Die Reibung muss explizit auf $\mu_1 = \mu_2 = 0.001$ gesetzt werden. Zudem müssen die Trägheitstensoren der Räder exakt der Zylinderformel $I_{zz} = \frac{1}{2}m r^2$ entsprechen, um Matrix-Singularitäten im ODE-Solver zu vermeiden.</p>
-      </section>
+mkdir -p ~/ros2_ws/src &amp;&amp; cd ~/ros2_ws/src
+git clone https://github.com/vinhdo281/bot1.git
+cd ~/ros2_ws &amp;&amp; colcon build --symlink-install --packages-select bot1
+source install/setup.bash</code></pre></div><h4>Paketstruktur</h4><div class="code-terminal"><pre><code>bot1/
+├── description/   robot.urdf.xacro  robot_core.xacro  ros2_control.xacro
+│                  lidar.xacro       inertial_macros.xacro
+├── config/        my_controllers.yaml  mapper_params_online_sync.yaml  nav2_params.yaml
+├── launch/        rsp.launch.py  launch_sim.launch.py  rviz.launch.py
+├── worlds/        obstacles.world  empty.world
+├── rviz/          view_bot.rviz
+└── maps/          saved maps</code></pre></div>
+</section>
+<section id="sec-kinematics">
+<h2><span class="h2-badge">TEIL 1</span> Differenzielle Kinematik &amp; Nichtholonomische Zwangsbedingungen</h2>
+<p>Ein Roboter mit Differentialantrieb unterliegt der nichtholonomischen Zwangsbedingung $\dot{y}\cos\theta - \dot{x}\sin\theta = 0$. Direkte seitliche Translation ist unmöglich. Die Vorwärtskinematik verknüpft die Raddrehzahlen mit den Körpergeschwindigkeiten: $v = \frac{R}{2}(\omega_R + \omega_L)$ und $\omega = \frac{R}{W}(\omega_R - \omega_L)$. Die Inverskinematik berechnet aus <code>/cmd_vel</code> die Solldrehzahlen beider Räder.</p>
+<div class="figure-card">
+<img src="../../assets/images/posts/bot1/fig02-diff-drive-geometry.svg" alt="Draufsicht des Roboters mit Raddrehzahlen, v, omega und Spurweite" class="figure-img">
+<div class="figure-caption"><strong>Abbildung 2:</strong> Draufsicht auf <code>bot1</code>, gezeichnet aus den Zahlen der URDF-Datei. Spurweite $W = 0.297\,\text{m}$, Radradius $R = 0.033\,\text{m}$.</div>
+</div>
+<p>Abbildung 3 zeigt vier konstante Befehle über 6 Sekunden. Bei reiner Drehung ($v = 0$) drehen sich die Räder gegenläufig.</p>
+<div class="figure-card">
+<img src="../../assets/images/posts/bot1/fig03-cmd-vel-trajectories.svg" alt="Berechnete Bahnen für vier konstante Geschwindigkeitsbefehle" class="figure-img">
+<div class="figure-caption"><strong>Abbildung 3:</strong> Aus dem Kinematikmodell berechnete Bahnen für vier konstante <code>/cmd_vel</code>-Befehle. Es ist eine Rechnung, keine Gazebo-Aufnahme.</div>
+</div>
+<div class="callout callout-info">
+<strong>Geschwindigkeitsgrenze:</strong> <code>ros2_control.xacro</code> begrenzt jeden Radbefehl auf $\pm 10\,\text{rad/s}$, das sind geradeaus höchstens $0.33\,\text{m/s}$.
+</div>
+</section>
+<section id="sec-urdf-physics">
+<h2><span class="h2-badge">TEIL 2</span> URDF/Xacro-Physik: Warum Stützradreibung Gazebo instabil macht</h2>
+<p>Das Modell ist in kleine xacro-Dateien aufgeteilt. <code>base_footprint</code> ist die Wurzel des Baums und liegt am Boden, <code>base_link</code> liegt auf der Radachse. Das Chassis ist eine Box von $0.30 \times 0.24 \times 0.08\,\text{m}$ mit 1 kg.</p>
+<div class="figure-card">
+<img src="../../assets/images/posts/bot1/fig04-robot-layout.svg" alt="Draufsicht und Seitenansicht von bot1 mit Frames und Maßen" class="figure-img">
+<div class="figure-caption"><strong>Abbildung 4:</strong> Draufsicht und Seitenansicht von <code>bot1</code> mit den Frames, gezeichnet aus den URDF-Zahlen.</div>
+</div>
+<p>Mit der Standard-Haftreibung von $\mu = 1.0$ verhakt sich das Stützrad bei Drehungen und führt zu starken Oszillationen. Die Reibung muss explizit auf $\mu_1 = \mu_2 = 0.001$ gesetzt werden. Zudem müssen die Trägheitstensoren physikalisch konsistent sein; die Makros in <code>inertial_macros.xacro</code> berechnen sie aus Masse und Maßen.</p>
+</section>
+<section id="sec-ros2-control">
+<h2><span class="h2-badge">TEIL 3</span> Kommentierte ros2_control &amp; diff_drive_controller Architektur</h2>
+<p>Statt eigener Gazebo-Plugins nutzen wir <code>ros2_control</code> mit dem <code>diff_drive_controller</code>. Er liest die Radzustände im 50-Hz-Takt und publiziert Odometrie (<code>/diff_cont/odom</code>) sowie die Transformation <code>odom -> base_footprint</code>. Teleop und Nav2 senden beide auf <code>/cmd_vel</code>; ein <code>topic_tools relay</code> in <code>launch_sim.launch.py</code> leitet den Befehl an <code>/diff_cont/cmd_vel_unstamped</code> weiter. Das LiDAR liefert 360 Strahlen mit 30 Hz auf <code>/scan</code>.</p>
+<div class="figure-card">
+<img src="../../assets/images/posts/bot1/fig05-ros2-control-flow.svg" alt="Datenfluss durch ros2_control" class="figure-img">
+<div class="figure-caption"><strong>Abbildung 5:</strong> Datenfluss in Gazebo: <code>controller_manager</code> führt beide Controller mit 50 Hz aus.</div>
+</div>
+</section>
+<section id="sec-tf-tree">
+<h2><span class="h2-badge">TEIL 4</span> Koordinatentransformationen (TF2): map -&gt; odom -&gt; base_footprint</h2>
+<p>Hierarchie: <code>map</code> (global, sprunghaft bei Loop Closures, publiziert von SLAM) $\to$ <code>odom</code> (kontinuierlich, publiziert von <code>diff_cont</code>) $\to$ <code>base_footprint</code> (Wurzel der URDF) $\to$ <code>base_link</code> $\to$ <code>chassis</code>, <code>left_wheel</code>, <code>right_wheel</code>; unter <code>chassis</code> hängen <code>caster_wheel</code> und <code>laser_frame</code>. Jedes Frame hat genau einen Elternknoten.</p>
+<div class="figure-card">
+<img src="../../assets/images/posts/bot1/fig06-tf-tree.svg" alt="TF-Baum des Roboters" class="figure-img">
+<div class="figure-caption"><strong>Abbildung 6:</strong> Der TF-Baum und der Publisher jeder Kante.</div>
+</div>
+</section>
+<section id="sec-slam">
+<h2><span class="h2-badge">TEIL 5</span> Graphenbasiertes LiDAR SLAM mit SLAM Toolbox</h2>
+<p>Die SLAM Toolbox nutzt den Ceres-Solver zur nichtlinearen Ausgleichung des Posen-Graphen bei Schleifenschlüssen. Die Parameter in <code>mapper_params_online_sync.yaml</code> setzen <code>base_frame: base_footprint</code> und <code>scan_topic: /scan</code>; SLAM publiziert <code>map -> odom</code>.</p>
+</section>
+<section id="sec-nav2-planners">
+<h2><span class="h2-badge">TEIL 6</span> Nav2 Navigation Stack: Globaler NavFn &amp; Lokaler DWB Planner</h2>
+<p>NavFn erzeugt globale Pfade (Dijkstra/A*), während der DWB-Planer Hindernissen im rollenden $3\,\text{m} \times 3\,\text{m}$-Costmap-Fenster ausweicht ($v \le 0.26\,\text{m/s}$). Nur <code>robot_radius: 0.20</code> und das Odometrie-Topic <code>/diff_cont/odom</code> weichen von den Nav2-Humble-Vorgaben ab. Die Inflation hält den Pfad von Wänden fern.</p>
+<div class="figure-card">
+<img src="../../assets/images/posts/bot1/fig07-costmap-inflation.svg" alt="Costmap-Inflation über dem Abstand" class="figure-img">
+<div class="figure-caption"><strong>Abbildung 7:</strong> Verlauf der Nav2-Inflationskosten, berechnet aus den Werten in <code>nav2_params.yaml</code>.</div>
+</div>
+</section>
+<section id="sec-cli-guide">
+<h2><span class="h2-badge">TEIL 7</span> Vollständige Schritt-für-Schritt CLI-Ausführung &amp; Verifikation</h2>
+<p>Kompilieren mit <code>colcon build --symlink-install</code>, dann Gazebo, RViz, Teleop, SLAM Toolbox und Nav2 in getrennten Terminals starten. Teleop und Nav2 senden beide auf <code>/cmd_vel</code>.</p><div class="code-terminal"><pre><code># 0. Build once
+source /opt/ros/humble/setup.bash
+cd ~/ros2_ws &amp;&amp; colcon build --symlink-install --packages-select bot1
+source install/setup.bash
 
-      <section id="sec-ros2-control">
-        <h2><span class="h2-badge">TEIL 3</span> Kommentierte ros2_control & diff_drive_controller Architektur</h2>
-        <p>Der <code>diff_drive_controller</code> liest Rad-Encoder-Zustände im 50Hz-Takt und publiziert Odometriedaten sowie die <code>odom -> base_footprint</code>-Transformation.</p>
-      </section>
+# Terminal 1: Gazebo + robot + controllers + /cmd_vel relay
+ros2 launch bot1 launch_sim.launch.py
+#   another world:  ros2 launch bot1 launch_sim.launch.py world:=$HOME/ros2_ws/src/bot1/worlds/empty.world
 
-      <section id="sec-tf-tree">
-        <h2><span class="h2-badge">TEIL 4</span> Koordinatentransformationen (TF2): map -> odom -> base_link</h2>
-        <p>Hierarchie: <code>map</code> (global, sprunghaft bei Loop Closures, publiziert von SLAM) $\to$ <code>odom</code> (kontinuierlich glatt, publiziert vom Controller) $\to$ <code>base_footprint</code> $\to$ <code>base_link</code> $\to$ <code>laser_frame</code>.</p>
-      </section>
+# Terminal 2: RViz2 (robot model, TF, /scan, /map)
+ros2 launch bot1 rviz.launch.py
 
-      <section id="sec-slam">
-        <h2><span class="h2-badge">TEIL 5</span> Graphenbasiertes LiDAR SLAM mit SLAM Toolbox</h2>
-        <p>Die SLAM Toolbox nutzt den Ceres-Solver zur nichtlinearen Ausgleichung des Posen-Graphen bei Schleifenschlüssen (Loop Closures).</p>
-      </section>
+# Terminal 3: keyboard teleoperation (publishes /cmd_vel)
+ros2 run teleop_twist_keyboard teleop_twist_keyboard
 
-      <section id="sec-nav2-planners">
-        <h2><span class="h2-badge">TEIL 6</span> Nav2 Navigation Stack: Global NavFn & Lokaler DWB Planner</h2>
-        <p>NavFn generiert globale Pfade mittels Dijkstra/A*, während der DWB Local Planner Hindernissen im rollenden $3\text{m} \times 3\text{m}$ Costmap-Fenster ausweicht.</p>
-      </section>
+# Terminal 4: online SLAM with the package parameters
+ros2 launch slam_toolbox online_sync_launch.py use_sim_time:=true \
+  slam_params_file:=$HOME/ros2_ws/src/bot1/config/mapper_params_online_sync.yaml
 
-      <section id="sec-cli-guide">
-        <h2><span class="h2-badge">TEIL 7</span> Vollständige Schritt-für-Schritt CLI-Ausführung & Verifikation</h2>
-        <p>Kompilieren mit <code>colcon build --symlink-install</code>, Start von Gazebo, SLAM Toolbox, Teleop-Steuerung und Kartenexport via <code>map_saver_cli</code>.</p>
-      </section>
+# Terminal 5: save the map when the room is covered
+ros2 run nav2_map_server map_saver_cli -f ~/ros2_ws/src/bot1/maps/my_world_map
 
-      <section id="sec-diagnostics">
-        <h2><span class="h2-badge">TEIL 8</span> Praktische Fehlerdiagnose (TF-Drift, Lidar-Zeit-Jitter)</h2>
-        <p>Verifizierung des TF-Trees mit <code>tf2_echo</code> und Überprüfung von <code>use_sim_time:=true</code> gegen Taktabweichungen.</p>
-      </section>
+# Terminal 5 (instead): autonomous navigation while SLAM keeps running
+ros2 launch nav2_bringup navigation_launch.py use_sim_time:=true \
+  params_file:=$HOME/ros2_ws/src/bot1/config/nav2_params.yaml
+# then click "2D Goal Pose" in RViz and drop a goal in free space</code></pre></div><div class="code-terminal"><pre><code>ros2 control list_controllers          # diff_cont and joint_broad must be "active"
+ros2 topic hz /scan                    # about 30 Hz
+ros2 topic hz /diff_cont/odom          # about 50 Hz
+ros2 topic pub --once /cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0.1}}"
+ros2 run tf2_ros tf2_echo odom base_footprint   # position changes while the robot moves</code></pre></div>
+</section>
+<section id="sec-diagnostics">
+<h2><span class="h2-badge">TEIL 8</span> Praktische Fehlerdiagnose (TF-Drift, Lidar-Zeit-Jitter)</h2>
+<p>Treten <code>TF_OLD_DATA</code>-Warnungen auf, läuft ein Knoten nicht mit Simulationszeit: <code>use_sim_time:=true</code> überall setzen. Bewegt sich der Roboter nicht, prüft <code>ros2 control list_controllers</code>, ob <code>diff_cont</code> aktiv ist. Den TF-Baum prüft man mit <code>tf2_echo</code> und <code>view_frames</code>.</p>
+</section>
           </div>
 
           <div class="sidebar-divider" style="margin: 3rem 0;"></div>
@@ -474,6 +672,6 @@ evince frames.pdf</code></pre></div>
   </footer>
 
   <script src="../../assets/js/search-data.js?v=5.7"></script>
-  <script src="../../assets/js/main.js?v=6.0"></script>
+  <script src="../../assets/js/main.js?v=6.1"></script>
 </body>
 </html>

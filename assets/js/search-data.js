@@ -110,7 +110,7 @@ const SEARCH_DATA = [
     title_de: "End-to-End-Leitfaden: ROS 2 Mobiler Roboter Simulations-Stack in Gazebo, ros2_control & Nav2",
     category: "Blog",
     url: "posts/bot1-ros2-mobile-robot/index.html",
-    keywords: "ros2 humble gazebo bot1 urdf xacro diff_drive_controller slam toolbox nav2 costmaps autonomous navigation"
+    keywords: "ros2 humble gazebo classic bot1 urdf xacro diff_drive_controller ros2_control lidar scan tf tree odom slam toolbox nav2 costmap inflation dwb navfn teleop launch_sim autonomous navigation diagrams"
   },
   {
     title_en: "Computer Vision Guide: Highway Vehicle Detection, SORT Tracking & Virtual Line Counting",
