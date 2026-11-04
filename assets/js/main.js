@@ -4,6 +4,7 @@
 
 (function () {
   'use strict';
+  const MAIN_SRC = (document.currentScript && document.currentScript.src) || '';
 
   // --- 1. LANGUAGE SWITCHER (EN / DE) ---
   const DEFAULT_LANG = 'en';
@@ -498,6 +499,35 @@
     }
   }
 
+  // --- ADMIN: lazy-loaded visual editor (see assets/js/admin.js) ---
+  function loadAdmin(cb) {
+    if (window.SiteAdmin) { cb(window.SiteAdmin); return; }
+    const base = MAIN_SRC.replace(/js\/main\.js.*$/, '');
+    const css = document.createElement('link');
+    css.rel = 'stylesheet';
+    css.href = base + 'css/admin.css?v=5.7';
+    document.head.appendChild(css);
+    const js = document.createElement('script');
+    js.src = base + 'js/admin.js?v=5.7';
+    js.onload = () => cb(window.SiteAdmin);
+    document.head.appendChild(js);
+  }
+
+  function initAdmin() {
+    const footer = document.querySelector('.site-footer');
+    if (footer) {
+      const link = document.createElement('a');
+      link.href = '#';
+      link.className = 'adm-link';
+      link.textContent = 'Admin';
+      link.addEventListener('click', (e) => { e.preventDefault(); loadAdmin((A) => A.open()); });
+      footer.appendChild(link);
+    }
+    let stored = '';
+    try { stored = sessionStorage.getItem('site_admin_token') || localStorage.getItem('site_admin_token') || ''; } catch (e) { /* ignore */ }
+    if (stored) loadAdmin((A) => A.resume());
+  }
+
   // --- INITIALIZE ALL MODULES ---
   document.addEventListener('DOMContentLoaded', () => {
     initTheme();
@@ -508,6 +538,7 @@
     initMobileMenu();
     initOSTabs();
     initMotion();
+    initAdmin();
   });
 })();
 

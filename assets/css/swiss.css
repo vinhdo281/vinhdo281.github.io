@@ -145,6 +145,9 @@ a:hover { color: var(--accent-cyan); }
    paragraph, not become separate flex columns. */
 .callout:not(:has(> .callout-icon)) { display: block; }
 
+.adm-link { display: inline-block; margin-top: 0.9rem; font-size: 0.75rem; color: var(--text-muted); text-decoration: underline; text-underline-offset: 3px; }
+.adm-link:hover { color: var(--accent-cyan); }
+
 /* ---- Modals, search, toast ---------------------------------------------- */
 .search-modal, .project-modal-container { background: var(--bg-primary); border: 2px solid var(--text-primary); }
 .search-result-item.selected, .search-result-item:hover { background: var(--text-primary); color: var(--bg-primary); }

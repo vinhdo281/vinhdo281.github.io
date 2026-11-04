@@ -1,0 +1,67 @@
+/* Admin editor UI (loaded only when the admin opens it). Uses the site tokens. */
+.adm-has-bar body { padding-bottom: 7.5rem; }
+
+.adm-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 400;
+  display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; align-items: center; justify-content: space-between;
+  padding: 0.85rem 1.25rem;
+  background: var(--text-primary); color: var(--bg-primary);
+  border-top: 4px solid var(--accent-cyan);
+  font-family: var(--font-sans); font-size: 0.85rem;
+}
+.adm-text { flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 0.15rem; }
+.adm-text strong { font-family: var(--font-mono); letter-spacing: 0.08em; font-size: 0.75rem; }
+.adm-hint { opacity: 0.85; line-height: 1.4; }
+.adm-status { font-family: var(--font-mono); font-size: 0.78rem; min-height: 1.1em; }
+.adm-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+.adm-btn {
+  font: inherit; font-weight: 600; font-size: 0.82rem; cursor: pointer;
+  padding: 0.55rem 0.95rem; min-height: 44px; border-radius: 0;
+  background: transparent; color: inherit; border: 1px solid currentColor;
+}
+.adm-btn:hover:not(:disabled) { background: var(--bg-primary); color: var(--text-primary); }
+.adm-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.adm-btn.adm-primary { background: var(--accent-cyan); color: var(--on-accent); border-color: var(--accent-cyan); }
+.adm-btn.adm-primary:hover:not(:disabled) { background: var(--bg-primary); color: var(--text-primary); border-color: var(--bg-primary); }
+.adm-btn[aria-pressed="true"] { background: var(--bg-primary); color: var(--text-primary); }
+.adm-btn:focus-visible { outline: 2px solid var(--on-accent); outline-offset: 2px; }
+
+/* In-place editing affordances */
+.adm-on .adm-editable { outline: 1px dashed var(--accent-cyan); outline-offset: 3px; cursor: text; min-width: 1ch; }
+.adm-on .adm-editable:hover { outline-style: solid; }
+.adm-on .adm-editable:focus { outline: 2px solid var(--accent-cyan); background: rgba(var(--accent-cyan-rgb), 0.1); }
+.adm-on .adm-editable.adm-dirty { outline: 2px solid var(--accent-emerald); }
+.adm-on .adm-locked { outline: 1px dotted var(--text-muted); outline-offset: 3px; cursor: not-allowed; }
+/* Reveal-on-scroll must not hide things you are editing */
+.adm-on .sw-reveal { opacity: 1 !important; transform: none !important; }
+
+/* Login modal */
+.adm-modal-backdrop {
+  position: fixed; inset: 0; z-index: 500; display: flex; align-items: center; justify-content: center;
+  padding: 1rem; background: rgba(0, 0, 0, 0.6);
+}
+.adm-modal {
+  width: 100%; max-width: 520px; max-height: 92vh; overflow: auto;
+  background: var(--bg-primary); color: var(--text-primary);
+  border: 2px solid var(--text-primary); padding: 1.5rem; font-size: 0.92rem; line-height: 1.55;
+}
+.adm-modal h2 { font-size: 1.4rem; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
+.adm-modal p { margin-bottom: 0.75rem; color: var(--text-secondary); }
+.adm-modal a { color: var(--accent-cyan); text-decoration: underline; }
+.adm-form { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1rem; }
+.adm-form label { font-weight: 600; font-size: 0.82rem; }
+.adm-form input[type="password"] {
+  font: inherit; font-family: var(--font-mono); padding: 0.7rem 0.8rem; min-height: 44px;
+  background: var(--bg-input); color: var(--text-primary); border: 1px solid var(--text-primary); border-radius: 0;
+}
+.adm-form input:focus-visible { outline: 2px solid var(--accent-cyan); outline-offset: 2px; }
+.adm-check { display: flex; gap: 0.5rem; align-items: center; font-weight: 400 !important; }
+.adm-error { min-height: 1.2em; color: var(--accent-amber); font-family: var(--font-mono); font-size: 0.8rem; }
+.adm-modal .adm-btn { color: var(--text-primary); }
+.adm-modal .adm-btn.adm-primary { color: var(--on-accent); }
+
+@media (max-width: 640px) {
+  .adm-has-bar body { padding-bottom: 11rem; }
+  .adm-actions .adm-btn { flex: 1 1 45%; }
+}
