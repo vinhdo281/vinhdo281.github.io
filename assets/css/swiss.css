@@ -365,6 +365,13 @@ a:hover { color: var(--accent-cyan); }
   .sw-js .tech-card.sw-reveal.in:hover, .sw-js .project-card.sw-reveal.in:hover { transform: none; }
 }
 
+@media (max-width: 768px) {
+  body[data-lang="de"] .nav-links a { font-size: 0.6rem; letter-spacing: 0; }
+  .sw-work .section-title-wrap { flex-wrap: wrap; align-items: baseline; gap: 0.4rem 1rem; }
+  .sw-work .section-title { flex: 1 1 auto; min-width: 0; }
+  .sw-work .section-link { white-space: nowrap; flex: 0 0 auto; }
+}
+
 @media (max-width: 380px) {
   .nav-links a { font-size: 0.64rem; letter-spacing: 0.02em; }
   .masthead__brand > span:not(.brand-badge) { max-width: 7.5rem; }
