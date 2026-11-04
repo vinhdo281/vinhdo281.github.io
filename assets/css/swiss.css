@@ -54,8 +54,7 @@ a:hover { color: var(--accent-cyan); }
 }
 .profile-card { border: 1px solid var(--text-primary); background: var(--bg-primary); }
 .profile-card::before { height: 6px; background: var(--accent-cyan); }
-.avatar-img { border-radius: 0; filter: grayscale(1) contrast(1.05); transition: filter 0.5s var(--ease-out); }
-.avatar-img:hover { filter: grayscale(0); }
+.avatar-img { border-radius: 0; object-position: 50% 50%; }
 .avatar-pulse-ring { display: none; }
 .author-handle, .author-status { font-family: var(--font-mono); }
 .status-dot { border-radius: 0; background: var(--accent-emerald); box-shadow: none; }
