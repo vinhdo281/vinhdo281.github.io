@@ -62,7 +62,8 @@
 .adm-modal .adm-btn { color: var(--text-primary); }
 .adm-modal .adm-btn.adm-primary { color: var(--on-accent); }
 
-@media (max-width: 640px) {
-  .adm-has-bar body { padding-bottom: 11rem; }
+@media (max-width: 768px) {
+  .adm-bar { bottom: calc(var(--tabbar-h, 0px) + env(safe-area-inset-bottom, 0px)); }
+  .adm-has-bar body { padding-bottom: 14rem; }
   .adm-actions .adm-btn { flex: 1 1 45%; }
 }
