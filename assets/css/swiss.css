@@ -54,7 +54,9 @@ a:hover { color: var(--accent-cyan); }
 }
 .profile-card { border: 1px solid var(--text-primary); background: var(--bg-primary); }
 .profile-card::before { height: 6px; background: var(--accent-cyan); }
-.avatar-img { border-radius: 0; object-position: 50% 50%; }
+/* Full portrait frame (same 525x787 ratio as the source photo) */
+.avatar-wrapper { width: 100%; max-width: 280px; height: auto; aspect-ratio: 525 / 787; }
+.avatar-img { border-radius: 0; object-fit: cover; object-position: 50% 0; }
 .avatar-pulse-ring { display: none; }
 .author-handle, .author-status { font-family: var(--font-mono); }
 .status-dot { border-radius: 0; background: var(--accent-emerald); box-shadow: none; }
