@@ -55,7 +55,7 @@ a:hover { color: var(--accent-cyan); }
 .profile-card { border: 1px solid var(--text-primary); background: var(--bg-primary); }
 .profile-card::before { height: 6px; background: var(--accent-cyan); }
 /* Full portrait frame (same 525x787 ratio as the source photo) */
-.avatar-wrapper { width: 100%; max-width: 280px; height: auto; aspect-ratio: 525 / 787; }
+.avatar-wrapper { width: 100%; max-width: 168px; height: auto; aspect-ratio: 525 / 787; }
 .avatar-img { border-radius: 0; object-fit: cover; object-position: 50% 0; }
 .avatar-pulse-ring { display: none; }
 .author-handle, .author-status { font-family: var(--font-mono); }
@@ -186,6 +186,11 @@ a:hover { color: var(--accent-cyan); }
 .sw-home .section-title-wrap { margin-bottom: 1.5rem; }
 .sw-work .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
 
+.sw-hero { display: flex; flex-wrap: wrap; gap: 2rem 3rem; align-items: flex-end; justify-content: space-between; }
+.sw-hero .sw-title { flex: 1 1 auto; }
+.sw-portrait { flex: none; width: 168px; margin: 0 8px 8px 0; box-shadow: 8px 8px 0 var(--accent-cyan); border: 1px solid var(--text-primary); background: var(--bg-secondary); animation: sw-fade-up 0.9s 0.5s var(--ease-out) both; }
+.sw-portrait img { display: block; width: 100%; height: auto; aspect-ratio: 525 / 787; object-fit: cover; object-position: 50% 0; }
+
 /* ==========================================================================
    MOTION (every page)
    ========================================================================== */
@@ -206,7 +211,7 @@ a:hover { color: var(--accent-cyan); }
 .main-content > :nth-child(n+4), .article-container > :nth-child(n+4) { animation-delay: 0.4s; }
 .sw-home > * { animation: sw-fade-up 0.8s var(--ease-out) both; }
 .sw-home > :nth-child(1) { animation-delay: 0.05s; }
-.sw-home > .sw-title { animation: none; }
+.sw-home > .sw-hero { animation: none; }
 .sw-home > :nth-child(3) { animation-delay: 0.55s; }
 .sw-home > :nth-child(n+4) { animation-delay: 0.7s; }
 .sw-index .sw-row::after { transform-origin: left; animation: sw-draw 0.9s var(--ease-out) both; animation-delay: calc(0.8s + var(--i, 0) * 0.12s); }

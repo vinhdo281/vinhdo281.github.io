@@ -153,19 +153,19 @@
   }
 
   // --- 2. THEME SWITCHER (Dark / Light) ---
-  const THEME_STORAGE_KEY = 'site_theme';
+  const THEME_STORAGE_KEY = 'site_theme_v2'; // v2: default switched to light
 
   function initTheme() {
     let savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
     if (!savedTheme) {
-      savedTheme = 'dark'; // Tech theme default
+      savedTheme = 'light'; // default: white background
     }
     setTheme(savedTheme);
 
     const themeBtn = document.getElementById('theme-toggle-btn');
     if (themeBtn) {
       themeBtn.addEventListener('click', () => {
-        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
         const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
         setTheme(nextTheme);
       });
