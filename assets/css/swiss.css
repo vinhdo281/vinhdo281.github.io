@@ -1,14 +1,14 @@
 /* ==========================================================================
    SWISS THEME LAYER
    Loaded after style.css on every page. Flattens the old HUD look into a
-   grid-and-hairline system (square corners, 1px rules, one red accent) and
+   grid-and-hairline system (square corners, 1px rules, one blue accent) and
    holds all motion. Everything animated is wrapped for reduced-motion.
    ========================================================================== */
 
 /* ---- Base ---------------------------------------------------------------- */
 body::before, body::after { display: none; }
 body { font-feature-settings: "ss01", "tnum"; letter-spacing: -0.005em; }
-::selection { background: var(--accent-cyan); color: #fff; }
+::selection { background: var(--accent-cyan); color: var(--on-accent); }
 a { color: var(--text-primary); }
 a:hover { color: var(--accent-cyan); }
 :focus-visible { outline: 2px solid var(--accent-cyan); outline-offset: 3px; }
@@ -59,7 +59,7 @@ a:hover { color: var(--accent-cyan); }
 .author-handle, .author-status { font-family: var(--font-mono); }
 .status-dot { border-radius: 0; background: var(--accent-emerald); box-shadow: none; }
 .tech-icon-btn { border-radius: 0; }
-.tech-icon-btn:hover { background: var(--accent-cyan); color: #fff; border-color: var(--accent-cyan); box-shadow: none; }
+.tech-icon-btn:hover { background: var(--accent-cyan); color: var(--on-accent); border-color: var(--accent-cyan); box-shadow: none; }
 .sidebar-divider { background: var(--text-primary); height: 1px; opacity: 0.4; }
 
 /* ---- Section titles, cards ---------------------------------------------- */
@@ -108,7 +108,7 @@ a:hover { color: var(--accent-cyan); }
 }
 .btn-tech:hover { color: var(--bg-primary); box-shadow: none; background: none; }
 .btn-tech:hover::before { transform: translateY(0); }
-.btn-tech-primary { background: var(--accent-cyan); border-color: var(--accent-cyan); color: #fff; }
+.btn-tech-primary { background: var(--accent-cyan); border-color: var(--accent-cyan); color: var(--on-accent); }
 .btn-tech-primary::before { background: var(--text-primary); }
 .btn-tech-primary:hover { color: var(--bg-primary); background: var(--accent-cyan); }
 
@@ -118,7 +118,7 @@ a:hover { color: var(--accent-cyan); }
 
 .project-card.featured::after {
   top: 0; right: 0; left: auto; bottom: auto; width: auto; transform: none; padding: 0.3rem 0.7rem;
-  box-shadow: none; color: #fff; font-size: 0.66rem; letter-spacing: 0.08em; transition: none;
+  box-shadow: none; color: var(--on-accent); font-size: 0.66rem; letter-spacing: 0.08em; transition: none;
 }
 .card-specs, .terminal-badge, .author-status { border-radius: 0; }
 .status-pill, .project-status-hud, .project-search-box, .project-search-box input, .project-search-box svg { border-radius: 0; }
@@ -172,11 +172,11 @@ a:hover { color: var(--accent-cyan); }
 .sw-row { isolation: isolate; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 2rem; padding: 1.5rem 0.25rem; position: relative; color: var(--text-primary); }
 .sw-row::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--text-primary); }
 .sw-row::before { content: ""; position: absolute; inset: 0; background: var(--accent-cyan); transform: scaleY(0); transform-origin: bottom; transition: transform 0.45s var(--ease-out); z-index: -1; }
-.sw-row:hover { color: #fff; }
+.sw-row:hover { color: var(--on-accent); }
 .sw-row:hover::before { transform: scaleY(1); }
 .sw-row > * { transition: transform 0.45s var(--ease-out); }
 .sw-row:hover > * { transform: translateX(14px); }
-.sw-row:hover .sw-num { color: #fff; }
+.sw-row:hover .sw-num { color: var(--on-accent); }
 .sw-num { width: 3rem; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-cyan); }
 .sw-name { flex: 1 1 220px; font-size: clamp(1.9rem, 4.2vw, 3rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; }
 .sw-desc { flex: 2 1 320px; font-size: 0.98rem; color: inherit; opacity: 0.82; }

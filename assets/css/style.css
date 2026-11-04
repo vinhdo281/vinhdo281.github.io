@@ -5,7 +5,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
-/* Swiss palette: ink, paper, one red. Other --accent-* names are kept so
+/* Swiss palette: ink, paper, one blue. Other --accent-* names are kept so
    existing components keep working; they all resolve to this palette. */
 :root {
   /* Dark Theme (Default) */
@@ -15,18 +15,19 @@
   --bg-card-hover: #181818;
   --bg-input: #161616;
   --border-color: rgba(245, 245, 242, 0.18);
-  --border-highlight: #ff4b43;
+  --border-highlight: #6aa9ff;
 
   --text-primary: #f5f5f2;
   --text-secondary: #c4c4be;
   --text-muted: #9a9a94;
 
-  --accent-cyan: #ff4b43;
-  --accent-cyan-rgb: 255, 75, 67;
+  --accent-cyan: #6aa9ff;
+  --on-accent: #0b0b0b;
+  --accent-cyan-rgb: 106, 169, 255;
   --ink-rgb: 245, 245, 242;
   --accent-blue: #f5f5f2;
   --accent-emerald: #5fd18d;
-  --accent-purple: #ff4b43;
+  --accent-purple: #6aa9ff;
   --accent-amber: #f0b44c;
 
   --glow-cyan: none;
@@ -49,18 +50,19 @@
   --bg-card-hover: #f4f4f1;
   --bg-input: #f4f4f1;
   --border-color: rgba(11, 11, 11, 0.22);
-  --border-highlight: #d92b25;
+  --border-highlight: #1747c9;
 
   --text-primary: #0b0b0b;
   --text-secondary: #333333;
   --text-muted: #5c5c58;
 
-  --accent-cyan: #d92b25;
-  --accent-cyan-rgb: 217, 43, 37;
+  --accent-cyan: #1747c9;
+  --on-accent: #ffffff;
+  --accent-cyan-rgb: 23, 71, 201;
   --ink-rgb: 11, 11, 11;
   --accent-blue: #0b0b0b;
   --accent-emerald: #1d7a45;
-  --accent-purple: #d92b25;
+  --accent-purple: #1747c9;
   --accent-amber: #9a5b00;
 
   --glow-cyan: none;
@@ -335,7 +337,7 @@ body[data-lang="de"] .lang-en {
 
 [data-theme="light"] .lang-dropdown-menu {
   background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.15), 0 0 10px rgba(2, 132, 199, 0.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 0 0 10px rgba(var(--accent-cyan-rgb), 0.1);
 }
 
 .lang-dropdown-wrapper.open .lang-dropdown-menu {
@@ -1055,7 +1057,7 @@ body[data-lang="de"] .lang-en {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(3, 7, 18, 0.75);
+  background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(8px);
   z-index: 1000;
   display: none;
@@ -1474,7 +1476,7 @@ body[data-lang="de"] .lang-en {
 }
 
 .code-header {
-  background: rgba(17, 26, 46, 0.95);
+  background: var(--bg-input);
   padding: 0.55rem 1rem;
   display: flex;
   justify-content: space-between;
@@ -1577,7 +1579,7 @@ body[data-lang="de"] .lang-en {
 }
 
 .tech-table th {
-  background: rgba(17, 26, 46, 0.9);
+  background: var(--bg-input);
   color: var(--accent-cyan);
   font-family: var(--font-mono);
   font-weight: 600;
@@ -1609,7 +1611,7 @@ body[data-lang="de"] .lang-en {
    INTERACTIVE OS SWITCHER (WINDOWS vs LINUX)
    ========================================================================== */
 .os-selector-banner {
-  background: linear-gradient(135deg, var(--bg-card), rgba(20, 32, 60, 0.9));
+  background: linear-gradient(135deg, var(--bg-card), var(--bg-secondary));
   border: 1px solid var(--accent-cyan);
   border-radius: 12px;
   padding: 1.25rem 1.5rem;
@@ -1725,7 +1727,7 @@ body[data-lang="de"] .lang-en {
 }
 
 .os-tabs-header {
-  background: rgba(17, 26, 46, 0.95);
+  background: var(--bg-input);
   padding: 0.4rem 0.8rem;
   display: flex;
   justify-content: space-between;
@@ -1781,7 +1783,7 @@ body[data-lang="de"] .lang-en {
 }
 
 .os-pane-summary {
-  background: rgba(20, 32, 60, 0.4);
+  background: var(--bg-secondary);
   padding: 0.6rem 1.25rem;
   font-size: 0.85rem;
   color: var(--accent-blue);
@@ -1856,7 +1858,7 @@ body[data-lang="de"] .lang-en {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(10, 16, 28, 0.6);
+  background: var(--bg-input);
   border: 1px solid var(--border-color);
   border-radius: 6px;
   padding: 0.35rem 0.75rem;
@@ -1931,7 +1933,7 @@ body[data-lang="de"] .lang-en {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(5, 9, 18, 0.85);
+  background: var(--bg-input);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   z-index: 9999;
@@ -2014,8 +2016,8 @@ body[data-lang="de"] .lang-en {
 }
 
 .project-modal-close:hover {
-  color: #ff5252;
-  border-color: #ff5252;
+  color: var(--accent-cyan);
+  border-color: var(--accent-cyan);
   background: rgba(255, 82, 82, 0.1);
 }
 
@@ -2024,7 +2026,7 @@ body[data-lang="de"] .lang-en {
   gap: 0.25rem;
   padding: 0.5rem 1.5rem 0 1.5rem;
   border-bottom: 1px solid var(--border-color);
-  background: rgba(10, 16, 28, 0.8);
+  background: var(--bg-input);
   overflow-x: auto;
 }
 
@@ -2097,7 +2099,7 @@ body[data-lang="de"] .lang-en {
 .project-modal-footer {
   padding: 1rem 1.5rem;
   border-top: 1px solid var(--border-color);
-  background: rgba(10, 16, 28, 0.9);
+  background: var(--bg-input);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -2151,7 +2153,7 @@ body[data-lang="de"] .lang-en {
   border-collapse: collapse;
   margin: 1.25rem 0;
   font-size: 0.86rem;
-  background: rgba(10, 16, 28, 0.5);
+  background: var(--bg-input);
   border: 1px solid var(--border-color);
   border-radius: 8px;
   overflow: hidden;
