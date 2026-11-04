@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Research · Đỗ Hiểu Vinh</title>
   <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
-  <link rel="stylesheet" href="assets/css/style.css?v=5.4">
-  <link rel="stylesheet" href="assets/css/swiss.css?v=5.3">
+  <link rel="stylesheet" href="assets/css/style.css?v=5.5">
+  <link rel="stylesheet" href="assets/css/swiss.css?v=5.5">
   <script>
     (function() {
       try {
@@ -156,20 +156,216 @@
         </p>
       </section>
 
-      <!-- EMPTY STATE -->
-      <div style="text-align: center; padding: 3.5rem 1.5rem; background: var(--bg-card); border: 1px dashed var(--border-color); border-radius: 12px; margin-top: 1.5rem;">
-        <div style="font-family: var(--font-mono); color: var(--accent-cyan); font-size: 1rem; margin-bottom: 0.75rem;">
-          <span class="lang-en">[ RESEARCH VECTOR: IN PROGRESS ]</span>
-          <span class="lang-de">[ FORSCHUNGSBEREICHE: WIRD AKTUALISIERT ]</span>
-        </div>
-        <p class="lang-en" style="color: var(--text-muted); font-size: 0.92rem; max-width: 480px; margin: 0 auto;">
-          Research themes and focus areas are currently being updated.
-        </p>
-        <p class="lang-de" style="color: var(--text-muted); font-size: 0.92rem; max-width: 480px; margin: 0 auto;">
-          Forschungsschwerpunkte und wissenschaftliche Themen werden derzeit aktualisiert.
-        </p>
+      <div class="cards-grid" id="research-grid">
+
+        <article class="tech-card project-card" data-category="research" id="state-estimation-kf-ekf-ukf-hinf">
+          <div class="card-top">
+            <span class="card-type">RESEARCH // STATE ESTIMATION</span>
+            <span class="card-date font-mono">11/2026</span>
+          </div>
+          <h2 class="card-title">
+            <span class="lang-en">Estimating Pitch on a Balancing Robot: KF vs EKF vs UKF vs H&infin;, Measured on One Benchmark</span>
+            <span class="lang-de">Neigungsschätzung beim Balancierroboter: KF, EKF, UKF und H&infin; im Vergleich auf einem Benchmark</span>
+          </h2>
+          <p class="card-desc">
+            <span class="lang-en">Theory, Python code and a reproducible Monte-Carlo comparison of four state estimators on a nonlinear inverted pendulum: when linearisation matters, why UKF did not beat EKF here, and how much H&infin; really adds. Includes correctness checks and a step-by-step run guide.</span>
+            <span class="lang-de">Theorie, Python-Code und ein reproduzierbarer Monte-Carlo-Vergleich von vier Zustandsschätzern am nichtlinearen inversen Pendel. Zusammenfassung auf Deutsch, vollständiger Artikel auf Englisch.</span>
+          </p>
+          <div class="card-tags">
+            <span class="tag-badge">Kalman Filter</span>
+            <span class="tag-badge">EKF</span>
+            <span class="tag-badge">UKF</span>
+            <span class="tag-badge">H&infin; Filter</span>
+            <span class="tag-badge">Python</span>
+          </div>
+          <div class="project-card-footer">
+            <a href="posts/state-estimation-kf-ekf-ukf-hinf/index.html" class="btn-tech btn-tech-primary">
+              <span class="lang-en">Read the Study &rarr;</span><span class="lang-de">Studie lesen &rarr;</span>
+            </a>
+          </div>
+        </article>
+
+        <article class="tech-card project-card" data-category="research" id="reinforcement-learning-wbr">
+          <div class="card-top">
+            <span class="card-type">RESEARCH // REINFORCEMENT LEARNING</span>
+            <span class="card-date font-mono">10/2026</span>
+          </div>
+          <h2 class="card-title">
+            <span class="lang-en">Comprehensive A-to-Z Guide: Reinforcement Learning for Wheeled-Bipedal Robot on MuJoCo Physics & Stable-Baselines3</span>
+            <span class="lang-de">Umfassender A–Z Leitfaden: Reinforcement Learning für radgetriebene zweibeinige Roboter mit MuJoCo Physics & Stable-Baselines3</span>
+          </h2>
+          <p class="card-desc">
+            <span class="lang-en">
+              Beginner-to-advanced guide on Wheeled-Bipedal Robot (WBR) dynamics, Virtual Model Control (VMC-PD), PPO policy optimization, reward shaping, models/ & eval/ architecture, continuous checkpoint resuming, and <strong>interactive OS tabs switching between Windows and Linux</strong> with live 3D MuJoCo rendering on CUDA RTX GPUs.
+            </span>
+            <span class="lang-de">
+              Umfassender Einsteiger- bis Fortgeschrittenen-Leitfaden zur Dynamik radgetriebener zweibeiniger Roboter (WBR), virtueller Modellregelung (VMC-PD), PPO-Algorithmus, Reward Shaping, Projektarchitektur, kontinuierlichem Wiederaufnehmen von Checkpoints und <strong>interaktiven OS-Tabs zum Umschalten zwischen Windows und Linux</strong> mit Live-3D-Rendering auf CUDA-RTX-GPUs.
+            </span>
+          </p>
+          <div class="card-tags">
+            <span class="tag-badge">Reinforcement Learning</span>
+            <span class="tag-badge">PPO</span>
+            <span class="tag-badge">MuJoCo 3D</span>
+            <span class="tag-badge">Stable-Baselines3</span>
+          </div>
+          <div class="project-card-footer">
+            <a href="posts/reinforcement-learning-wbr/index.html" class="btn-tech btn-tech-primary">
+              <span class="lang-en">Read the Study &rarr;</span><span class="lang-de">Studie lesen &rarr;</span>
+            </a>
+          </div>
+        </article>
+
+        <article class="tech-card project-card featured" data-category="research control" id="fuzzy-controller">
+          <div class="card-top">
+            <span class="card-type">CAD // SIMULATION // MUJOCO</span>
+            <span class="card-date font-mono">10/2026</span>
+          </div>
+          <h2 class="card-title">
+            <span class="lang-en">Single Unified Mamdani FIS Inverted Pendulum Controller in MuJoCo & Simulink</span>
+            <span class="lang-de">16-Regeln Mamdani FIS Regler für Inverses Pendel (MuJoCo & Simulink)</span>
+          </h2>
+                    <div class="card-specs">
+            <span>Max Tilt: 22.0 deg</span><span class="sep">/</span>
+            <span>ts: 1.65s</span><span class="sep">/</span>
+            <span>Zero Drift: +/-0.002m</span><span class="sep">/</span>
+            <span>CAD SolidWorks HUST</span>
+          </div>
+          <p class="card-desc">
+            <span class="lang-en">
+              A single unified 16-rule Mamdani FIS controller with 4 state inputs, stabilizing an inverted pendulum from large initial angles (up to 22°) in MuJoCo physics and MATLAB/Simulink Simscape Multibody.
+            </span>
+            <span class="lang-de">
+              Entwurf eines Fuzzy-Logic-Reglers (Mamdani FIS) mit 4 Zuständen und 16 optimierten Regeln zur Stabilisierung eines inversen Pendels bei großen Auslenkungen (bis 22°) in MuJoCo Physics und Simulink Simscape Multibody.
+            </span>
+          </p>
+          <div class="card-tags">
+            <span class="tag-badge" style="border-color: var(--accent-cyan); color: var(--accent-cyan);">Fuzzy Logic</span>
+            <span class="tag-badge">Mamdani FIS</span>
+            <span class="tag-badge">MuJoCo 3D</span>
+            <span class="tag-badge">Simscape</span>
+            <span class="tag-badge">Simulink</span>
+            <span class="tag-badge">Python</span>
+          </div>
+          <div class="project-card-footer">
+            <button type="button" class="btn-tech btn-tech-primary" data-project-id="fuzzy-controller" onclick="openProjectModal('fuzzy-controller')">
+              <span class="lang-en">Technical Report &amp; Demo</span><span class="lang-de">Technischer Bericht &amp; Demo</span>
+            </button>
+            <a href="https://github.com/vinhdo281/Fuzzy-Controller" target="_blank" rel="noopener" class="btn-tech">
+              <span>GitHub</span>
+            </a>
+            <a href="posts/fuzzy-inverted-pendulum/index.html" class="btn-tech">
+              <span class="lang-en">Tutorial Guide</span><span class="lang-de">Tutorial-Leitfaden</span>
+            </a>
+          </div>
+        </article>
+
+        <article class="tech-card project-card featured" data-category="research control" id="cascade-pid">
+          <div class="card-top">
+            <span class="card-type">CONTROL // DUAL-LOOP // SIMULINK</span>
+            <span class="card-date font-mono">08/2026</span>
+          </div>
+          <h2 class="card-title">
+            <span class="lang-en">Dual-Loop Cascade PID Controller for Two-Wheeled Self-Balancing Robot</span>
+            <span class="lang-de">Kaskadierter Zweikreis-PID-Regler für Zweirad-Balancierroboter</span>
+          </h2>
+                    <div class="card-specs">
+            <span>Inner Loop: 500Hz</span><span class="sep">/</span>
+            <span>Outer Loop: 50Hz</span><span class="sep">/</span>
+            <span class="lang-en">Impulse resistance: 20N</span><span class="lang-de">Stoßfestigkeit: 20N</span><span class="sep">/</span>
+            <span>ESP32 SimpleFOC</span>
+          </div>
+          <p class="card-desc">
+            <span class="lang-en">
+              Dual-loop cascade PID control architecture (Outer: Position/Velocity to Reference Angle; Inner: Pitch Angle to Motor Torque) implemented in Simulink, engineered for deployment on ESP32 & SimpleFOC.
+            </span>
+            <span class="lang-de">
+              Kaskadierte PID-Regelungsarchitektur mit zwei unabhängigen Schleifen (Äußere: Position/Geschwindigkeit &rarr; Soll-Neigungswinkel; Innere: Neigungswinkel &rarr; Motordrehmoment) in Simulink, entwickelt für ESP32 und SimpleFOC.
+            </span>
+          </p>
+          <div class="card-tags">
+            <span class="tag-badge" style="border-color: var(--accent-cyan); color: var(--accent-cyan);">Cascade PID</span>
+            <span class="tag-badge">Self-Balancing Robot</span>
+            <span class="tag-badge">Simulink</span>
+            <span class="tag-badge">MATLAB</span>
+            <span class="tag-badge">ESP32</span>
+            <span class="tag-badge">SimpleFOC</span>
+          </div>
+          <div class="project-card-footer">
+            <button type="button" class="btn-tech btn-tech-primary" data-project-id="cascade-pid" onclick="openProjectModal('cascade-pid')">
+              <span class="lang-en">Technical Report &amp; Demo</span><span class="lang-de">Technischer Bericht &amp; Demo</span>
+            </button>
+            <a href="https://github.com/vinhdo281/Cascade-PID" target="_blank" rel="noopener" class="btn-tech">
+              <span>GitHub</span>
+            </a>
+            <a href="posts/cascade-pid-twsbr/index.html" class="btn-tech">
+              <span class="lang-en">Tutorial Guide</span><span class="lang-de">Tutorial-Leitfaden</span>
+            </a>
+          </div>
+        </article>
+
       </div>
     </main>
+  </div>
+
+
+  <!-- INTERACTIVE CYBER PROJECT MODAL -->
+  <div id="project-modal-backdrop" class="project-modal-backdrop">
+    <div class="project-modal-container">
+      <div class="project-modal-header">
+        <div>
+          <span id="project-modal-badge" class="project-modal-badge">PROJECT // SPEC</span>
+          <h3 id="project-modal-title" class="project-modal-title">Project Title</h3>
+        </div>
+        <button id="project-modal-close-btn" class="project-modal-close" title="Close (ESC)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="project-modal-tabs">
+        <button class="project-modal-tab-btn active" data-tab="overview">
+          <span class="lang-en">1. Overview &amp; Objectives</span>
+          <span class="lang-de">1. Übersicht &amp; Ziele</span>
+        </button>
+        <button class="project-modal-tab-btn" data-tab="architecture">
+          <span class="lang-en">2. Architecture &amp; Control</span>
+          <span class="lang-de">2. Architektur &amp; Algorithmen</span>
+        </button>
+        <button class="project-modal-tab-btn" data-tab="guide">
+          <span class="lang-en">3. Execution Guide</span>
+          <span class="lang-de">3. Ausführungsanleitung</span>
+        </button>
+        <button class="project-modal-tab-btn" data-tab="results">
+          <span class="lang-en">4. Experimental Results</span>
+          <span class="lang-de">4. Versuchsergebnisse</span>
+        </button>
+        <button class="project-modal-tab-btn" data-tab="demo">
+          <span class="lang-en">5. Live Demo &amp; Source Code</span>
+          <span class="lang-de">5. Demo &amp; Quellcode</span>
+        </button>
+      </div>
+
+      <div id="project-modal-body" class="project-modal-body">
+        <!-- Rendered dynamically via projects-modal.js?v=4.0 -->
+      </div>
+
+      <div class="project-modal-footer">
+        <div style="display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
+          <a id="project-modal-github-link" href="#" target="_blank" rel="noopener" class="btn-tech btn-tech-primary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            <span class="lang-en">Open GitHub Repository</span>
+            <span class="lang-de">GitHub-Repository öffnen</span>
+          </a>
+          <a id="project-modal-blog-link" href="#" class="btn-tech" style="display: none;">
+            <span class="lang-en">Read In-Depth Guide &rarr;</span>
+            <span class="lang-de">Ausführlichen Leitfaden lesen &rarr;</span>
+          </a>
+        </div>
+        <button class="btn-tech" onclick="closeProjectModal()">
+          <span class="lang-en">Close Modal</span>
+          <span class="lang-de">Schließen</span>
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- SEARCH MODAL -->
@@ -188,7 +384,9 @@
     <div>&copy; 2026 · Powered by GitHub Pages · Đỗ Hiểu Vinh</div>
   </footer>
 
-  <script src="assets/js/search-data.js?v=5.0"></script>
-  <script src="assets/js/main.js?v=5.0"></script>
+  <script src="assets/js/search-data.js?v=5.5"></script>
+  <script src="assets/js/projects-data.js?v=5.5"></script>
+  <script src="assets/js/main.js?v=5.5"></script>
+  <script src="assets/js/projects-modal.js?v=5.5"></script>
 </body>
 </html>

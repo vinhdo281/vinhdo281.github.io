@@ -1,6 +1,6 @@
-# Cyber-Tech Robotics & Engineering Portfolio
+# Robotics & Engineering Portfolio
 
-A personal and academic portfolio website in a **Cyber-Tech / Sci-Fi HUD** style, optimized for **GitHub Pages**.
+A personal and academic portfolio website in a **Swiss / International Typographic** style, optimized for **GitHub Pages**.
 
 ---
 
@@ -10,7 +10,6 @@ A personal and academic portfolio website in a **Cyber-Tech / Sci-Fi HUD** style
 * **Bilingual (EN / DE):** Language selector in the navigation bar. English is the default; the choice is persisted via `localStorage`.
 * **Dark / Light theme:** Dark Cyber by default, with a Light Lab mode.
 * **Instant search (Ctrl + K):** Real-time site-wide search modal (English and German).
-* **1-click BibTeX citation:** Copy citation code with a toast notification.
 * **100% GitHub Pages compatible:** Includes `.nojekyll`; works out of the box with no Ruby or Node.js setup.
 
 ---
@@ -20,9 +19,8 @@ A personal and academic portfolio website in a **Cyber-Tech / Sci-Fi HUD** style
 ```text
 vinhdo281.github.io/
 ├── index.html            # Home: intro, Telemetry Terminal, highlights
-├── research.html         # Core research directions & theory
-├── publications.html     # Scientific publications + BibTeX
-├── portfolio.html        # Engineering projects + interactive category filter
+├── research.html         # Studies and simulations without a shipped product
+├── portfolio.html        # Finished projects + interactive category filter
 ├── blog.html             # Technical articles & engineering notes
 ├── cv.html               # Education, awards & skill matrix
 ├── posts/                # Full blog articles

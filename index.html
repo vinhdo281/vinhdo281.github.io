@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Đỗ Hiểu Vinh · Robotics & Control</title>
   <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
-  <link rel="stylesheet" href="assets/css/style.css?v=5.4">
-  <link rel="stylesheet" href="assets/css/swiss.css?v=5.3">
+  <link rel="stylesheet" href="assets/css/style.css?v=5.5">
+  <link rel="stylesheet" href="assets/css/swiss.css?v=5.5">
   <script>
     (function() {
       try {
@@ -126,13 +126,13 @@
       <a href="research.html" class="sw-row" style="--i:0">
         <span class="sw-num">01</span>
         <span class="sw-name"><span class="lang-en">Research</span><span class="lang-de">Forschung</span></span>
-        <span class="sw-desc"><span class="lang-en">Control theory, state estimation and robotics.</span><span class="lang-de">Regelungstheorie, Zustandsschätzung und Robotik.</span></span>
+        <span class="sw-desc"><span class="lang-en">Control theory, state estimation and learning-based control, studied in simulation.</span><span class="lang-de">Regelungstheorie, Zustandsschätzung und lernbasierte Regelung in der Simulation.</span></span>
         <svg class="sw-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
       <a href="portfolio.html" class="sw-row" style="--i:1">
         <span class="sw-num">02</span>
         <span class="sw-name"><span class="lang-en">Projects</span><span class="lang-de">Projekte</span></span>
-        <span class="sw-desc"><span class="lang-en">Wheeled-bipedal robots, simulation and vision systems.</span><span class="lang-de">Radgetriebene Zweibeiner, Simulation und Bildverarbeitung.</span></span>
+        <span class="sw-desc"><span class="lang-en">Finished software: a ROS 2 robot, computer vision and desktop tools.</span><span class="lang-de">Fertige Software: ROS-2-Roboter, Computer Vision und Desktop-Tools.</span></span>
         <svg class="sw-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
       <a href="blog.html" class="sw-row" style="--i:2">
@@ -141,14 +141,8 @@
         <span class="sw-desc"><span class="lang-en">Technical articles with runnable code.</span><span class="lang-de">Technische Artikel mit lauffähigem Code.</span></span>
         <svg class="sw-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
-      <a href="publications.html" class="sw-row" style="--i:3">
+      <a href="cv.html" class="sw-row" style="--i:3">
         <span class="sw-num">04</span>
-        <span class="sw-name"><span class="lang-en">Publications</span><span class="lang-de">Publikationen</span></span>
-        <span class="sw-desc"><span class="lang-en">Papers and BibTeX citations.</span><span class="lang-de">Veröffentlichungen und BibTeX-Zitate.</span></span>
-        <svg class="sw-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </a>
-      <a href="cv.html" class="sw-row" style="--i:4">
-        <span class="sw-num">05</span>
         <span class="sw-name"><span class="lang-en">CV</span><span class="lang-de">Lebenslauf</span></span>
         <span class="sw-desc"><span class="lang-en">Education, awards and skills.</span><span class="lang-de">Ausbildung, Auszeichnungen und Kompetenzen.</span></span>
         <svg class="sw-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -169,64 +163,6 @@
       </div>
       <div class="cards-grid">
             <!-- Featured 1: Fuzzy Controller -->
-            <article class="tech-card">
-              <div class="card-top">
-                <span class="card-type">CONTROL // SIMULATION</span>
-                <span class="card-date font-mono">10/2026</span>
-              </div>
-              <h3 class="card-title">
-                <a href="portfolio.html#fuzzy-controller" style="color: inherit; text-decoration: none;">
-                  <span class="lang-en">Mamdani FIS Inverted Pendulum Controller in MuJoCo & Simulink</span>
-                  <span class="lang-de">Mamdani-FIS-Regler für Inverses Pendel in MuJoCo & Simulink</span>
-                </a>
-              </h3>
-              <p class="card-desc">
-                <span class="lang-en">16-rule Mamdani FIS stabilizing inverted pendulum from 22° tilt with zero cart drift.</span>
-                <span class="lang-de">16-Regeln-Mamdani-FIS zur Stabilisierung des inversen Pendels ab 22° Neigung ohne Wagendrift.</span>
-              </p>
-              <div class="card-tags">
-                <span class="tag-badge" style="border-color: var(--accent-cyan); color: var(--accent-cyan);">Fuzzy Logic</span>
-                <span class="tag-badge">MuJoCo</span>
-                <span class="tag-badge">Simulink</span>
-              </div>
-              <div style="margin-top: 1rem;">
-                <a href="portfolio.html#fuzzy-controller" class="btn-tech btn-tech-primary">
-                  <span class="lang-en">View Details & Demo &rarr;</span>
-                  <span class="lang-de">Details & Demo ansehen &rarr;</span>
-                </a>
-              </div>
-            </article>
-  
-            <!-- Featured 2: Cascade PID -->
-            <article class="tech-card">
-              <div class="card-top">
-                <span class="card-type">CONTROL // DUAL-LOOP</span>
-                <span class="card-date font-mono">08/2026</span>
-              </div>
-              <h3 class="card-title">
-                <a href="portfolio.html#cascade-pid" style="color: inherit; text-decoration: none;">
-                  <span class="lang-en">Cascade PID for Two-Wheeled Self-Balancing Robot</span>
-                  <span class="lang-de">Kaskadierter PID-Regler für Zweirad-Balancierroboter</span>
-                </a>
-              </h3>
-              <p class="card-desc">
-                <span class="lang-en">Dual-loop architecture separating tilt angle and translational position dynamics.</span>
-                <span class="lang-de">Zweikreis-Architektur zur getrennten Regelung von Neigungswinkel und Translationsposition.</span>
-              </p>
-              <div class="card-tags">
-                <span class="tag-badge">Cascade PID</span>
-                <span class="tag-badge">Self-Balancing</span>
-                <span class="tag-badge">Simulink</span>
-              </div>
-              <div style="margin-top: 1rem;">
-                <a href="portfolio.html#cascade-pid" class="btn-tech">
-                  <span class="lang-en">View Details & Demo &rarr;</span>
-                  <span class="lang-de">Details & Demo ansehen &rarr;</span>
-                </a>
-              </div>
-            </article>
-  
-            <!-- Featured 3: Car Counter YOLO -->
             <article class="tech-card">
               <div class="card-top">
                 <span class="card-type">VISION // YOLO11 & SORT</span>
@@ -254,6 +190,62 @@
                 </a>
               </div>
             </article>
+
+          <article class="tech-card">
+            <div class="card-top">
+              <span class="card-type">ROBOTICS // ROS 2 &amp; GAZEBO</span>
+              <span class="card-date font-mono">10/2025</span>
+            </div>
+            <h3 class="card-title">
+              <a href="portfolio.html#bot1" style="color: inherit; text-decoration: none;">
+                <span class="lang-en">ROS 2 Differential Drive Mobile Robot Package</span>
+                <span class="lang-de">ROS 2 Simulationspaket für Differential-Roboter</span>
+              </a>
+            </h3>
+            <p class="card-desc">
+              <span class="lang-en">Modular URDF/Xacro model, Gazebo physics and ros2_control with a 30 Hz 2D LiDAR.</span>
+              <span class="lang-de">Modulares URDF/Xacro-Modell, Gazebo-Physik und ros2_control mit 30-Hz-2D-LiDAR.</span>
+            </p>
+            <div class="card-tags">
+              <span class="tag-badge">ROS 2</span>
+              <span class="tag-badge">Gazebo</span>
+              <span class="tag-badge">URDF / Xacro</span>
+            </div>
+            <div style="margin-top: 1rem;">
+              <a href="portfolio.html#bot1" class="btn-tech">
+                <span class="lang-en">View Details &amp; Demo &rarr;</span>
+                <span class="lang-de">Details &amp; Demo ansehen &rarr;</span>
+              </a>
+            </div>
+          </article>
+
+          <article class="tech-card">
+            <div class="card-top">
+              <span class="card-type">HCI // MEDIAPIPE</span>
+              <span class="card-date font-mono">09/2025</span>
+            </div>
+            <h3 class="card-title">
+              <a href="portfolio.html#volumn-hand-control" style="color: inherit; text-decoration: none;">
+                <span class="lang-en">Touchless Hand Gesture Volume Controller</span>
+                <span class="lang-de">Berührungslose Gesten-Lautstärkeregelung für PC</span>
+              </a>
+            </h3>
+            <p class="card-desc">
+              <span class="lang-en">Controls system volume from hand landmarks with an EMA-smoothed finger distance on Windows Core Audio.</span>
+              <span class="lang-de">Steuert die Systemlautstärke über Handlandmarken mit EMA-geglättetem Fingerabstand (Windows Core Audio).</span>
+            </p>
+            <div class="card-tags">
+              <span class="tag-badge">MediaPipe</span>
+              <span class="tag-badge">PyCaw</span>
+              <span class="tag-badge">EMA filter</span>
+            </div>
+            <div style="margin-top: 1rem;">
+              <a href="portfolio.html#volumn-hand-control" class="btn-tech">
+                <span class="lang-en">View Details &amp; Demo &rarr;</span>
+                <span class="lang-de">Details &amp; Demo ansehen &rarr;</span>
+              </a>
+            </div>
+          </article>
           </div>
     </section>
 
@@ -287,7 +279,7 @@
     <div class="footer-quote font-mono">&gt; "Engineering the future through feedback & control."</div>
   </footer>
 
-  <script src="assets/js/search-data.js?v=5.0"></script>
-  <script src="assets/js/main.js?v=5.0"></script>
+  <script src="assets/js/search-data.js?v=5.5"></script>
+  <script src="assets/js/main.js?v=5.5"></script>
 </body>
 </html>

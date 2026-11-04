@@ -12,20 +12,20 @@ const SEARCH_DATA = [
     title_de: "Ingenieurprojekte & Systeme Portfolio",
     category: "Projects",
     url: "portfolio.html",
-    keywords: "projects portfolio robot cascade pid fuzzy yolo sort ros2 mediapipe stm32 arduino makecode python"
+    keywords: "projects portfolio robot yolo sort ros2 mediapipe stm32 arduino makecode python"
   },
   {
-    title_en: "Project: Single Unified Mamdani FIS Inverted Pendulum Controller in MuJoCo & Simulink",
-    title_de: "Projekt: 16-Regeln Mamdani FIS Regler für Inverses Pendel in MuJoCo & Simulink",
-    category: "Projects",
-    url: "portfolio.html#fuzzy-controller",
+    title_en: "Research: Single Unified Mamdani FIS Inverted Pendulum Controller in MuJoCo & Simulink",
+    title_de: "Forschung: 16-Regeln Mamdani FIS Regler für Inverses Pendel in MuJoCo & Simulink",
+    category: "Research",
+    url: "research.html#fuzzy-controller",
     keywords: "fuzzy logic mamdani fis inverted pendulum mujoco simscape multibody simulink solidworks cart pole inverses pendel regler"
   },
   {
-    title_en: "Project: Dual-Loop Cascade PID Controller for Two-Wheeled Self-Balancing Robot",
-    title_de: "Projekt: Kaskadierter Zweikreis-PID-Regler für Zweirad-Balancierroboter",
-    category: "Projects",
-    url: "portfolio.html#cascade-pid",
+    title_en: "Research: Dual-Loop Cascade PID Controller for Two-Wheeled Self-Balancing Robot",
+    title_de: "Forschung: Kaskadierter Zweikreis-PID-Regler für Zweirad-Balancierroboter",
+    category: "Research",
+    url: "research.html#cascade-pid",
     keywords: "cascade pid self balancing robot twsbr simulink matlab esp32 simplefoc kaskadierter pid zweirad"
   },
   {

@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Engineering Projects | Portfolio · Đỗ Hiểu Vinh</title>
   <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
-  <link rel="stylesheet" href="assets/css/style.css?v=5.4">
-  <link rel="stylesheet" href="assets/css/swiss.css?v=5.3">
+  <link rel="stylesheet" href="assets/css/style.css?v=5.5">
+  <link rel="stylesheet" href="assets/css/swiss.css?v=5.5">
   <script>
     (function() {
       try {
@@ -103,8 +103,8 @@
           <div class="author-handle">@vinhdo281 · HUST</div>
           <div class="author-status">
             <span class="status-dot"></span>
-            <span class="lang-en">PROJECTS: 9</span>
-            <span class="lang-de">PROJEKTE: 9</span>
+            <span class="lang-en">PROJECTS: 7</span>
+            <span class="lang-de">PROJEKTE: 7</span>
           </div>
         </div>
         <div class="sidebar-divider"></div>
@@ -144,10 +144,10 @@
           <span class="lang-de">Ingenieurprojekte & Systeme</span>
         </h1>
         <p class="hero-desc lang-en">
-          Comprehensive suite of 9 open-source engineering systems: spanning non-linear control theory (Fuzzy Logic, Cascade PID), ROS 2 / MuJoCo robotics physics, AI computer vision (YOLOv11, MediaPipe, PyTorch), custom embedded hardware, and application software.
+          Seven open-source systems that ship as working software: a ROS 2 mobile robot, computer-vision pipelines (YOLOv11, MediaPipe, PyTorch) and desktop tools. Studies without a finished product live under Research.
         </p>
         <p class="hero-desc lang-de">
-          Umfassende Suite von 9 Open-Source-Ingenieurprojekten: Von nichtlinearer Regelungstheorie (Fuzzy Logic, Cascade PID), mobiler Robotiksimulation mit ROS 2 / MuJoCo über KI-Computer-Vision (YOLOv11, MediaPipe, PyTorch) bis hin zu Embedded-Hardware und Anwendungssoftware.
+          Sieben Open-Source-Systeme als lauffähige Software: ein ROS-2-Roboter, Computer-Vision-Pipelines (YOLOv11, MediaPipe, PyTorch) und Desktop-Tools. Studien ohne fertiges Produkt stehen unter Forschung.
         </p>
       </section>
 
@@ -156,20 +156,16 @@
         <div class="project-toolbar-top">
           <div class="project-filters-wrap">
             <button class="project-filter-btn active" data-filter="all">
-              <span class="lang-en">All Projects (11)</span>
-              <span class="lang-de">Alle Projekte (11)</span>
+              <span class="lang-en">All Projects (7)</span>
+              <span class="lang-de">Alle Projekte (7)</span>
             </button>
             <button class="project-filter-btn" data-filter="control">
-              <span class="lang-en">Control &amp; Robotics (3)</span>
-              <span class="lang-de">Regelung &amp; Robotik (3)</span>
+              <span class="lang-en">Control &amp; Robotics (1)</span>
+              <span class="lang-de">Regelung &amp; Robotik (1)</span>
             </button>
             <button class="project-filter-btn" data-filter="vision">
               <span class="lang-en">AI Computer Vision (4)</span>
               <span class="lang-de">KI-Computer-Vision (4)</span>
-            </button>
-            <button class="project-filter-btn" data-filter="hardware">
-              <span class="lang-en">Hardware &amp; Embedded (2)</span>
-              <span class="lang-de">Hardware &amp; Embedded (2)</span>
             </button>
             <button class="project-filter-btn" data-filter="software">
               <span class="lang-en">Software &amp; Tools (2)</span>
@@ -185,103 +181,13 @@
 
         <div id="project-count-hud" class="project-status-hud">
           <span class="status-dot"></span>
-          <span class="lang-en">DISPLAYING: <strong>11/11</strong> PROJECTS</span>
-          <span class="lang-de">ANGEZEIGT: <strong>11/11</strong> PROJEKTE</span>
+          <span class="lang-en">DISPLAYING: <strong>7/7</strong> PROJECTS</span>
+          <span class="lang-de">ANGEZEIGT: <strong>7/7</strong> PROJEKTE</span>
         </div>
       </section>
 
       <!-- PROJECTS CARDS GRID -->
       <div class="cards-grid" id="projects-grid">
-
-        <!-- 1. FUZZY CONTROLLER -->
-        <article class="tech-card project-card featured" data-category="control" id="fuzzy-controller">
-          <div class="card-top">
-            <span class="card-type">CAD // SIMULATION // MUJOCO</span>
-            <span class="card-date font-mono">10/2026</span>
-          </div>
-          <h2 class="card-title">
-            <span class="lang-en">Single Unified Mamdani FIS Inverted Pendulum Controller in MuJoCo & Simulink</span>
-            <span class="lang-de">16-Regeln Mamdani FIS Regler für Inverses Pendel (MuJoCo & Simulink)</span>
-          </h2>
-                    <div class="card-specs">
-            <span>Max Tilt: 22.0 deg</span><span class="sep">/</span>
-            <span>ts: 1.65s</span><span class="sep">/</span>
-            <span>Zero Drift: +/-0.002m</span><span class="sep">/</span>
-            <span>CAD SolidWorks HUST</span>
-          </div>
-          <p class="card-desc">
-            <span class="lang-en">
-              A single unified 16-rule Mamdani FIS controller with 4 state inputs, stabilizing an inverted pendulum from large initial angles (up to 22°) in MuJoCo physics and MATLAB/Simulink Simscape Multibody.
-            </span>
-            <span class="lang-de">
-              Entwurf eines Fuzzy-Logic-Reglers (Mamdani FIS) mit 4 Zuständen und 16 optimierten Regeln zur Stabilisierung eines inversen Pendels bei großen Auslenkungen (bis 22°) in MuJoCo Physics und Simulink Simscape Multibody.
-            </span>
-          </p>
-          <div class="card-tags">
-            <span class="tag-badge" style="border-color: var(--accent-cyan); color: var(--accent-cyan);">Fuzzy Logic</span>
-            <span class="tag-badge">Mamdani FIS</span>
-            <span class="tag-badge">MuJoCo 3D</span>
-            <span class="tag-badge">Simscape</span>
-            <span class="tag-badge">Simulink</span>
-            <span class="tag-badge">Python</span>
-          </div>
-          <div class="project-card-footer">
-            <button type="button" class="btn-tech btn-tech-primary" data-project-id="fuzzy-controller" onclick="openProjectModal('fuzzy-controller')">
-              <span class="lang-en">Technical Report &amp; Demo</span><span class="lang-de">Technischer Bericht &amp; Demo</span>
-            </button>
-            <a href="https://github.com/vinhdo281/Fuzzy-Controller" target="_blank" rel="noopener" class="btn-tech">
-              <span>GitHub</span>
-            </a>
-            <a href="posts/fuzzy-inverted-pendulum/index.html" class="btn-tech">
-              <span class="lang-en">Tutorial Guide</span><span class="lang-de">Tutorial-Leitfaden</span>
-            </a>
-          </div>
-        </article>
-
-        <!-- 2. CASCADE PID -->
-        <article class="tech-card project-card featured" data-category="control" id="cascade-pid">
-          <div class="card-top">
-            <span class="card-type">CONTROL // DUAL-LOOP // SIMULINK</span>
-            <span class="card-date font-mono">08/2026</span>
-          </div>
-          <h2 class="card-title">
-            <span class="lang-en">Dual-Loop Cascade PID Controller for Two-Wheeled Self-Balancing Robot</span>
-            <span class="lang-de">Kaskadierter Zweikreis-PID-Regler für Zweirad-Balancierroboter</span>
-          </h2>
-                    <div class="card-specs">
-            <span>Inner Loop: 500Hz</span><span class="sep">/</span>
-            <span>Outer Loop: 50Hz</span><span class="sep">/</span>
-            <span class="lang-en">Impulse resistance: 20N</span><span class="lang-de">Stoßfestigkeit: 20N</span><span class="sep">/</span>
-            <span>ESP32 SimpleFOC</span>
-          </div>
-          <p class="card-desc">
-            <span class="lang-en">
-              Dual-loop cascade PID control architecture (Outer: Position/Velocity to Reference Angle; Inner: Pitch Angle to Motor Torque) implemented in Simulink, engineered for deployment on ESP32 & SimpleFOC.
-            </span>
-            <span class="lang-de">
-              Kaskadierte PID-Regelungsarchitektur mit zwei unabhängigen Schleifen (Äußere: Position/Geschwindigkeit &rarr; Soll-Neigungswinkel; Innere: Neigungswinkel &rarr; Motordrehmoment) in Simulink, entwickelt für ESP32 und SimpleFOC.
-            </span>
-          </p>
-          <div class="card-tags">
-            <span class="tag-badge" style="border-color: var(--accent-cyan); color: var(--accent-cyan);">Cascade PID</span>
-            <span class="tag-badge">Self-Balancing Robot</span>
-            <span class="tag-badge">Simulink</span>
-            <span class="tag-badge">MATLAB</span>
-            <span class="tag-badge">ESP32</span>
-            <span class="tag-badge">SimpleFOC</span>
-          </div>
-          <div class="project-card-footer">
-            <button type="button" class="btn-tech btn-tech-primary" data-project-id="cascade-pid" onclick="openProjectModal('cascade-pid')">
-              <span class="lang-en">Technical Report &amp; Demo</span><span class="lang-de">Technischer Bericht &amp; Demo</span>
-            </button>
-            <a href="https://github.com/vinhdo281/Cascade-PID" target="_blank" rel="noopener" class="btn-tech">
-              <span>GitHub</span>
-            </a>
-            <a href="posts/cascade-pid-twsbr/index.html" class="btn-tech">
-              <span class="lang-en">Tutorial Guide</span><span class="lang-de">Tutorial-Leitfaden</span>
-            </a>
-          </div>
-        </article>
 
         <!-- 3. BOT1 (ROS 2 MOBILE ROBOT) -->
         <article class="tech-card project-card featured" data-category="control" id="bot1">
@@ -674,9 +580,9 @@
   </footer>
 
   <!-- SCRIPTS -->
-  <script src="assets/js/search-data.js?v=5.0"></script>
-  <script src="assets/js/projects-data.js?v=4.0"></script>
-  <script src="assets/js/main.js?v=5.0"></script>
-  <script src="assets/js/projects-modal.js?v=4.0"></script>
+  <script src="assets/js/search-data.js?v=5.5"></script>
+  <script src="assets/js/projects-data.js?v=5.5"></script>
+  <script src="assets/js/main.js?v=5.5"></script>
+  <script src="assets/js/projects-modal.js?v=5.5"></script>
 </body>
 </html>
