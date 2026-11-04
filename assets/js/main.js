@@ -505,10 +505,10 @@
     const base = MAIN_SRC.replace(/js\/main\.js.*$/, '');
     const css = document.createElement('link');
     css.rel = 'stylesheet';
-    css.href = base + 'css/admin.css?v=5.7';
+    css.href = base + 'css/admin.css?v=5.8';
     document.head.appendChild(css);
     const js = document.createElement('script');
-    js.src = base + 'js/admin.js?v=5.7';
+    js.src = base + 'js/admin.js?v=5.8';
     js.onload = () => cb(window.SiteAdmin);
     document.head.appendChild(js);
   }

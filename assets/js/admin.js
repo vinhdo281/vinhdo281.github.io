@@ -384,16 +384,23 @@
     clearToken(); window.location.reload();
   }
 
+  // Fine-grained token page on GitHub, pre-filled where GitHub supports it.
+  var TOKEN_URL = 'https://github.com/settings/personal-access-tokens/new' +
+    '?name=' + encodeURIComponent(REPO + ' admin editor') +
+    '&description=' + encodeURIComponent('Visual editor for ' + REPO) +
+    '&target_name=' + encodeURIComponent(OWNER) + '&expires_in=90&contents=write';
+
   function openLogin(message) {
     if (ui.modal) { ui.modal.remove(); ui.modal = null; }
-    var input = h('input', { type: 'password', id: 'adm-token', autocomplete: 'off', spellcheck: 'false', placeholder: 'github_pat_…' });
+    var input = h('input', { type: 'password', id: 'adm-token', autocomplete: 'off', spellcheck: 'false', placeholder: 'github_pat_…', 'aria-label': 'GitHub token' });
     var remember = h('input', { type: 'checkbox', id: 'adm-remember' });
     var err = h('div', { 'class': 'adm-error', role: 'alert', text: message || '' });
-    var go = h('button', { type: 'submit', 'class': 'adm-btn adm-primary', text: 'Đăng nhập' });
+    var go = h('button', { type: 'submit', 'class': 'adm-btn adm-primary', text: 'Vào' });
+    var gh_ = h('a', { 'class': 'adm-btn adm-primary adm-ghlink', href: TOKEN_URL, target: '_blank', rel: 'noopener', text: 'Đăng nhập với GitHub' });
     var form = h('form', { 'class': 'adm-form' }, [
-      h('label', { 'for': 'adm-token', text: 'GitHub token (quyền Contents: Read and write, chỉ cho repo này)' }),
+      gh_,
       input,
-      h('label', { 'class': 'adm-check', 'for': 'adm-remember' }, [remember, h('span', { text: 'Nhớ trên thiết bị này (không tick: xóa khi đóng tab)' })]),
+      h('label', { 'class': 'adm-check', 'for': 'adm-remember' }, [remember, h('span', { text: 'Nhớ thiết bị này' })]),
       err,
       h('div', { 'class': 'adm-actions' }, [
         go,
@@ -403,8 +410,8 @@
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var t = input.value.trim();
-      if (!t) { err.textContent = 'Hãy dán token vào ô trên.'; return; }
-      go.disabled = true; err.textContent = 'Đang kiểm tra token…';
+      if (!t) { err.textContent = 'Dán token vào ô trên.'; return; }
+      go.disabled = true; err.textContent = 'Đang kiểm tra…';
       verifyToken(t).then(function (r) {
         if (!r.ok) { err.textContent = r.msg; go.disabled = false; return; }
         setToken(t, remember.checked); closeLogin(); start();
@@ -413,19 +420,13 @@
     ui.modal = h('div', { 'class': 'adm-ui adm-modal-backdrop' }, [
       h('div', { 'class': 'adm-modal', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Đăng nhập admin' }, [
         h('h2', { text: 'Đăng nhập admin' }),
-        h('p', { text: 'Site chạy trên GitHub Pages nên không có mật khẩu riêng: quyền sửa được GitHub kiểm tra bằng token của bạn. Token chỉ gửi tới api.github.com, không lưu ở đâu khác.' }),
-        h('p', {}, [
-          document.createTextNode('Tạo token tại '),
-          h('a', { href: 'https://github.com/settings/personal-access-tokens/new', target: '_blank', rel: 'noopener', text: 'GitHub → Fine-grained tokens' }),
-          document.createTextNode(': Repository access = chỉ repo ' + OWNER + '/' + REPO + '; Permissions → Contents = Read and write; đặt ngày hết hạn.')
-        ]),
         form
       ])
     ]);
     ui.modal.addEventListener('click', function (e) { if (e.target === ui.modal) closeLogin(); });
     document.addEventListener('keydown', escClose);
     document.body.appendChild(ui.modal);
-    input.focus();
+    gh_.focus();
   }
   function escClose(e) { if (e.key === 'Escape') closeLogin(); }
   function closeLogin() {

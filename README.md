@@ -57,14 +57,6 @@ vinhdo281.github.io/
 
 ## Admin visual editor
 
-Click **Admin** in the footer of any page to log in. GitHub Pages is static, so there is no
-password server: login is a **GitHub fine-grained token** and GitHub checks the permission.
-
-1. Create a token at <https://github.com/settings/personal-access-tokens/new>:
-   *Repository access* = only `vinhdo281/vinhdo281.github.io`, *Permissions -> Contents* = **Read and write**, set an expiry.
-2. Paste it into the login box (tick "remember" only on your own device).
-3. Turn on edit mode, click any text on the page and type. Switch EN/DE in the menu to edit the other language.
-4. **Save** commits the change to `main` (only the edited text is patched); the site rebuilds in about a minute.
-
-Scope: text inside `<main>` of the current page. Header, sidebar, footer, code blocks and rendered math are not editable here.
-Code: `assets/js/admin.js`, `assets/css/admin.css` (loaded lazily by `main.js`).
+Footer **Admin** -> **Đăng nhập với GitHub** opens GitHub's token page (pre-filled); create the
+token with access to this repo only and *Contents: Read and write*, paste it, then turn on edit mode
+and **Save** (commits to `main`). Code: `assets/js/admin.js`, `assets/css/admin.css`.
