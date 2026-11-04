@@ -140,6 +140,10 @@ a:hover { color: var(--accent-cyan); }
 .tech-table tr:hover td { background: var(--bg-secondary); }
 .figure-card { background: none; border: 1px solid var(--border-color); }
 
+/* Callouts written without an icon/wrapper: inline text and math must flow as one
+   paragraph, not become separate flex columns. */
+.callout:not(:has(> .callout-icon)) { display: block; }
+
 /* ---- Modals, search, toast ---------------------------------------------- */
 .search-modal, .project-modal-container { background: var(--bg-primary); border: 2px solid var(--text-primary); }
 .search-result-item.selected, .search-result-item:hover { background: var(--text-primary); color: var(--bg-primary); }

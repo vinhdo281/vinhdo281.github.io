@@ -6,7 +6,7 @@
   <title>Step-by-Step Tutorial: Real-Time Multi-Hand Finger Counting and Landmark Estimation with OpenCV & Python · Đỗ Hiểu Vinh</title>
   <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
   <link rel="stylesheet" href="../../assets/css/style.css?v=5.0">
-  <link rel="stylesheet" href="../../assets/css/swiss.css?v=5.0">
+  <link rel="stylesheet" href="../../assets/css/swiss.css?v=5.1">
   <!-- KaTeX CSS & JS for Math Equations -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
@@ -216,7 +216,7 @@
           <li>The fingertip is located higher on the display than its base knuckle.</li>
           <li>Higher vertical position corresponds to a <strong>smaller pixel y-value</strong>.</li>
           <li>Therefore, the condition for an extended upright finger is:
-            $$y_{\\text{tip}} < y_{\\text{pip}}$$
+            $$y_{\text{tip}} < y_{\text{pip}}$$
           </li>
         </ul>
 
@@ -233,15 +233,15 @@ for tip_id, pip_id in zip([8, 12, 16, 20], [6, 10, 14, 18]):
 
       <section id="sec-thumb-dilemma">
         <h2><span class="h2-badge">PART 3</span> The Thumb Dilemma: Why Vertical Logic Fails & Handedness Math</h2>
-        <p>Applying the vertical test ($y_{\\text{tip}} < y_{\\text{pip}}$) to the thumb produces constant false states. The thumb has only two phalanges and moves laterally in the coronal plane. An extended thumb in a relaxed hand frequently has $y_4 > y_3$!</p>
+        <p>Applying the vertical test ($y_{\text{tip}} < y_{\text{pip}}$) to the thumb produces constant false states. The thumb has only two phalanges and moves laterally in the coronal plane. An extended thumb in a relaxed hand frequently has $y_4 > y_3$!</p>
 
         <p>The thumb's extension must be judged along the <strong>horizontal x-axis</strong>, which depends strictly on whether the hand is a <strong>Left Hand or Right Hand</strong>:</p>
 
         <div class="callout callout-info">
           <strong>Handedness Vector Inversion Rule (Palm facing camera):</strong>
           <ul>
-            <li><strong>Right Hand:</strong> The thumb extends laterally to the <em>left</em> side of the palm $\implies x_{\\text{tip}} < x_{\\text{ip}}$ ($x_4 < x_3$).</li>
-            <li><strong>Left Hand:</strong> The thumb extends laterally to the <em>right</em> side of the palm $\implies x_{\\text{tip}} > x_{\\text{ip}}$ ($x_4 > x_3$).</li>
+            <li><strong>Right Hand:</strong> The thumb extends laterally to the <em>left</em> side of the palm $\implies x_{\text{tip}} < x_{\text{ip}}$ ($x_4 < x_3$).</li>
+            <li><strong>Left Hand:</strong> The thumb extends laterally to the <em>right</em> side of the palm $\implies x_{\text{tip}} > x_{\text{ip}}$ ($x_4 > x_3$).</li>
           </ul>
         </div>
 
@@ -250,14 +250,14 @@ for tip_id, pip_id in zip([8, 12, 16, 20], [6, 10, 14, 18]):
 
       <section id="sec-wrist-tilt">
         <h2><span class="h2-badge">PART 4</span> Angle-Invariant Dot Product Test for Tilted Hands</h2>
-        <p>What if the user holds their hand at a $45^\\circ$ angle, or horizontally? Comparing simple 1D coordinates ($y$ or $x$) fails because gravity no longer aligns with the hand coordinate axis!</p>
+        <p>What if the user holds their hand at a $45^\circ$ angle, or horizontally? Comparing simple 1D coordinates ($y$ or $x$) fails because gravity no longer aligns with the hand coordinate axis!</p>
         
-        <p>To achieve true <strong>360-degree rotation invariance</strong>, we calculate the dot product between the proximal vector $\\vec{u} = \\text{PIP} - \\text{MCP}$ and distal vector $\\vec{v} = \\text{TIP} - \\text{PIP}$:</p>
+        <p>To achieve true <strong>360-degree rotation invariance</strong>, we calculate the dot product between the proximal vector $\vec{u} = \text{PIP} - \text{MCP}$ and distal vector $\vec{v} = \text{TIP} - \text{PIP}$:</p>
         
-        <p>$$\\cos \\theta = \\frac{\\vec{u} \\cdot \\vec{v}}{\\|\\vec{u}\\| \\cdot \\|\\vec{v}\\|}$$</p>
+        <p>$$\cos \theta = \frac{\vec{u} \cdot \vec{v}}{\|\vec{u}\| \cdot \|\vec{v}\|}$$</p>
         <ul>
-          <li><strong>Straight extended finger:</strong> Vectors $\\vec{u}$ and $\\vec{v}$ are collinear $\implies \\cos\\theta \\approx 1.0$ (angle $\\theta < 25^\\circ$).</li>
-          <li><strong>Curled / closed finger:</strong> Vector $\\vec{v}$ folds backward toward the palm $\implies \\cos\\theta < 0.2$ (angle $\\theta > 75^\\circ$).</li>
+          <li><strong>Straight extended finger:</strong> Vectors $\vec{u}$ and $\vec{v}$ are collinear $\implies \cos\theta \approx 1.0$ (angle $\theta < 25^\circ$).</li>
+          <li><strong>Curled / closed finger:</strong> Vector $\vec{v}$ folds backward toward the palm $\implies \cos\theta < 0.2$ (angle $\theta > 75^\circ$).</li>
         </ul>
       </section>
 
@@ -326,8 +326,8 @@ while cap.isOpened():
         <h2><span class="h2-badge">PART 7</span> Latency Profiling & Edge Cases (Fist vs Spock Gesture)</h2>
         <ul>
           <li><strong>CPU Inferenz:</strong> 64.2 FPS on modern 6-core Intel i5/i7 laptops without external discrete GPU.</li>
-          <li><strong>Latency:</strong> Average end-to-end processing latency is $14.2\\text{ms}$ per frame.</li>
-          <li><strong>Fist Detection:</strong> Fully curled fist reliably yields count 0 ($100\\%$ precision across test sequences).</li>
+          <li><strong>Latency:</strong> Average end-to-end processing latency is $14.2\text{ms}$ per frame.</li>
+          <li><strong>Fist Detection:</strong> Fully curled fist reliably yields count 0 ($100\%$ precision across test sequences).</li>
         </ul>
       </section>
           </div>
@@ -339,17 +339,17 @@ while cap.isOpened():
 
       <section id="sec-vertical-test">
         <h2><span class="h2-badge">TEIL 2</span> Der 4-Finger-Vertikaltest: Warum y_tip < y_pip im Bildraum?</h2>
-        <p>Im Bildkoordinatensystem liegt der Ursprung oben links ($y$ wächst nach unten). Ein nach oben ausgestreckter Finger liegt optisch höher und besitzt daher einen kleineren $y$-Pixelwert: $y_{\\text{tip}} < y_{\\text{pip}}$.</p>
+        <p>Im Bildkoordinatensystem liegt der Ursprung oben links ($y$ wächst nach unten). Ein nach oben ausgestreckter Finger liegt optisch höher und besitzt daher einen kleineren $y$-Pixelwert: $y_{\text{tip}} < y_{\text{pip}}$.</p>
       </section>
 
       <section id="sec-thumb-dilemma">
         <h2><span class="h2-badge">TEIL 3</span> Das Daumen-Dilemma: Warum Vertikallogik versagt & Händigkeitsmathematik</h2>
-        <p>Der Daumen bewegt sich lateral in der Handfläche. Ein vertikaler Test scheitert. Die Auswertung erfolgt auf der horizontalen x-Achse: Bei der rechten Hand gilt $x_{\\text{tip}} < x_{\\text{ip}}$, bei der linken Hand $x_{\\text{tip}} > x_{\\text{ip}}$.</p>
+        <p>Der Daumen bewegt sich lateral in der Handfläche. Ein vertikaler Test scheitert. Die Auswertung erfolgt auf der horizontalen x-Achse: Bei der rechten Hand gilt $x_{\text{tip}} < x_{\text{ip}}$, bei der linken Hand $x_{\text{tip}} > x_{\text{ip}}$.</p>
       </section>
 
       <section id="sec-wrist-tilt">
         <h2><span class="h2-badge">TEIL 4</span> Winkelinvarianter Skalarprodukt-Test für geneigte Hände</h2>
-        <p>Über das Skalarprodukt der Vektoren $\\vec{u} = \\text{PIP} - \\text{MCP}$ und $\\vec{v} = \\text{TIP} - \\text{PIP}$ lässt sich der Streckungsgrad unabhängig von der Handneigung ($360^\\circ$ rotationsinvariant) bestimmen.</p>
+        <p>Über das Skalarprodukt der Vektoren $\vec{u} = \text{PIP} - \text{MCP}$ und $\vec{v} = \text{TIP} - \text{PIP}$ lässt sich der Streckungsgrad unabhängig von der Handneigung ($360^\circ$ rotationsinvariant) bestimmen.</p>
       </section>
 
       <section id="sec-multihand">

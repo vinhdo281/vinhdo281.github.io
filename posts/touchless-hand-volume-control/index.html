@@ -6,7 +6,7 @@
   <title>Hands-Free Interaction: Building a Low-Latency Touchless Hand Gesture Volume Controller with MediaPipe & PyCaw · Đỗ Hiểu Vinh</title>
   <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
   <link rel="stylesheet" href="../../assets/css/style.css?v=5.0">
-  <link rel="stylesheet" href="../../assets/css/swiss.css?v=5.0">
+  <link rel="stylesheet" href="../../assets/css/swiss.css?v=5.1">
   <!-- KaTeX CSS & JS for Math Equations -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
@@ -208,7 +208,7 @@
 
       <section id="sec-normalization">
         <h2><span class="h2-badge">PART 2</span> Camera Distance Problem & Palm-Scale Normalization</h2>
-        <p>A fatal flaw in simplistic gesture tutorials is computing raw Euclidean pixel distance $d = \\sqrt{(x_8 - x_4)^2 + (y_8 - y_4)^2}$.</p>
+        <p>A fatal flaw in simplistic gesture tutorials is computing raw Euclidean pixel distance $d = \sqrt{(x_8 - x_4)^2 + (y_8 - y_4)^2}$.</p>
         
         <div class="callout callout-warning">
           <strong>The Scale Flaw:</strong> If the user sits 0.5 meters from the webcam, a full pinch span measures ~250 pixels. If the user leans back to 1.5 meters, the exact same hand span measures only ~80 pixels! Using raw pixel distance causes volume control to fluctuate uncontrollably depending on user posture.
@@ -216,26 +216,26 @@
 
         <p>We solve this by <strong>normalizing the pinch distance against the user's palm scale</strong>:</p>
         <p>We measure the reference distance between Landmark 0 (Wrist) and Landmark 9 (MCP base joint of middle finger):</p>
-        <p>$$d_{\\text{palm}} = \\sqrt{(x_9 - x_0)^2 + (y_9 - y_0)^2}$$</p>
+        <p>$$d_{\text{palm}} = \sqrt{(x_9 - x_0)^2 + (y_9 - y_0)^2}$$</p>
         <p>The normalized distance metric is distance-invariant:</p>
-        <p>$$d_{\\text{norm}} = \\frac{\\sqrt{(x_8 - x_4)^2 + (y_8 - y_4)^2}}{d_{\\text{palm}}}$$</p>
-        <p>Regardless of whether the user is 0.4m or 2.0m from the camera, $d_{\\text{norm}}$ remains constant for any given pinch posture (ranging from $0.1$ when fingers touch to $1.2$ at maximum extension).</p>
+        <p>$$d_{\text{norm}} = \frac{\sqrt{(x_8 - x_4)^2 + (y_8 - y_4)^2}}{d_{\text{palm}}}$$</p>
+        <p>Regardless of whether the user is 0.4m or 2.0m from the camera, $d_{\text{norm}}$ remains constant for any given pinch posture (ranging from $0.1$ when fingers touch to $1.2$ at maximum extension).</p>
       </section>
 
       <section id="sec-filtering">
         <h2><span class="h2-badge">PART 3</span> Jitter Suppression: Deriving Exponential Moving Average (EMA)</h2>
-        <p>Webcam optical sensors operate at 30Hz with rolling shutter CMOS sensors. Natural physiological muscle micro-tremors and lighting noise create $\\pm 3\\text{px}$ coordinate fluctuations. If passed directly to the system audio mixer, the volume slider shakes violently and audio exhibits clicking artifacts.</p>
+        <p>Webcam optical sensors operate at 30Hz with rolling shutter CMOS sensors. Natural physiological muscle micro-tremors and lighting noise create $\pm 3\text{px}$ coordinate fluctuations. If passed directly to the system audio mixer, the volume slider shakes violently and audio exhibits clicking artifacts.</p>
 
         <p>We implement a discrete <strong>Exponential Moving Average (EMA) 1st-order low-pass filter</strong>:</p>
-        <p>$$\\bar{v}_t = \\alpha \\cdot v_t + (1 - \\alpha) \\cdot \\bar{v}_{t-1}$$</p>
+        <p>$$\bar{v}_t = \alpha \cdot v_t + (1 - \alpha) \cdot \bar{v}_{t-1}$$</p>
         
-        <h4>Filter Parameter Selection Analysis ($\\alpha = 0.35$):</h4>
+        <h4>Filter Parameter Selection Analysis ($\alpha = 0.35$):</h4>
         <ul>
-          <li>If $\\alpha > 0.75$: The filter allows high-frequency sensor noise to pass through, causing audible audio flutter.</li>
-          <li>If $\\alpha < 0.15$: Latency climbs above $150\\text{ms}$, creating perceptual sluggishness (user feels like they are moving a lever through honey).</li>
-          <li>With $\\alpha = 0.35$ at $30\\text{ Hz}$ ($\\Delta t \\approx 33\\text{ms}$), the filter time constant is:
-            $$\\tau = \\frac{\\Delta t (1 - \\alpha)}{\\alpha} = \\frac{0.033 \\cdot 0.65}{0.35} \\approx 61\\text{ ms}$$
-            This eliminates $100\\%$ of perceived visual jitter while keeping response latency well below the human perception threshold of $70\\text{ms}$.
+          <li>If $\alpha > 0.75$: The filter allows high-frequency sensor noise to pass through, causing audible audio flutter.</li>
+          <li>If $\alpha < 0.15$: Latency climbs above $150\text{ms}$, creating perceptual sluggishness (user feels like they are moving a lever through honey).</li>
+          <li>With $\alpha = 0.35$ at $30\text{ Hz}$ ($\Delta t \approx 33\text{ms}$), the filter time constant is:
+            $$\tau = \frac{\Delta t (1 - \alpha)}{\alpha} = \frac{0.033 \cdot 0.65}{0.35} \approx 61\text{ ms}$$
+            This eliminates $100\%$ of perceived visual jitter while keeping response latency well below the human perception threshold of $70\text{ms}$.
           </li>
         </ul>
       </section>
@@ -246,7 +246,7 @@
         
         <p>A crucial engineering decision is choosing between Decibels (dB) and Scalar volume:</p>
         <ul>
-          <li><strong>Decibel Volume (Logarithmic):</strong> <code>volume.SetMasterVolumeLevel(val, None)</code>. The master volume hardware range is typically $[-65.25\\text{ dB}, 0.0\\text{ dB}]$. However, human perception of loudness is non-linear (Weber-Fechner Law and Stevens' Power Law). Directly interpolating across decibels makes the bottom $80\\%$ of the gesture control virtually silent, with all audible volume clustered in the top $20\\%$ of motion!</li>
+          <li><strong>Decibel Volume (Logarithmic):</strong> <code>volume.SetMasterVolumeLevel(val, None)</code>. The master volume hardware range is typically $[-65.25\text{ dB}, 0.0\text{ dB}]$. However, human perception of loudness is non-linear (Weber-Fechner Law and Stevens' Power Law). Directly interpolating across decibels makes the bottom $80\%$ of the gesture control virtually silent, with all audible volume clustered in the top $20\%$ of motion!</li>
           <li><strong>Scalar Volume (Perceptually Corrected):</strong> <code>volume.SetMasterVolumeLevelScalar(val, None)</code>. Maps linearly to scalar values $[0.0, 1.0]$. The Windows kernel automatically applies human loudness curve pre-compensation, giving a smooth, uniform audio response across the entire hand pinch range.</li>
         </ul>
       </section>
@@ -257,7 +257,7 @@
         <ul>
           <li>A connecting dynamic vector line between thumb and index tips. The line color transitions smoothly from cyan (low volume) to bright neon green (high volume).</li>
           <li>A vertical volume bar with bounding brackets and an illuminated level fill.</li>
-          <li><strong>Snap-to-Mute Hysteresis:</strong> When $d_{\\text{norm}} < 0.15$, the fingertips are touching. Rather than leaving volume at $2\\%$, the software activates a snap-to-mute threshold, instantly triggering system mute and turning the center dot bright red.</li>
+          <li><strong>Snap-to-Mute Hysteresis:</strong> When $d_{\text{norm}} < 0.15$, the fingertips are touching. Rather than leaving volume at $2\%$, the software activates a snap-to-mute threshold, instantly triggering system mute and turning the center dot bright red.</li>
         </ul>
       </section>
 
@@ -334,12 +334,12 @@ while cap.isOpened():
 
       <section id="sec-normalization">
         <h2><span class="h2-badge">TEIL 2</span> Kamera-Abstandsproblem & Handflächen-Skalierung</h2>
-        <p>Reine Pixelabstände schwanken je nach Sitzabstand zur Kamera. Die Normierung durch die Handflächenlänge ($d_{\\text{norm}} = \\frac{d_{\\text{pinch}}}{d_{\\text{palm}}}$) macht die Erkennung vollständig entfernungsunabhängig.</p>
+        <p>Reine Pixelabstände schwanken je nach Sitzabstand zur Kamera. Die Normierung durch die Handflächenlänge ($d_{\text{norm}} = \frac{d_{\text{pinch}}}{d_{\text{palm}}}$) macht die Erkennung vollständig entfernungsunabhängig.</p>
       </section>
 
       <section id="sec-filtering">
         <h2><span class="h2-badge">TEIL 3</span> Jitter-Unterdrückung: Herleitung des EMA-Filters</h2>
-        <p>Ein exponentieller Glättungsfilter ($\\bar{v}_t = 0.35 v_t + 0.65 \\bar{v}_{t-1}$) eliminiert physiologische Mikrovibrationen der Hand und Sensorrauschen bei einer Latenz von nur 61ms.</p>
+        <p>Ein exponentieller Glättungsfilter ($\bar{v}_t = 0.35 v_t + 0.65 \bar{v}_{t-1}$) eliminiert physiologische Mikrovibrationen der Hand und Sensorrauschen bei einer Latenz von nur 61ms.</p>
       </section>
 
       <section id="sec-pycaw-audio">

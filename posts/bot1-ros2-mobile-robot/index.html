@@ -6,7 +6,7 @@
   <title>End-to-End Guide: Building a ROS 2 Differential Drive Mobile Robot from Scratch in Gazebo, ros2_control & Nav2 · Đỗ Hiểu Vinh</title>
   <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
   <link rel="stylesheet" href="../../assets/css/style.css?v=5.0">
-  <link rel="stylesheet" href="../../assets/css/swiss.css?v=5.0">
+  <link rel="stylesheet" href="../../assets/css/swiss.css?v=5.1">
   <!-- KaTeX CSS & JS for Math Equations -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
@@ -200,16 +200,16 @@
         <h2><span class="h2-badge">PART 1</span> Differential Drive Kinematics & Non-Holonomic Constraints</h2>
         <p>A differential drive mobile robot consists of two coaxial actuated drive wheels of radius $R$ separated by track width $W$, complemented by one or two passive caster wheels for vertical balance. It is subject to a fundamental <strong>non-holonomic kinematic constraint</strong>:</p>
         
-        <p>$$\\dot{y}\\cos\\theta - \\dot{x}\\sin\\theta = 0$$</p>
-        <p>This equation dictates that the robot cannot instantaneously translate sideways (along its lateral body y-axis). Lateral motion requires rotating first. The relationship between Cartesian velocities $(\\dot{x}, \\dot{y}, \\dot{\\theta})$ and wheel angular velocities $(\\omega_R, \\omega_L)$ is expressed by forward kinematics:</p>
+        <p>$$\dot{y}\cos\theta - \dot{x}\sin\theta = 0$$</p>
+        <p>This equation dictates that the robot cannot instantaneously translate sideways (along its lateral body y-axis). Lateral motion requires rotating first. The relationship between Cartesian velocities $(\dot{x}, \dot{y}, \dot{\theta})$ and wheel angular velocities $(\omega_R, \omega_L)$ is expressed by forward kinematics:</p>
         
-        <p>$$v = \\frac{R}{2}(\\omega_R + \\omega_L), \\quad \\omega = \\frac{R}{W}(\\omega_R - \\omega_L)$$</p>
+        <p>$$v = \frac{R}{2}(\omega_R + \omega_L), \quad \omega = \frac{R}{W}(\omega_R - \omega_L)$$</p>
         
-        <p>Conversely, when a navigation node commands linear velocity $v$ and angular velocity $\\omega$ via topic <code>/cmd_vel</code>, the inverse kinematics calculates required individual wheel speeds:</p>
-        <p>$$\\omega_R = \\frac{v + \\frac{W}{2}\\omega}{R}, \\quad \\omega_L = \\frac{v - \\frac{W}{2}\\omega}{R}$$</p>
+        <p>Conversely, when a navigation node commands linear velocity $v$ and angular velocity $\omega$ via topic <code>/cmd_vel</code>, the inverse kinematics calculates required individual wheel speeds:</p>
+        <p>$$\omega_R = \frac{v + \frac{W}{2}\omega}{R}, \quad \omega_L = \frac{v - \frac{W}{2}\omega}{R}$$</p>
         
         <div class="callout callout-info">
-          <strong>Why Track Width Calibration Matters:</strong> If the effective track width $W$ in software deviates from physical reality by even $3\\%$, calculating heading angle from wheel encoder odometry ($d\\theta = \\frac{R}{W}(\\Delta \\phi_R - \\Delta \\phi_L)$) accumulates severe rotational errors, causing map distortion during SLAM.
+          <strong>Why Track Width Calibration Matters:</strong> If the effective track width $W$ in software deviates from physical reality by even $3\%$, calculating heading angle from wheel encoder odometry ($d\theta = \frac{R}{W}(\Delta \phi_R - \Delta \phi_L)$) accumulates severe rotational errors, causing map distortion during SLAM.
         </div>
       </section>
 
@@ -218,7 +218,7 @@
         <p>A common pitfall in Gazebo simulation is when the robot bounces violently, shakes uncontrollably, or tips over during turns. This is caused by <strong>improper caster wheel friction parameters and incorrect inertia tensors</strong>.</p>
         
         <h4>1. Caster Contact Friction Dilemma:</h4>
-        <p>In standard Gazebo ODE physics, default surface friction is $\\mu_1 = \\mu_2 = 1.0$. If a caster wheel ball is given default friction, it creates strong lateral frictional resistance whenever the robot tries to yaw, causing the wheels to drag, slip, and vibrate violently. We must explicitly set friction to near-zero:</p>
+        <p>In standard Gazebo ODE physics, default surface friction is $\mu_1 = \mu_2 = 1.0$. If a caster wheel ball is given default friction, it creates strong lateral frictional resistance whenever the robot tries to yaw, causing the wheels to drag, slip, and vibrate violently. We must explicitly set friction to near-zero:</p>
 
         <div class="code-terminal"><pre><code><!-- caster_wheel.xacro -->
 <gazebo reference="caster_wheel">
@@ -232,7 +232,7 @@
 </gazebo></code></pre></div>
 
         <h4>2. Rigid Body Rotational Inertia Tensors:</h4>
-        <p>If inertia values are set to zero or physically inconsistent values (violating the triangle inequality $I_{xx} + I_{yy} \\ge I_{zz}$), the Gazebo Open Dynamics Engine (ODE) matrix solver produces infinite accelerations, resulting in <code>NaN</code> velocity vectors and robot disassembly.</p>
+        <p>If inertia values are set to zero or physically inconsistent values (violating the triangle inequality $I_{xx} + I_{yy} \ge I_{zz}$), the Gazebo Open Dynamics Engine (ODE) matrix solver produces infinite accelerations, resulting in <code>NaN</code> velocity vectors and robot disassembly.</p>
 
         <div class="code-terminal"><pre><code><!-- Solid Cylinder Wheel Inertia Macro -->
 <!-- Mass = m, Radius = r, Width = h -->
@@ -336,7 +336,7 @@ minimum_travel_heading: 0.2</code></pre></div>
         
         <ul>
           <li><strong>Global Costmap & NavFn Planner:</strong> Builds a global grid from the SLAM map. NavFn uses Dijkstra / A* search to calculate the shortest path from current location to target pose.</li>
-          <li><strong>Local Costmap & Dynamic Window Approach (DWB):</strong> Maintains a $3\\text{m} \\times 3\\text{m}$ rolling costmap populated by real-time laser scan points. The DWB controller samples circular trajectory arcs in $(v, \\omega)$ velocity space, evaluates obstacle distance penalties and goal-heading costs, and outputs the optimal collision-free command velocity.</li>
+          <li><strong>Local Costmap & Dynamic Window Approach (DWB):</strong> Maintains a $3\text{m} \times 3\text{m}$ rolling costmap populated by real-time laser scan points. The DWB controller samples circular trajectory arcs in $(v, \omega)$ velocity space, evaluates obstacle distance penalties and goal-heading costs, and outputs the optimal collision-free command velocity.</li>
         </ul>
 
         <div class="code-terminal"><pre><code># Costmap inflation formula:
@@ -386,12 +386,12 @@ evince frames.pdf</code></pre></div>
           <div class="lang-de">
             <section id="sec-kinematics">
         <h2><span class="h2-badge">TEIL 1</span> Differenzielle Kinematik & Nichtholonomische Zwangsbedingungen</h2>
-        <p>Ein fahrbarer Roboter mit Differentialantrieb unterliegt der nichtholonomischen Zwangsbedingung $\\dot{y}\\cos\\theta - \\dot{x}\\sin\\theta = 0$. Direkte seitliche Translation ist unmöglich. Die Vorwärtskinematik verknüpft Raddrehzahlen mit linearen und rotatorischen Geschwindigkeiten: $v = \\frac{R}{2}(\\omega_R + \\omega_L)$ und $\\omega = \\frac{R}{W}(\\omega_R - \\omega_L)$.</p>
+        <p>Ein fahrbarer Roboter mit Differentialantrieb unterliegt der nichtholonomischen Zwangsbedingung $\dot{y}\cos\theta - \dot{x}\sin\theta = 0$. Direkte seitliche Translation ist unmöglich. Die Vorwärtskinematik verknüpft Raddrehzahlen mit linearen und rotatorischen Geschwindigkeiten: $v = \frac{R}{2}(\omega_R + \omega_L)$ und $\omega = \frac{R}{W}(\omega_R - \omega_L)$.</p>
       </section>
 
       <section id="sec-urdf-physics">
         <h2><span class="h2-badge">TEIL 2</span> URDF/Xacro-Physik: Warum Stützradreibung Gazebo instabil macht</h2>
-        <p>Mit der Standard-Haftreibung von $\\mu = 1.0$ verhakt sich das Stützrad bei Drehungen und führt zu schweren Oszillationen. Die Reibung muss explizit auf $\\mu_1 = \\mu_2 = 0.001$ gesetzt werden. Zudem müssen die Trägheitstensoren der Räder exakt der Zylinderformel $I_{zz} = \\frac{1}{2}m r^2$ entsprechen, um Matrix-Singularitäten im ODE-Solver zu vermeiden.</p>
+        <p>Mit der Standard-Haftreibung von $\mu = 1.0$ verhakt sich das Stützrad bei Drehungen und führt zu schweren Oszillationen. Die Reibung muss explizit auf $\mu_1 = \mu_2 = 0.001$ gesetzt werden. Zudem müssen die Trägheitstensoren der Räder exakt der Zylinderformel $I_{zz} = \frac{1}{2}m r^2$ entsprechen, um Matrix-Singularitäten im ODE-Solver zu vermeiden.</p>
       </section>
 
       <section id="sec-ros2-control">
@@ -401,7 +401,7 @@ evince frames.pdf</code></pre></div>
 
       <section id="sec-tf-tree">
         <h2><span class="h2-badge">TEIL 4</span> Koordinatentransformationen (TF2): map -> odom -> base_link</h2>
-        <p>Hierarchie: <code>map</code> (global, sprunghaft bei Loop Closures, publiziert von SLAM) $\\to$ <code>odom</code> (kontinuierlich glatt, publiziert vom Controller) $\\to$ <code>base_footprint</code> $\\to$ <code>base_link</code> $\\to$ <code>laser_frame</code>.</p>
+        <p>Hierarchie: <code>map</code> (global, sprunghaft bei Loop Closures, publiziert von SLAM) $\to$ <code>odom</code> (kontinuierlich glatt, publiziert vom Controller) $\to$ <code>base_footprint</code> $\to$ <code>base_link</code> $\to$ <code>laser_frame</code>.</p>
       </section>
 
       <section id="sec-slam">
@@ -411,7 +411,7 @@ evince frames.pdf</code></pre></div>
 
       <section id="sec-nav2-planners">
         <h2><span class="h2-badge">TEIL 6</span> Nav2 Navigation Stack: Global NavFn & Lokaler DWB Planner</h2>
-        <p>NavFn generiert globale Pfade mittels Dijkstra/A*, während der DWB Local Planner Hindernissen im rollenden $3\\text{m} \\times 3\\text{m}$ Costmap-Fenster ausweicht.</p>
+        <p>NavFn generiert globale Pfade mittels Dijkstra/A*, während der DWB Local Planner Hindernissen im rollenden $3\text{m} \times 3\text{m}$ Costmap-Fenster ausweicht.</p>
       </section>
 
       <section id="sec-cli-guide">

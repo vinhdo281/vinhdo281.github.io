@@ -6,7 +6,7 @@
   <title>Building a Production-Ready Weather Telemetry Desktop Application with Python, Asynchronous Polling, and Custom UI · Đỗ Hiểu Vinh</title>
   <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
   <link rel="stylesheet" href="../../assets/css/style.css?v=5.0">
-  <link rel="stylesheet" href="../../assets/css/swiss.css?v=5.0">
+  <link rel="stylesheet" href="../../assets/css/swiss.css?v=5.1">
   <!-- KaTeX CSS & JS for Math Equations -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
@@ -198,7 +198,7 @@
         <h2><span class="h2-badge">PART 1</span> The UI Event Loop Dilemma: Why Synchronous Requests Freeze Apps</h2>
         <p>A frequent error in desktop application development is issuing synchronous network requests (e.g., <code>requests.get()</code>) directly inside a button click callback. Understanding the OS graphics pipeline reveals why this causes catastrophic failures:</p>
         
-        <p>Desktop GUI toolkits (Tkinter, PyQt, Win32) operate on an <strong>infinite single-threaded message dispatch loop</strong> (<code>root.mainloop()</code>). At 60 FPS, the loop has an execution budget of merely $16.6\\text{ms}$ per frame to dispatch operating system messages (mouse clicks, redraw events, window dragging, cursor hover states).</p>
+        <p>Desktop GUI toolkits (Tkinter, PyQt, Win32) operate on an <strong>infinite single-threaded message dispatch loop</strong> (<code>root.mainloop()</code>). At 60 FPS, the loop has an execution budget of merely $16.6\text{ms}$ per frame to dispatch operating system messages (mouse clicks, redraw events, window dragging, cursor hover states).</p>
         
         <div class="callout callout-warning">
           <strong>The Freezing Mechanism:</strong> A typical HTTP request to an external weather telemetry API takes 250ms to 2500ms depending on DNS resolution and internet latency. If executed synchronously on the GUI thread, message dispatch stops entirely. After 5 seconds of blocked messages, the Windows OS DWM (Desktop Window Manager) flags the application as <strong>"Not Responding"</strong>, renders a ghosted translucent overlay, and displays a spinning wait cursor.
@@ -230,18 +230,18 @@ def on_search_button_clicked():
 
       <section id="sec-physics-math">
         <h2><span class="h2-badge">PART 3</span> Atmospheric Physics Telemetry: Dew Point & Heat Index Math</h2>
-        <p>Raw weather APIs return basic metrics: dry-bulb temperature $T$ ($^\\circ\\text{C}$) and relative humidity $RH$ ($\\%$). However, professional meteorological telemetry requires derived physical indicators:</p>
+        <p>Raw weather APIs return basic metrics: dry-bulb temperature $T$ ($^\circ\text{C}$) and relative humidity $RH$ ($\%$). However, professional meteorological telemetry requires derived physical indicators:</p>
 
         <h4>1. Magnus-Tetens Dew Point Formulation ($T_d$):</h4>
         <p>Relative humidity is deceptive because warm air can hold far more moisture than cold air. The <strong>Dew Point ($T_d$)</strong> represents the absolute temperature to which air must be cooled to become fully saturated with water vapor:</p>
         
-        <p>$$\\gamma(T, RH) = \\frac{a \\cdot T}{b + T} + \\ln\\left(\\frac{RH}{100}\\right)$$</p>
-        <p>$$T_d = \\frac{b \\cdot \\gamma(T, RH)}{a - \\gamma(T, RH)}$$</p>
-        <p>where empirical constants for atmospheric temperatures are $a = 17.27$ and $b = 237.7^\\circ\\text{C}$. When $T_d > 20^\\circ\\text{C}$, atmospheric conditions feel oppressively muggy regardless of ambient temperature.</p>
+        <p>$$\gamma(T, RH) = \frac{a \cdot T}{b + T} + \ln\left(\frac{RH}{100}\right)$$</p>
+        <p>$$T_d = \frac{b \cdot \gamma(T, RH)}{a - \gamma(T, RH)}$$</p>
+        <p>where empirical constants for atmospheric temperatures are $a = 17.27$ and $b = 237.7^\circ\text{C}$. When $T_d > 20^\circ\text{C}$, atmospheric conditions feel oppressively muggy regardless of ambient temperature.</p>
 
         <h4>2. Heat Index (Apparent Temperature):</h4>
         <p>High humidity impedes the human body's primary cooling mechanism—evaporative sweat cooling. The Rothfusz multi-variable regression equation approximates perceived heat index $HI$:</p>
-        <p>$$HI = c_1 + c_2 T + c_3 RH + c_4 T \\cdot RH + c_5 T^2 + c_6 RH^2 + c_7 T^2 RH + c_8 T RH^2 + c_9 T^2 RH^2$$</p>
+        <p>$$HI = c_1 + c_2 T + c_3 RH + c_4 T \cdot RH + c_5 T^2 + c_6 RH^2 + c_7 T^2 RH + c_8 T RH^2 + c_9 T^2 RH^2$$</p>
       </section>
 
       <section id="sec-caching">

@@ -6,7 +6,7 @@
   <title>Production-Grade Computer Vision: Highway Vehicle Detection, Tracking, and Virtual Line Counting with YOLOv11 & SORT · Đỗ Hiểu Vinh</title>
   <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
   <link rel="stylesheet" href="../../assets/css/style.css?v=5.0">
-  <link rel="stylesheet" href="../../assets/css/swiss.css?v=5.0">
+  <link rel="stylesheet" href="../../assets/css/swiss.css?v=5.1">
   <!-- KaTeX CSS & JS for Math Equations -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
@@ -203,7 +203,7 @@
         <ul>
           <li><strong>Anchor-Free Direct Bounding Box Regression:</strong> Instead of tuning pre-defined anchor box aspect ratios that struggle on small distant cars vs massive semi-trucks, the model directly predicts the distance from the grid cell center to the 4 bounding box edges $(l, t, r, b)$.</li>
           <li><strong>C2f / C3k2 Backbone Feature Fusion:</strong> Integrates high-level semantic context with high-resolution spatial features via PAN-FPN (Path Aggregation Network), retaining fine pixel features of distant vehicles while preserving deep semantic class discriminability.</li>
-          <li><strong>Selective Class Filtering:</strong> By constraining detection targets strictly to classes $[2: \\text{car}, 3: \\text{motorcycle}, 5: \\text{bus}, 7: \\text{truck}]$ from the 80 COCO classes, we eliminate non-vehicle proposals from the NMS (Non-Maximum Suppression) computation.</li>
+          <li><strong>Selective Class Filtering:</strong> By constraining detection targets strictly to classes $[2: \text{car}, 3: \text{motorcycle}, 5: \text{bus}, 7: \text{truck}]$ from the 80 COCO classes, we eliminate non-vehicle proposals from the NMS (Non-Maximum Suppression) computation.</li>
         </ul>
       </section>
 
@@ -221,26 +221,26 @@ img_region = cv2.bitwise_and(frame, mask)
 # Run YOLO inference strictly on road pixels
 results = model(img_region, stream=True)</code></pre></div>
 
-        <p>This single line operation reduces false positive candidate boxes by over $92\\%$ and cuts post-processing inference latency by $14\\%$.</p>
+        <p>This single line operation reduces false positive candidate boxes by over $92\%$ and cuts post-processing inference latency by $14\%$.</p>
       </section>
 
       <section id="sec-kalman">
         <h2><span class="h2-badge">PART 3</span> Kalman Filter Derivation: Why [u, v, s, r] State Vector?</h2>
-        <p>Why does the Simple Online and Realtime Tracking (SORT) algorithm represent a vehicle using the 7-dimensional state vector $\\mathbf{x} = [u, v, s, r, \\dot{u}, \\dot{v}, \\dot{s}]^T$ instead of intuitive Cartesian coordinates $[x_1, y_1, x_2, y_2]$?</p>
+        <p>Why does the Simple Online and Realtime Tracking (SORT) algorithm represent a vehicle using the 7-dimensional state vector $\mathbf{x} = [u, v, s, r, \dot{u}, \dot{v}, \dot{s}]^T$ instead of intuitive Cartesian coordinates $[x_1, y_1, x_2, y_2]$?</p>
         
         <ul>
           <li>$(u, v)$ is the center pixel coordinate of the 2D bounding box.</li>
-          <li>$s = w \\times h$ represents the <strong>scale (area)</strong> of the bounding box.</li>
-          <li>$r = \\frac{w}{h}$ represents the <strong>aspect ratio</strong>.</li>
-          <li>$\\dot{u}, \\dot{v}, \\dot{s}$ are the respective rates of change (velocities).</li>
+          <li>$s = w \times h$ represents the <strong>scale (area)</strong> of the bounding box.</li>
+          <li>$r = \frac{w}{h}$ represents the <strong>aspect ratio</strong>.</li>
+          <li>$\dot{u}, \dot{v}, \dot{s}$ are the respective rates of change (velocities).</li>
         </ul>
 
         <div class="callout callout-info">
-          <strong>Why Aspect Ratio $r$ is Key:</strong> Under perspective projection on a highway, as a car moves away from the camera into the distance, its width $w$ and height $h$ both shrink rapidly. However, the aspect ratio $r = \\frac{w}{h}$ remains <em>virtually invariant</em>! Assuming $\\dot{r} = 0$ provides a powerful geometric constraint that stabilizes bounding box estimation even through noisy sensor detections.
+          <strong>Why Aspect Ratio $r$ is Key:</strong> Under perspective projection on a highway, as a car moves away from the camera into the distance, its width $w$ and height $h$ both shrink rapidly. However, the aspect ratio $r = \frac{w}{h}$ remains <em>virtually invariant</em>! Assuming $\dot{r} = 0$ provides a powerful geometric constraint that stabilizes bounding box estimation even through noisy sensor detections.
         </div>
 
-        <p>The state transition model assumes constant velocity motion across sampling period $\\Delta t$:</p>
-        <p>$$\\mathbf{x}_k = F \\mathbf{x}_{k-1} + \\mathbf{w}_k, \\quad F = \\begin{bmatrix} 1 & 0 & 0 & 0 & \\Delta t & 0 & 0 \\\\ 0 & 1 & 0 & 0 & 0 & \\Delta t & 0 \\\\ 0 & 0 & 1 & 0 & 0 & 0 & \\Delta t \\\\ 0 & 0 & 0 & 1 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 0 & 1 & 0 & 0 \\\\ 0 & 0 & 0 & 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 0 & 0 & 0 & 1 \\end{bmatrix}$$</p>
+        <p>The state transition model assumes constant velocity motion across sampling period $\Delta t$:</p>
+        <p>$$\mathbf{x}_k = F \mathbf{x}_{k-1} + \mathbf{w}_k, \quad F = \begin{bmatrix} 1 & 0 & 0 & 0 & \Delta t & 0 & 0 \\ 0 & 1 & 0 & 0 & 0 & \Delta t & 0 \\ 0 & 0 & 1 & 0 & 0 & 0 & \Delta t \\ 0 & 0 & 0 & 1 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 0 & 0 & 0 & 1 \end{bmatrix}$$</p>
       </section>
 
       <section id="sec-hungarian">
@@ -248,14 +248,14 @@ results = model(img_region, stream=True)</code></pre></div>
         <p>When multiple vehicles are in the frame, how do we associate detections in frame $k$ with predicted tracks from frame $k-1$ without greedy errors?</p>
         
         <p>SORT formulates track association as a <strong>maximum bipartite matching problem</strong>. An assignment cost matrix $C$ is constructed where each entry $C_{i, j}$ is the Intersection-over-Union (IoU) distance between existing track $i$ and detection $j$:</p>
-        <p>$$C_{i, j} = 1 - \\text{IoU}(\\text{Track}_i, \\text{Detection}_j), \\quad \\text{IoU}(A, B) = \\frac{|A \\cap B|}{|A \\cup B|}$$</p>
+        <p>$$C_{i, j} = 1 - \text{IoU}(\text{Track}_i, \text{Detection}_j), \quad \text{IoU}(A, B) = \frac{|A \cap B|}{|A \cup B|}$$</p>
         
-        <p>The <strong>Hungarian (Kuhn-Munkres) Algorithm</strong> solves for the globally optimal assignment in $O(N^3)$ polynomial time. Matches with $\\text{IoU} < \\text{IoU}_{\\min}$ (typically $0.3$) are rejected, spawning new candidate tracks or retiring lost tracks.</p>
+        <p>The <strong>Hungarian (Kuhn-Munkres) Algorithm</strong> solves for the globally optimal assignment in $O(N^3)$ polynomial time. Matches with $\text{IoU} < \text{IoU}_{\min}$ (typically $0.3$) are rejected, spawning new candidate tracks or retiring lost tracks.</p>
 
         <div class="callout callout-tip">
           <strong>Why max_age=20 & min_hits=3 Matter:</strong>
           <ul>
-            <li><code>max_age = 20</code> frames ($~0.65\\text{s}$): Keeps coasting the Kalman state through momentary occlusion when a vehicle passes underneath an overhead highway toll gantry or tree shadow.</li>
+            <li><code>max_age = 20</code> frames ($~0.65\text{s}$): Keeps coasting the Kalman state through momentary occlusion when a vehicle passes underneath an overhead highway toll gantry or tree shadow.</li>
             <li><code>min_hits = 3</code> frames: Prevents spurious single-frame false detections from creating ghost vehicle counts. A track must be verified across 3 consecutive frames before becoming an active count candidate.</li>
           </ul>
         </div>
@@ -277,7 +277,7 @@ def check_intersection(A, B, C, D):
     # Two line segments AB and CD intersect if and only if:
     return (ccw(A, C, D) != ccw(B, C, D)) and (ccw(A, B, C) != ccw(A, B, D))</code></pre></div>
 
-        <p>Because the centroid trajectory vector $CD$ only crosses segment $AB$ <strong>exactly once</strong> in time, the vehicle is counted exactly once. Furthermore, the sign of the dot product $\\vec{v} \\cdot \\vec{n}_{\\text{line}}$ determines vehicle travel direction (Northbound vs Southbound).</p>
+        <p>Because the centroid trajectory vector $CD$ only crosses segment $AB$ <strong>exactly once</strong> in time, the vehicle is counted exactly once. Furthermore, the sign of the dot product $\vec{v} \cdot \vec{n}_{\text{line}}$ determines vehicle travel direction (Northbound vs Southbound).</p>
       </section>
 
       <section id="sec-code-walk">
@@ -334,7 +334,7 @@ while cap.isOpened():
         <h2><span class="h2-badge">PART 7</span> Benchmarks & Edge Cases (Gantry Shadows, Tailgating)</h2>
         <ul>
           <li><strong>Processing Throughput:</strong> 62.4 FPS on NVIDIA RTX 3060 Laptop GPU (1080p resolution); 28.1 FPS on Intel Core i7-12700H CPU using OpenVINO.</li>
-          <li><strong>Counting Accuracy:</strong> $95.2\\%$ overall accuracy on a 15-minute 4-lane highway video (1,480 total vehicles, 42 false counts, 29 missed counts).</li>
+          <li><strong>Counting Accuracy:</strong> $95.2\%$ overall accuracy on a 15-minute 4-lane highway video (1,480 total vehicles, 42 false counts, 29 missed counts).</li>
           <li><strong>Tailgating Mitigation:</strong> Kalman velocity estimation correctly holds individual bounding boxes even when an SUV closely follows a large freight truck, preventing bounding box merger.</li>
         </ul>
       </section>
@@ -352,7 +352,7 @@ while cap.isOpened():
 
       <section id="sec-kalman">
         <h2><span class="h2-badge">TEIL 3</span> Kalman-Filter-Herleitung: Warum Zustandsvektor [u, v, s, r]?</h2>
-        <p>Der Zustandsvektor nutzt das Seitenverhältnis $r = \\frac{w}{h}$, da dieses unter perspektivischer Verkürzung nahezu konstant bleibt, während sich die Fläche $s$ proportional zur Entfernung ändert.</p>
+        <p>Der Zustandsvektor nutzt das Seitenverhältnis $r = \frac{w}{h}$, da dieses unter perspektivischer Verkürzung nahezu konstant bleibt, während sich die Fläche $s$ proportional zur Entfernung ändert.</p>
       </section>
 
       <section id="sec-hungarian">

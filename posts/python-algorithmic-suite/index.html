@@ -6,7 +6,7 @@
   <title>Python Algorithmic Engineering: From Custom Cryptographic Ciphers to Interactive OOP Desktop Applications · Đỗ Hiểu Vinh</title>
   <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
   <link rel="stylesheet" href="../../assets/css/style.css?v=5.0">
-  <link rel="stylesheet" href="../../assets/css/swiss.css?v=5.0">
+  <link rel="stylesheet" href="../../assets/css/swiss.css?v=5.1">
   <!-- KaTeX CSS & JS for Math Equations -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
@@ -199,21 +199,21 @@
         <h2><span class="h2-badge">PART 1</span> Symmetric Cipher Mathematics: Keyspace Complexity 94!</h2>
         <p>A fundamental problem in applied computer science is constructing reversible mathematical mappings (bijections) for data obfuscation. Our symmetric substitution cipher defines a character set $S$ containing all printable ASCII characters from ASCII 32 (Space) through ASCII 126 (Tilde):</p>
         
-        <p>$$|S| = 94 \\text{ distinct characters}$$</p>
+        <p>$$|S| = 94 \text{ distinct characters}$$</p>
         
-        <p>A substitution key is a <strong>bijective permutation function</strong> $f: S \\to S$ that maps each plaintext symbol $p_i \\in S$ to a unique ciphertext symbol $c_i \\in S$. Because the mapping is bijective (both injective and surjective), the inverse function $f^{-1}: S \\to S$ exists and guarantees <strong>$100\\%$ loss-free roundtrip decryption</strong>:</p>
-        <p>$$f^{-1}(f(p_i)) = p_i, \\quad \\forall p_i \\in S$$</p>
+        <p>A substitution key is a <strong>bijective permutation function</strong> $f: S \to S$ that maps each plaintext symbol $p_i \in S$ to a unique ciphertext symbol $c_i \in S$. Because the mapping is bijective (both injective and surjective), the inverse function $f^{-1}: S \to S$ exists and guarantees <strong>$100\%$ loss-free roundtrip decryption</strong>:</p>
+        <p>$$f^{-1}(f(p_i)) = p_i, \quad \forall p_i \in S$$</p>
 
         <h4>Keyspace Complexity Analysis:</h4>
         <p>The total number of possible distinct permutations is given by the factorial of the set size:</p>
-        <p>$$|\\mathcal{K}| = 94! \\approx 1.087 \\times 10^{146}$$</p>
+        <p>$$|\mathcal{K}| = 94! \approx 1.087 \times 10^{146}$$</p>
         
         <div class="callout callout-info">
           <strong>How astronomically large is $94!$?</strong>
           <ul>
-            <li>The total number of atoms in the observable universe is estimated at $\\sim 10^{80}$.</li>
-            <li>The standard AES-128 cryptographic keyspace is $2^{128} \\approx 3.40 \\times 10^{38}$.</li>
-            <li>A brute-force exhaustive key search trying 1 trillion keys per second would take over $3.4 \\times 10^{126}$ years—billions of times longer than the lifespan of the universe!</li>
+            <li>The total number of atoms in the observable universe is estimated at $\sim 10^{80}$.</li>
+            <li>The standard AES-128 cryptographic keyspace is $2^{128} \approx 3.40 \times 10^{38}$.</li>
+            <li>A brute-force exhaustive key search trying 1 trillion keys per second would take over $3.4 \times 10^{126}$ years—billions of times longer than the lifespan of the universe!</li>
           </ul>
         </div>
       </section>
@@ -236,7 +236,7 @@ for i in range(len(key)):
 for i in range(len(key) - 1, 0, -1):
     j = random.randint(0, i) # Strictly choose from [0, i]
     key[i], key[j] = key[j], key[i]</code></pre></div>
-        <p>The Fisher-Yates algorithm produces exactly $N \\times (N-1) \\times \\cdots \\times 1 = N!$ branches, guaranteeing that every single one of the $N!$ permutations has an identical probability $P = \\frac{1}{N!}$.</p>
+        <p>The Fisher-Yates algorithm produces exactly $N \times (N-1) \times \cdots \times 1 = N!$ branches, guaranteeing that every single one of the $N!$ permutations has an identical probability $P = \frac{1}{N!}$.</p>
       </section>
 
       <section id="sec-cryptanalysis">
@@ -245,7 +245,7 @@ for i in range(len(key) - 1, 0, -1):
         
         <p>Because monoalphabetic substitution preserves the <strong>underlying statistical frequency distribution of the natural language</strong>:</p>
         <ul>
-          <li>In natural English text, the letter <code>'e'</code> appears with an average frequency of $12.7\\%$, <code>'t'</code> appears $9.1\\%$, and <code>'a'</code> appears $8.2\\%$.</li>
+          <li>In natural English text, the letter <code>'e'</code> appears with an average frequency of $12.7\%$, <code>'t'</code> appears $9.1\%$, and <code>'a'</code> appears $8.2\%$.</li>
           <li>Common digrams (<code>'th'</code>, <code>'he'</code>, <code>'in'</code>) and trigrams (<code>'the'</code>, <code>'and'</code>) exhibit rigid statistical signatures.</li>
           <li>An attacker intercepting a few paragraphs of ciphertext can count symbol frequencies, map the most frequent symbol to <code>'e'</code>, and break the entire cipher in seconds without testing $94!$ keys.</li>
         </ul>
@@ -258,7 +258,7 @@ for i in range(len(key) - 1, 0, -1):
         
         <ul>
           <li><strong>Encapsulation:</strong> The <code>Pokemon</code> base class encapsulates hit points, base stats, and move sets, exposing strict accessor methods with damage validation.</li>
-          <li><strong>$O(1)$ Hash Matrix Lookup:</strong> Elemental type effectiveness (e.g., Water against Fire is $2.0\\times$, Grass against Fire is $0.5\\times$) is modeled as a nested hash map:
+          <li><strong>$O(1)$ Hash Matrix Lookup:</strong> Elemental type effectiveness (e.g., Water against Fire is $2.0\times$, Grass against Fire is $0.5\times$) is modeled as a nested hash map:
             <code>EFFECTIVENESS_MATRIX[attack_type][defender_type]</code>. This evaluates damage multipliers in instantaneous $O(1)$ time rather than nested <code>if-else</code> cascades.
           </li>
           <li><strong>State Machine Transitions:</strong> Manages turn-based mechanics with deterministic priority resolution (Speed stat determines who strikes first).</li>
@@ -327,12 +327,12 @@ if __name__ == "__main__":
           <div class="lang-de">
             <section id="sec-crypto-math">
         <h2><span class="h2-badge">TEIL 1</span> Symmetrische Chiffren-Mathematik: Schlüsselraum-Komplexität 94!</h2>
-        <p>Eine bijektive Abbildung über alle 94 druckbaren ASCII-Zeichen erzeugt einen Schlüsselraum von $94! \\approx 1.087 \\times 10^{146}$. Dies übertrifft den Schlüsselraum von AES-128 ($2^{128} \\approx 3.4 \\times 10^{38}$) um viele Größenordnungen und schließt Brute-Force-Angriffe mathematisch aus.</p>
+        <p>Eine bijektive Abbildung über alle 94 druckbaren ASCII-Zeichen erzeugt einen Schlüsselraum von $94! \approx 1.087 \times 10^{146}$. Dies übertrifft den Schlüsselraum von AES-128 ($2^{128} \approx 3.4 \times 10^{38}$) um viele Größenordnungen und schließt Brute-Force-Angriffe mathematisch aus.</p>
       </section>
 
       <section id="sec-fisher-yates">
         <h2><span class="h2-badge">TEIL 2</span> Fisher-Yates-Shuffle vs. fehlerhaftes naives Mischen</h2>
-        <p>Der Fisher-Yates-Algorithmus garantiert eine gleichmäßige Wahrscheinlichkeitsverteilung ($P = \\frac{1}{N!}$) aller Permutationen, während naive Vertauschungsschleifen statistische Häufungen erzeugen.</p>
+        <p>Der Fisher-Yates-Algorithmus garantiert eine gleichmäßige Wahrscheinlichkeitsverteilung ($P = \frac{1}{N!}$) aller Permutationen, während naive Vertauschungsschleifen statistische Häufungen erzeugen.</p>
       </section>
 
       <section id="sec-cryptanalysis">
